@@ -1113,7 +1113,7 @@ article header .postdate {
 }
 article .content h2:before {
   position: absolute;
-  top: -4px;
+  top: -3px;
   left: -1rem;
   color: #00b4dd;
   content: "#";
@@ -1126,6 +1126,9 @@ article .content video {
   margin: auto;
   max-width: 100%;
   height: auto;
+  border: 4px solid rgba(0,0,0,0.2);
+  border-style: double;
+  border-radius: 5px;
 }
 article .content .video-container {
   position: relative;
