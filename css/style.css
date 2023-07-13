@@ -316,6 +316,25 @@
   padding-right: 4rem;
   padding-left: 4rem;
 }
+body :not(figure) > table tr {
+  background: rgba(204,204,204,0.051);
+  border: 1px solid #ddd;
+  border-radius: 1px;
+  transition: all 0.3s ease;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+  transition-delay: 0s;
+  transition-property: all;
+}
+body :not(figure) > table tr:hover {
+  background-color: #e8e8e8;
+}
+body :not(figure) > table tr td {
+  border-right: 1px solid #ddd;
+}
+body :not(figure) > table tr th {
+  border-right: 1px solid #ddd;
+}
 body h1,
 body .h1 {
   display: block;
@@ -343,7 +362,6 @@ body .h2 {
 }
 body h3 {
   color: #00a0df;
-  text-decoration: underline;
   font-weight: bold;
   font-size: 0.9rem;
 }
@@ -620,8 +638,8 @@ body {
   border-radius: 5px;
   background-size: 50px 50px;
   background-repeat: no-repeat;
-  filter: grayscale(100%);
-  -webkit-filter: grayscale(100%);
+  filter: grayscale(0%);
+  -webkit-filter: grayscale(0%);
 }
 #header #nav {
   color: #00b4dd;
@@ -1096,7 +1114,7 @@ article header .posttitle {
   line-height: 1.25;
 }
 article header .meta {
-  margin-top: 0;
+  margin-top: 10px;
   margin-bottom: 1rem;
 }
 article header .meta * {
@@ -1110,6 +1128,12 @@ article header .author {
 }
 article header .postdate {
   display: inline;
+}
+article .content h1 {
+  border-bottom: 2px solid rgba(0,135,255,0.28);
+}
+article .content h2 {
+  border-bottom: 1px solid rgba(0,135,255,0.28);
 }
 article .content h2:before {
   position: absolute;
@@ -1584,9 +1608,8 @@ pre {
   padding-bottom: 0;
   border: 1px dotted #666;
   border-radius: 4px;
-  font-size: 13px;
+  font-size: 11px;
   font-family: "Menlo", "Meslo LG", monospace;
-  line-height: 22px;
   -webkit-border-radius: 4px;
 }
 pre code {
