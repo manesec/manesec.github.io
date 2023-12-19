@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="json 分析之 ELK 本地日志快速 docker 搭建一定不是玩夏洛克玩的。 0x0 Pre-requirement1sudo apt install -y docker.io docker-compose  0x1 Using docker-elk project123456git clone https:&#x2F;&#x2F;github.com&#x2F;deviantony&#x2F;docker-elk.git dock">
+<meta property="og:type" content="article">
+<meta property="og:title" content="json">
+<meta property="og:url" content="https://manesec.github.io/2023/12/19/2023-12-elk-and-json/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="json 分析之 ELK 本地日志快速 docker 搭建一定不是玩夏洛克玩的。 0x0 Pre-requirement1sudo apt install -y docker.io docker-compose  0x1 Using docker-elk project123456git clone https:&#x2F;&#x2F;github.com&#x2F;deviantony&#x2F;docker-elk.git dock">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/12/19_json_elk/image-20231219155148-a5pa4al.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/12/19_json_elk/image-20231219155444-udlsne0.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/12/19_json_elk/image-20231219155828-p9v0f6h.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/12/19_json_elk/image-20231219155950-t7s7ny8.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/12/19_json_elk/image-20231219160017-tj3ton4.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/12/19_json_elk/image-20231219160247-yryy1ls.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/12/19_json_elk/image-20231219170056-xaw4cxc.png">
+<meta property="article:published_time" content="2023-12-19T09:06:27.000Z">
+<meta property="article:modified_time" content="2023-12-19T09:07:25.025Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.manesec.com/file/maneimg1/2023/12/19_json_elk/image-20231219155148-a5pa4al.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>json</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BPCTLB3LQR"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BPCTLB3LQR');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/manesec">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/10/28/2023-10-rid-brute/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&text=json"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&title=json"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&is_video=false&description=json"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=json&body=Check out this article: https://manesec.github.io/2023/12/19/2023-12-elk-and-json/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&title=json"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&title=json"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&title=json"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&title=json"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&name=json&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&t=json"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#json-%E5%88%86%E6%9E%90%E4%B9%8B-ELK-%E6%9C%AC%E5%9C%B0%E6%97%A5%E5%BF%97%E5%BF%AB%E9%80%9F-docker-%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text">json 分析之 ELK 本地日志快速 docker 搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x0-Pre-requirement"><span class="toc-number">1.1.</span> <span class="toc-text">0x0 Pre-requirement</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x1-Using-docker-elk-project"><span class="toc-number">1.2.</span> <span class="toc-text">0x1 Using docker-elk project</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x2-Using-CURL-to-import-json-files"><span class="toc-number">1.3.</span> <span class="toc-text">0x2 Using CURL to import json files.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x3-Create-DATAVIEW"><span class="toc-number">1.4.</span> <span class="toc-text">0x3 Create DATAVIEW</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x4-%E5%A6%82%E6%9E%9C%E4%B8%8D%E5%B0%8F%E5%BF%83%E5%B0%8E%E5%85%A5%E4%BA%86%E4%B8%80%E4%BA%9B%E6%95%B8%E6%93%9A"><span class="toc-number">1.5.</span> <span class="toc-text">0x4 如果不小心導入了一些數據</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x5-%E5%BE%8C%E8%A8%98"><span class="toc-number">1.6.</span> <span class="toc-text">0x5 後記</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        json
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-12-19T09:06:27.000Z" class="dt-published" itemprop="datePublished">2023-12-19</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="json-分析之-ELK-本地日志快速-docker-搭建"><a href="#json-分析之-ELK-本地日志快速-docker-搭建" class="headerlink" title="json 分析之 ELK 本地日志快速 docker 搭建"></a>json 分析之 ELK 本地日志快速 docker 搭建</h1><p>一定不是玩夏洛克玩的。</p>
+<h2 id="0x0-Pre-requirement"><a href="#0x0-Pre-requirement" class="headerlink" title="0x0 Pre-requirement"></a>0x0 Pre-requirement</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install -y docker.io docker-compose</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x1-Using-docker-elk-project"><a href="#0x1-Using-docker-elk-project" class="headerlink" title="0x1 Using docker-elk project"></a>0x1 Using <a target="_blank" rel="noopener" href="https://github.com/deviantony/docker-elk">docker-elk</a> project</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/deviantony/docker-elk.git docker-elk</span><br><span class="line"><span class="built_in">cd</span> docker-elk</span><br><span class="line"></span><br><span class="line"><span class="comment"># pull up docker </span></span><br><span class="line">sudo docker-compose up setup</span><br><span class="line">sudo docker-compose up</span><br></pre></td></tr></table></figure>
+
+<p>打開瀏覽器 <code>http://127.0.0.1:5601/</code>​ 使用密碼： <code>elastic:changeme</code>​ 登錄。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/12/19_json_elk/image-20231219155148-a5pa4al.png" alt="image">​</p>
+<p>現在就來導入json進去elastic裏面。</p>
+<h2 id="0x2-Using-CURL-to-import-json-files"><a href="#0x2-Using-CURL-to-import-json-files" class="headerlink" title="0x2 Using CURL to import json files."></a>0x2 Using CURL to import json files.</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl  -u elastic:changeme -H <span class="string">&#x27;Content-Type: application/json&#x27;</span>  -X POST <span class="string">&#x27;http://127.0.0.1:9200/test/_doc/1&#x27;</span> -d @mane.json</span><br></pre></td></tr></table></figure>
+
+<p>上面的 <code>test</code>​ 是 index 名字，右邊的json是導入的名字，現在暫時可以先只導入一條。</p>
+<p>然後去網頁看看有沒有導入成功。</p>
+<p>點擊菜單：<code>Management</code>​ -&gt; <code>Index Management</code>​  -&gt; <code>&lt;index名字&gt;</code>​</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/12/19_json_elk/image-20231219155444-udlsne0.png" alt="image">​</p>
+<p>如果看到有一條記錄就説明導入成功啦！</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/12/19_json_elk/image-20231219155828-p9v0f6h.png" alt="image">​</p>
+<h2 id="0x3-Create-DATAVIEW"><a href="#0x3-Create-DATAVIEW" class="headerlink" title="0x3 Create DATAVIEW"></a>0x3 Create DATAVIEW</h2><p>把數據展示出來，就要create dataview。</p>
+<p>回到 <code>Discover</code>​ </p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/12/19_json_elk/image-20231219155950-t7s7ny8.png" alt="image">​</p>
+<p>點擊我要新建一個 <code>Data View</code>​，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/12/19_json_elk/image-20231219160017-tj3ton4.png" alt="image">​</p>
+<p>名字隨便填，然後下面的 index</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/12/19_json_elk/image-20231219160247-yryy1ls.png" alt="image">​</p>
+<p>完成！</p>
+<h2 id="0x4-如果不小心導入了一些數據"><a href="#0x4-如果不小心導入了一些數據" class="headerlink" title="0x4 如果不小心導入了一些數據"></a>0x4 如果不小心導入了一些數據</h2><p>可以直接把整個index刪掉，導入數據的時候elk會自己建立一個index。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/12/19_json_elk/image-20231219170056-xaw4cxc.png" alt="image">​</p>
+<h2 id="0x5-後記"><a href="#0x5-後記" class="headerlink" title="0x5 後記"></a>0x5 後記</h2><p>附贈一個 <code>AWS</code>​ 的導入分析脚本。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> requests,os,json</span><br><span class="line"></span><br><span class="line">IMPORT_DIR = <span class="string">&quot;/home/mane/Downloads/x/x-cloudtrail&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">found_json</span>():</span><br><span class="line">    json_file_lists = []</span><br><span class="line">    <span class="keyword">for</span>  dirpath, dirnames, filenames <span class="keyword">in</span> os.walk(IMPORT_DIR):</span><br><span class="line">        <span class="keyword">for</span> filename <span class="keyword">in</span> [f <span class="keyword">for</span> f <span class="keyword">in</span> filenames <span class="keyword">if</span> f.endswith(<span class="string">&quot;.json&quot;</span>)]:</span><br><span class="line">            json_file_lists.append(os.path.join(dirpath, filename))</span><br><span class="line"></span><br><span class="line">    total_files = <span class="built_in">len</span>(json_file_lists)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[*] Found %s json files.&quot;</span> % (total_files))</span><br><span class="line"></span><br><span class="line">    index = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> json_file <span class="keyword">in</span> json_file_lists:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;[%s/%s] Reading %s ...&quot;</span> % (index,total_files,filename))</span><br><span class="line">        process_json_file(json_file)</span><br><span class="line">        index = index +  <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_json_file</span>(<span class="params">filename</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        data = f.read()</span><br><span class="line">        j = json.loads(data)[<span class="string">&quot;Records&quot;</span>]</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;[*] Importing %s Records ...&quot;</span> % (<span class="built_in">len</span>(j)))</span><br><span class="line">        <span class="keyword">for</span> records <span class="keyword">in</span> j:</span><br><span class="line">            import_to_elk(records)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">import_to_elk</span>(<span class="params">data</span>):</span><br><span class="line">    data = <span class="string">&quot;&quot;&quot;&#123; &quot;index&quot; : &#123; &quot;_index&quot; : &quot;test&quot; &#125; &#125; \n%s\n\n \r\n&quot;&quot;&quot;</span> % (json.dumps(data))</span><br><span class="line">    proxies = &#123;</span><br><span class="line">       <span class="string">&#x27;http&#x27;</span>: <span class="string">&#x27;http://127.0.0.1:8080&#x27;</span>,</span><br><span class="line">       <span class="string">&#x27;https&#x27;</span>: <span class="string">&#x27;http://127.0.0.1:8080&#x27;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    burp0_url = <span class="string">&quot;http://127.0.0.1:9200/_bulk?pretty&quot;</span></span><br><span class="line">    burp0_headers = &#123;<span class="string">&quot;Authorization&quot;</span>: <span class="string">&quot;Basic ZWxhc3RpYzpjaGFuZ2VtZQ==&quot;</span>, <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;curl/7.88.1&quot;</span>, <span class="string">&quot;Accept&quot;</span>: <span class="string">&quot;*/*&quot;</span>, <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;application/json&quot;</span>, <span class="string">&quot;Connection&quot;</span>: <span class="string">&quot;close&quot;</span>&#125;</span><br><span class="line">    burp0_json=data</span><br><span class="line">    requests.post(burp0_url, headers=burp0_headers, data=burp0_json,verify=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">found_json()</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/manesec">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#json-%E5%88%86%E6%9E%90%E4%B9%8B-ELK-%E6%9C%AC%E5%9C%B0%E6%97%A5%E5%BF%97%E5%BF%AB%E9%80%9F-docker-%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text">json 分析之 ELK 本地日志快速 docker 搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x0-Pre-requirement"><span class="toc-number">1.1.</span> <span class="toc-text">0x0 Pre-requirement</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x1-Using-docker-elk-project"><span class="toc-number">1.2.</span> <span class="toc-text">0x1 Using docker-elk project</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x2-Using-CURL-to-import-json-files"><span class="toc-number">1.3.</span> <span class="toc-text">0x2 Using CURL to import json files.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x3-Create-DATAVIEW"><span class="toc-number">1.4.</span> <span class="toc-text">0x3 Create DATAVIEW</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x4-%E5%A6%82%E6%9E%9C%E4%B8%8D%E5%B0%8F%E5%BF%83%E5%B0%8E%E5%85%A5%E4%BA%86%E4%B8%80%E4%BA%9B%E6%95%B8%E6%93%9A"><span class="toc-number">1.5.</span> <span class="toc-text">0x4 如果不小心導入了一些數據</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x5-%E5%BE%8C%E8%A8%98"><span class="toc-number">1.6.</span> <span class="toc-text">0x5 後記</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&text=json"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&title=json"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&is_video=false&description=json"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=json&body=Check out this article: https://manesec.github.io/2023/12/19/2023-12-elk-and-json/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&title=json"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&title=json"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&title=json"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&title=json"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&name=json&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2023/12/19/2023-12-elk-and-json/&t=json"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2023
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/manesec">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>
