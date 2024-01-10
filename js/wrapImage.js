@@ -6,12 +6,13 @@ setInterval(function () {
     wrapImageWithFancyBox();
 }, 2000);
 
+
 /**
  * Wrap images with fancybox support.
  */
 
 function wrapImageWithFancyBox() {
-    $('img').not('.sidebar-image img').not('#author-avatar img').not(".mdl-menuimg").not(".something-else-logo img").not('.avatar').not('.share-body img').each(function() {
+    $('img').not('[data-fancybox="images"] img').not('.sidebar-image img').not('#author-avatar img').not(".mdl-menuimg").not(".something-else-logo img").not('.avatar').not('.share-body img').each(function() {
         var $image = $(this);
         var alt = $image.attr('alt');
         var src = $image.attr('src');
