@@ -2,6 +2,10 @@ $(document).ready(function() {
     wrapImageWithFancyBox();
 });
 
+setInterval(function () {
+    wrapImageWithFancyBox();
+}, 2000);
+
 /**
  * Wrap images with fancybox support.
  */
