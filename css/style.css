@@ -1180,6 +1180,8 @@ article .content blockquote {
   color: #2bbc8a;
   quotes: "\201C" "\201D" "\2018" "\2019";
   font-weight: bold;
+  border: 1px solid rgba(43,188,138,0.612);
+  border-radius: 10px;
 }
 article .content blockquote p {
   margin: 0;
@@ -1633,6 +1635,7 @@ code {
   border-radius: 4px;
   background: #fafafa;
   font-family: "Menlo", "Meslo LG", monospace;
+  border: 1px solid rgba(187,187,187,0.478);
   -webkit-border-radius: 4px;
 }
 .highlight figcaption {
