@@ -1173,6 +1173,11 @@ article .content .video-container embed {
   width: 100%;
   height: 100%;
 }
+article .content iframe {
+  border: 4px solid rgba(0,0,0,0.2);
+  border-style: double;
+  border-radius: 5px;
+}
 article .content blockquote {
   margin: 1rem 10px;
   padding: 0.5em 10px;
