@@ -21,15 +21,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="PDF Vieweruse for display PDF file. Generate        Choose a temple:             default       nobar       slideshow       arrow only              PDF Url :              Password:         Clear Genera">
+    <meta name="description" content="PDF Vieweruse for display PDF file. Generate  Clear       Choose a temple:             default       nobar       slideshow       arrow only             PDF Url :              Password:               H">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Mane">
 <meta property="og:url" content="https://manesec.github.io/about/maneplugin/viewerjs.html">
 <meta property="og:site_name" content="Mane">
-<meta property="og:description" content="PDF Vieweruse for display PDF file. Generate        Choose a temple:             default       nobar       slideshow       arrow only              PDF Url :              Password:         Clear Genera">
+<meta property="og:description" content="PDF Vieweruse for display PDF file. Generate  Clear       Choose a temple:             default       nobar       slideshow       arrow only             PDF Url :              Password:               H">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-07-04T18:56:41.738Z">
-<meta property="article:modified_time" content="2024-07-04T18:56:41.738Z">
+<meta property="article:published_time" content="2024-07-04T19:16:04.970Z">
+<meta property="article:modified_time" content="2024-07-04T19:16:04.970Z">
 <meta property="article:author" content="manesec">
 <meta name="twitter:card" content="summary">
     
@@ -128,7 +128,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <h1 id="PDF-Viewer"><a href="#PDF-Viewer" class="headerlink" title="PDF Viewer"></a>PDF Viewer</h1><p>use for display PDF file.</p>
 <h2 id="Generate"><a href="#Generate" class="headerlink" title="Generate"></a>Generate</h2>
 
-<div> 
+<button type="button" onClick="clears()">Clear</button>
+
+<div style="margin-top:10px">
     <label>Choose a temple:</label>
 
     <select id="choose_temple">
@@ -138,7 +140,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <option value="nobar_arrow.html">arrow only</option>
     </select>
 </div>
-
 
 <div style="margin-top:10px">
     <label >PDF Url :</label>
@@ -151,7 +152,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <input type="text" id="Password" style="width:100%">
 </div>
 
-<button type="button" style="margin-top:20px" onClick="clears()">Clear</button>
+
+<div style="margin-top:10px">
+    <label >Height (px): </label>
+    <input type="text" id="inputHeight" value="500" style="width:100%">
+</div>
+
+
 <button type="button" style="margin-top:20px" onClick="genClicked()">Generate !</button>
 
 
@@ -171,21 +178,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            url += "?" + document.getElementById("Password").value.trim();
         }
         console.log(url)
-        document.getElementById("Output").value = url;
+        document.getElementById("Output").value = "{% iframe "+url+" 100% "+document.getElementById("inputHeight").value+"px %} ";
         document.getElementById("preview").src = url;
-        
+        document.getElementById("preview").style.height =  document.getElementById("inputHeight").value + "px"
     }
 
     function clears(){
+        document.getElementById("preview").src = "about:blank";
         var inputs = document.getElementsByTagName("input");
         for (var i = 0; i< inputs.length; i++){
             inputs[i].value = ''
         }
+        document.getElementById("inputHeight").value = "300"
     }
 
 </script>
-
-
 
 
 
