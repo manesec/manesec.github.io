@@ -154,7 +154,7 @@ function ODFViewerPlugin() {
         return "http://webodf.org"
     }
 };
-var PDFViewerPlugin_css = ".page {margin: 7px auto 7px auto;position: relative;overflow: hidden;background-clip: content-box;background-color: white;box-shadow:         0px 0px 7px rgba(0, 0, 0, 0.75);-webkit-box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.75);-moz-box-shadow:    0px 0px 7px rgba(0, 0, 0, 0.75);-ms-box-shadow:    0px 0px 7px rgba(0, 0, 0, 0.75);-o-box-shadow:    0px 0px 7px rgba(0, 0, 0, 0.75);}.textLayer {position: absolute;left: 0;top: 0;right: 0;bottom: 0;color: #000;font-family: sans-serif;overflow: hidden;}.textLayer > div {color: transparent;position: absolute;line-height: 1;white-space: pre;cursor: text;}::selection { background:rgba(0,0,255,0.3); }::-moz-selection { background:rgba(0,0,255,0.3); }";
+var PDFViewerPlugin_css = ".page {margin: 7px auto 7px auto;position: relative;overflow: hidden;background-clip: content-box;background-color: white;}.textLayer {position: absolute;left: 0;top: 0;right: 0;bottom: 0;color: #000;font-family: sans-serif;overflow: hidden;}.textLayer > div {color: transparent;position: absolute;line-height: 1;white-space: pre;cursor: text;}::selection { background:rgba(0,0,255,0.3); }::-moz-selection { background:rgba(0,0,255,0.3); }";
 
 function PDFViewerPlugin() {
     function b(d, a) {
@@ -576,19 +576,19 @@ function Viewer(b, r) {
 		if (F >= H.length)
 		{
 			var element = document.getElementById('nextPage');
-			element.style.opacity = "0";
+			element.style.display = 'none';
 		}else{
 			var element = document.getElementById('nextPage');
-			element.style.opacity = "0.5";
+			element.style.display = 'inline';
 		}
 		
 		if (F > 1)
 		{
 			var element = document.getElementById('previousPage');
-			element.style.opacity = "0.5";
+			element.style.display = 'inline';
 		}else{
 			var element = document.getElementById('previousPage');
-			element.style.opacity = "0";
+			element.style.display = 'none';
 		}	
 	}
     this.showNextPage = function() {
@@ -863,12 +863,12 @@ function Viewer(b, r) {
                </div>
             </div>
          </div>
-         <div id = "canvasContainer">
+         <div id = "canvasContainer" style="background: #FFFFFF">
             <div id = "canvas"></div>
          </div>
          <div id = "overlayNavigator">
-            <div id = "previousPage"></div>
-            <div id = "nextPage"></div>
+            <div id = "previousPage" style="cursor: pointer;"></div>
+            <div id = "nextPage" style="cursor: pointer;"></div>
          </div>
          <div id = "overlayCloseButton">
             &#10006;
