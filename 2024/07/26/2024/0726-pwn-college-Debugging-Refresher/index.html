@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-T952MB6B');</script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Level 1直接跑起來就得到了 flag： ​​ 12runc  Level 2 GDB is a very powerful dynamic analysis tool which you can use in order to understand the state of a program throughoutits execution. You will become familiar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pwn.College - Debugging Refresher">
+<meta property="og:url" content="https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Level 1直接跑起來就得到了 flag： ​​ 12runc  Level 2 GDB is a very powerful dynamic analysis tool which you can use in order to understand the state of a program throughoutits execution. You will become familiar">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240725203800-1aqfia2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240725204356-p0h38dl.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240725205019-bgrnqqp.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240725212145-640yn74.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240725213309-l4lrt5m.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240725213503-b762qn7.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240725214937-p84ibkp.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726044316-lv1qgry.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726044502-zxaf57z.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726053538-1r9d3pe.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726053803-71d9akq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726055716-k9fhu7y.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726060918-u8syelq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726063653-h2vnjog.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726063949-ecbv3yn.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726063754-fgonbeh.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726064624-epuue2d.png">
+<meta property="article:published_time" content="2024-07-25T22:52:00.000Z">
+<meta property="article:modified_time" content="2024-07-25T22:53:27.490Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240725203800-1aqfia2.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Pwn.College - Debugging Refresher</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&text=Pwn.College - Debugging Refresher"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&title=Pwn.College - Debugging Refresher"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&is_video=false&description=Pwn.College - Debugging Refresher"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Pwn.College - Debugging Refresher&body=Check out this article: https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&title=Pwn.College - Debugging Refresher"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&title=Pwn.College - Debugging Refresher"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&title=Pwn.College - Debugging Refresher"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&title=Pwn.College - Debugging Refresher"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&name=Pwn.College - Debugging Refresher&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&t=Pwn.College - Debugging Refresher"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-1"><span class="toc-number">1.</span> <span class="toc-text">Level 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-2"><span class="toc-number">2.</span> <span class="toc-text">Level 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-3"><span class="toc-number">3.</span> <span class="toc-text">Level 3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-4"><span class="toc-number">4.</span> <span class="toc-text">Level 4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-5"><span class="toc-number">5.</span> <span class="toc-text">Level 5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-6"><span class="toc-number">6.</span> <span class="toc-text">Level 6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-7"><span class="toc-number">7.</span> <span class="toc-text">Level 7</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-8"><span class="toc-number">8.</span> <span class="toc-text">Level 8</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Pwn.College - Debugging Refresher
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-07-25T22:52:00.000Z" class="dt-published" itemprop="datePublished">2024-07-26</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="Level-1"><a href="#Level-1" class="headerlink" title="Level 1"></a>Level 1</h2><p>直接跑起來就得到了 flag：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240725203800-1aqfia2.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">run</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-2"><a href="#Level-2" class="headerlink" title="Level 2"></a>Level 2</h2><blockquote>
+<p>GDB is a very powerful dynamic analysis tool which you can use in order to understand the state of a program throughout<br>its execution. You will become familiar with some of gdb’s capabilities in this module.</p>
+<p>You can see the values for all your registers with <code>info registers</code>​. Alternatively, you can also just print a particular<br>register’s value with the <code>print</code>​ command, or <code>p</code>​ for short. For example, <code>p $rdi</code>​ will print the value of $rdi in<br>decimal. You can also print it’s value in hex with <code>p/x $rdi</code>​.</p>
+<p>In order to solve this level, you must figure out the current random value of register r12 in hex.</p>
+<p>The random value has been set!</p>
+</blockquote>
+<p>‍</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240725204356-p0h38dl.png" alt="image">​</p>
+<p>程序會判斷 r12的數值，所以用 <code>info registers</code>​ 來查看寄存器。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">run</span><br><span class="line">info registers</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-3"><a href="#Level-3" class="headerlink" title="Level 3"></a>Level 3</h2><blockquote>
+<p>GDB is a very powerful dynamic analysis tool which you can use in order to understand the state of a program throughout<br>its execution. You will become familiar with some of gdb’s capabilities in this module.</p>
+<p>You can examine the contents of memory using the <code>x/&lt;n&gt;&lt;u&gt;&lt;f&gt; &lt;address&gt;</code>​ parameterized command. In this format  is<br>the unit size to display, <code>&lt;f&gt;</code>​ is the format to display it in, and <code>&lt;n&gt;</code>​ is the number of elements to display. Valid<br>unit sizes are <code>b</code>​ (1 byte), <code>h</code>​ (2 bytes), <code>w</code>​ (4 bytes), and <code>g</code>​ (8 bytes). Valid formats are <code>d</code>​ (decimal), <code>x</code>​<br>(hexadecimal), <code>s</code>​ (string) and <code>i</code>​ (instruction). The address can be specified using a register name, symbol name, or<br>absolute address. Additionally, you can supply mathematical expressions when specifying the address.</p>
+<p>For example, <code>x/8i $rip</code>​ will print the next 8 instructions from the current instruction pointer. <code>x/16i main</code>​ will<br>print the first 16 instructions of main. You can also use <code>disassemble main</code>​, or <code>disas main</code>​ for short, to print all of<br>the instructions of main. Alternatively, <code>x/16gx $rsp</code>​ will print the first 16 values on the stack. <code>x/gx $rbp-0x32</code>​<br>will print the local variable stored there on the stack.</p>
+<p>You will probably want to view your instructions using the CORRECT assembly syntax. You can do that with the command<br>​<code>set disassembly-flavor intel</code>​.</p>
+<p>In order to solve this level, you must figure out the random value on the stack (the value read in from <code>/dev/urandom</code>​).<br>Think about what the arguments to the read system call are.</p>
+</blockquote>
+<p>正如上面的提示一樣，有的人不喜歡其他匯編的風格：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240725205019-bgrnqqp.png" alt="image">​</p>
+<p>可以通過下面的命令設置成 intel 風格：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> disassembly-flavor intel</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印每一行運行的内容</span></span><br><span class="line"><span class="built_in">set</span> disassemble-next-line on</span><br></pre></td></tr></table></figure>
+
+<p>然後突然提示設置了隨機的變量，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240725212145-640yn74.png" alt="image">​</p>
+<p>所以有兩個方面可以入手，第一個就是跟蹤程序設置隨機到哪個變量的地方，第二個就是跟蹤讀取内存和判斷的地方。</p>
+<p>這裏我用第二種方法，所以可以一路按 <code>ni</code>​ ，直到出現correct answer，這個時候只要看程序把哪個變量打印出來就好了。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240725213309-l4lrt5m.png" alt="image">​</p>
+<p>你可以看到正確答案是打印 <code>$rbp-18</code>​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x/10xg <span class="variable">$rbp</span>-18</span><br></pre></td></tr></table></figure>
+
+<p>知道了程序會把正確答案放在 <code>$rbp-18</code>​ ， 所以重啓程序，把正確答案打印出來即可。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240725213503-b762qn7.png" alt="image">​</p>
+<h2 id="Level-4"><a href="#Level-4" class="headerlink" title="Level 4"></a>Level 4</h2><blockquote>
+<p>There are a number of ways to move forward in the program’s execution. You can use the <code>stepi &lt;n&gt;</code>​ command, or <code>si &lt;n&gt;</code>​<br>for short, in order to step forward one instruction. You can use the <code>nexti &lt;n&gt;</code>​ command, or <code>ni &lt;n&gt;</code>​ for short, in<br>order to step forward one instruction, while stepping over any function calls. The <code>&lt;n&gt;</code>​ parameter is optional, but<br>allows you to perform multiple steps at once. You can use the <code>finish</code>​ command in order to finish the currently<br>executing function. You can use the <code>break *&lt;address&gt;</code>​ parameterized command in order to set a breakpoint at the<br>specified-address. You have already used the <code>continue</code>​ command, which will continue execution until the program hits a<br>breakpoint.</p>
+<p>While stepping through a program, you may find it useful to have some values displayed to you at all times. There are<br>multiple ways to do this. The simplest way is to use the <code>display/&lt;n&gt;&lt;u&gt;&lt;f&gt;</code>​ parameterized command, which follows<br>exactly the same format as the <code>x/&lt;n&gt;&lt;u&gt;&lt;f&gt;</code>​ parameterized command. For example, <code>display/8i $rip</code>​ will always show you<br>the next 8 instructions. On the other hand, <code>display/4gx $rsp</code>​ will always show you the first 4 values on the stack.<br>Another option is to use the <code>layout regs</code>​ command. This will put gdb into its TUI mode and show you the contents of all<br>of the registers, as well as nearby instructions.</p>
+<p>In order to solve this level, you must figure out a series of random values which will be placed on the stack. You are<br>highly encouraged to try using combinations of <code>stepi</code>​, <code>nexti</code>​, <code>break</code>​, <code>continue</code>​, and <code>finish</code>​ to make sure you have<br>a good internal understanding of these commands. The commands are all absolutely critical to navigating a program’s<br>execution.</p>
+</blockquote>
+<p>‍</p>
+<p>和第三題一樣，只不過要輸入四次。</p>
+<p>但是斷點在docker裏面會有莫名其妙的bug，所以乾脆一路按ni按到底。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240725214937-p84ibkp.png" alt="image">​</p>
+<p>‍</p>
+<p>‍</p>
+<h2 id="Level-5"><a href="#Level-5" class="headerlink" title="Level 5"></a>Level 5</h2><blockquote>
+<p>While using gdb interactively as we’ve done with the past levels is incredibly powerful, another powerful tool is gdb<br>scripting. By scripting gdb, you can very quickly create a custom-tailored program analysis tool. If you know how to<br>interact with gdb, you already know how to write a gdb script–the syntax is exactly the same. You can write your<br>commands to some file, for example <code>x.gdb</code>​, and then launch gdb using the flag <code>-x &lt;PATH_TO_SCRIPT&gt;</code>​. This file will<br>execute all of the gdb commands after gdb launches. Alternatively, you can execute individual commands with <code>-ex &#39;&lt;COMMAND&gt;&#39;</code>​. You can pass multiple commands with multiple <code>-ex</code>​ arguments. Finally, you can have some commands be<br>always executed for any gdb session by putting them in <code>~/.gdbinit</code>​. You probably want to put <code>set disassembly-flavor intel</code>​ in there.</p>
+<p>Within gdb scripting, a very powerful construct is breakpoint commands. Consider the following gdb script:</p>
+<p>  start<br>  break *main+42<br>  commands<br>    x&#x2F;gx $rbp-0x32<br>    continue<br>  end<br>  continue</p>
+<p>In this case, whenever we hit the instruction at <code>main+42</code>​, we will output a particular local variable and then continue<br>execution.</p>
+<p>Now consider a similar, but slightly more advanced script using some commands you haven’t yet seen:</p>
+<p>  start<br>  break *main+42<br>  commands<br>    silent<br>    set $local_variable &#x3D;  <em>(unsigned long long</em>)($rbp-0x32)<br>    printf “Current value: %llx\n”, $local_variable<br>    continue<br>  end<br>  continue</p>
+<p>In this case, the <code>silent</code>​ indicates that we want gdb to not report that we have hit a breakpoint, to make the output a<br>bit cleaner. Then we use the <code>set</code>​ command to define a variable within our gdb session, whose value is our local<br>variable. Finally, we output the current value using a formatted string.</p>
+<p>Use gdb scripting to help you collect the random values.</p>
+</blockquote>
+<p>‍</p>
+<p>學習gdb的自動化用法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">start</span><br><span class="line">  <span class="built_in">break</span> *main+42</span><br><span class="line">  commands</span><br><span class="line">    silent</span><br><span class="line">    <span class="built_in">set</span> <span class="variable">$local_variable</span> =  *(unsigned long long*)(<span class="variable">$rbp</span>-0x32)</span><br><span class="line">    <span class="built_in">printf</span> <span class="string">&quot;Current value: %llx\n&quot;</span>, <span class="variable">$local_variable</span></span><br><span class="line">    <span class="built_in">continue</span></span><br><span class="line">  end</span><br><span class="line">  <span class="built_in">continue</span></span><br></pre></td></tr></table></figure>
+
+<p>繼續來分析一下那個程序：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726044316-lv1qgry.png" alt="image">​</p>
+<p>所以脚本如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">start</span><br><span class="line"><span class="built_in">break</span> *main+728</span><br><span class="line">commands</span><br><span class="line">  silent</span><br><span class="line">  <span class="built_in">set</span> <span class="variable">$local_variable</span> = *(unsigned long long*)(<span class="variable">$rbp</span>-0x18)</span><br><span class="line">  <span class="built_in">printf</span> <span class="string">&quot;[Mane] Current value: %llx\n&quot;</span>, <span class="variable">$local_variable</span></span><br><span class="line">  <span class="built_in">continue</span></span><br><span class="line">end</span><br><span class="line"><span class="built_in">continue</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>source ~/test.gdb</code>​ 加載即可。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726044502-zxaf57z.png" alt="image">​</p>
+<p>‍</p>
+<h2 id="Level-6"><a href="#Level-6" class="headerlink" title="Level 6"></a>Level 6</h2><blockquote>
+<p>You can modify the state of your target program with the <code>set</code>​ command. For example, you can use <code>set $rdi = 0</code>​ to zero<br>out $rdi. You can use <code>set *((uint64_t *) $rsp) = 0x1234</code>​ to set the first value on the stack to 0x1234. You can use<br>​<code>set *((uint16_t *) 0x31337000) = 0x1337</code>​ to set 2 bytes at 0x31337000 to 0x1337.</p>
+<p>Suppose your target is some networked application which reads from some socket on fd 42. Maybe it would be easier for<br>the purposes of your analysis if the target instead read from stdin. You could achieve something like that with the<br>following gdb script:</p>
+<p>  start<br>  catch syscall read<br>  commands<br>    silent<br>    if ($rdi &#x3D;&#x3D; 42)<br>      set $rdi &#x3D; 0<br>    end<br>    continue<br>  end<br>  continue</p>
+<p>This example gdb script demonstrates how you can automatically break on system calls, and how you can use conditions<br>within your commands to conditionally perform gdb commands.</p>
+<p>In the previous level, your gdb scripting solution likely still required you to copy and paste your solutions. This<br>time, try to write a script that doesn’t require you to ever talk to the program, and instead automatically solves each<br>challenge by correctly modifying registers &#x2F; memory.</p>
+</blockquote>
+<p>整個題目的意思是製作一個gdb脚本，自動去完成交互，而不需要手動輸入，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">start</span><br><span class="line">catch syscall <span class="built_in">read</span></span><br><span class="line">commands</span><br><span class="line">  silent</span><br><span class="line">  <span class="keyword">if</span> (<span class="variable">$rdi</span> == 42)</span><br><span class="line">    <span class="built_in">set</span> <span class="variable">$rdi</span> = 0</span><br><span class="line">  end</span><br><span class="line">  <span class="built_in">continue</span></span><br><span class="line">end</span><br><span class="line"><span class="built_in">continue</span></span><br></pre></td></tr></table></figure>
+
+<p>那麽問題就來了，如何自動輸入？</p>
+<p>根據程序的源碼你可以看到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726053538-1r9d3pe.png" alt="image">​</p>
+<p>儅你輸入的任何東西會放到 <code>rbp-0x10</code>​ 這個位置，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726053803-71d9akq.png" alt="image">​</p>
+<p>通過反匯編，上面的scanf 也有告訴你會把數據寫到 <code>rbp-0x10</code>​ 這個位置，</p>
+<p>這樣就會有一個思路，我可以提前往 <code>rbp-0x10</code>​ 這個位置 寫一些數據，設置 RIP 從 606 跳到 630，這樣就可以完美的跳過 scanf。</p>
+<p>所以可以使用下列命令來寫入内存，因爲stack是1byte對齊，所以需要告訴gdb，這裏是8byte，64bit：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> *((uint64_t *) (<span class="variable">$rbp</span>-<span class="number">0</span>x10) ) = <span class="number">0</span>x1234</span><br></pre></td></tr></table></figure>
+
+<p>參考：</p>
+<table>
+<thead>
+<tr>
+<th>類型</th>
+<th>位寬 (bit)</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>int8_t</code>​</td>
+<td>8</td>
+<td>8 位有符號整數</td>
+</tr>
+<tr>
+<td>​<code>uint8_t</code>​</td>
+<td>8</td>
+<td>8 位無符號整數</td>
+</tr>
+<tr>
+<td>​<code>int16_t</code>​</td>
+<td>16</td>
+<td>16 位有符號整數</td>
+</tr>
+<tr>
+<td>​<code>uint16_t</code>​</td>
+<td>16</td>
+<td>16 位無符號整數</td>
+</tr>
+<tr>
+<td>​<code>int32_t</code>​</td>
+<td>32</td>
+<td>32 位有符號整數</td>
+</tr>
+<tr>
+<td>​<code>uint32_t</code>​</td>
+<td>32</td>
+<td>32 位無符號整數</td>
+</tr>
+<tr>
+<td>​<code>int64_t</code>​</td>
+<td>64</td>
+<td>64 位有符號整數</td>
+</tr>
+<tr>
+<td>​<code>uint64_t</code>​</td>
+<td>64</td>
+<td>64 位無符號整數</td>
+</tr>
+<tr>
+<td>​<code>char</code>​</td>
+<td>8</td>
+<td>8 位字符</td>
+</tr>
+<tr>
+<td>​<code>short</code>​</td>
+<td>16</td>
+<td>16 位有符號整數</td>
+</tr>
+<tr>
+<td>​<code>ushort</code>​</td>
+<td>16</td>
+<td>16 位無符號整數</td>
+</tr>
+<tr>
+<td>​<code>int</code>​</td>
+<td>32</td>
+<td>32 位有符號整數</td>
+</tr>
+<tr>
+<td>​<code>unsigned</code>​</td>
+<td>32</td>
+<td>32 位無符號整數</td>
+</tr>
+<tr>
+<td>​<code>long</code>​</td>
+<td>64</td>
+<td>64 位有符號整數</td>
+</tr>
+<tr>
+<td>​<code>ulong</code>​</td>
+<td>64</td>
+<td>64 位無符號整數</td>
+</tr>
+<tr>
+<td>​<code>float</code>​</td>
+<td>32</td>
+<td>32 位浮點數</td>
+</tr>
+<tr>
+<td>​<code>double</code>​</td>
+<td>64</td>
+<td>64 位浮點數</td>
+</tr>
+<tr>
+<td>​<code>bool</code>​</td>
+<td>8</td>
+<td>8 位布爾值</td>
+</tr>
+<tr>
+<td>​<code>void*</code>​</td>
+<td>64</td>
+<td>64 位指針（在 64 位系統上）</td>
+</tr>
+</tbody></table>
+<p>設置 rip 和 跳過的匯編長度：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> <span class="variable">$rip</span> = <span class="variable">$rip</span> + 24 </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726055716-k9fhu7y.png" alt="image">​</p>
+<p>運行後就可以得到 flag。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">start</span><br><span class="line"><span class="built_in">break</span> *main+606</span><br><span class="line">commands</span><br><span class="line">  silent</span><br><span class="line">  <span class="comment"># 提取隨機數</span></span><br><span class="line">  <span class="built_in">set</span> <span class="variable">$local_variable</span> = *(unsigned long long*)(<span class="variable">$rbp</span>-0x18)</span><br><span class="line">  <span class="built_in">printf</span> <span class="string">&quot;[Mane] Current value: %llx\n&quot;</span>, <span class="variable">$local_variable</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 把隨機數寫入到scanf寫入的地方</span></span><br><span class="line">  <span class="built_in">set</span> *((uint64_t *) (<span class="variable">$rbp</span>-<span class="number">0</span>x10) ) = <span class="variable">$local_variable</span></span><br><span class="line"></span><br><span class="line">  # 跳過scanf</span><br><span class="line">  set <span class="variable">$rip</span> = <span class="variable">$rip</span> + <span class="number">24</span> </span><br><span class="line">  continue</span><br><span class="line">end</span><br><span class="line">continue</span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-7"><a href="#Level-7" class="headerlink" title="Level 7"></a>Level 7</h2><blockquote>
+<p>As we demonstrated in the previous level, gdb has FULL control over the target process. Under normal circumstances, gdb<br>running as your regular user cannot attach to a privileged process. This is why gdb isn’t a massive security issue which<br>would allow you to just immediately solve all the levels. Nevertheless, gdb is still an extremely powerful tool.</p>
+<p>Running within this elevated instance of gdb gives you elevated control over the entire system. To clearly demonstrate<br>this, see what happens when you run the command <code>call (void)win()</code>​. As it turns out, all of the levels in this module<br>can be solved in this way.</p>
+<p>GDB is very powerful!</p>
+</blockquote>
+<p>題目告訴你，你可以直接運行裏面的函數，但是要指定返回的類型，否則會出現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726060918-u8syelq.png" alt="image">​</p>
+<p>所以：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call (void)win()</span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-8"><a href="#Level-8" class="headerlink" title="Level 8"></a>Level 8</h2><blockquote>
+<p>Running within this elevated instance of gdb gives you elevated control over the entire system. To clearly demonstrate<br>this, see what happens when you run the command <code>call (void)win()</code>​.</p>
+<p>Note that this will <em>not</em> get you the flag (it seems that we broke the win function!), so you’ll need to work a bit<br>harder to get this flag!</p>
+<p>As it turns out, all of the levels other levels in module could be solved in this way.</p>
+<p>GDB is very powerful!</p>
+</blockquote>
+<p>題目告訴你win裏面有一些垃圾指令，所以就debug一下看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726063653-h2vnjog.png" alt="image">​</p>
+<p>上面告訴你，<code>mov eax,dword ptr [rax]</code>​ 引用了空指針，所以報錯，但是看了一下這些代碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726063949-ecbv3yn.png" alt="image">​</p>
+<p>感覺都是垃圾指令，所以嘗試設置 RIP 跳過這些垃圾指令，結果出現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726063754-fgonbeh.png" alt="image">​</p>
+<p>所以就可以直接跳過垃圾指令，得到flag：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-gdbdebug/image-20240726064624-epuue2d.png" alt="image">​</p>
+<p>‍</p>
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-1"><span class="toc-number">1.</span> <span class="toc-text">Level 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-2"><span class="toc-number">2.</span> <span class="toc-text">Level 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-3"><span class="toc-number">3.</span> <span class="toc-text">Level 3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-4"><span class="toc-number">4.</span> <span class="toc-text">Level 4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-5"><span class="toc-number">5.</span> <span class="toc-text">Level 5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-6"><span class="toc-number">6.</span> <span class="toc-text">Level 6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-7"><span class="toc-number">7.</span> <span class="toc-text">Level 7</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-8"><span class="toc-number">8.</span> <span class="toc-text">Level 8</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&text=Pwn.College - Debugging Refresher"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&title=Pwn.College - Debugging Refresher"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&is_video=false&description=Pwn.College - Debugging Refresher"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Pwn.College - Debugging Refresher&body=Check out this article: https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&title=Pwn.College - Debugging Refresher"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&title=Pwn.College - Debugging Refresher"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&title=Pwn.College - Debugging Refresher"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&title=Pwn.College - Debugging Refresher"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&name=Pwn.College - Debugging Refresher&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/&t=Pwn.College - Debugging Refresher"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>
