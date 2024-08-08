@@ -21,15 +21,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="前言這是相當有歷史的故事，由於早期的hackthebox機器上的flag都是一樣的，這就會導致有一些人只想為了排名然後上網找flag，直接機器都不開就提交flag，這樣子的話就會導致排名是假的，大家都就為了排名而抄。所以官方就想到了一個辦法就是把所有的flag都變成隨機的， 這樣子如果你看著答案去抄，起碼你也動手去完成，而不是做都沒做過就直接提交flag。  I saw the thread th">
+    <meta name="description" content="前言這是相當有歷史的故事，由於早期的hackthebox機器上的flag都是一樣的，這就會導致有一些人只想為了排名然後上網找flag，直接機器都不開就提交flag，這樣子的話就會導致排名是假的，大家都就為了排名而抄。所以官方就想到了一個辦法就是把所有的flag都變成隨機的， 這樣子如果你看著答案去抄，起碼你也動手去完成，而不是做都沒做過就直接提交flag。 Hackthebox的商業手段就是活躍的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HTB Writeup 上的 hash 是什麽？">
 <meta property="og:url" content="https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/index.html">
 <meta property="og:site_name" content="Mane">
-<meta property="og:description" content="前言這是相當有歷史的故事，由於早期的hackthebox機器上的flag都是一樣的，這就會導致有一些人只想為了排名然後上網找flag，直接機器都不開就提交flag，這樣子的話就會導致排名是假的，大家都就為了排名而抄。所以官方就想到了一個辦法就是把所有的flag都變成隨機的， 這樣子如果你看著答案去抄，起碼你也動手去完成，而不是做都沒做過就直接提交flag。  I saw the thread th">
+<meta property="og:description" content="前言這是相當有歷史的故事，由於早期的hackthebox機器上的flag都是一樣的，這就會導致有一些人只想為了排名然後上網找flag，直接機器都不開就提交flag，這樣子的話就會導致排名是假的，大家都就為了排名而抄。所以官方就想到了一個辦法就是把所有的flag都變成隨機的， 這樣子如果你看著答案去抄，起碼你也動手去完成，而不是做都沒做過就直接提交flag。 Hackthebox的商業手段就是活躍的">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-07-03T13:57:00.000Z">
-<meta property="article:modified_time" content="2024-07-04T17:02:40.504Z">
+<meta property="article:modified_time" content="2024-08-08T06:28:08.539Z">
 <meta property="article:author" content="manesec">
 <meta name="twitter:card" content="summary">
     
@@ -184,6 +184,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <div class="content e-content" itemprop="articleBody">
     <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>這是相當有歷史的故事，由於早期的hackthebox機器上的flag都是一樣的，這就會導致有一些人只想為了排名然後上網找flag，直接機器都不開就提交flag，這樣子的話就會導致排名是假的，大家都就為了排名而抄。所以官方就想到了一個辦法就是把所有的flag都變成隨機的， 這樣子如果你看著答案去抄，起碼你也動手去完成，而不是做都沒做過就直接提交flag。</p>
+<p>Hackthebox的商業手段就是活躍的機器不允許有write up，退役的機器需要開通vip才可以玩。 這樣子會導致活躍的機器不允許有write up流出在網站上，<strong>就算有也要加密</strong>，退役的機器需要開通vip才可以玩。</p>
+<p>雖然Hackthebox也有成立一個部門抓write up沒有上鎖的網站，但是效果。。。你懂的。</p>
+<p>畢竟現在是個人也可以在奇怪的網站上發write up，所以根本抓不完。 這樣在抓不完的情況下，肯定會有大量write up沒有及時刪掉，這時候htb就會虧本。</p>
+<p>但是換一個思考去想這個問題，如果是新人跟著write up去做，新人覺得這個平臺不錯，這樣就會有更多的人加入這個平臺，這也算是一種商業模式。</p>
+<p>可以設想一下，如果大家都想白嫖htb，這樣早就倒閉了。</p>
+<p>現在因爲有賽季的關係，再加上賽季會有獎勵，所以htb希望寫write up的人推遲一個星期再發出來，即使人們在互聯網上分享hash，對htb來説傷害不會這麽大。</p>
 <blockquote>
 <p>I saw the thread the other day about how root flags will be dynamic now so people can’t share them. But obviously we normally use the root flag to protect write ups for live machines.</p>
 <p>前幾天我看到了關於其他人的討論：現在的root flag是動態的，所以沒辦法使用動態的 flag 來加密分享關於活躍機器的 writeup。</p>
@@ -193,7 +199,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <p>那麼官方是如何回答這個問題的？還是我們使用管理員的密碼來加密我們的文章？這個想法在其他的貼子提到過，但我不覺得是這樣子，其他人又如何加密writeup的？</p>
 <p><a target="_blank" rel="noopener" href="https://forum.hackthebox.com/t/so-how-do-we-protect-write-ups-now/2389">So how do we protect write ups now?</a>  by @VbScrub</p>
 </blockquote>
-<p>經過了一段時間的討論，HTB想出了一個比較好的解決方案，雖然這個貼子一直在討論這樣子很麻煩，但是大家都認為這個是最好的加密方法。</p>
+<p>正因爲這樣，大家又不想等到半年後才來看writeup，這樣黃花菜都涼了。官方也注意到這個問題，經過了一段時間的討論，HTB想出了一個比較好的解決方案，雖然這個貼子一直在討論這樣子很麻煩，但是大家都認為這個是最好的加密方法。</p>
 <blockquote>
 <p>Guys, a legitimate way to protect the write ups was already proposed by HTB. Use the hash of the root&#x2F;Administrator user, meaning the hash of LOGIN password that you would need to legitimately log in to the box, not the hash in root.txt.</p>
 <p>各位，HTB 已經提出了保護writeup的方法。使用 root&#x2F;Administrator 用戶的哈希值，即合法登錄系統所需的密碼的哈希值，而不是 root.txt 中的哈希值。</p>
