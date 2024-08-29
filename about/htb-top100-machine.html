@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="HTB獲得前100的機器從2024年開始記錄。    排名 名字 難度 日期 成就 文章    #58 Crafty Easy 10 Feb 2024 鏈接 鏈接   #55 Office Hard 18 Feb 2024 鏈接 鏈接   #97 FormulaX Hard 10 Mar 2024 鏈接 鏈接   #50 IClean Medium 07 Apr 2024 鏈接 鏈接   #78">
+<meta property="og:type" content="website">
+<meta property="og:title" content="HTB Top 100 Owned Machine">
+<meta property="og:url" content="https://manesec.github.io/about/htb-top100-machine.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="HTB獲得前100的機器從2024年開始記錄。    排名 名字 難度 日期 成就 文章    #58 Crafty Easy 10 Feb 2024 鏈接 鏈接   #55 Office Hard 18 Feb 2024 鏈接 鏈接   #97 FormulaX Hard 10 Mar 2024 鏈接 鏈接   #50 IClean Medium 07 Apr 2024 鏈接 鏈接   #78">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-14T11:49:19.365Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HTB Top 100 Owned Machine</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        
+          <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/images/logo.png" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">Mane</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">Home</a></li><!--
+   --><!--
+     --><li><a href="/about/">About</a></li><!--
+   --><!--
+     --><li><a href="/archives/">Writing</a></li><!--
+   --><!--
+     --><li><a href="/search/">Search</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <h1 id="HTB獲得前100的機器"><a href="#HTB獲得前100的機器" class="headerlink" title="HTB獲得前100的機器"></a>HTB獲得前100的機器</h1><p>從2024年開始記錄。</p>
+<table>
+<thead>
+<tr>
+<th align="center">排名</th>
+<th align="center">名字</th>
+<th align="center">難度</th>
+<th align="center">日期</th>
+<th align="center">成就</th>
+<th align="center">文章</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">#58</td>
+<td align="center">Crafty</td>
+<td align="center">Easy</td>
+<td align="center">10 Feb 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/587">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#55</td>
+<td align="center">Office</td>
+<td align="center">Hard</td>
+<td align="center">18 Feb 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/588">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/02/19/2024-htb-machine/07-office/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#97</td>
+<td align="center">FormulaX</td>
+<td align="center">Hard</td>
+<td align="center">10 Mar 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/592">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#50</td>
+<td align="center">IClean</td>
+<td align="center">Medium</td>
+<td align="center">07 Apr 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/596">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#78</td>
+<td align="center">Runner</td>
+<td align="center">Medium</td>
+<td align="center">21 Apr 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/598">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#67</td>
+<td align="center">Intuition</td>
+<td align="center">Hard</td>
+<td align="center">28 Apr 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/599">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#73</td>
+<td align="center">Mailing</td>
+<td align="center">Easy</td>
+<td align="center">05 May 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/600">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#80</td>
+<td align="center">SolarLab</td>
+<td align="center">Medium</td>
+<td align="center">12 May 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/601">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#91</td>
+<td align="center">MagicGardens</td>
+<td align="center">Insane</td>
+<td align="center">19 May 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/602">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/05/25/2024-htb-machine/20-MagicGardens/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#5</td>
+<td align="center">BoardLight</td>
+<td align="center">Easy</td>
+<td align="center">25 May 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/603">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#72</td>
+<td align="center">Freelancer</td>
+<td align="center">Hard</td>
+<td align="center">02 Jun 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/604">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/06/03/2024-htb-machine/22-Freelancer/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#37</td>
+<td align="center">Blurry</td>
+<td align="center">Medium</td>
+<td align="center">08 Jun 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/605">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#22</td>
+<td align="center">Editorial</td>
+<td align="center">Easy</td>
+<td align="center">15 Jun 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/608">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#45</td>
+<td align="center">Axlle</td>
+<td align="center">Hard</td>
+<td align="center">23 Jun 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/611">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/06/24/2024-htb-machine/25-Axlle/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#19</td>
+<td align="center">Blazorized</td>
+<td align="center">Medium</td>
+<td align="center">30 Jun 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/614">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/06/30/2024-htb-machine/26-Blazorized/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#37</td>
+<td align="center">PermX</td>
+<td align="center">Easy</td>
+<td align="center">06 Jul 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/613">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#13</td>
+<td align="center">Ghost</td>
+<td align="center">Insane</td>
+<td align="center">14 Jul 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/616">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/07/16/2024-htb-machine/28-Ghost/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#2</td>
+<td align="center">GreenHorn</td>
+<td align="center">Easy</td>
+<td align="center">20 Jul 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/617">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/07/27/2024-htb-machine/29-GreenHorn/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#27</td>
+<td align="center">Compiled</td>
+<td align="center">Medium</td>
+<td align="center">28 Jul 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/618">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/08/03/2024-htb-machine/30-Compiled/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#12</td>
+<td align="center">Resource</td>
+<td align="center">Medium</td>
+<td align="center">04 Aug 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/619">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/08/10/2024-htb-machine/31-Resource/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#36</td>
+<td align="center">Sea</td>
+<td align="center">Easy</td>
+<td align="center">10 Aug 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/620">鏈接</a></td>
+<td align="center">鏈接</td>
+</tr>
+<tr>
+<td align="center">#63</td>
+<td align="center">Solar</td>
+<td align="center">End Game</td>
+<td align="center">13 Aug 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/endgame/463126/7">鏈接</a></td>
+<td align="center">鏈接</td>
+</tr>
+</tbody></table>
+<p>好想變强 QAQ。</p>
+<p>‍</p>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

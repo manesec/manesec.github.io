@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前言由於自己製作的linux系統沒有apt源，我習慣用dpkg管理器（我真的不想用rpm，我知道有人會想安裝 debian-archive-keyring​ 來bypass掉apt的警告），但也無法使用debian的源。 這是因爲在編譯的時候使用另一個源來編譯軟件，編譯好的軟件製作成deb包本身就和debian官方源相差很多，而且系統裏面的程序都是通過源碼編譯的，如果使用debian源使用在dpk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="討論 Docker 的環境問題">
+<meta property="og:url" content="https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="前言由於自己製作的linux系統沒有apt源，我習慣用dpkg管理器（我真的不想用rpm，我知道有人會想安裝 debian-archive-keyring​ 來bypass掉apt的警告），但也無法使用debian的源。 這是因爲在編譯的時候使用另一個源來編譯軟件，編譯好的軟件製作成deb包本身就和debian官方源相差很多，而且系統裏面的程序都是通過源碼編譯的，如果使用debian源使用在dpk">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/06/29_docker/image-20230629123136-ojho6qu.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/06/29_docker/image-20230629123307-122ajpc.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/06/29_docker/image-20230629124804-sa800kx.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/06/29_docker/image-20230629120134-fld7wb2.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/06/29_docker/image-20230629120204-bwkx43t.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/06/29_docker/image-20230629120956-n0orknu.png">
+<meta property="article:published_time" content="2023-07-13T19:56:12.000Z">
+<meta property="article:modified_time" content="2023-07-13T21:27:32.001Z">
+<meta property="article:author" content="manesec">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.manesec.com/file/maneimg1/2023/06/29_docker/image-20230629123136-ojho6qu.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>討論 Docker 的環境問題</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2023/09/08/2023/2023-09-ipv6/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&text=討論 Docker 的環境問題"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&title=討論 Docker 的環境問題"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&is_video=false&description=討論 Docker 的環境問題"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=討論 Docker 的環境問題&body=Check out this article: https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&title=討論 Docker 的環境問題"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&title=討論 Docker 的環境問題"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&title=討論 Docker 的環境問題"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&title=討論 Docker 的環境問題"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&name=討論 Docker 的環境問題&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&t=討論 Docker 的環境問題"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.9rem;
+	   color: #00b4dd ;
+	}
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 .level-5 .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        討論 Docker 的環境問題
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-07-13T19:56:12.000Z" class="dt-published" itemprop="datePublished">2023-07-14</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/docker/" rel="tag">docker</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>由於自己製作的linux系統沒有apt源，我習慣用dpkg管理器（我真的不想用rpm，我知道有人會想安裝 <code>debian-archive-keyring</code>​ 來bypass掉apt的警告），但也無法使用debian的源。</p>
+<p>這是因爲在編譯的時候使用另一個源來編譯軟件，編譯好的軟件製作成deb包本身就和debian官方源相差很多，而且系統裏面的程序都是通過源碼編譯的，如果使用debian源使用在dpkg安裝的包時候會覆蓋掉一些配置文件，直接造成系統潰掉（因爲我也好奇可不可以使用官方源，所以我一個通宵都在它）</p>
+<p>換句話説就是說我製作的linux系統能跑，但是裏面的軟件需要自己編譯，所以我就在想可不可以製作一個docker環境，這樣可玩性就更多了。如果實在不行就用chroot安裝好了（但是這樣又回歸到了爲什麽不直接用debian系統的問題）。</p>
+<h2 id="内核配置參考"><a href="#内核配置參考" class="headerlink" title="内核配置參考"></a>内核配置參考</h2><p>首先<a target="_blank" rel="noopener" href="https://blog.hypriot.com/post/verify-kernel-container-compatibility/">參考這篇</a>，他大致會告訴正確的docker環境是怎樣的，起碼有一個大概的方向才知道如何去建立好環境。</p>
+<p>因爲ARM架構和X86架構有點區別，於是我用ubuntu和樹莓派在兩個環境下運行了 <code>check-config.sh</code>​，并且觀察他的輸出，如下。</p>
+<h3 id="正常版-X64-ubuntu-内核配置："><a href="#正常版-X64-ubuntu-内核配置：" class="headerlink" title="正常版 X64 ubuntu 内核配置："></a>正常版 X64 ubuntu 内核配置：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Generally Necessary:</span><br><span class="line">// 全部都是 <span class="built_in">enable</span>，省略掉了</span><br><span class="line"></span><br><span class="line">Optional Features:</span><br><span class="line">// ............ <span class="built_in">enable</span> ..............</span><br><span class="line">- CONFIG_MEMCG_SWAP: missing</span><br><span class="line">    (cgroup swap accounting is currently enabled)</span><br><span class="line"></span><br><span class="line">// ............ <span class="built_in">enable</span> ..............</span><br><span class="line">  - <span class="string">&quot;zfs&quot;</span>:</span><br><span class="line">    - /dev/zfs: present</span><br><span class="line">    - zfs <span class="built_in">command</span>: missing</span><br><span class="line">    - zpool <span class="built_in">command</span>: missing</span><br><span class="line"></span><br><span class="line">Limits:</span><br><span class="line">- /proc/sys/kernel/keys/root_maxkeys: 1000000</span><br></pre></td></tr></table></figure>
+
+<h3 id="ARM-樹莓派原生系統"><a href="#ARM-樹莓派原生系統" class="headerlink" title="ARM 樹莓派原生系統"></a>ARM 樹莓派原生系統</h3><p>手上的樹莓派可以執行docker，所以我就嘗試登錄ssh去拿内核配置（這是沒有魔改過原生的内核）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Generally Necessary:</span><br><span class="line">- cgroup hierarchy: cgroupv2</span><br><span class="line">  Controllers:</span><br><span class="line">  - cpu: available</span><br><span class="line">  - cpuset: available</span><br><span class="line">  - io: available</span><br><span class="line">  - memory: missing</span><br><span class="line">  - pids: available</span><br><span class="line">// ............ <span class="built_in">enable</span> ..............</span><br><span class="line"></span><br><span class="line">Optional Features:</span><br><span class="line">// ............ <span class="built_in">enable</span> ..............</span><br><span class="line">- CONFIG_MEMCG_SWAP: missing</span><br><span class="line">    (cgroup swap accounting is currently enabled)</span><br><span class="line">// ............ <span class="built_in">enable</span> ..............</span><br><span class="line">- CONFIG_CGROUP_HUGETLB: missing</span><br><span class="line">// ............ <span class="built_in">enable</span> ..............</span><br><span class="line">- CONFIG_SECURITY_SELINUX: missing</span><br><span class="line">// ............ <span class="built_in">enable</span> ..............</span><br><span class="line">- Network Drivers:</span><br><span class="line">  - <span class="string">&quot;overlay&quot;</span>:</span><br><span class="line">    - CONFIG_VXLAN: enabled (as module)</span><br><span class="line">    - CONFIG_BRIDGE_VLAN_FILTERING: missing</span><br><span class="line">// ............ <span class="built_in">enable</span> ..............</span><br><span class="line">  - <span class="string">&quot;zfs&quot;</span>:</span><br><span class="line">    - /dev/zfs: missing</span><br><span class="line">    - zfs <span class="built_in">command</span>: missing</span><br><span class="line">    - zpool <span class="built_in">command</span>: missing</span><br><span class="line"></span><br><span class="line">Limits:</span><br><span class="line">- /proc/sys/kernel/keys/root_maxkeys: 1000000</span><br></pre></td></tr></table></figure>
+
+<p>從樹莓派的配置中可以看到大部分還是enabled的，因爲樹莓派本身不是很注重安全，所以默認沒有開啓SELINUX也是合情合理。</p>
+<p>在樹莓派中的配置文件可以看到即使 <code>CONFIG_BRIDGE_VLAN_FILTERING</code>​ missing了也可以正常使用。</p>
+<h2 id="標準的内核編譯"><a href="#標準的内核編譯" class="headerlink" title="標準的内核編譯"></a>標準的内核編譯</h2><p>那麽我自己編譯的内核是怎樣的呢？？</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/06/29_docker/image-20230629123136-ojho6qu.png" alt="image">​</p>
+<p>可以看到默認的内核是不支持的，只是發行版默認編譯好了而已。</p>
+<p>也就是說如果運行自己製作的linux系統，就會一片通紅，因爲在編譯的時候，内核沒有正常開啓，所以就會導致docker跑不起來。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/06/29_docker/image-20230629123307-122ajpc.png" alt="image"></p>
+<p>要讓docker可以在編譯後的内核跑起來，首先導出當前内核的默認配置，然後參考 <a target="_blank" rel="noopener" href="https://github.com/lgirdk/meta-virtualization/blob/master/recipes-kernel/linux/linux-yocto">meta-virtualization</a> 整合所有cfg文件，寫個程序把他N變成Y或者M。</p>
+<p>有沒有比較方便的方法？ 有，其實可以直接引用 <code>meta-virtualization</code>​ 然後修改bblayout和local就可以了，但不是該文章討論之内。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/06/29_docker/image-20230629124804-sa800kx.png" alt="image">​</p>
+<p>再一次編譯内核等待30分鐘后，裝載所有的依賴包之後，重新檢查一次就會像下面一樣。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/06/29_docker/image-20230629120134-fld7wb2.png" alt="image">​</p>
+<p>即使我的内核不支持 <code>CONFIG_NETFILTER_XT_MATCH_IPVS</code>​，也可以順利的跑起來，看下圖。</p>
+<p>有人説 <code>menuconfig</code>​沒有該選項，編譯kernel之前加進去編譯後也可以用，再上圖編譯後的結果看來，并不行。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/06/29_docker/image-20230629120204-bwkx43t.png" alt="image"></p>
+<p>不過現在它可以正常的運行docker，雖然有些功能是有問題的，但是需要測試。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/06/29_docker/image-20230629120956-n0orknu.png" alt="image"> </p>
+<h2 id="結束"><a href="#結束" class="headerlink" title="結束"></a>結束</h2><p>我製作的linux版本有ARM和X64，X64已經測試過了，ARM的buildx還遇到一些麻煩，正在處理中。</p>
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4 .level-5 .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&text=討論 Docker 的環境問題"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&title=討論 Docker 的環境問題"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&is_video=false&description=討論 Docker 的環境問題"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=討論 Docker 的環境問題&body=Check out this article: https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&title=討論 Docker 的環境問題"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&title=討論 Docker 的環境問題"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&title=討論 Docker 的環境問題"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&title=討論 Docker 的環境問題"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&name=討論 Docker 的環境問題&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2023/07/14/2023/2023-kernel-and-docker/&t=討論 Docker 的環境問題"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

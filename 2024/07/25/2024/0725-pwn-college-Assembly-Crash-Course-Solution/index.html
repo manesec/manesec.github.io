@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="簡單的匯編復習。 Level 1 - Set a register Welcome to ASMLevel1  To interact with any level you will send raw bytes over stdin to this program.To efficiently solve these problems, first run it to see the chall">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pwn.College - Assembly Crash Course">
+<meta property="og:url" content="https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="簡單的匯編復習。 Level 1 - Set a register Welcome to ASMLevel1  To interact with any level you will send raw bytes over stdin to this program.To efficiently solve these problems, first run it to see the chall">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-assembly/image-20240724195312-18gce83.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-assembly/image-20240724200237-0q1765f.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-assembly/image-20240724222956-blyv85v.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-assembly/image-20240724223533-tka7iok.png">
+<meta property="article:published_time" content="2024-07-25T01:22:00.000Z">
+<meta property="article:modified_time" content="2024-07-27T08:50:31.250Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-assembly/image-20240724195312-18gce83.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Pwn.College - Assembly Crash Course</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/07/26/2024/0726-pwn-college-Debugging-Refresher/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/07/19/2024/0719-someone-copy/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&text=Pwn.College - Assembly Crash Course"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&title=Pwn.College - Assembly Crash Course"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&is_video=false&description=Pwn.College - Assembly Crash Course"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Pwn.College - Assembly Crash Course&body=Check out this article: https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&title=Pwn.College - Assembly Crash Course"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&title=Pwn.College - Assembly Crash Course"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&title=Pwn.College - Assembly Crash Course"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&title=Pwn.College - Assembly Crash Course"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&name=Pwn.College - Assembly Crash Course&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&t=Pwn.College - Assembly Crash Course"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.9rem;
+	   color: #00b4dd ;
+	}
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 .level-5 .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Pwn.College - Assembly Crash Course
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-07-25T01:22:00.000Z" class="dt-published" itemprop="datePublished">2024-07-25</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>簡單的匯編復習。</p>
+<h2 id="Level-1-Set-a-register"><a href="#Level-1-Set-a-register" class="headerlink" title="Level 1 - Set a register"></a>Level 1 - Set a register</h2><blockquote>
+<h1 id="Welcome-to-ASMLevel1"><a href="#Welcome-to-ASMLevel1" class="headerlink" title="Welcome to ASMLevel1  "></a>Welcome to ASMLevel1  </h1><p>To interact with any level you will send raw bytes over stdin to this program.<br>To efficiently solve these problems, first run it to see the challenge instructions.<br>Then craft, assemble, and pipe your bytes to this program.</p>
+<p>For instance, if you write your assembly code in the file asm.S, you can assemble that to an object file:<br>  as -o asm.o asm.S</p>
+<p>Note that if you want to use Intel syntax for x86 (which, of course, you do), you’ll need to add the following to the start of asm.S:<br>  .intel_syntax noprefix</p>
+<p>Then, you can copy the .text section (your code) to the file asm.bin:<br>  objcopy -O binary –only-section&#x3D;.text asm.o asm.bin</p>
+<p>And finally, send that to the challenge:<br>  cat .&#x2F;asm.bin | &#x2F;challenge&#x2F;run</p>
+<p>You can even run this as one command:<br>  as -o asm.o asm.S &amp;&amp; objcopy -O binary –only-section&#x3D;.text .&#x2F;asm.o .&#x2F;asm.bin &amp;&amp; cat .&#x2F;asm.bin | &#x2F;challenge&#x2F;run</p>
+<p>In this level you will be working with registers. You will be asked to modify<br>or read from registers.</p>
+<p>In this level you will work with registers! Please set the following:<br>  rdi &#x3D; 0x1337</p>
+</blockquote>
+<p>他告訴你把RDI的寄存器設置成 <code>0x1337</code>​：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line">		<span class="keyword">mov</span> <span class="built_in">rdi</span>, <span class="number">0x1337</span></span><br></pre></td></tr></table></figure>
+
+<p>運行后得到flag。</p>
+<h2 id="Level-2-Set-multiple-registers"><a href="#Level-2-Set-multiple-registers" class="headerlink" title="Level 2 - Set multiple registers"></a>Level 2 - Set multiple registers</h2><blockquote>
+<p>In this level you will work with multiple registers. Please set the following:<br>  rax &#x3D; 0x1337<br>  r12 &#x3D; 0xCAFED00D1337BEEF<br>  rsp &#x3D; 0x31337</p>
+</blockquote>
+<p>和上題一樣，只需要設置三個寄存器</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">intel_syntax noprefix</span><br><span class="line">        <span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">0x1337</span></span><br><span class="line">        <span class="keyword">mov</span> <span class="built_in">r12</span>, <span class="number">0xCAFED00D1337BEEF</span></span><br><span class="line">        <span class="keyword">mov</span> <span class="built_in">rsp</span>, <span class="number">0x31337</span></span><br></pre></td></tr></table></figure>
+
+<p>運行后得到flag。</p>
+<h2 id="Level-3-Addition"><a href="#Level-3-Addition" class="headerlink" title="Level 3 - Addition"></a>Level 3 - Addition</h2><blockquote>
+<p>We will now set some values in memory dynamically before each run. On each run<br>the values will change. This means you will need to do some type of formulaic<br>operation with registers. We will tell you which registers are set beforehand<br>and where you should put the result. In most cases, its rax.</p>
+<p>Many instructions exist in x86 that allow you to do all the normal<br>math operations on registers and memory.</p>
+<p>For shorthand, when we say A +&#x3D; B, it really means A &#x3D; A + B.</p>
+<p>Here are some useful instructions:<br>  add reg1, reg2       &lt;&#x3D;&gt;     reg1 +&#x3D; reg2<br>  sub reg1, reg2       &lt;&#x3D;&gt;     reg1 -&#x3D; reg2<br>  imul reg1, reg2      &lt;&#x3D;&gt;     reg1 *&#x3D; reg2</p>
+<p>div is more complicated and we will discuss it later.<br>Note: all ‘regX’ can be replaced by a constant or memory location</p>
+<p>Do the following:<br>  add 0x331337 to rdi</p>
+<p>We will now set the following in preparation for your code:<br>  rdi &#x3D; 0x984</p>
+</blockquote>
+<p>簡單的加法</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line">        <span class="keyword">add</span> <span class="built_in">rdi</span>, <span class="number">0x331337</span></span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h2 id="Level-4-Multiplication"><a href="#Level-4-Multiplication" class="headerlink" title="Level 4 - Multiplication"></a>Level 4 - Multiplication</h2><blockquote>
+<p>Using your new knowledge, please compute the following:<br>  f(x) &#x3D; mx + b, where:<br>    m &#x3D; rdi<br>    x &#x3D; rsi<br>    b &#x3D; rdx</p>
+<p>Place the result into rax.</p>
+<p>Note: there is an important difference between mul (unsigned<br>multiply) and imul (signed multiply) in terms of which<br>registers are used. Look at the documentation on these<br>instructions to see the difference.</p>
+<p>In this case, you will want to use imul.</p>
+<p>We will now set the following in preparation for your code:<br>  rdi &#x3D; 0x117a<br>  rsi &#x3D; 0x12c6<br>  rdx &#x3D; 0x18d3</p>
+</blockquote>
+<p>乘法運算，它提示使用 <code>imul</code>​，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-assembly/image-20240724195312-18gce83.png" alt="image">​</p>
+<p>根據上面的表格可以知道：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="comment">; 先做乘法 rsi = rsi * rdi</span></span><br><span class="line"><span class="keyword">imul</span> <span class="built_in">rsi</span>,<span class="built_in">rdi</span></span><br><span class="line"><span class="comment">; 清空 rax </span></span><br><span class="line"><span class="keyword">xor</span> <span class="built_in">rax</span>,<span class="built_in">rax</span></span><br><span class="line"><span class="comment">; rax = rdi + rdx</span></span><br><span class="line"><span class="keyword">add</span> <span class="built_in">rax</span>,<span class="built_in">rsi</span></span><br><span class="line"><span class="keyword">add</span> <span class="built_in">rax</span>,<span class="built_in">rdx</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-5-Division"><a href="#Level-5-Division" class="headerlink" title="Level 5 - Division"></a>Level 5 - Division</h2><blockquote>
+<p>Division in x86 is more special than in normal math. Math in here is<br>called integer math. This means every value is a whole number.</p>
+<p>As an example: 10 &#x2F; 3 &#x3D; 3 in integer math.</p>
+<p>Why?</p>
+<p>Because 3.33 is rounded down to an integer.</p>
+<p>The relevant instructions for this level are:<br>  mov rax, reg1; div reg2</p>
+<p>Note: div is a special instruction that can divide<br>a 128-bit dividend by a 64-bit divisor, while<br>storing both the quotient and the remainder, using only one register as an operand.</p>
+<p>How does this complex div instruction work and operate on a<br>128-bit dividend (which is twice as large as a register)?</p>
+<p>For the instruction: div reg, the following happens:<br>  rax &#x3D; rdx:rax &#x2F; reg<br>  rdx &#x3D; remainder</p>
+<p>rdx:rax means that rdx will be the upper 64-bits of<br>the 128-bit dividend and rax will be the lower 64-bits of the<br>128-bit dividend.</p>
+<p>You must be careful about what is in rdx and rax before you call div.</p>
+<p>Please compute the following:<br>  speed &#x3D; distance &#x2F; time, where:<br>    distance &#x3D; rdi<br>    time &#x3D; rsi<br>    speed &#x3D; rax</p>
+<p>Note that distance will be at most a 64-bit value, so rdx should be 0 when dividing.</p>
+</blockquote>
+<p>除法運算，翻一下手冊：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-assembly/image-20240724200237-0q1765f.png" alt="image">​</p>
+<p>他告訴你結果會放在rax，餘數會放在rdx，所以：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="comment">; rax = rdi</span></span><br><span class="line"><span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="built_in">rdi</span></span><br><span class="line"><span class="comment">; rax = rax / rsi</span></span><br><span class="line"><span class="keyword">idiv</span> <span class="built_in">rsi</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-6-Modulus"><a href="#Level-6-Modulus" class="headerlink" title="Level 6 - Modulus"></a>Level 6 - Modulus</h2><blockquote>
+<p>Modulo in assembly is another interesting concept!</p>
+<p>x86 allows you to get the remainder after a div operation.</p>
+<p>For instance: 10 &#x2F; 3 -&gt; remainder &#x3D; 1</p>
+<p>The remainder is the same as modulo, which is also called the “mod” operator.</p>
+<p>In most programming languages we refer to mod with the symbol ‘%’.</p>
+<p>Please compute the following:<br>  rdi % rsi</p>
+<p>Place the value in rax.</p>
+</blockquote>
+<p>和上面一樣，只不過現在要求餘數，正因爲餘數放在rdx，所以直接搬過去rax就好了。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="comment">; rax = rdi</span></span><br><span class="line"><span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="built_in">rdi</span></span><br><span class="line"><span class="comment">; rax = rax / rsi</span></span><br><span class="line"><span class="keyword">idiv</span> <span class="built_in">rsi</span></span><br><span class="line"><span class="comment">; 取出餘數 rdx, 把他放到 rax </span></span><br><span class="line"><span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="built_in">rdx</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-7-Register-sizes"><a href="#Level-7-Register-sizes" class="headerlink" title="Level 7 - Register sizes"></a>Level 7 - Register sizes</h2><blockquote>
+<p>Another cool concept in x86 is the ability to independently access to lower register bytes.</p>
+<p>Each register in x86_64 is 64 bits in size, and in the previous levels we have accessed<br>the full register using rax, rdi or rsi.</p>
+<p>We can also access the lower bytes of each register using different register names.</p>
+<p>For example the lower 32 bits of rax can be accessed using eax, the lower 16 bits using ax,<br>the lower 8 bits using al.</p>
+<p>MSB                                    LSB<br>+—————————————-+<br>|                   rax                  |<br>+——————–+——————-+<br>                     |        eax        |<br>                     +———+———+<br>                               |   ax    |<br>                               +—-+—-+<br>                               | ah | al |<br>                               +—-+—-+</p>
+<p>Lower register bytes access is applicable to almost all registers.</p>
+<p>Using only one move instruction, please set the upper 8 bits of the ax register to 0x42.</p>
+</blockquote>
+<p>寄存器大小，注意大小即可。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line">	<span class="keyword">mov</span> <span class="number">ah</span>,<span class="number">0x42</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-8-Register-sizes-for-modulus"><a href="#Level-8-Register-sizes-for-modulus" class="headerlink" title="Level 8 - Register sizes for modulus"></a>Level 8 - Register sizes for modulus</h2><blockquote>
+<p>It turns out that using the div operator to compute the modulo operation is slow!</p>
+<p>We can use a math trick to optimize the modulo operator (%). Compilers use this trick a lot.</p>
+<p>If we have “x % y”, and y is a power of 2, such as 2^n, the result will be the lower n bits of x.</p>
+<p>Therefore, we can use the lower register byte access to efficiently implement modulo!</p>
+<p>Using only the following instruction(s):<br>  mov</p>
+<p>Please compute the following:<br>  rax &#x3D; rdi % 256<br>  rbx &#x3D; rsi % 65536</p>
+</blockquote>
+<p>題目的意思是儅除數是2的N次方，直接拿走後面的一部分就好了。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-assembly/image-20240724222956-blyv85v.png" alt="image">​</p>
+<p>你可以看到餘數都是後面的那一半，所以不要前半部分就好了。</p>
+<p>不過注意對齊。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/07-pwn-college-assembly/image-20240724223533-tka7iok.png" alt="image">​</p>
+<p>答案：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="comment">; 清空 rax rbx</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">0</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rbx</span>, <span class="number">0</span></span><br><span class="line"><span class="comment">; 只要后半截，注意對其</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">al</span>, <span class="built_in">dil</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">bx</span>, <span class="built_in">si</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-9-Bitwise-shift"><a href="#Level-9-Bitwise-shift" class="headerlink" title="Level 9 - Bitwise shift"></a>Level 9 - Bitwise shift</h2><blockquote>
+<p>Shifting bits around in assembly is another interesting concept!</p>
+<p>x86 allows you to ‘shift’ bits around in a register.</p>
+<p>Take, for instance, al, the lowest 8 bits of rax.</p>
+<p>The value in al (in bits) is:<br>  rax &#x3D; 10001010</p>
+<p>If we shift once to the left using the shl instruction:<br>  shl al, 1</p>
+<p>The new value is:<br>  al &#x3D; 00010100</p>
+<p>Everything shifted to the left and the highest bit fell off<br>while a new 0 was added to the right side.</p>
+<p>You can use this to do special things to the bits you care about.</p>
+<p>Shifting has the nice side affect of doing quick multiplication (by 2)<br>or division (by 2), and can also be used to compute modulo.</p>
+<p>Here are the important instructions:<br>  shl reg1, reg2       &lt;&#x3D;&gt;     Shift reg1 left by the amount in reg2<br>  shr reg1, reg2       &lt;&#x3D;&gt;     Shift reg1 right by the amount in reg2<br>  Note: ‘reg2’ can be replaced by a constant or memory location</p>
+<p>Using only the following instructions:<br>  mov, shr, shl</p>
+<p>Please perform the following:<br>  Set rax to the 5th least significant byte of rdi.</p>
+<p>For example:<br>  rdi &#x3D; | B7 | B6 | B5 | B4 | B3 | B2 | B1 | B0 |<br>  Set rax to the value of B4</p>
+<p>We will now set the following in preparation for your code:<br>  rdi &#x3D; 0x5ae2cfa1ccf3cde9</p>
+</blockquote>
+<p>‍</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="comment">; 向左移動3個FF，兩個FF就是8bit，所以3*8 = 24</span></span><br><span class="line">	<span class="keyword">shl</span> <span class="built_in">rdi</span>,<span class="number">24</span></span><br><span class="line"><span class="comment">; 向右移動7個FF，所以是 7 * 8 = 56</span></span><br><span class="line">	<span class="keyword">shr</span> <span class="built_in">rdi</span>,<span class="number">56</span></span><br><span class="line"><span class="comment">; 最後把結果扔給rax</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="built_in">rdi</span></span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h2 id="Level-10-Bitwise-and"><a href="#Level-10-Bitwise-and" class="headerlink" title="Level 10 - Bitwise and"></a>Level 10 - Bitwise and</h2><blockquote>
+<p>Bitwise logic in assembly is yet another interesting concept!<br>x86 allows you to perform logic operations bit by bit on registers.</p>
+<p>For the sake of this example say registers only store 8 bits.</p>
+<p>The values in rax and rbx are:<br>  rax &#x3D; 10101010<br>  rbx &#x3D; 00110011</p>
+<p>If we were to perform a bitwise AND of rax and rbx using the<br>“and rax, rbx” instruction, the result would be calculated by<br>ANDing each bit pair 1 by 1 hence why it’s called a bitwise<br>logic.</p>
+<p>So from left to right:<br>  1 AND 0 &#x3D; 0<br>  0 AND 0 &#x3D; 0<br>  1 AND 1 &#x3D; 1<br>  0 AND 1 &#x3D; 0<br>  …</p>
+<p>Finally we combine the results together to get:<br>  rax &#x3D; 00100010</p>
+<p>Here are some truth tables for reference:<br>      AND          OR           XOR<br>   A | B | X    A | B | X    A | B | X<br>  —+—+—  —+—+—  —+—+—<br>   0 | 0 | 0    0 | 0 | 0    0 | 0 | 0<br>   0 | 1 | 0    0 | 1 | 1    0 | 1 | 1<br>   1 | 0 | 0    1 | 0 | 1    1 | 0 | 1<br>   1 | 1 | 1    1 | 1 | 1    1 | 1 | 0</p>
+<p>Without using the following instructions:<br>  mov, xchg</p>
+<p>Please perform the following:<br>  rax &#x3D; rdi AND rsi</p>
+<p>i.e. Set rax to the value of (rdi AND rsi)</p>
+<p>We will now set the following in preparation for your code:<br>  rdi &#x3D; 0x8468241e3d452cd7<br>  rsi &#x3D; 0x742a553c32634e10</p>
+</blockquote>
+<p>各種二進制運算，不允許用 mov 和 xchg。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="comment">; 先把結果存在 rdi中， rdi = rdi &amp;&amp; rsi</span></span><br><span class="line">	<span class="keyword">and</span> <span class="built_in">rdi</span>,<span class="built_in">rsi</span></span><br><span class="line"><span class="comment">; 清空 rax</span></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rax</span>,<span class="built_in">rax</span></span><br><span class="line"><span class="comment">; 現在 rax 是0，所以可以用 or 來賦值，變成 rax = rdi</span></span><br><span class="line">	<span class="keyword">or</span> <span class="built_in">rax</span>,<span class="built_in">rdi</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-11-Bitwise-logic"><a href="#Level-11-Bitwise-logic" class="headerlink" title="Level 11 - Bitwise logic"></a>Level 11 - Bitwise logic</h2><blockquote>
+<p>In this level you will be working with bit logic and operations. This will involve heavy use of<br>directly interacting with bits stored in a register or memory location. You will also likely<br>need to make use of the logic instructions in x86: and, or, not, xor.</p>
+<p>Using only the following instructions:<br>  and, or, xor</p>
+<p>Implement the following logic:<br>  if x is even then<br>    y &#x3D; 1<br>  else<br>    y &#x3D; 0</p>
+<p>where:<br>  x &#x3D; rdi<br>  y &#x3D; rax</p>
+<p>We will now set the following in preparation for your code:<br>  rdi &#x3D; 0x20634b47</p>
+</blockquote>
+<p>邏輯：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="comment">; 用and取rdi的最後一位，這是如果是1就是奇數，如果是0就是偶數。</span></span><br><span class="line">	<span class="keyword">and</span> <span class="built_in">rdi</span>, <span class="number">0x1</span></span><br><span class="line"><span class="comment">; 因爲偶數輸出1，所以使用xor翻轉最後的bit</span></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rdi</span>, <span class="number">0x1</span></span><br><span class="line"><span class="comment">; 清空rax</span></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rax</span>,<span class="built_in">rax</span></span><br><span class="line"><span class="comment">; 輸出結果</span></span><br><span class="line">	<span class="keyword">or</span> <span class="built_in">rax</span>,<span class="built_in">rdi</span></span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h2 id="Level-12-Memory-reads"><a href="#Level-12-Memory-reads" class="headerlink" title="Level 12 - Memory reads"></a>Level 12 - Memory reads</h2><blockquote>
+<p>Up until now you have worked with registers as the only way for storing things, essentially<br>variables such as ‘x’ in math.</p>
+<p>However, we can also store bytes into memory!</p>
+<p>Recall that memory can be addressed, and each address contains something at that location.</p>
+<p>Note that this is similar to addresses in real life!</p>
+<p>As an example: the real address ‘699 S Mill Ave, Tempe, AZ<br>85281’ maps to the ‘ASU Brickyard’.</p>
+<p>We would also say it points to ‘ASU Brickyard’.</p>
+<p>We can represent this like:<br>  [‘699 S Mill Ave, Tempe, AZ 85281’] &#x3D; ‘ASU Brickyard’</p>
+<p>The address is special because it is unique.</p>
+<p>But that also does not mean other addresses can’t point to the same thing (as someone can have multiple houses).</p>
+<p>Memory is exactly the same!</p>
+<p>For instance, the address in memory that your code is stored (when we take it from you) is 0x400000.</p>
+<p>In x86 we can access the thing at a memory location, called dereferencing, like so:<br>  mov rax, [some_address]        &lt;&#x3D;&gt;     Moves the thing at ‘some_address’ into rax</p>
+<p>This also works with things in registers:<br>  mov rax, [rdi]         &lt;&#x3D;&gt;     Moves the thing stored at the address of what rdi holds to rax</p>
+<p>This works the same for writing to memory:<br>  mov [rax], rdi         &lt;&#x3D;&gt;     Moves rdi to the address of what rax holds.</p>
+<p>So if rax was 0xdeadbeef, then rdi would get stored at the address 0xdeadbeef:<br>  [0xdeadbeef] &#x3D; rdi</p>
+<p>Note: memory is linear, and in x86_64, it goes from 0 - 0xffffffffffffffff (yes, huge).</p>
+<p>Please perform the following:<br>  Place the value stored at 0x404000 into rax</p>
+<p>Make sure the value in rax is the original value stored at 0x404000.</p>
+<p>We will now set the following in preparation for your code:<br>  [0x404000] &#x3D; 0x1a5bd5</p>
+</blockquote>
+<p>就簡單的讀取内存</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rax</span>, [<span class="number">0x404000</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-13-Memory-writes"><a href="#Level-13-Memory-writes" class="headerlink" title="Level 13 - Memory writes"></a>Level 13 - Memory writes</h2><blockquote>
+<p>Please perform the following:<br>  Place the value stored in rax to 0x404000</p>
+<p>We will now set the following in preparation for your code:<br>  rax &#x3D; 0x15c1e7</p>
+</blockquote>
+<p>寫入内存</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line">	<span class="keyword">mov</span> [<span class="number">0x404000</span>], <span class="built_in">rax</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-14-Memory-reads-and-writes"><a href="#Level-14-Memory-reads-and-writes" class="headerlink" title="Level 14 - Memory reads and writes"></a>Level 14 - Memory reads and writes</h2><blockquote>
+<p>Please perform the following:<br>  Place the value stored at 0x404000 into rax<br>  Increment the value stored at the address 0x404000 by 0x1337</p>
+<p>Make sure the value in rax is the original value stored at 0x404000 and make sure<br>that [0x404000] now has the incremented value.</p>
+<p>We will now set the following in preparation for your code:<br>  [0x404000] &#x3D; 0x10fa80</p>
+</blockquote>
+<p>内存讀寫</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="comment">; 從内存中讀取值，這是滿足題目第一個要求</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rax</span>, [<span class="number">0x404000</span>]</span><br><span class="line"><span class="comment">; 然後 rbx = rax + 1337</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rbx</span>, <span class="built_in">rax</span></span><br><span class="line">	<span class="keyword">add</span> <span class="built_in">rbx</span>, <span class="number">0x1337</span></span><br><span class="line"><span class="comment">; 寫回去那個地址</span></span><br><span class="line">	<span class="keyword">mov</span> [<span class="number">0x404000</span>],<span class="built_in">rbx</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-15-Read-one-size-data"><a href="#Level-15-Read-one-size-data" class="headerlink" title="Level 15 - Read one size data"></a>Level 15 - Read one size data</h2><blockquote>
+<p>We refer to something that is 64 bits (8 bytes) as a quad word.</p>
+<p>Here is the breakdown of the names of memory sizes:<br>  Quad Word   &#x3D; 8 Bytes &#x3D; 64 bits<br>  Double Word &#x3D; 4 bytes &#x3D; 32 bits<br>  Word        &#x3D; 2 bytes &#x3D; 16 bits<br>  Byte        &#x3D; 1 byte  &#x3D; 8 bits</p>
+<p>In x86_64, you can access each of these sizes when dereferencing an address, just like using<br>bigger or smaller register accesses:<br>  mov al, [address]        &lt;&#x3D;&gt;        moves the least significant byte from address to rax<br>  mov ax, [address]        &lt;&#x3D;&gt;        moves the least significant word from address to rax<br>  mov eax, [address]       &lt;&#x3D;&gt;        moves the least significant double word from address to rax<br>  mov rax, [address]       &lt;&#x3D;&gt;        moves the full quad word from address to rax</p>
+<p>Remember that moving into al does not fully clear the upper bytes.</p>
+<p>Please perform the following:<br>  Set rax to the byte at 0x404000</p>
+<p>We will now set the following in preparation for your code:<br>  [0x404000] &#x3D; 0x147fdc</p>
+</blockquote>
+<p>讀取大小，這個意思是取決於你讀取寄存器的大小。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rbx</span>, [<span class="number">0x404000</span>]</span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rax</span>, <span class="built_in">rax</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">al</span>, <span class="built_in">bl</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-16-Read-multiple-data-sizes"><a href="#Level-16-Read-multiple-data-sizes" class="headerlink" title="Level 16 - Read multiple data sizes"></a>Level 16 - Read multiple data sizes</h2><blockquote>
+<p>Please perform the following:<br>  Set rax to the byte at 0x404000<br>  Set rbx to the word at 0x404000<br>  Set rcx to the double word at 0x404000<br>  Set rdx to the quad word at 0x404000</p>
+<p>We will now set the following in preparation for your code:<br>  [0x404000] &#x3D; 0x83aa76d9a11cafd8</p>
+</blockquote>
+<p>和上題一樣，沒什麽特別的地方</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">al</span>, [<span class="number">0x404000</span>]</span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">bx</span>, [<span class="number">0x404000</span>]</span><br><span class="line"></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">ecx</span>, [<span class="number">0x404000</span>]</span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rdx</span>, [<span class="number">0x404000</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-17-Dynamic-address-memory-writes"><a href="#Level-17-Dynamic-address-memory-writes" class="headerlink" title="Level 17 - Dynamic address memory writes"></a>Level 17 - Dynamic address memory writes</h2><blockquote>
+<p>It is worth noting, as you may have noticed, that values are stored in reverse order of how we<br>represent them.</p>
+<p>As an example, say:<br>  [0x1330] &#x3D; 0x00000000deadc0de</p>
+<p>If you examined how it actually looked in memory, you would see:<br>  [0x1330] &#x3D; 0xde<br>  [0x1331] &#x3D; 0xc0<br>  [0x1332] &#x3D; 0xad<br>  [0x1333] &#x3D; 0xde<br>  [0x1334] &#x3D; 0x00<br>  [0x1335] &#x3D; 0x00<br>  [0x1336] &#x3D; 0x00<br>  [0x1337] &#x3D; 0x00</p>
+<p>This format of storing things in ‘reverse’ is intentional in x86, and its called “Little Endian”.</p>
+<p>For this challenge we will give you two addresses created dynamically each run.</p>
+<p>The first address will be placed in rdi.<br>The second will be placed in rsi.</p>
+<p>Using the earlier mentioned info, perform the following:<br>  Set [rdi] &#x3D; 0xdeadbeef00001337<br>  Set [rsi] &#x3D; 0xc0ffee0000</p>
+<p>Hint: it may require some tricks to assign a big constant to a dereferenced register.<br>Try setting a register to the constant value then assigning that register to the dereferenced register.</p>
+<p>We will now set the following in preparation for your code:<br>  [0x404498] &#x3D; 0xffffffffffffffff<br>  [0x404a30] &#x3D; 0xffffffffffffffff<br>  rdi &#x3D; 0x404498<br>  rsi &#x3D; 0x404a30</p>
+</blockquote>
+<p>動態内存讀寫：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">0xdeadbeef00001337</span></span><br><span class="line">	<span class="keyword">mov</span> [<span class="built_in">rdi</span>], <span class="built_in">rax</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">0xc0ffee0000</span></span><br><span class="line">	<span class="keyword">mov</span> [<span class="built_in">rsi</span>], <span class="built_in">rax</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-18-Consecutive-memory-reads"><a href="#Level-18-Consecutive-memory-reads" class="headerlink" title="Level 18 - Consecutive memory reads"></a>Level 18 - Consecutive memory reads</h2><blockquote>
+<p>Recall that memory is stored linearly.</p>
+<p>What does that mean?</p>
+<p>Say we access the quad word at 0x1337:<br>  [0x1337] &#x3D; 0x00000000deadbeef</p>
+<p>The real way memory is layed out is byte by byte, little endian:<br>  [0x1337] &#x3D; 0xef<br>  [0x1337 + 1] &#x3D; 0xbe<br>  [0x1337 + 2] &#x3D; 0xad<br>  …<br>  [0x1337 + 7] &#x3D; 0x00</p>
+<p>What does this do for us?</p>
+<p>Well, it means that we can access things next to each other using offsets,<br>similar to what was shown above.</p>
+<p>Say you want the 5th <em>byte</em> from an address, you can access it like:<br>  mov al, [address+4]</p>
+<p>Remember, offsets start at 0.</p>
+<p>Perform the following:<br>  Load two consecutive quad words from the address stored in rdi<br>  Calculate the sum of the previous steps quad words.<br>  Store the sum at the address in rsi</p>
+<p>We will now set the following in preparation for your code:<br>  [0x4041b8] &#x3D; 0x19e49<br>  [0x4041c0] &#x3D; 0xdf07e<br>  rdi &#x3D; 0x4041b8<br>  rsi &#x3D; 0x404790</p>
+</blockquote>
+<p>连续内存讀取。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="comment">; 清空 rax</span></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rax</span>,<span class="built_in">rax</span></span><br><span class="line"><span class="comment">; 從rdi裏面讀取2個4個FF，也就是32bits</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">eax</span>, [<span class="built_in">rdi</span>]</span><br><span class="line"><span class="comment">; 繼續讀取32bites，只不過offsec+8，然後加到eax</span></span><br><span class="line">	<span class="keyword">add</span> <span class="built_in">eax</span>, [<span class="built_in">rdi</span> + <span class="number">8</span>]</span><br><span class="line"><span class="comment">; 把答案寫入到rsi這個位置</span></span><br><span class="line">	<span class="keyword">mov</span> [<span class="built_in">rsi</span>], <span class="built_in">eax</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-19-The-stack"><a href="#Level-19-The-stack" class="headerlink" title="Level 19 - The stack"></a>Level 19 - The stack</h2><blockquote>
+<p>In these levels we are going to introduce the stack.</p>
+<p>The stack is a region of memory that can store values for later.</p>
+<p>To store a value on the stack we use the push instruction, and to retrieve a value we use pop.</p>
+<p>The stack is a last in first out (LIFO) memory structure, and this means<br>the last value pushed in the first value popped.</p>
+<p>Imagine unloading plates from the dishwasher let’s say there are 1 red, 1 green, and 1 blue.<br>First we place the red one in the cabinet, then the green on top of the red, then the blue.</p>
+<p>Our stack of plates would look like:<br>  Top —-&gt; Blue<br>            Green<br>  Bottom -&gt; Red</p>
+<p>Now, if we wanted a plate to make a sandwich we would retrieve the top plate from the stack<br>which would be the blue one that was last into the cabinet, ergo the first one out.</p>
+<p>On x86, the pop instruction will take the value from the top of the stack and put it into a register.</p>
+<p>Similarly, the push instruction will take the value in a register and push it onto the top of the stack.</p>
+<p>Using these instructions, take the top value of the stack, subtract rdi from it, then put it back.</p>
+<p>We will now set the following in preparation for your code:<br>  rdi &#x3D; 0x11b90<br>  (stack) [0x7fffff1ffff8] &#x3D; 0xc8542fd</p>
+</blockquote>
+<p>堆棧：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line">	<span class="keyword">pop</span> <span class="built_in">rax</span></span><br><span class="line">	<span class="keyword">sub</span> <span class="built_in">rax</span>,<span class="built_in">rdi</span></span><br><span class="line">	<span class="keyword">push</span> <span class="built_in">rax</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-20-Swap-register-values-with-the-stack"><a href="#Level-20-Swap-register-values-with-the-stack" class="headerlink" title="Level 20 - Swap register values with the stack"></a>Level 20 - Swap register values with the stack</h2><blockquote>
+<p>Using only following instructions:<br>  push, pop</p>
+<p>Swap values in rdi and rsi.<br>i.e.<br>If to start rdi &#x3D; 2 and rsi &#x3D; 5<br>Then to end rdi &#x3D; 5 and rsi &#x3D; 2</p>
+<p>We will now set the following in preparation for your code:<br>  rdi &#x3D; 0x239709c8<br>  rsi &#x3D; 0x1d2c1417</p>
+</blockquote>
+<p>也就是如何存取堆棧</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line">	<span class="keyword">push</span> <span class="built_in">rdi</span></span><br><span class="line">	<span class="keyword">push</span> <span class="built_in">rsi</span></span><br><span class="line">	<span class="keyword">pop</span> <span class="built_in">rdi</span></span><br><span class="line">	<span class="keyword">pop</span> <span class="built_in">rsi</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-21-Memory-reads-and-writes-with-the-stack"><a href="#Level-21-Memory-reads-and-writes-with-the-stack" class="headerlink" title="Level 21 - Memory reads and writes with the stack"></a>Level 21 - Memory reads and writes with the stack</h2><blockquote>
+<p>In the previous levels you used push and pop to store and load data from the stack.</p>
+<p>However you can also access the stack directly using the stack pointer.</p>
+<p>On x86, the stack pointer is stored in the special register, rsp.<br>rsp always stores the memory address of the top of the stack,<br>i.e. the memory address of the last value pushed.</p>
+<p>Similar to the memory levels, we can use [rsp] to access the value at the memory address in rsp.</p>
+<p>Without using pop, please calculate the average of 4 consecutive quad words stored on the stack.</p>
+<p>Push the average on the stack.</p>
+<p>Hint:<br>  RSP+0x?? Quad Word A<br>  RSP+0x?? Quad Word B<br>  RSP+0x?? Quad Word C<br>  RSP      Quad Word D</p>
+<p>We will now set the following in preparation for your code:<br>  (stack) [0x7fffff200000:0x7fffff1fffe0] &#x3D; [‘0x27f1a2dc’, ‘0x12b0ed50’, ‘0x262b5c56’, ‘0x36101f3a’] (list of things)</p>
+</blockquote>
+<p>從堆棧讀寫，題目是相加起來然後取平均數，不能用pop。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="comment">; 清空 rax</span></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rax</span>,<span class="built_in">rax</span></span><br><span class="line"><span class="comment">; 分別取出4個數，然後相加</span></span><br><span class="line">	<span class="keyword">add</span> <span class="built_in">rax</span>, [<span class="built_in">rsp</span>]</span><br><span class="line">	<span class="keyword">add</span> <span class="built_in">rax</span>, [<span class="built_in">rsp</span> + <span class="number">8</span>]</span><br><span class="line">	<span class="keyword">add</span> <span class="built_in">rax</span>, [<span class="built_in">rsp</span> + <span class="number">16</span>]</span><br><span class="line">	<span class="keyword">add</span> <span class="built_in">rax</span>, [<span class="built_in">rsp</span> + <span class="number">24</span>]</span><br><span class="line"><span class="comment">; 除以4</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rbx</span>,<span class="number">4</span></span><br><span class="line">	<span class="keyword">idiv</span> <span class="built_in">rbx</span></span><br><span class="line"><span class="comment">; 放進去數組</span></span><br><span class="line">	<span class="keyword">push</span> <span class="built_in">rax</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-22-Absolute-jump"><a href="#Level-22-Absolute-jump" class="headerlink" title="Level 22 - Absolute jump"></a>Level 22 - Absolute jump</h2><blockquote>
+<p>Earlier, you learned how to manipulate data in a pseudo-control way, but x86 gives us actual<br>instructions to manipulate control flow directly.</p>
+<p>There are two major ways to manipulate control flow:<br> through a jump;<br> through a call.</p>
+<p>In this level, you will work with jumps.</p>
+<p>There are two types of jumps:<br>  Unconditional jumps<br>  Conditional jumps</p>
+<p>Unconditional jumps always trigger and are not based on the results of earlier instructions.</p>
+<p>As you know, memory locations can store data and instructions.</p>
+<p>Your code will be stored at 0x400089 (this will change each run).</p>
+<p>For all jumps, there are three types:<br>  Relative jumps: jump + or - the next instruction.<br>  Absolute jumps: jump to a specific address.<br>  Indirect jumps: jump to the memory address specified in a register.</p>
+<p>In x86, absolute jumps (jump to a specific address) are accomplished by first putting the target address in a register reg, then doing jmp reg.</p>
+<p>In this level we will ask you to do an absolute jump.</p>
+<p>Perform the following:<br>  Jump to the absolute address 0x403000</p>
+<p>We will now set the following in preparation for your code:<br>  Loading your given code at: 0x400089</p>
+</blockquote>
+<p>jmp 不可以使用立即數，所以要放在一個寄存器中。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">0x403000</span></span><br><span class="line">	<span class="keyword">jmp</span> <span class="built_in">rax</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-23-Relative-jump"><a href="#Level-23-Relative-jump" class="headerlink" title="Level 23 - Relative jump"></a>Level 23 - Relative jump</h2><blockquote>
+<p>Recall that for all jumps, there are three types:<br>  Relative jumps<br>  Absolute jumps<br>  Indirect jumps</p>
+<p>In this level we will ask you to do a relative jump.</p>
+<p>You will need to fill space in your code with something to make this relative jump possible.</p>
+<p>We suggest using the <code>nop</code>​ instruction. It’s 1 byte long and very predictable.</p>
+<p>In fact, the as assembler that we’re using has a handy .rept directive that you can use to<br>repeat assembly instructions some number of times:<br>  <a target="_blank" rel="noopener" href="https://ftp.gnu.org/old-gnu/Manuals/gas-2.9.1/html_chapter/as_7.html">https://ftp.gnu.org/old-gnu/Manuals/gas-2.9.1/html_chapter/as_7.html</a></p>
+<p>Useful instructions for this level:<br>  jmp (reg1 | addr | offset) ; nop</p>
+<p>Hint: for the relative jump, lookup how to use <code>labels</code>​ in x86.</p>
+<p>Using the above knowledge, perform the following:<br>  Make the first instruction in your code a jmp<br>  Make that jmp a relative jump to 0x51 bytes from the current position<br>  At the code location where the relative jump will redirect control flow set rax to 0x1</p>
+<p>We will now set the following in preparation for your code:<br>  Loading your given code at: 0x4000e6</p>
+</blockquote>
+<p>題目要求跳轉到0x51后的位置，所以可以用psudo 代碼來 填寫 0x51 個nop。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">main:</span></span><br><span class="line">	<span class="keyword">jmp</span> mane</span><br><span class="line"><span class="meta">	.rept</span> <span class="number">0x51</span></span><br><span class="line">		<span class="keyword">nop</span></span><br><span class="line"><span class="meta">	.endr</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">mane:</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-24-Control-flow"><a href="#Level-24-Control-flow" class="headerlink" title="Level 24 - Control flow"></a>Level 24 - Control flow</h2><blockquote>
+<p>Now, we will combine the two prior levels and perform the following:<br>  Create a two jump trampoline:<br>    Make the first instruction in your code a jmp<br>    Make that jmp a relative jump to 0x51 bytes from its current position<br>    At 0x51 write the following code:<br>      Place the top value on the stack into register rdi<br>      jmp to the absolute address 0x403000</p>
+<p>We will now set the following in preparation for your code:<br>  Loading your given code at: 0x4000e5<br>  (stack) [0x7fffff1ffff8] &#x3D; 0xa2</p>
+</blockquote>
+<p>跳轉后再跳轉：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">main:</span></span><br><span class="line">	<span class="keyword">jmp</span> mane</span><br><span class="line"><span class="meta">	.rept</span> <span class="number">0x51</span></span><br><span class="line">		<span class="keyword">nop</span></span><br><span class="line"><span class="meta">	.endr</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">mane:</span></span><br><span class="line">	<span class="keyword">pop</span> <span class="built_in">rdi</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">0x403000</span></span><br><span class="line">	<span class="keyword">jmp</span> <span class="built_in">rax</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-25-Conditional-branches"><a href="#Level-25-Conditional-branches" class="headerlink" title="Level 25 - Conditional branches"></a>Level 25 - Conditional branches</h2><blockquote>
+<p>We will now introduce you to conditional jumps–one of the most valuable instructions in x86.<br>In higher level programming languages, an if-else structure exists to do things like:<br>  if x is even:<br>    is_even &#x3D; 1<br>  else:<br>   is_even &#x3D; 0</p>
+<p>This should look familiar, since it is implementable in only bit-logic, which you’ve done in a prior level.</p>
+<p>In these structures, we can control the program’s control flow based on dynamic values provided to the program.</p>
+<p>Implementing the above logic with jmps can be done like so:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">; assume rdi = x, rax is output</span><br><span class="line">; rdx = rdi mod 2</span><br><span class="line">mov rax, rdi</span><br><span class="line">mov rsi, 2</span><br><span class="line">div rsi</span><br><span class="line">; remainder is 0 if even</span><br><span class="line">cmp rdx, 0</span><br><span class="line">; jump to not_even code is its not 0</span><br><span class="line">jne not_even</span><br><span class="line">; fall through to even code</span><br><span class="line">mov rbx, 1</span><br><span class="line">jmp done</span><br><span class="line">; jump to this only when not_even</span><br><span class="line">not_even:</span><br><span class="line">mov rbx, 0</span><br><span class="line">done:</span><br><span class="line">mov rax, rbx</span><br><span class="line">; more instructions here</span><br></pre></td></tr></table></figure>
+
+<p>Often though, you want more than just a single ‘if-else’.</p>
+<p>Sometimes you want two if checks, followed by an else.</p>
+<p>To do this, you need to make sure that you have control flow that ‘falls-through’ to the next <code>if</code>​ after it fails.</p>
+<p>All must jump to the same <code>done</code>​ after execution to avoid the else.</p>
+<p>There are many jump types in x86, it will help to learn how they can be used.</p>
+<p>Nearly all of them rely on something called the ZF, the Zero Flag.</p>
+<p>The ZF is set to 1 when a cmp is equal. 0 otherwise.</p>
+<p>Using the above knowledge, implement the following:<br>  if [x] is 0x7f454c46:<br>    y &#x3D; [x+4] + [x+8] + [x+12]<br>  else if [x] is 0x00005A4D:<br>    y &#x3D; [x+4] - [x+8] - [x+12]<br>  else:<br>    y &#x3D; [x+4] * [x+8] * [x+12]</p>
+<p>where:<br>  x &#x3D; rdi, y &#x3D; rax.</p>
+<p>Assume each dereferenced value is a signed dword.<br>This means the values can start as a negative value at each memory position.</p>
+<p>A valid solution will use the following at least once:<br>  jmp (any variant), cmp</p>
+<p>We will now run multiple tests on your code, here is an example run:<br>  (data) [0x404000] &#x3D; {4 random dwords]}<br>  rdi &#x3D; 0x404000</p>
+</blockquote>
+<p>条件分支：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line"><span class="comment">; 養成任何計算之前要清空掉寄存器</span></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">ebp</span>,<span class="built_in">ebp</span></span><br><span class="line"><span class="comment">; ebp = 0x7f454c46， 注意這裏是32bit</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">ebp</span>, <span class="number">0x7f454c46</span></span><br><span class="line"><span class="comment">; If [rdi] == rbp : case1</span></span><br><span class="line">	<span class="keyword">cmp</span> [<span class="built_in">rdi</span>], <span class="built_in">ebp</span></span><br><span class="line">	<span class="keyword">je</span> case1</span><br><span class="line"><span class="comment">; else [rdi] == 0x00005A4D : case2</span></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">ebp</span>,<span class="built_in">ebp</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">ebp</span>, <span class="number">0x00005A4D</span></span><br><span class="line">	<span class="keyword">cmp</span> [<span class="built_in">rdi</span>], <span class="built_in">ebp</span></span><br><span class="line">	<span class="keyword">je</span> case2</span><br><span class="line"><span class="comment">; else : case3</span></span><br><span class="line">	<span class="keyword">jmp</span> case3</span><br><span class="line"></span><br><span class="line"><span class="comment">; If [x] = 0x7f454c46</span></span><br><span class="line"><span class="symbol">case1:</span></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rax</span>,<span class="built_in">rax</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">add</span> <span class="built_in">eax</span>,[<span class="built_in">rdi</span>+<span class="number">4</span>]</span><br><span class="line">	<span class="keyword">add</span> <span class="built_in">eax</span>,[<span class="built_in">rdi</span>+<span class="number">8</span>]</span><br><span class="line">	<span class="keyword">add</span> <span class="built_in">eax</span>,[<span class="built_in">rdi</span>+<span class="number">12</span>]</span><br><span class="line"></span><br><span class="line">	<span class="keyword">jmp</span> done</span><br><span class="line"></span><br><span class="line"><span class="comment">; If [x] = 0x00005A4D</span></span><br><span class="line"><span class="symbol">case2:</span></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rax</span>,<span class="built_in">rax</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">add</span> <span class="built_in">eax</span>,[<span class="built_in">rdi</span>+<span class="number">4</span>]</span><br><span class="line">	<span class="keyword">sub</span> <span class="built_in">eax</span>,[<span class="built_in">rdi</span>+<span class="number">8</span>]</span><br><span class="line">	<span class="keyword">sub</span> <span class="built_in">eax</span>,[<span class="built_in">rdi</span>+<span class="number">12</span>]</span><br><span class="line">	<span class="keyword">jmp</span> done</span><br><span class="line"></span><br><span class="line"><span class="comment">; finally</span></span><br><span class="line"><span class="symbol">case3:</span></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rax</span>,<span class="built_in">rax</span></span><br><span class="line">	<span class="keyword">add</span> <span class="built_in">eax</span>,[<span class="built_in">rdi</span>+<span class="number">4</span>]</span><br><span class="line">	<span class="keyword">imul</span> <span class="built_in">eax</span>,[<span class="built_in">rdi</span>+<span class="number">8</span>]</span><br><span class="line">	<span class="keyword">imul</span> <span class="built_in">eax</span>,[<span class="built_in">rdi</span>+<span class="number">12</span>]</span><br><span class="line">	<span class="keyword">jmp</span> done</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">	<span class="keyword">nop</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-26-Jump-tables"><a href="#Level-26-Jump-tables" class="headerlink" title="Level 26 - Jump tables"></a>Level 26 - Jump tables</h2><blockquote>
+<p>‍</p>
+<p>The last jump type is the indirect jump, which is often used for switch statements in the real world.</p>
+<p>Switch statements are a special case of if-statements that use only numbers to determine where the control flow will go.</p>
+<p>Here is an example:<br>  switch(number):<br>    0: jmp do_thing_0<br>    1: jmp do_thing_1<br>    2: jmp do_thing_2<br>    default: jmp do_default_thing</p>
+<p>The switch in this example is working on <code>number</code>​, which can either be 0, 1, or 2.</p>
+<p>In the case that <code>number</code>​ is not one of those numbers, the default triggers.</p>
+<p>You can consider this a reduced else-if type structure.</p>
+<p>In x86, you are already used to using numbers, so it should be no suprise that you can make if statements based on something being an exact number.</p>
+<p>In addition, if you know the range of the numbers, a switch statement works very well.</p>
+<p>Take for instance the existence of a jump table.</p>
+<p>A jump table is a contiguous section of memory that holds addresses of places to jump.</p>
+<p>In the above example, the jump table could look like:<br>  [0x1337] &#x3D; address of do_thing_0<br>  [0x1337+0x8] &#x3D; address of do_thing_1<br>  [0x1337+0x10] &#x3D; address of do_thing_2<br>  [0x1337+0x18] &#x3D; address of do_default_thing</p>
+<p>Using the jump table, we can greatly reduce the amount of cmps we use.</p>
+<p>Now all we need to check is if <code>number</code>​ is greater than 2.</p>
+<p>If it is, always do:<br>  jmp [0x1337+0x18]<br>Otherwise:<br>  jmp [jump_table_address + number * 8]</p>
+<p>Using the above knowledge, implement the following logic:<br>  if rdi is 0:<br>    jmp 0x40303b<br>  else if rdi is 1:<br>    jmp 0x4030ff<br>  else if rdi is 2:<br>    jmp 0x4031ee<br>  else if rdi is 3:<br>    jmp 0x403265<br>  else:<br>    jmp 0x403331</p>
+<p>Please do the above with the following constraints:<br>  Assume rdi will NOT be negative<br>  Use no more than 1 cmp instruction<br>  Use no more than 3 jumps (of any variant)<br>  We will provide you with the number to ‘switch’ on in rdi.<br>  We will provide you with a jump table base address in rsi.</p>
+<p>Here is an example table:<br>  [0x404048] &#x3D; 0x40303b (addrs will change)<br>  [0x404050] &#x3D; 0x4030ff<br>  [0x404058] &#x3D; 0x4031ee<br>  [0x404060] &#x3D; 0x403265<br>  [0x404068] &#x3D; 0x403331</p>
+</blockquote>
+<p>跳轉表：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">	<span class="comment">; 如果 rdi &gt; 4</span></span><br><span class="line">	<span class="keyword">cmp</span> <span class="built_in">rdi</span>,<span class="number">4</span></span><br><span class="line">	<span class="comment">; 跳轉到 biggerThan4， [rsi+32] 的位寬不符合 jg，所以需要跳轉出去，做一個簡單的中轉。</span></span><br><span class="line">	<span class="keyword">jg</span> biggerThan4</span><br><span class="line">	<span class="comment">; 否則 rax = rdi * 8 </span></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rax</span>,<span class="built_in">rax</span></span><br><span class="line">	<span class="keyword">imul</span> <span class="built_in">rdi</span>,<span class="number">0x8</span></span><br><span class="line">	<span class="keyword">add</span> <span class="built_in">rax</span>,<span class="built_in">rdi</span></span><br><span class="line">	<span class="comment">; 跳轉到 [rsi + rax]</span></span><br><span class="line">	<span class="keyword">jmp</span> [<span class="built_in">rsi</span>+<span class="built_in">rax</span>]</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">biggerThan4:</span></span><br><span class="line">	<span class="keyword">jmp</span> [<span class="built_in">rsi</span>+<span class="number">32</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-27-Computing-averages"><a href="#Level-27-Computing-averages" class="headerlink" title="Level 27 - Computing averages"></a>Level 27 - Computing averages</h2><blockquote>
+<p>In a previous level you computed the average of 4 integer quad words, which<br>was a fixed amount of things to compute, but how do you work with sizes you get when<br>the program is running?</p>
+<p>In most programming languages a structure exists called the<br>for-loop, which allows you to do a set of instructions for a bounded amount of times.<br>The bounded amount can be either known before or during the programs run, during meaning<br>the value is given to you dynamically.</p>
+<p>As an example, a for-loop can be used to compute the sum of the numbers 1 to n:<br>  sum &#x3D; 0<br>  i &#x3D; 1<br>  while i &lt;&#x3D; n:<br>    sum +&#x3D; i<br>    i +&#x3D; 1</p>
+<p>Please compute the average of n consecutive quad words, where:<br>  rdi &#x3D; memory address of the 1st quad word<br>  rsi &#x3D; n (amount to loop for)<br>  rax &#x3D; average computed</p>
+<p>We will now set the following in preparation for your code:<br>  [0x404190:0x404418] &#x3D; {n qwords]}<br>  rdi &#x3D; 0x404190<br>  rsi &#x3D; 81</p>
+</blockquote>
+<p>計算平均數：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">	# 用來放所有加起來的總和</span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rbx</span>,<span class="built_in">rbx</span></span><br><span class="line">	# 用來放循環的變量，從 <span class="number">0</span> 開始</span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rcx</span>,<span class="built_in">rcx</span> </span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">gotoWhile:</span></span><br><span class="line">	# 如果 <span class="built_in">rcx</span> == <span class="built_in">rsi</span> </span><br><span class="line">	<span class="keyword">cmp</span> <span class="built_in">rcx</span>,<span class="built_in">rsi</span></span><br><span class="line"></span><br><span class="line">	# 那就退出循環</span><br><span class="line">	<span class="keyword">je</span> done </span><br><span class="line"></span><br><span class="line">	# 否則計算相對地阯</span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rax</span>,<span class="built_in">rax</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="built_in">rcx</span></span><br><span class="line">	<span class="keyword">imul</span> <span class="built_in">rax</span>,<span class="number">0x8</span> </span><br><span class="line"></span><br><span class="line">	# 然後提取數值加入到<span class="built_in">rbx</span>中</span><br><span class="line">	<span class="keyword">add</span> <span class="built_in">rbx</span>,[<span class="built_in">rdi</span> + <span class="built_in">rax</span>]</span><br><span class="line"></span><br><span class="line">	# 循環變量 + <span class="number">1</span></span><br><span class="line">	<span class="keyword">add</span> <span class="built_in">rcx</span>,<span class="number">1</span></span><br><span class="line">	<span class="keyword">jmp</span> gotoWhile</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">	# 然後做一個除法就好了</span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rax</span>,<span class="built_in">rax</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="built_in">rbx</span></span><br><span class="line">	<span class="keyword">idiv</span> <span class="built_in">rsi</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-28-Implementing-strlen"><a href="#Level-28-Implementing-strlen" class="headerlink" title="Level 28 - Implementing strlen"></a>Level 28 - Implementing strlen</h2><blockquote>
+<p>In previous levels you discovered the for-loop to iterate for a <em>number</em> of times, both dynamically and<br>statically known, but what happens when you want to iterate until you meet a condition?</p>
+<p>A second loop structure exists called the while-loop to fill this demand.</p>
+<p>In the while-loop you iterate until a condition is met.</p>
+<p>As an example, say we had a location in memory with adjacent numbers and we wanted<br>to get the average of all the numbers until we find one bigger or equal to 0xff:<br>  average &#x3D; 0<br>  i &#x3D; 0<br>  while x[i] &lt; 0xff:<br>    average +&#x3D; x[i]<br>    i +&#x3D; 1<br>  average &#x2F;&#x3D; i</p>
+<p>Using the above knowledge, please perform the following:<br>  Count the consecutive non-zero bytes in a contiguous region of memory, where:<br>    rdi &#x3D; memory address of the 1st byte<br>    rax &#x3D; number of consecutive non-zero bytes</p>
+<p>Additionally, if rdi &#x3D; 0, then set rax &#x3D; 0 (we will check)!</p>
+<p>An example test-case, let:<br>  rdi &#x3D; 0x1000<br>  [0x1000] &#x3D; 0x41<br>  [0x1001] &#x3D; 0x42<br>  [0x1002] &#x3D; 0x43<br>  [0x1003] &#x3D; 0x00</p>
+<p>then: rax &#x3D; 3 should be set</p>
+<p>We will now run multiple tests on your code, here is an example run:<br>  (data) [0x404000] &#x3D; {10 random bytes},<br>  rdi &#x3D; 0x404000</p>
+</blockquote>
+<p>這道題的意思是判斷輸入的字符有多長，在C語言裏面，每一句話的結尾都會 0x00 ，所以就判斷是否是 0x00，這道題很坑爹的地方就是 rdi 會在0的地方，所以可以用test &#x2F; cmp 來避過。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">	# count</span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rcx</span>,<span class="built_in">rcx</span></span><br><span class="line">	# （坑爹的地方）跳過 <span class="built_in">rdi</span> = <span class="number">0</span>，可以換成 <span class="keyword">cmp</span> <span class="built_in">rdi</span>,<span class="number">0</span></span><br><span class="line">	<span class="keyword">cmp</span> <span class="built_in">rdi</span>, <span class="number">0</span></span><br><span class="line">	<span class="keyword">jz</span> done</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">loop:</span></span><br><span class="line">	# 獲取 <span class="number">8</span> 個 bit </span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">bl</span>, [<span class="built_in">rdi</span> + <span class="built_in">rcx</span>]</span><br><span class="line"></span><br><span class="line">	# 如果獲取的是 <span class="number">0x0</span> 就結束</span><br><span class="line">	<span class="keyword">cmp</span> <span class="built_in">bl</span>,<span class="number">0</span></span><br><span class="line">	<span class="keyword">jz</span> done</span><br><span class="line"></span><br><span class="line">	<span class="keyword">add</span> <span class="built_in">rcx</span>,<span class="number">1</span></span><br><span class="line">	<span class="keyword">jmp</span> <span class="keyword">loop</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">	# 統計循環了多少次，也就是幾個字符是正確的。</span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="built_in">rcx</span></span><br><span class="line">	<span class="keyword">nop</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-29-Using-library-functions"><a href="#Level-29-Using-library-functions" class="headerlink" title="Level 29 - Using library functions"></a>Level 29 - Using library functions</h2><blockquote>
+<p>In previous levels you implemented a while loop to count the number of<br>consecutive non-zero bytes in a contiguous region of memory.</p>
+<p>In this level you will be provided with a contiguous region of memory again and will loop<br>over each performing a conditional operation till a zero byte is reached.<br>All of which will be contained in a function!</p>
+<p>A function is a callable segment of code that does not destroy control flow.</p>
+<p>Functions use the instructions “call” and “ret”.</p>
+<p>The “call” instruction pushes the memory address of the next instruction onto<br>the stack and then jumps to the value stored in the first argument.</p>
+<p>Let’s use the following instructions as an example:<br>  0x1021 mov rax, 0x400000<br>  0x1028 call rax<br>  0x102a mov [rsi], rax</p>
+<ol>
+<li>call pushes 0x102a, the address of the next instruction, onto the stack.</li>
+<li>call jumps to 0x400000, the value stored in rax.</li>
+</ol>
+<p>The “ret” instruction is the opposite of “call”.</p>
+<p>ret pops the top value off of the stack and jumps to it.</p>
+<p>Let’s use the following instructions and stack as an example:</p>
+<pre><code>                          Stack ADDR  VALUE  
+</code></pre>
+<p>  0x103f mov rax, rdx         RSP + 0x8   0xdeadbeef<br>  0x1042 ret                  RSP + 0x0   0x0000102a</p>
+<p>Here, ret will jump to 0x102a</p>
+<p>Please implement the following logic:<br>  str_lower(src_addr):<br>    i &#x3D; 0<br>    if src_addr !&#x3D; 0:<br>      while [src_addr] !&#x3D; 0x00:<br>        if [src_addr] &lt;&#x3D; 0x5a:<br>          [src_addr] &#x3D; foo([src_addr])<br>          i +&#x3D; 1<br>        src_addr +&#x3D; 1<br>    return i</p>
+<p>foo is provided at 0x403000.<br>foo takes a single argument as a value and returns a value.</p>
+<p>All functions (foo and str_lower) must follow the Linux amd64 calling convention (also known as System V AMD64 ABI):<br>  <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/X86_calling_conventions#System_V_AMD64_ABI">https://en.wikipedia.org/wiki/X86_calling_conventions#System_V_AMD64_ABI</a></p>
+<p>Therefore, your function str_lower should look for src_addr in rdi and place the function return in rax.</p>
+<p>An important note is that src_addr is an address in memory (where the string is located) and [src_addr] refers to the byte that exists at src_addr.</p>
+<p>Therefore, the function foo accepts a byte as its first argument and returns a byte.</p>
+<p>We will now run multiple tests on your code, here is an example run:<br>  (data) [0x404000] &#x3D; {10 random bytes},<br>  rdi &#x3D; 0x404000</p>
+</blockquote>
+<p>模擬使用库函数，這裏有個坑，就是模擬庫函數需要ret。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">_start:</span></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rcx</span>,<span class="built_in">rcx</span></span><br><span class="line"></span><br><span class="line">	# Pointer</span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rdx</span>,<span class="built_in">rdx</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rdx</span>, <span class="built_in">rdi</span></span><br><span class="line"></span><br><span class="line">	# if src_addr = <span class="number">0</span> : done</span><br><span class="line">	<span class="keyword">test</span> <span class="built_in">rdi</span>,<span class="built_in">rdi</span></span><br><span class="line">	<span class="keyword">jz</span> done</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">loop:</span></span><br><span class="line">	# if [pointer] = <span class="number">0x0</span> : done</span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">bl</span>,[<span class="built_in">rdx</span>]</span><br><span class="line">	<span class="keyword">test</span> <span class="built_in">bl</span>,<span class="built_in">bl</span></span><br><span class="line">	<span class="keyword">jz</span> done</span><br><span class="line"></span><br><span class="line">	# if [pointer] &lt; <span class="number">0x5a</span> : continue</span><br><span class="line">	<span class="keyword">cmp</span> <span class="built_in">bl</span>,<span class="number">0x5a</span></span><br><span class="line">	<span class="keyword">jg</span> continue</span><br><span class="line"></span><br><span class="line">	# <span class="keyword">call</span> foo([pointer])</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="number">0x403000</span></span><br><span class="line">    <span class="keyword">xor</span> <span class="built_in">rdi</span>, <span class="built_in">rdi</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">dil</span>, <span class="built_in">bl</span></span><br><span class="line">    <span class="keyword">call</span> <span class="built_in">rax</span></span><br><span class="line">    <span class="keyword">mov</span> [<span class="built_in">rdx</span>], <span class="built_in">al</span></span><br><span class="line">	<span class="keyword">inc</span> <span class="built_in">rcx</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">continue:</span></span><br><span class="line">	<span class="keyword">inc</span> <span class="built_in">rdx</span></span><br><span class="line">	<span class="keyword">jmp</span> <span class="keyword">loop</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rax</span>,<span class="built_in">rcx</span></span><br><span class="line">	<span class="keyword">ret</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Level-30-Compute-the-most-common-byte"><a href="#Level-30-Compute-the-most-common-byte" class="headerlink" title="Level 30 - Compute the most common byte"></a>Level 30 - Compute the most common byte</h2><blockquote>
+<p>In the previous level, you learned how to make your first function and how to call other functions.</p>
+<p>Now we will work with functions that have a function stack frame.</p>
+<p>A function stack frame is a set of pointers and values pushed onto the stack to save things for later use and allocate space on the stack for function variables.</p>
+<p>First, let’s talk about the special register rbp, the Stack Base Pointer.</p>
+<p>The rbp register is used to tell where our stack frame first started.</p>
+<p>As an example, say we want to construct some list (a contigous space of memory) that is only used in our function.</p>
+<p>The list is 5 elements long, and each element is a dword.</p>
+<p>A list of 5 elements would already take 5 registers, so instead, we can make space on the stack!</p>
+<p>The assembly would look like:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">; setup the base of the stack as the current top</span><br><span class="line">mov rbp, rsp</span><br><span class="line">; move the stack 0x14 bytes (5 * 4) down</span><br><span class="line">; acts as an allocation</span><br><span class="line">sub rsp, 0x14</span><br><span class="line">; assign list[2] = 1337</span><br><span class="line">mov eax, 1337</span><br><span class="line">mov [rbp-0x8], eax</span><br><span class="line">; do more operations on the list ...</span><br><span class="line">; restore the allocated space</span><br><span class="line">mov rsp, rbp</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+
+<p>Notice how rbp is always used to restore the stack to where it originally was.</p>
+<p>If we don’t restore the stack after use, we will eventually run out.</p>
+<p>In addition, notice how we subtracted from rsp, because the stack grows down.</p>
+<p>To make the stack have more space, we subtract the space we need.</p>
+<p>The ret and call still works the same.</p>
+<p>Once, again, please make function(s) that implements the following:<br>most_common_byte(src_addr, size):<br>  i &#x3D; 0<br>  while i &lt;&#x3D; size-1:<br>    curr_byte &#x3D; [src_addr + i]<br>    [stack_base - curr_byte] +&#x3D; 1<br>    i +&#x3D; 1</p>
+<p>  b &#x3D; 0<br>  max_freq &#x3D; 0<br>  max_freq_byte &#x3D; 0<br>  while b &lt;&#x3D; 0xff:<br>    if [stack_base - b] &gt; max_freq:<br>      max_freq &#x3D; [stack_base - b]<br>      max_freq_byte &#x3D; b<br>    b +&#x3D; 1</p>
+<p>  return max_freq_byte</p>
+<p>Assumptions:<br>  There will never be more than 0xffff of any byte<br>  The size will never be longer than 0xffff<br>  The list will have at least one element<br>Constraints:<br>  You must put the “counting list” on the stack<br>  You must restore the stack like in a normal function<br>  You cannot modify the data at src_addr</p>
+</blockquote>
+<p>看了一下題目，是統計字符串哪種字符最多。</p>
+<p>第一遍可以統計所有的字符，第二遍在通過第一遍統計的字符找出最大值。</p>
+<p>我可以在第一遍的時候申請 0xFF 個數組，然後出現一次 +1。</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">.intel_syntax</span> noprefix</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">start:</span></span><br><span class="line">	<span class="keyword">push</span> <span class="built_in">rbp</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rbp</span>, <span class="built_in">rsp</span></span><br><span class="line"></span><br><span class="line">	# assign stack size</span><br><span class="line">	<span class="keyword">sub</span> <span class="built_in">rsp</span>, <span class="number">0xFFFF</span></span><br><span class="line"></span><br><span class="line">	# size - <span class="number">1</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rdx</span>, <span class="built_in">rsi</span></span><br><span class="line">	<span class="keyword">sub</span> <span class="built_in">rdx</span>, <span class="number">0x1</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rcx</span>, <span class="built_in">rcx</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">scanChars:</span> </span><br><span class="line">    <span class="keyword">cmp</span> <span class="built_in">rcx</span>, <span class="built_in">rdx</span></span><br><span class="line">    <span class="keyword">jg</span> finishScanChars</span><br><span class="line"></span><br><span class="line">	# get char from input</span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rax</span>,<span class="built_in">rax</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">al</span>, [<span class="built_in">rdi</span> + <span class="built_in">rcx</span>]</span><br><span class="line"></span><br><span class="line">	# Count <span class="keyword">and</span> <span class="keyword">add</span> char <span class="keyword">in</span> stack</span><br><span class="line">	# <span class="built_in">ebp</span> = <span class="built_in">r8</span> = <span class="built_in">r8</span> - <span class="built_in">rax</span> * <span class="number">4</span> </span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">r8</span>, <span class="built_in">rbp</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">r9</span>, <span class="built_in">rax</span></span><br><span class="line">    <span class="keyword">imul</span> <span class="built_in">r9</span>, <span class="number">4</span></span><br><span class="line">    <span class="keyword">sub</span> <span class="built_in">r8</span>, <span class="built_in">r9</span></span><br><span class="line"></span><br><span class="line">	# [someChar] += <span class="number">1</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">ebx</span>, [<span class="built_in">r8</span>]</span><br><span class="line">    <span class="keyword">add</span> <span class="built_in">ebx</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">mov</span> [<span class="built_in">r8</span>], <span class="built_in">ebx</span></span><br><span class="line"></span><br><span class="line">	# move to next char</span><br><span class="line">    <span class="keyword">add</span> <span class="built_in">rcx</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">jmp</span> scanChars</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">finishScanChars:</span></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rax</span>, <span class="built_in">rax</span></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rbx</span>, <span class="built_in">rbx</span></span><br><span class="line">	<span class="keyword">xor</span> <span class="built_in">rcx</span>, <span class="built_in">rcx</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">findMaxFreq:</span></span><br><span class="line">	# if <span class="built_in">rcx</span> = <span class="number">0xff</span> : done</span><br><span class="line">    <span class="keyword">cmp</span> <span class="built_in">rcx</span>, <span class="number">0xff</span></span><br><span class="line">    <span class="keyword">jg</span> done</span><br><span class="line"></span><br><span class="line">	# Scan the stack</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">r8</span>, <span class="built_in">rbp</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">r9</span>, <span class="built_in">rcx</span></span><br><span class="line">    <span class="keyword">imul</span> <span class="built_in">r9</span>, <span class="number">4</span></span><br><span class="line">    <span class="keyword">sub</span> <span class="built_in">r8</span>, <span class="built_in">r9</span></span><br><span class="line"></span><br><span class="line">	# <span class="built_in">ebx</span> = count([someChar])</span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">edx</span>, [<span class="built_in">r8</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">cmp</span> <span class="built_in">edx</span>, <span class="built_in">ebx</span></span><br><span class="line">	<span class="keyword">jg</span> getMaxResult</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">getMaxResultReturn:</span></span><br><span class="line">    <span class="keyword">add</span> <span class="built_in">rcx</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">jmp</span> findMaxFreq</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">getMaxResult:</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rbx</span>, <span class="built_in">rdx</span></span><br><span class="line">    <span class="keyword">mov</span> <span class="built_in">rax</span>, <span class="built_in">rcx</span></span><br><span class="line">	<span class="keyword">jmp</span> getMaxResultReturn</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">done:</span></span><br><span class="line">	<span class="keyword">mov</span> <span class="built_in">rsp</span>, <span class="built_in">rbp</span></span><br><span class="line">	<span class="keyword">pop</span> <span class="built_in">rbp</span></span><br><span class="line">	<span class="keyword">ret</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="做完了，可惜沒有獎勵。"><a href="#做完了，可惜沒有獎勵。" class="headerlink" title="做完了，可惜沒有獎勵。"></a><del>做完了，可惜沒有獎勵。</del></h2><p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4 .level-5 .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&text=Pwn.College - Assembly Crash Course"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&title=Pwn.College - Assembly Crash Course"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&is_video=false&description=Pwn.College - Assembly Crash Course"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Pwn.College - Assembly Crash Course&body=Check out this article: https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&title=Pwn.College - Assembly Crash Course"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&title=Pwn.College - Assembly Crash Course"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&title=Pwn.College - Assembly Crash Course"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&title=Pwn.College - Assembly Crash Course"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&name=Pwn.College - Assembly Crash Course&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/07/25/2024/0725-pwn-college-Assembly-Crash-Course-Solution/&t=Pwn.College - Assembly Crash Course"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>
