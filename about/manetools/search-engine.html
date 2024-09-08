@@ -75,8 +75,8 @@
 <meta property="og:site_name" content="Mane">
 <meta property="og:description" content=":root, .mdui-theme-light ,.mdui-theme-dark {       color: #000 !important;;        background-color: #fff !important;;     }           .center {         margin: auto; position: relative; top:">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-08-29T22:54:13.780Z">
-<meta property="article:modified_time" content="2024-08-28T10:36:00.073Z">
+<meta property="article:published_time" content="2024-09-08T14:12:31.792Z">
+<meta property="article:modified_time" content="2024-09-08T14:12:31.792Z">
 <meta property="article:author" content="manesec">
 <meta name="twitter:card" content="summary">
     
@@ -295,6 +295,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         })
         
     }
+
+
+    function checkURLHash() {
+        if (window.location.hash.trim() != "" ){
+            var splitData = window.location.hash.split("#");
+            switch(window.location.hash.split("#").length){
+                case 3: 
+                    document.getElementById("searchInput").value = decodeURIComponent(splitData[1]);
+                    menu.value = splitData[2].split(",");
+                    break;
+                case 2: 
+                    document.getElementById("searchInput").value = decodeURIComponent(splitData[1]);
+                    break;
+            }
+        }
+    }
+    checkURLHash();
 
 </script>
 
