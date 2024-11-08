@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前言這是相當有歷史的故事，由於早期的hackthebox機器上的flag都是一樣的，這就會導致有一些人只想為了排名然後上網找flag，直接機器都不開就提交flag，這樣子的話就會導致排名是假的，大家都就為了排名而抄。所以官方就想到了一個辦法就是把所有的flag都變成隨機的， 這樣子如果你看著答案去抄，起碼你也動手去完成，而不是做都沒做過就直接提交flag。 Hackthebox的商業手段就是活躍的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTB Writeup 上的 hash 是什麽？">
+<meta property="og:url" content="https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="前言這是相當有歷史的故事，由於早期的hackthebox機器上的flag都是一樣的，這就會導致有一些人只想為了排名然後上網找flag，直接機器都不開就提交flag，這樣子的話就會導致排名是假的，大家都就為了排名而抄。所以官方就想到了一個辦法就是把所有的flag都變成隨機的， 這樣子如果你看著答案去抄，起碼你也動手去完成，而不是做都沒做過就直接提交flag。 Hackthebox的商業手段就是活躍的">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-07-03T13:57:00.000Z">
+<meta property="article:modified_time" content="2024-08-08T06:28:08.539Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HTB Writeup 上的 hash 是什麽？</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/07/07/2024-htb-machine/27-PermX/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/07/03/2024/0703-htb-Cybernetics/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&text=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&title=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&is_video=false&description=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HTB Writeup 上的 hash 是什麽？&body=Check out this article: https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&title=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&title=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&title=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&title=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&name=HTB Writeup 上的 hash 是什麽？&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&t=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HTB Writeup 上的 hash 是什麽？
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-07-03T13:57:00.000Z" class="dt-published" itemprop="datePublished">2024-07-03</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>這是相當有歷史的故事，由於早期的hackthebox機器上的flag都是一樣的，這就會導致有一些人只想為了排名然後上網找flag，直接機器都不開就提交flag，這樣子的話就會導致排名是假的，大家都就為了排名而抄。所以官方就想到了一個辦法就是把所有的flag都變成隨機的， 這樣子如果你看著答案去抄，起碼你也動手去完成，而不是做都沒做過就直接提交flag。</p>
+<p>Hackthebox的商業手段就是活躍的機器不允許有write up，退役的機器需要開通vip才可以玩。 這樣子會導致活躍的機器不允許有write up流出在網站上，<strong>就算有也要加密</strong>，退役的機器需要開通vip才可以玩。</p>
+<p>雖然Hackthebox也有成立一個部門抓write up沒有上鎖的網站，但是效果。。。你懂的。</p>
+<p>畢竟現在是個人也可以在奇怪的網站上發write up，所以根本抓不完。 這樣在抓不完的情況下，肯定會有大量write up沒有及時刪掉，這時候htb就會虧本。</p>
+<p>但是換一個思考去想這個問題，如果是新人跟著write up去做，新人覺得這個平臺不錯，這樣就會有更多的人加入這個平臺，這也算是一種商業模式。</p>
+<p>可以設想一下，如果大家都想白嫖htb，這樣早就倒閉了。</p>
+<p>現在因爲有賽季的關係，再加上賽季會有獎勵，所以htb希望寫write up的人推遲一個星期再發出來，即使人們在互聯網上分享hash，對htb來説傷害不會這麽大。</p>
+<blockquote>
+<p>I saw the thread the other day about how root flags will be dynamic now so people can’t share them. But obviously we normally use the root flag to protect write ups for live machines.</p>
+<p>前幾天我看到了關於其他人的討論：現在的root flag是動態的，所以沒辦法使用動態的 flag 來加密分享關於活躍機器的 writeup。</p>
+<p>Everyone seems to agree that its good to read other people’s write ups once you’ve completed a machine to see how they did it differently, and we don’t want to wait months to do that.</p>
+<p>因為每個人都想做完了之後就看其他人的writeup，而不是等到好幾個月才回過頭來看。</p>
+<p>So what’s the official answer to this problem? Do we just use the admin password as the password for our write ups? I think that idea was mentioned in the original thread but I don’t think it was given as like a definite instruction saying that’s what we should do. What has everyone else been doing?</p>
+<p>那麼官方是如何回答這個問題的？還是我們使用管理員的密碼來加密我們的文章？這個想法在其他的貼子提到過，但我不覺得是這樣子，其他人又如何加密writeup的？</p>
+<p><a target="_blank" rel="noopener" href="https://forum.hackthebox.com/t/so-how-do-we-protect-write-ups-now/2389">So how do we protect write ups now?</a>  by @VbScrub</p>
+</blockquote>
+<p>正因爲這樣，大家又不想等到半年後才來看writeup，這樣黃花菜都涼了。官方也注意到這個問題，經過了一段時間的討論，HTB想出了一個比較好的解決方案，雖然這個貼子一直在討論這樣子很麻煩，但是大家都認為這個是最好的加密方法。</p>
+<blockquote>
+<p>Guys, a legitimate way to protect the write ups was already proposed by HTB. Use the hash of the root&#x2F;Administrator user, meaning the hash of LOGIN password that you would need to legitimately log in to the box, not the hash in root.txt.</p>
+<p>各位，HTB 已經提出了保護writeup的方法。使用 root&#x2F;Administrator 用戶的哈希值，即合法登錄系統所需的密碼的哈希值，而不是 root.txt 中的哈希值。</p>
+<p>For linux boxes, use the hash of the root password. If you are root on the box, just cat out the shadow file and you have it.</p>
+<p>對於 Linux 操作系統，使用 root 密碼的哈希值。如果你是root用戶，只需找出影子文件就可以了。</p>
+<p>For windows boxes, I realized after my last comment that you can use the hashdump command of a meterpreter shell to get the hashes of the Administrator password. If you have root access to the box, you should also be able to get a meterpreter shell going. Although that’s not super practical. Maybe someone else knows a better way?</p>
+<p>對於 Windows 操作系統，我在上次評論後意識到，可以使用 meterpreter shell 的 hashdump 命令來獲取管理員密碼的哈希值。如果你有root權限，也可以使用meterpreter shell。不過這並不太現實。也許有人知道更好的方法？</p>
+<p>Having an extra static writeup.txt on the box would be easier and more comfortable, I agree. But at least on Linux boxes there steps you need to take to get a working password aren’t any more difficult than opening a writeup.txt …</p>
+<p>我同意，在黑盒上安裝一個額外的靜態 writeup.txt 會更簡單、更方便。但至少在 Linux 操作系統上，獲取可用密碼所需的步驟並不比打開一個 writeup.txt 更難…</p>
+<p><a target="_blank" rel="noopener" href="https://forum.hackthebox.com/t/so-how-do-we-protect-write-ups-now/2389">So how do we protect write ups now?</a>  by @nyckelharpa</p>
+</blockquote>
+<p>經過時間的驗證你可以看到，HTB官方並沒有在每一臺機器上加入 <code>writeup.txt</code>，这就让大家形成了一个约定，加密就用最高權限用戶的hash。</p>
+<h1 id="如何提取-hash-？"><a href="#如何提取-hash-？" class="headerlink" title="如何提取 hash ？"></a>如何提取 hash ？</h1><p>提取hash的方式有很多種，Linux會比較簡單，Windows就相對來說有一點點複雜。<br>一般會使用最高級的管理員的Hashes來加密。</p>
+<h2 id="Linux-機器"><a href="#Linux-機器" class="headerlink" title="Linux 機器"></a>Linux 機器</h2><p>對於Linux的機器來說，如果你有root權限，可以直接 <code>cat /etc/shadow</code>​，比如<a href="https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/#Hashes">Monitored</a>這臺機器，可以看到hash長這樣：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@monitored:~<span class="comment"># cat /etc/shadow</span></span><br><span class="line">root:$y$j9T<span class="variable">$LLy</span>.W6CI0K6McgXMKio0i1<span class="variable">$1omBVYjsg</span>.8qEzyjkL.3kXtpAMZNc7x9CMwOnrwltJ8:19671:0:99999:7:::</span><br><span class="line">daemon:*:19670:0:99999:7:::</span><br><span class="line">.....</span><br></pre></td></tr></table></figure>
+
+<p>所以hash就是： <code>$y$j9T$LLy.W6CI0K6McgXMKio0i1$1omBVYjsg.8qEzyjkL.3kXtpAMZNc7x9CMwOnrwltJ8</code>​</p>
+<p>而 writeup 就是通過這個hash來加密的。</p>
+<h2 id="Windows-機器"><a href="#Windows-機器" class="headerlink" title="Windows 機器"></a>Windows 機器</h2><p>Windows就要分兩種情況，一種是本身就是域控，一種是本身不是作為域控（可能是工作站，加了域控的win10，或者是普通的win10）。</p>
+<p>一般來説域控的管理員 &gt; 本地管理員。</p>
+<h3 id="對於本身不是域控的機器-導出注冊表-Dump-SAM"><a href="#對於本身不是域控的機器-導出注冊表-Dump-SAM" class="headerlink" title="對於本身不是域控的機器 - 導出注冊表 &#x2F; Dump SAM"></a>對於本身不是域控的機器 - 導出注冊表 &#x2F; Dump SAM</h3><p>對於本身不是域控的機器，工作站，win10等，可以到處註冊表然後用impacket導出，比如 <a href="https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/#Hashes">Crafty</a>這臺機器。</p>
+<p>當你有了管理員的權限你就可以導出註冊表，使用這兩行命令來導出註冊表</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reg save hklm\system system</span><br><span class="line">reg save hklm\sam sam</span><br></pre></td></tr></table></figure>
+
+<p>你會得到兩個文件，一個是<code>system</code>​ 一個是 <code>sam</code>​，把它保存到本地之後使用 <code>impacket-secretsdump</code>​ 導出，如下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> impacket<span class="literal">-secretsdump</span> <span class="literal">-sam</span> sam  <span class="literal">-system</span> system LOCAL <span class="literal">-history</span>   </span><br><span class="line">Impacket v0.<span class="number">11.0</span> - Copyright <span class="number">2023</span> Fortra</span><br><span class="line"></span><br><span class="line">[*] Target system bootKey: <span class="number">0</span>xad7915b8e6d4f9ee383a5176349739e3</span><br><span class="line">[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)</span><br><span class="line">Administrator:<span class="number">500</span>:aad3b435b51404eeaad3b435b51404ee:<span class="number">686</span>d56296249595a2bc3d7a8807958ad:::</span><br></pre></td></tr></table></figure>
+
+<p>前半部分一般都是固定的，所以加密基本上是用後半部分，比如上面的例子中：</p>
+<p>admin的hash是 <code>686d56296249595a2bc3d7a8807958ad</code>​ ，所以使用這個hash加密 writeup 。</p>
+<h3 id="對於本身是域控機器-想辦法導出-ntds-dit"><a href="#對於本身是域控機器-想辦法導出-ntds-dit" class="headerlink" title="對於本身是域控機器 - 想辦法導出 ntds.dit"></a>對於本身是域控機器 - 想辦法導出 ntds.dit</h3><p>因為hash在ntds.dit裡面，這個時候你肯定會有管理員的權限 ，所以你可以使用很多種方式導出。</p>
+<p>參考：<a target="_blank" rel="noopener" href="https://www.ired.team/offensive-security/credential-access-and-credential-dumping/dumping-hashes-from-sam-registry">https://www.ired.team/offensive-security/credential-access-and-credential-dumping/dumping-hashes-from-sam-registry</a></p>
+<p><strong>第一種</strong>：mimikatz來導出admin的hash：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mimikatz# lsadump::dcsync /domain:pentestlab.local /user:administrator</span><br></pre></td></tr></table></figure>
+
+<p>參考： <a target="_blank" rel="noopener" href="https://pentestlab.blog/2018/07/04/dumping-domain-password-hashes/">https://pentestlab.blog/2018/07/04/dumping-domain-password-hashes/</a></p>
+<p><strong>第二種</strong>：使用 <code>impacket-secretsdump</code>​ 來DCSync：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ secretsdump -outputfile <span class="string">&#x27;something&#x27;</span> <span class="string">&#x27;DOMAIN&#x27;</span>/<span class="string">&#x27;USER&#x27;</span>:<span class="string">&#x27;PASSWORD&#x27;</span>@<span class="string">&#x27;DOMAINCONTROLLER&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>參考：<a target="_blank" rel="noopener" href="https://www.thehacker.recipes/ad/movement/credentials/dumping/dcsync">https://www.thehacker.recipes/ad/movement/credentials/dumping/dcsync</a></p>
+<p><strong>第三種</strong>：導出 ntds.dit ：</p>
+<p>這種方式在新版本可能會有一些問題，很多機器會保護ntds.dit，換句話說就是你複製下來了，dump出來的東西也是空的。</p>
+<p>因為你是管理員權限，所以你可以通過下面的命令去把ntds和註冊表保存出來，可以參考 <a href="https://manesec.github.io/2024/01/21/2024-htb-machine/03-Analysis/#0xB-Hashes">Analysis </a>這臺機器。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">powershell <span class="string">&quot;ntdsutil.exe &#x27;ac i ntds&#x27; &#x27;ifm&#x27; &#x27;create full c:\temp&#x27; q q&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>在上面的例子中，它會保存到 <code>c:\temp</code>​，所以你把整個目錄複製下來之後，你就可以：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> impacket<span class="literal">-secretsdump</span> <span class="literal">-system</span> SYSTEM <span class="literal">-security</span> SECURITY <span class="literal">-ntds</span> ntds.dit local</span><br></pre></td></tr></table></figure>
+
+<p>一般有 <code>ntds.dit</code>​ 和 <code>system</code>​ 就足夠了：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> impacket<span class="literal">-secretsdump</span> <span class="literal">-ntds</span> AD/ntds.dit <span class="literal">-system</span> registry/SYSTEM LOCAL</span><br><span class="line">Impacket v0.<span class="number">11.0</span> - Copyright <span class="number">2023</span> Fortra</span><br><span class="line"></span><br><span class="line">[*] Target system bootKey: <span class="number">0</span>x529aef45e9ea05176a71c697b699a940</span><br><span class="line">[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)</span><br><span class="line">[*] Searching <span class="keyword">for</span> pekList, be patient</span><br><span class="line">[*] PEK <span class="comment"># 0 found and decrypted: 695ba38d020855b94b0f0f1eeb049fa6</span></span><br><span class="line">[*] Reading and decrypting hashes from AD/ntds.dit</span><br><span class="line">Administrateur:<span class="number">500</span>:aad3b435b51404eeaad3b435b51404ee:e19ccf75ee54e06b06a5907af13cef42:::</span><br><span class="line">Invité:<span class="number">501</span>:aad3b435b51404eeaad3b435b51404ee:<span class="number">31</span>d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">DC<span class="literal">-ANALYSIS</span><span class="variable">$</span>:<span class="number">1000</span>:aad3b435b51404eeaad3b435b51404ee:<span class="number">2</span>ec9198220c4bb7306ba170b7fa007f9:::</span><br></pre></td></tr></table></figure>
+
+<p>參考：<a target="_blank" rel="noopener" href="https://www.ired.team/offensive-security/credential-access-and-credential-dumping/ntds.dit-enumeration">https://www.ired.team/offensive-security/credential-access-and-credential-dumping/ntds.dit-enumeration</a></p>
+<h1 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h1><p>當然上面還是一些比較常見的方法，事實上可能會很複雜（至少我遇到的），我建議打完後都提取，這樣子，你就會知道怎麼做了。</p>
+<p>如果你有興趣的話，你可以去研究一下Windows它是怎麼加密的，以及它的工作原理，如下PDF：</p>
+<iframe src="/maneplugin/viewerjs/index.html#https://raw.githubusercontent.com/manesec/blog-open-file/master/Files/WindowsPasswordSsecurity.pdf" width="100%" height="530px" frameborder="0" loading="lazy" allowfullscreen></iframe>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&text=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&title=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&is_video=false&description=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HTB Writeup 上的 hash 是什麽？&body=Check out this article: https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&title=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&title=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&title=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&title=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&name=HTB Writeup 上的 hash 是什麽？&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/07/03/2024/0703-what-is-writeup-hash/&t=HTB Writeup 上的 hash 是什麽？"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

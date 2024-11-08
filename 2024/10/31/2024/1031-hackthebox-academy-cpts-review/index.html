@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​ 考試前一個月，心態要放好真心建議，考試前一個月請不要看太多關於CPTS的負面信息，否則你會像我一樣沒有自信，然後一堆抱怨。一直聼人家説比OSCP還要難，而且很多兔子洞，但是我又想在明年之前體驗一把CPTS，所以就抱著賭徒的心態開了一把。 雖然在開局之前心態就被人家帶崩（屬於嚇傻了的那種），是因爲有聽到很多人都説很難。。。。 所以在開始之前一直安慰自己失敗了還有一次，來自從小對考試的恐懼。 好">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTB Academy - CPTS - Review">
+<meta property="og:url" content="https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​ 考試前一個月，心態要放好真心建議，考試前一個月請不要看太多關於CPTS的負面信息，否則你會像我一樣沒有自信，然後一堆抱怨。一直聼人家説比OSCP還要難，而且很多兔子洞，但是我又想在明年之前體驗一把CPTS，所以就抱著賭徒的心態開了一把。 雖然在開局之前心態就被人家帶崩（屬於嚇傻了的那種），是因爲有聽到很多人都説很難。。。。 所以在開始之前一直安慰自己失敗了還有一次，來自從小對考試的恐懼。 好">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/manesec/manesec/refs/heads/main/Cert/HTB/Academy/CPTS.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/10-htb-acadmy-cpts/image-20241025215706-j5p0yxt.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/10-htb-acadmy-cpts/image-20241025214735-5jgafbn.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/10-htb-acadmy-cpts/image-20241031220921-jvgnv4i.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/10-htb-acadmy-cpts/image-20241026014431-ab6gsoi.png">
+<meta property="article:published_time" content="2024-10-31T14:30:00.000Z">
+<meta property="article:modified_time" content="2024-10-31T16:53:18.564Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/manesec/manesec/refs/heads/main/Cert/HTB/Academy/CPTS.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HTB Academy - CPTS - Review</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/10/31/2024/1031-htb-solar/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/10/23/2024-htb-machine/43-Chemistry/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&text=HTB Academy - CPTS - Review"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&title=HTB Academy - CPTS - Review"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&is_video=false&description=HTB Academy - CPTS - Review"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HTB Academy - CPTS - Review&body=Check out this article: https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&title=HTB Academy - CPTS - Review"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&title=HTB Academy - CPTS - Review"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&title=HTB Academy - CPTS - Review"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&title=HTB Academy - CPTS - Review"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&name=HTB Academy - CPTS - Review&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&t=HTB Academy - CPTS - Review"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HTB Academy - CPTS - Review
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-10-31T14:30:00.000Z" class="dt-published" itemprop="datePublished">2024-10-31</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​<img src="https://raw.githubusercontent.com/manesec/manesec/refs/heads/main/Cert/HTB/Academy/CPTS.png" alt="HTB Certified Penetration Testing Specialist">​</p>
+<h1 id="考試前一個月，心態要放好"><a href="#考試前一個月，心態要放好" class="headerlink" title="考試前一個月，心態要放好"></a>考試前一個月，心態要放好</h1><p>真心建議，考試前一個月請不要看太多關於CPTS的負面信息，否則你會像我一樣沒有自信，然後一堆抱怨。一直聼人家説比OSCP還要難，而且很多兔子洞，但是我又想在明年之前體驗一把CPTS，所以就抱著賭徒的心態開了一把。</p>
+<p>雖然在開局之前心態就被人家帶崩（屬於嚇傻了的那種），是因爲有聽到很多人都説很難。。。。</p>
+<p>所以在開始之前一直安慰自己失敗了還有一次，<del>來自從小對考試的恐懼</del>。</p>
+<p>好在有兩次考試機會，所以就無所謂了，就直接閉眼點了開始考試。如果你硬要問我如何應對考試，這個時候我只能説，<del>閉眼考，遇到困難睡大覺，反正心態已經炸了，隨便吧</del>。</p>
+<h1 id="考試歷程"><a href="#考試歷程" class="headerlink" title="考試歷程"></a>考試歷程</h1><p>因爲要考10天，有很多臺機器，也有很多只兔子，所以我的任務是每天至少要完成一臺，這樣我才有時間去寫報告，就沒有用全力去考，但回過頭來，實際上是打了3天，因爲越打我越精神，越打越想笑，<del>説起來你也不信，那些兔子洞假爆了，一看就知道。。。</del></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/10-htb-acadmy-cpts/image-20241025215706-j5p0yxt.png" alt="image">​</p>
+<p>不知不覺，三天内打到了 85%，反正合格了，還有7天，趕緊寫報告結束它吧，什麽？要寫報告？又開始擺爛了。</p>
+<p>總結下來，我的時間綫是這樣的，</p>
+<ul>
+<li>18日：剛開始好緊張，因爲心態崩了，啊不對，怎麽這麽假。。等下，這裏肯定會問題。。（3個小時后） 拿到了shell，然後聞到了熟悉的味道，達成40%。</li>
+<li>19日：因爲達成了40%，心情好了，繼續，結果又聞到了熟悉的味道，直接到 70% 還是 75%，忘了。</li>
+<li>20日：然後繼續，剩下10%就合格了，運氣剛好，直接達成了 85%，到了及格綫，如上圖，然後開始就寫報告。</li>
+<li>21日：寫了一會報告，擺了一大會爛。</li>
+<li>22日：寫了一會報告，擺了一大會爛。</li>
+<li>23日：呆在家裏太壓抑了，所以擺了一天，出門走走。</li>
+<li>24日：昨晚玩過了，所以就花一天寫報告。</li>
+<li>25日：受不鳥了，這報告太無聊了，抱著賭徒的心態，重新於是回到 VPN，看一下能不能達成 90% 或者 100%，結果還真被我想到了，於是就達成了 100%。</li>
+</ul>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/10-htb-acadmy-cpts/image-20241025214735-5jgafbn.png" alt="image">​</p>
+<p>（説實話我還是享受打靶的樂趣，但是到了寫報告，QAQ） 當天打完後，看到報告受不鳥，不想拖了，於是逼著自己把剩下的報告寫完，所以我在第8天的晚上，也就是25日晚上提交了。</p>
+<h1 id="考試結果"><a href="#考試結果" class="headerlink" title="考試結果"></a>考試結果</h1><p>等到31日，終於有結果了。不過我好像和其他人不一樣（？），沒有給我提交的報告一個feedback，我也不知道寫的對不對，寫得如何，只是單純的訴我“<strong>恭喜你通過了</strong>”，僅此而已。</p>
+<p>原文如下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/10-htb-acadmy-cpts/image-20241031220921-jvgnv4i.png" alt="image">​</p>
+<blockquote>
+<p>恭喜您通過 HTB Certified Penetration Testing Specialist (CPTS) 考試。現在您是 CPTS 認證的正式持有人。歡迎在 LinkedIn 等網站分享您的成就。這是您應得的！完成此工作角色路徑中的所有內容，並在此考試中獲得全部 100 分，這絕非易事！<br>我謹代表 HTB 學院整個團隊，祝賀您工作順利，並隨意炫耀您辛苦獲得的證書！</p>
+</blockquote>
+<h1 id="一些關於我的技巧（僅供參考），是個壞習慣。"><a href="#一些關於我的技巧（僅供參考），是個壞習慣。" class="headerlink" title="一些關於我的技巧（僅供參考），是個壞習慣。"></a>一些關於我的技巧（僅供參考），是個壞習慣。</h1><p>爲什麽是 “僅供參考” 呢？因爲這套方案非常適合我。</p>
+<p>我在打的過程中，並不會像大多數人那樣，邊打邊截圖邊記錄，在我拿到了shell之前，我會用幾句話記錄我做了什麽，然後一些比較重要的命令。</p>
+<p><strong>對於找垃圾過程，在我的筆記本裏面是這樣寫的</strong>：這裏有一堆用戶名，那裏有一坨屎，這裏可能可以幹些什麽，類似這樣。這個時候你可能會好奇，會不會少記錄了很多信息？我可以告訴你，是的。</p>
+<p><strong>好處</strong>：這樣子一方面可以加快我對這個系統的理解，另一方面不會因爲寫報告而忘記接下來要做什麽（以前我就是經常先寫報告，然後忘記接下來要幹什麽）。</p>
+<p><strong>壞處</strong>：會偶爾丟掉一些信息。</p>
+<p>你也可能會問，會不會忘記之前是怎麽拿shell的？如果是新手時期可能會，但是打久了其實很難忘記，如果你很怕的話，可以邊打邊錄屏：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install -y kazam</span><br></pre></td></tr></table></figure>
+
+<p>然後調成 2 fps， 這樣就會一秒截取2張截圖，還可以用來節省空間：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/10-htb-acadmy-cpts/image-20241026014431-ab6gsoi.png" alt="image">​</p>
+<h1 id="關於難度"><a href="#關於難度" class="headerlink" title="關於難度"></a>關於難度</h1><p>如果你是新手，0基礎，想快點完成htb學院的模塊直接來參加 CPTS考試，我的建議是快跑，我可以100%的肯定這不是新手的級別。但是對於老鳥來説，上吧，這一點也不難。</p>
+<p>難度對於每個人來説都是不一樣的，就像一開頭那樣，別人説很難，我以爲真的會很難。但<strong>實際上我覺得這非常簡單，我完全可以輕鬆應付</strong>。</p>
+<p>所以難度這一塊確實很難評估，每一個人的程度都不一樣，HTB乾脆把CPTS就標記成中等，既不會太簡單也不會很難。</p>
+<p>如果你是覺得完成htb學院的模塊直接來參加 CPTS，能通過的機率感覺蠻低的，實話説我在考試用到的技能在htb的學院中占比很小，所以htb學院裏面的模塊真的只是“<strong>僅供參考</strong>”，并不是說你完成了htb學院的模塊就可以完美地應付考試。</p>
+<blockquote>
+<p><strong>Definitely Not Entry Level</strong></p>
+<p>這絕對不是入門級</p>
+<p>Although HackTheBox labels the exam as intermediate, it should not be confused with “entry level.” <strong>This is not a test for beginners</strong>.</p>
+<p>雖然HTB把他標記成中等，但不要和入門級搞混，因爲他真的不是新手該考的。</p>
+<p><a target="_blank" rel="noopener" href="https://medium.com/@0xP/why-htbs-cpts-exam-will-become-the-standard-for-modern-day-penetration-testers-34668fde209f">Why HTB’s CPTS exam will become the Standard for Modern Day Penetration Testers</a></p>
+</blockquote>
+<p>如果你是脚本小子，想直接一鍵無腦 CVE 拿shell，那麽 CPTS 非常不適合你。</p>
+<h1 id="CPTS-vs-OSCP"><a href="#CPTS-vs-OSCP" class="headerlink" title="CPTS vs OSCP"></a>CPTS vs OSCP</h1><p>很多人一直關心 CPTS 對比 OSCP 有什麽區別？我可以很直接的告訴你，CPTS會比OSCP難幾倍。</p>
+<ul>
+<li>CPTS 考試需要10天，OSCP考試需要1天。</li>
+<li>CPTS 沒有監考，OSCP 有監考。</li>
+</ul>
+<p>對於這類糾結的人來説：</p>
+<ul>
+<li>如果你是爲了着急找工作的話，請考OSCP，這真的不需要質疑。</li>
+<li>如果你是新手，我也推薦你先考 OSCP。</li>
+<li>如果你是有1年以上，想考來玩玩，也不着急找工作，那可以去 CPTS。</li>
+<li>如果你對自己有信心拿下CPTS，直接閉眼就好。</li>
+<li>如果你完成了OSCP，那剩下的還用我説？</li>
+</ul>
+<p>如果是爲了找工作請優先考慮 OFFSEC 家的證書，因爲大多數公司都會有限看OFFSEC家的證書，歸根結底還是有沒有監考的問題，所以 <strong>CPTS 拿來玩玩就好</strong>。</p>
+<h1 id="CPTS-值得誇贊的地方"><a href="#CPTS-值得誇贊的地方" class="headerlink" title="CPTS 值得誇贊的地方"></a>CPTS 值得誇贊的地方</h1><ul>
+<li>雖然兔子洞很多，但是路很清晰，不會考那種類似於“<em>最後一臺機器，密碼在一開頭的機器裏，找不到就別想通關</em>”，這也是我覺得最棒的地方。</li>
+<li>沒有限制工具，你想使用任何你想使用的工具，這點自由度很高。</li>
+<li>更多的是學習如何跳出這個框架去思考，雖然對於新手來説可能有點難以理解。</li>
+<li>關於報告方面推薦先看 HTB學院的 <a target="_blank" rel="noopener" href="https://academy.hackthebox.com/module/details/162">Documentation &amp; Reporting</a>，<strong>HTB有很嚴格的報告要求</strong>，如果你是第一次參加考試，提交報告後，20天內會在郵件裏面收到有一個review，如果你寫得好就會直接通過。如果你寫的很差的話，會要求你14天之內改好，然後重新提交。如果還是很差的話，只能下次繼續了。換句話說就是第一次考試會有額外的報告補救機會。<a target="_blank" rel="noopener" href="https://www.hackthebox.com/blog/penetration-testing-reports-template-and-guide">官方</a>有提供樣本，可以從<a target="_blank" rel="noopener" href="https://labs.hackthebox.com/storage/press/samplereport/sample-penetration-testing-report-template.pdf">這裡下載</a>。</li>
+</ul>
+<h1 id="未來的打算"><a href="#未來的打算" class="headerlink" title="未來的打算"></a>未來的打算</h1><p>很有可能會考 CBBH 吧，<code>OFFSEC</code>​ 太貴了，真沒錢了。</p>
+<h1 id="一些網上的測評"><a href="#一些網上的測評" class="headerlink" title="一些網上的測評"></a>一些網上的測評</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_54704239/article/details/134842592">https://blog.csdn.net/qq_54704239/article/details/134842592</a></li>
+<li><a target="_blank" rel="noopener" href="https://lim8en1.medium.com/getting-certified-my-thoughts-on-oscp-and-cpts-81b3a6235a8a">https://lim8en1.medium.com/getting-certified-my-thoughts-on-oscp-and-cpts-81b3a6235a8a</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@0xP/why-htbs-cpts-exam-will-become-the-standard-for-modern-day-penetration-testers-34668fde209f">https://medium.com/@0xP/why-htbs-cpts-exam-will-become-the-standard-for-modern-day-penetration-testers-34668fde209f</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@pri3st/on-htb-cpts-9f2d6a27aaa2">https://medium.com/@pri3st/on-htb-cpts-9f2d6a27aaa2</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?app=desktop&v=UN5fTQtlKCc">https://www.youtube.com/watch?app=desktop&amp;v=UN5fTQtlKCc</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=2CAZqpkalgI">https://www.youtube.com/watch?v=2CAZqpkalgI</a></li>
+</ul>
+<h1 id="最後"><a href="#最後" class="headerlink" title="最後"></a>最後</h1><p>如果你對 CPTS 有什麽想法，或者是迷茫的地方，可以直接發 email 給我，<strong>但請不要 email 我關於CPTS的考試問題，我會直接永久黑名單</strong>。</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&text=HTB Academy - CPTS - Review"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&title=HTB Academy - CPTS - Review"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&is_video=false&description=HTB Academy - CPTS - Review"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HTB Academy - CPTS - Review&body=Check out this article: https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&title=HTB Academy - CPTS - Review"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&title=HTB Academy - CPTS - Review"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&title=HTB Academy - CPTS - Review"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&title=HTB Academy - CPTS - Review"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&name=HTB Academy - CPTS - Review&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/&t=HTB Academy - CPTS - Review"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

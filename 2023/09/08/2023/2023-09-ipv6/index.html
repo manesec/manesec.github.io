@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="0x0 前言​​ IPv6來了，由於我家的網絡一直都是三個網段，又想讓所有網段都可以使用IPv6，因爲三個網段各有各的特色，所以沒辦法拆成一個網段。 由於不希望魔改成橋接來聯網，經過下面的設備會經過一層運營商的路由器，也就是說我的路由器設備是使用 DHCPv6 去聯網的，這樣子 PD 會有 &#x2F;64​ 的問題，換句話説 &#x2F;64​ 的子網沒辦法爲下面的三個網段劃分子網，只能給其中一個網段，因爲 &#x2F;64">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何在不使用橋接的情況下解決多網段的IPv6問題">
+<meta property="og:url" content="https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="0x0 前言​​ IPv6來了，由於我家的網絡一直都是三個網段，又想讓所有網段都可以使用IPv6，因爲三個網段各有各的特色，所以沒辦法拆成一個網段。 由於不希望魔改成橋接來聯網，經過下面的設備會經過一層運營商的路由器，也就是說我的路由器設備是使用 DHCPv6 去聯網的，這樣子 PD 會有 &#x2F;64​ 的問題，換句話説 &#x2F;64​ 的子網沒辦法爲下面的三個網段劃分子網，只能給其中一個網段，因爲 &#x2F;64">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908040543-5jh6hlj.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908042012-b25d51c.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908040012-n3lr7eh.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908045305-zkxf9mk.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908044834-9ecawjq.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908050347-3bcide5.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908050830-01lan3o.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908051140-q0gc5sk.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908051754-esv1gfl.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908051849-gjuqp0c.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908052059-8cvi6su.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908052514-lzece6t.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908052334-te71d0i.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908053333-4kk9g3l.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908053145-nm6gdvh.png">
+<meta property="article:published_time" content="2023-09-07T21:45:12.000Z">
+<meta property="article:modified_time" content="2023-09-07T21:47:12.504Z">
+<meta property="article:author" content="manesec">
+<meta property="article:tag" content="ipv6">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908040543-5jh6hlj.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>如何在不使用橋接的情況下解決多網段的IPv6問題</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2023/10/26/2023-htb-machine/10-Cybermonday/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/07/14/2023/2023-kernel-and-docker/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&text=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&title=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&is_video=false&description=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=如何在不使用橋接的情況下解決多網段的IPv6問題&body=Check out this article: https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&title=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&title=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&title=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&title=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&name=如何在不使用橋接的情況下解決多網段的IPv6問題&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&t=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        如何在不使用橋接的情況下解決多網段的IPv6問題
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-09-07T21:45:12.000Z" class="dt-published" itemprop="datePublished">2023-09-08</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/ipv6/" rel="tag">ipv6</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="0x0-前言"><a href="#0x0-前言" class="headerlink" title="0x0 前言"></a>0x0 前言</h2><p>​<img src="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908040543-5jh6hlj.png" alt="image">​</p>
+<p>IPv6來了，由於我家的網絡一直都是三個網段，又想讓所有網段都可以使用IPv6，因爲三個網段各有各的特色，所以沒辦法拆成一個網段。</p>
+<p>由於不希望魔改成橋接來聯網，經過下面的設備會經過一層運營商的路由器，也就是說我的路由器設備是使用 DHCPv6 去聯網的，這樣子 PD 會有 <code>/64</code>​ 的問題，換句話説 <code>/64</code>​ 的子網沒辦法爲下面的三個網段劃分子網，只能給其中一個網段，因爲 <code>/64</code>​ 已經不能再分了。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908042012-b25d51c.png" alt="image"></p>
+<p>事實上運營商一般給的都是 <code>/60</code>​ 的，也就是說最大 <code>64 - 60 = 4</code>​，2^4 &#x3D; 16 個網段，但由於使用DHCPv6 只能獲取到一個網段，但是我有3個網段。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908040012-n3lr7eh.png" alt="image"></p>
+<h2 id="0x1-一種萌生的想法"><a href="#0x1-一種萌生的想法" class="headerlink" title="0x1 一種萌生的想法"></a>0x1 一種萌生的想法</h2><p>​<img src="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908045305-zkxf9mk.png" alt="image">​</p>
+<p>如果在運營商給的路由器下面使用兩臺交換機進行連接，我會得到2個PD，這兩個PD各不相同的，使用3個路由器連接正常我會獲得3個PD，這樣我是不是可以解決IPv6的問題？</p>
+<h2 id="0x2-虛擬化設備"><a href="#0x2-虛擬化設備" class="headerlink" title="0x2 虛擬化設備"></a>0x2 虛擬化設備</h2><p>要想做成上面的測試，我需要在一臺設備内虛擬一個交換機，然後把三個路由器接在一起，折磨了很久我找到了<a target="_blank" rel="noopener" href="https://openwrt.org/docs/guide-user/network/wan/multiwan/mwan3#single_wan_port">這篇官方文檔</a>。</p>
+<p>注意：這裏我使用 openwrt 固件</p>
+<p>在開始之前需要對軟路由進行臨時的聯網，儅軟路由正確的連接了網絡之後就可以進行下面的操作了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">opkg update</span><br><span class="line">opkg install kmod-macvlan mwan3 luci-app-mwan3 ip6tables-nft iptables-nft</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908044834-9ecawjq.png" alt="image"></p>
+<p>首先我要虛擬3個wan6網卡，同時向運營商給的路由器獲取ipv6，因爲我需要3個PD段，另外加一個 wan 是使用ipv4的，所以加起來就有4個wan，參考官方的寫法是。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">config device <span class="string">&#x27;wan6_31&#x27;</span></span><br><span class="line">    option name <span class="string">&#x27;wan6_31&#x27;</span></span><br><span class="line">    option <span class="built_in">type</span> <span class="string">&#x27;macvlan&#x27;</span></span><br><span class="line">    option ifname <span class="string">&#x27;eth0&#x27;</span></span><br><span class="line"></span><br><span class="line"> config device <span class="string">&#x27;wan6_231&#x27;</span></span><br><span class="line">    option name <span class="string">&#x27;wan6_231&#x27;</span></span><br><span class="line">    option <span class="built_in">type</span> <span class="string">&#x27;macvlan&#x27;</span></span><br><span class="line">    option ifname <span class="string">&#x27;eth0&#x27;</span></span><br><span class="line"></span><br><span class="line"> config device <span class="string">&#x27;wan6_232&#x27;</span></span><br><span class="line">    option name <span class="string">&#x27;wan6_231&#x27;</span></span><br><span class="line">    option <span class="built_in">type</span> <span class="string">&#x27;macvlan&#x27;</span></span><br><span class="line">    option ifname <span class="string">&#x27;eth0&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># For PV4 Only</span></span><br><span class="line"> config device <span class="string">&#x27;wan&#x27;</span></span><br><span class="line">    option name <span class="string">&#x27;wan&#x27;</span></span><br><span class="line">    option <span class="built_in">type</span> <span class="string">&#x27;macvlan&#x27;</span></span><br><span class="line">    option ifname <span class="string">&#x27;eth0&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>然後修改 <code>/etc/config/network</code>​，重啓之後就多了4個設備，然後就可以把一個lan加進去，剩下的可以通過網頁的UI加，所以在上面的文件增加下面的内容。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">config device</span><br><span class="line">        option name <span class="string">&#x27;br-lan&#x27;</span></span><br><span class="line">        option <span class="built_in">type</span> <span class="string">&#x27;bridge&#x27;</span></span><br><span class="line">        list ports <span class="string">&#x27;eth1&#x27;</span></span><br><span class="line"></span><br><span class="line">config interface <span class="string">&#x27;lan&#x27;</span></span><br><span class="line">        option device <span class="string">&#x27;eth1&#x27;</span></span><br><span class="line">        option proto <span class="string">&#x27;static&#x27;</span></span><br><span class="line">        option ipaddr <span class="string">&#x27;192.168.31.1&#x27;</span></span><br><span class="line">        option netmask <span class="string">&#x27;255.255.255.0&#x27;</span></span><br><span class="line">        option ip6assign <span class="string">&#x27;60&#x27;</span></span><br><span class="line">        option gateway <span class="string">&#x27;192.168.1.1&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908050347-3bcide5.png" alt="image">​</p>
+<p>‍</p>
+<h2 id="0x3-為每個設備設置接口"><a href="#0x3-為每個設備設置接口" class="headerlink" title="0x3 為每個設備設置接口"></a>0x3 為每個設備設置接口</h2><p>由於只是虛擬了設備，虛擬好了設備需要設置好接口才可以使用，對於 <code>wan6_231</code>​ 的設備增加一個interface為 <code>wan6_231i</code>​</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908050830-01lan3o.png" alt="image">​</p>
+<p>需要修改的如下：</p>
+<ul>
+<li>General Settings - Request IPv6-address: force</li>
+<li>Advanced Settings - Delegate IPv6 prefixes: Yes</li>
+<li>Firewall Settings: 改成wan</li>
+<li>DHCP Server 不需要設置</li>
+</ul>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908051140-q0gc5sk.png" alt="image">​</p>
+<p>​<code>wan6_231</code>​，<code>wan6_232</code>​，<code>wan6_31</code>​ 也是重複上面的操作，<code>wan</code>​ 就根據實際情況修改即可。</p>
+<h2 id="0x4-為每個真實的設備鏈接-wan6-的接口"><a href="#0x4-為每個真實的設備鏈接-wan6-的接口" class="headerlink" title="0x4 為每個真實的設備鏈接 wan6 的接口"></a>0x4 為每個真實的設備鏈接 wan6 的接口</h2><p>首先設置好最基本的 <code>lan31</code>​，<code>lan231</code>​，<code>lan232</code>​，在網絡基本互通的情況下進行以下設置</p>
+<p>對於 <code>lan231</code>​ 來説，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908051754-esv1gfl.png" alt="image">​</p>
+<p>防火墻設置改成lan區域，DHCP 如下設置</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908051849-gjuqp0c.png" alt="image">​</p>
+<h2 id="0x5-完成設置"><a href="#0x5-完成設置" class="headerlink" title="0x5 完成設置"></a>0x5 完成設置</h2><p>​<img src="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908052059-8cvi6su.png" alt="image">​</p>
+<p>‍</p>
+<p>231 網段測試</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908052514-lzece6t.png" alt="image">​</p>
+<p>232 網段測試</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908052334-te71d0i.png" alt="image"></p>
+<h2 id="0x6-openwrt-動態-ipv6-防火墻設置方法"><a href="#0x6-openwrt-動態-ipv6-防火墻設置方法" class="headerlink" title="0x6 openwrt 動態 ipv6 防火墻設置方法"></a>0x6 openwrt 動態 ipv6 防火墻設置方法</h2><p>​<img src="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908053333-4kk9g3l.png" alt="image">​</p>
+<p>因爲家用的ipv6是會變的，結尾的后四組是<code>90c6:bfff:fe39:6990</code>​，新的ipv6地址只會變更前面的4組數字，所以防火墻可以設置 <code>::90c6:bfff:fe39:6990/::ffff:ffff:ffff:ffff</code>​，這樣就可以從外網訪問進來了。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/09/ipv6_problem/image-20230908053145-nm6gdvh.png" alt="image">​</p>
+<blockquote>
+<p>ipv6 设置方法跟 ipv4 不一样，它的地址比较长，由八组字母数字组成 [1:2:3:4:5:6:7:8，一般情况下，拨号获得的 ipv6 地址前四段变化，后四段是根据本地 mac 网卡来的，所以后四段不变。那么 ipv6 防火墙目标地址就用通配符来设定，[0:0:0:0:5:6:7:8&#x2F;0:0:0:0:ffff:ffff:ffff:ffff，前面 0:0:0:0 缩写成两个”::”, 所以目标地址填写 [::5:6:7:8&#x2F;::ffff:ffff:ffff:ffff], 其中 5:6:7:8 是所指向 lan 被访问主机 ipv6 地址的后四段。</p>
+<p>參考：<a target="_blank" rel="noopener" href="https://www.meiqiantu.com/1102363.html">openwrt ipv6 防火墙设置方法</a></p>
+</blockquote>
+<h2 id="0xA-參考：完整的-etc-config-network-配置文件"><a href="#0xA-參考：完整的-etc-config-network-配置文件" class="headerlink" title="0xA 參考：完整的 &#x2F;etc&#x2F;config&#x2F;network 配置文件"></a>0xA 參考：完整的 &#x2F;etc&#x2F;config&#x2F;network 配置文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">config interface <span class="string">&#x27;loopback&#x27;</span></span><br><span class="line">        option device <span class="string">&#x27;lo&#x27;</span></span><br><span class="line">        option proto <span class="string">&#x27;static&#x27;</span></span><br><span class="line">        option ipaddr <span class="string">&#x27;127.0.0.1&#x27;</span></span><br><span class="line">        option netmask <span class="string">&#x27;255.0.0.0&#x27;</span></span><br><span class="line"></span><br><span class="line">config globals <span class="string">&#x27;globals&#x27;</span></span><br><span class="line">        option ula_prefix <span class="string">&#x27;fd63:ec3f:cba7::/48&#x27;</span></span><br><span class="line">        option packet_steering <span class="string">&#x27;1&#x27;</span></span><br><span class="line"></span><br><span class="line">config device <span class="string">&#x27;wan&#x27;</span></span><br><span class="line">        option name <span class="string">&#x27;wan&#x27;</span></span><br><span class="line">        option <span class="built_in">type</span> <span class="string">&#x27;macvlan&#x27;</span></span><br><span class="line">        option ifname <span class="string">&#x27;eth0&#x27;</span></span><br><span class="line"></span><br><span class="line">config device <span class="string">&#x27;wan6_31&#x27;</span></span><br><span class="line">        option name <span class="string">&#x27;wan6_31&#x27;</span></span><br><span class="line">        option <span class="built_in">type</span> <span class="string">&#x27;macvlan&#x27;</span></span><br><span class="line">        option ifname <span class="string">&#x27;eth0&#x27;</span></span><br><span class="line"></span><br><span class="line">config device <span class="string">&#x27;wan6_231&#x27;</span></span><br><span class="line">        option name <span class="string">&#x27;wan6_231&#x27;</span></span><br><span class="line">        option <span class="built_in">type</span> <span class="string">&#x27;macvlan&#x27;</span></span><br><span class="line">        option ifname <span class="string">&#x27;eth0&#x27;</span></span><br><span class="line"></span><br><span class="line">config device <span class="string">&#x27;wan6_232&#x27;</span></span><br><span class="line">        option name <span class="string">&#x27;wan6_232&#x27;</span></span><br><span class="line">        option <span class="built_in">type</span> <span class="string">&#x27;macvlan&#x27;</span></span><br><span class="line">        option ifname <span class="string">&#x27;eth0&#x27;</span></span><br><span class="line"></span><br><span class="line">config device</span><br><span class="line">        option name <span class="string">&#x27;br-lan&#x27;</span></span><br><span class="line">        option <span class="built_in">type</span> <span class="string">&#x27;bridge&#x27;</span></span><br><span class="line">        list ports <span class="string">&#x27;eth1&#x27;</span></span><br><span class="line"></span><br><span class="line">config interface <span class="string">&#x27;lan&#x27;</span></span><br><span class="line">        option device <span class="string">&#x27;eth1&#x27;</span></span><br><span class="line">        option proto <span class="string">&#x27;static&#x27;</span></span><br><span class="line">        option ipaddr <span class="string">&#x27;192.168.31.1&#x27;</span></span><br><span class="line">        option netmask <span class="string">&#x27;255.255.255.0&#x27;</span></span><br><span class="line">        option ip6assign <span class="string">&#x27;60&#x27;</span></span><br><span class="line">        option gateway <span class="string">&#x27;192.168.1.1&#x27;</span></span><br><span class="line">        list ip6class <span class="string">&#x27;wan6_31i&#x27;</span></span><br><span class="line"></span><br><span class="line">config interface <span class="string">&#x27;wan1&#x27;</span></span><br><span class="line">        option proto <span class="string">&#x27;static&#x27;</span></span><br><span class="line">        option device <span class="string">&#x27;wan&#x27;</span></span><br><span class="line">        option ipaddr <span class="string">&#x27;192.168.1.4&#x27;</span></span><br><span class="line">        option netmask <span class="string">&#x27;255.255.255.0&#x27;</span></span><br><span class="line">        option gateway <span class="string">&#x27;192.168.1.1&#x27;</span></span><br><span class="line">        list dns <span class="string">&#x27;114.114.114.114&#x27;</span></span><br><span class="line"></span><br><span class="line">config interface <span class="string">&#x27;lan231&#x27;</span></span><br><span class="line">        option proto <span class="string">&#x27;static&#x27;</span></span><br><span class="line">        option device <span class="string">&#x27;eth2&#x27;</span></span><br><span class="line">        option ipaddr <span class="string">&#x27;192.168.231.1&#x27;</span></span><br><span class="line">        option netmask <span class="string">&#x27;255.255.255.0&#x27;</span></span><br><span class="line">        option gateway <span class="string">&#x27;192.168.1.1&#x27;</span></span><br><span class="line">        list ip6class <span class="string">&#x27;wan6_231i&#x27;</span></span><br><span class="line">        option ip6assign <span class="string">&#x27;64&#x27;</span></span><br><span class="line"></span><br><span class="line">config interface <span class="string">&#x27;lan232&#x27;</span></span><br><span class="line">        option proto <span class="string">&#x27;static&#x27;</span></span><br><span class="line">        option device <span class="string">&#x27;eth3&#x27;</span></span><br><span class="line">        option ipaddr <span class="string">&#x27;192.168.232.1&#x27;</span></span><br><span class="line">        option netmask <span class="string">&#x27;255.255.255.0&#x27;</span></span><br><span class="line">        option gateway <span class="string">&#x27;192.168.31.1&#x27;</span></span><br><span class="line">        list ip6class <span class="string">&#x27;wan6_232i&#x27;</span></span><br><span class="line">        option ip6assign <span class="string">&#x27;64&#x27;</span></span><br><span class="line"></span><br><span class="line">config interface <span class="string">&#x27;wan6_31i&#x27;</span></span><br><span class="line">        option proto <span class="string">&#x27;dhcpv6&#x27;</span></span><br><span class="line">        option device <span class="string">&#x27;wan6_31&#x27;</span></span><br><span class="line">        option reqaddress <span class="string">&#x27;force&#x27;</span></span><br><span class="line">        option reqprefix <span class="string">&#x27;auto&#x27;</span></span><br><span class="line"></span><br><span class="line">config interface <span class="string">&#x27;wan6_231i&#x27;</span></span><br><span class="line">        option proto <span class="string">&#x27;dhcpv6&#x27;</span></span><br><span class="line">        option device <span class="string">&#x27;wan6_231&#x27;</span></span><br><span class="line">        option reqaddress <span class="string">&#x27;force&#x27;</span></span><br><span class="line">        option reqprefix <span class="string">&#x27;auto&#x27;</span></span><br><span class="line"></span><br><span class="line">config interface <span class="string">&#x27;wan6_232i&#x27;</span></span><br><span class="line">        option proto <span class="string">&#x27;dhcpv6&#x27;</span></span><br><span class="line">        option device <span class="string">&#x27;wan6_232&#x27;</span></span><br><span class="line">        option reqaddress <span class="string">&#x27;force&#x27;</span></span><br><span class="line">        option reqprefix <span class="string">&#x27;auto&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="0xB-參考"><a href="#0xB-參考" class="headerlink" title="0xB 參考"></a>0xB 參考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://vicfree.com/2023/02/ipv6-explained-and-setup-in-openwrt/">IPv6 原理及如何设置 OpenWrt</a></li>
+<li><a target="_blank" rel="noopener" href="https://post.smzdm.com/p/awzodmpp/">OpenWRT 路由器 IPv6 实战配置长篇教程：纠正你的 IPv4 思维！</a></li>
+</ol>
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&text=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&title=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&is_video=false&description=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=如何在不使用橋接的情況下解決多網段的IPv6問題&body=Check out this article: https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&title=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&title=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&title=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&title=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&name=如何在不使用橋接的情況下解決多網段的IPv6問題&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2023/09/08/2023/2023-09-ipv6/&t=如何在不使用橋接的情況下解決多網段的IPv6問題"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

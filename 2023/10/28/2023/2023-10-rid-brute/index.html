@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​​​ 0x0 很多情況下，通過RPC枚舉用戶并不是那麽的順利。​ 這個時候可以利用windows的rid特徵來枚舉用戶（如果可以的話），如果不行，才會使用kerbrute。 0x1 RID 和 SID 的區別在linux系統中，判斷你是不是root權限相當於當前用戶的uid是不是等於0，而Linux系統中只識別uid &#x3D; 0代表root，而不會識別你是不是root用戶。 在windo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="關於 Rid Brute 的一些説明">
+<meta property="og:url" content="https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​​​ 0x0 很多情況下，通過RPC枚舉用戶并不是那麽的順利。​ 這個時候可以利用windows的rid特徵來枚舉用戶（如果可以的話），如果不行，才會使用kerbrute。 0x1 RID 和 SID 的區別在linux系統中，判斷你是不是root權限相當於當前用戶的uid是不是等於0，而Linux系統中只識別uid &#x3D; 0代表root，而不會識別你是不是root用戶。 在windo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028161122-5sl3gu8.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028153934-y4poycx.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028155449-lp2kt3p.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028155721-z9kkdqg.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028160212-oc9flwg.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028161222-au31g9k.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028160706-k0mkq56.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028161736-mvu3fha.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028162119-jkjtmkw.png">
+<meta property="article:published_time" content="2023-10-28T08:31:46.000Z">
+<meta property="article:modified_time" content="2023-10-28T08:33:02.164Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028161122-5sl3gu8.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>關於 Rid Brute 的一些説明</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2023/12/19/2023/2023-12-elk-and-json/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/10/26/2023-htb-machine/10-Cybermonday/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&text=關於 Rid Brute 的一些説明"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&title=關於 Rid Brute 的一些説明"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&is_video=false&description=關於 Rid Brute 的一些説明"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=關於 Rid Brute 的一些説明&body=Check out this article: https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&title=關於 Rid Brute 的一些説明"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&title=關於 Rid Brute 的一些説明"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&title=關於 Rid Brute 的一些説明"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&title=關於 Rid Brute 的一些説明"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&name=關於 Rid Brute 的一些説明&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&t=關於 Rid Brute 的一些説明"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        關於 Rid Brute 的一些説明
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-10-28T08:31:46.000Z" class="dt-published" itemprop="datePublished">2023-10-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​​<img src="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028161122-5sl3gu8.png" alt="image">​​</p>
+<h2 id="0x0-很多情況下，通過RPC枚舉用戶并不是那麽的順利。"><a href="#0x0-很多情況下，通過RPC枚舉用戶并不是那麽的順利。" class="headerlink" title="0x0 很多情況下，通過RPC枚舉用戶并不是那麽的順利。"></a>0x0 很多情況下，通過RPC枚舉用戶并不是那麽的順利。</h2><p>​<img src="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028153934-y4poycx.png" alt="image"></p>
+<p>這個時候可以利用windows的rid特徵來枚舉用戶（如果可以的話），如果不行，才會使用kerbrute。</p>
+<h2 id="0x1-RID-和-SID-的區別"><a href="#0x1-RID-和-SID-的區別" class="headerlink" title="0x1 RID 和 SID 的區別"></a>0x1 RID 和 SID 的區別</h2><p>在linux系統中，判斷你是不是root權限相當於當前用戶的uid是不是等於0，而Linux系統中只識別uid &#x3D; 0代表root，而不會識別你是不是root用戶。</p>
+<p>在windows的情況下類似，系統識別你是不是管理權限，看的是用戶sid，而不是名字。</p>
+<p>儅在linux系統中，創建普通user一般是從1000開始，也就是説 少於1000 的則是系統服務的用戶。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌──(mane㉿manepc)-[~/Heist]</span><br><span class="line">└─$ <span class="built_in">cat</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/usr/bin/zsh</span><br><span class="line">...</span><br><span class="line">daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin</span><br><span class="line">bin:x:2:2:bin:/bin:/usr/sbin/nologin</span><br><span class="line">...</span><br><span class="line">mane:x:1000:1000:mane,,,:/home/mane:/usr/bin/zsh</span><br><span class="line">smbuser:x:1001:1001:,,,:/home/smbuser:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>在windows也是如此，新建的用戶rid也是從1000開始，爲了不和build in用戶重合，build in 用戶會從500開始，一些buildin組也會有rid（比如：<code>521</code>​ 代表 Read-only Domain Controllers ）administrator 的rid通常是500。</p>
+<p>爲了解決在多個DC中不同子域的rid重合問題，windows 默認會給每個DC安排一個domain sid，然後把DC下的用戶合成新的SID，以識別用戶來自哪裏。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028155449-lp2kt3p.png" alt="image">​</p>
+<p>例如：</p>
+<ol>
+<li>儅 domain 的sid 為 <code>4254423774-1266059056-3197185112</code>​</li>
+<li>默認的users通常以 <code>S-1-5-21</code>​開頭 ，合起來就是 <code>S-1-5-21-4254423774-1266059056-3197185112</code>​</li>
+<li>因爲administrator的rid是500，在後面加上500就變成了 <code>S-1-5-21-4254423774-1266059056-3197185112-500</code>​</li>
+</ol>
+<p>那麽，如果對後面的rid進行爆破呢？ 比如從500開始到1000，會是怎樣的？</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028155721-z9kkdqg.png" alt="image">​</p>
+<p>是不是和<code>crackmapexec</code>​的結果一樣？</p>
+<p><strong>注意</strong>：如果DC允許你用anonymous權限去執行<code>lookupsids</code>​ 則可以直接使用<code>crackmapexec</code>​來枚舉，如果連<code>lookupsid</code>​都用不了，<code>crackmapexec</code>​同樣也無法使用，在滲透的時候通常都會隨手敲一下，看看會不會有用戶返回，如果有的話就直接<code>crackmapexec</code>​。</p>
+<h2 id="0x2-如何獲得domain的sid，以便我可以手動列舉呢？"><a href="#0x2-如何獲得domain的sid，以便我可以手動列舉呢？" class="headerlink" title="0x2 如何獲得domain的sid，以便我可以手動列舉呢？"></a>0x2 如何獲得domain的sid，以便我可以手動列舉呢？</h2><p>當我們知道domain是什麽的時候，可以通過 <code>lookupnames &lt;domain_name&gt;</code>​ 找到該sid。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028160212-oc9flwg.png" alt="image">​</p>
+<h2 id="0x3-默認的SID群組"><a href="#0x3-默認的SID群組" class="headerlink" title="0x3 默認的SID群組"></a>0x3 默認的SID群組</h2><p>​<img src="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028161222-au31g9k.png" alt="image">​</p>
+<p>而默認的用戶組也有sid，比如（Anonymous、Authenticated Users、Domain Admins）等。通常，這些群組是屬於domain的話，那麽sid就會加上domain的sid，如果是通用的群組，就不會。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028160706-k0mkq56.png" alt="image">​</p>
+<p>這些值可以在<a target="_blank" rel="noopener" href="https://github.com/Integration-IT/Active-Directory-Exploitation-Cheat-Sheet/blob/master/Windows%20SID.md">這裏</a> 找到。</p>
+<p>這些群組通常以 <code>S-1-5-32</code>​  開頭，個別組是和用戶一樣。</p>
+<p>可以使用 <code>lsaenumsid</code>​ 來查看。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028161736-mvu3fha.png" alt="image">​</p>
+<p>同樣的，我們也可以通過枚舉來猜一下裏面有什麽。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2023/10/ridbrute/image-20231028162119-jkjtmkw.png" alt="image"></p>
+<p>在實戰中其實可以使用這樣的技術來猜測安裝了什麽服務。</p>
+<h2 id="0x4-後續"><a href="#0x4-後續" class="headerlink" title="0x4 後續"></a>0x4 後續</h2><p>如果這時候，了解了上面的原理，其實可以自製一個脚本來實現<code>crackmapexec</code>​的 rid brute功能，kali工具箱也有一個<a target="_blank" rel="noopener" href="https://www.kali.org/tools/ridenum/">類似的工具</a>，如果要看<a target="_blank" rel="noopener" href="https://github.com/trustedsec/ridenum/blob/master/ridenum.py">源碼</a>​的話，你會發現和上面差不多原理。</p>
+<p>關於Windows 帐户的 RID Hijacking可以參考<a target="_blank" rel="noopener" href="https://3gstudent.github.io/%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7-Windows%E5%B8%90%E6%88%B7%E7%9A%84RID-Hijacking">這篇文章</a>。</p>
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&text=關於 Rid Brute 的一些説明"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&title=關於 Rid Brute 的一些説明"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&is_video=false&description=關於 Rid Brute 的一些説明"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=關於 Rid Brute 的一些説明&body=Check out this article: https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&title=關於 Rid Brute 的一些説明"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&title=關於 Rid Brute 的一些説明"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&title=關於 Rid Brute 的一些説明"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&title=關於 Rid Brute 的一些説明"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&name=關於 Rid Brute 的一些説明&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2023/10/28/2023/2023-10-rid-brute/&t=關於 Rid Brute 的一些説明"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

