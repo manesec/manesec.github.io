@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Ransom​​ https:&#x2F;&#x2F;www.hackthebox.com&#x2F;achievement&#x2F;machine&#x2F;463126&#x2F;457 首先使用 Nmap 工具對目標進行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Ransom">
+<meta property="og:url" content="https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Ransom​​ https:&#x2F;&#x2F;www.hackthebox.com&#x2F;achievement&#x2F;machine&#x2F;463126&#x2F;457 首先使用 Nmap 工具對目標進行">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226055823-85ghn60.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226032806-lqridt9.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226033003-gnarlu5.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226041737-wn9t1pn.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226041748-ahrlsx4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226041809-9oc2ab1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226041846-t2qb1jh.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241228005302-jqvin1c.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226041941-76u265r.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226042051-5hwd524.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226042103-ztwv37b.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226042130-d9tgvis.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241228003819-45d6a2f.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226042347-8auonfr.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226043307-r5cyc95.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226050508-evzx7py.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226050533-zhcyedg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052239-kovedlk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226051830-u0pl2hd.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241228010117-85imkwk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052225-ggewy53.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052333-r4nzebj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052139-69ikcqu.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052149-75ngac4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052448-30ar4ne.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052536-xddp8wj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052553-e2obe9j.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052651-jvmrb25.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052657-bcjlq1h.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226054627-vqbgy3m.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226055621-u05yehk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226055644-py3tvdj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226055708-dr8nzdt.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226055439-yxhm1gg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226055756-x1eovp1.png">
+<meta property="article:published_time" content="2024-12-27T22:12:00.000Z">
+<meta property="article:modified_time" content="2024-12-27T22:13:20.330Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226055823-85ghn60.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Ransom</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/12/28/2024-htb-machine/56-Interface/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/12/28/2024-htb-machine/54-OnlyForYou/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&text=HackTheBox - Machine - Ransom"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&title=HackTheBox - Machine - Ransom"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&is_video=false&description=HackTheBox - Machine - Ransom"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Ransom&body=Check out this article: https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&title=HackTheBox - Machine - Ransom"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&title=HackTheBox - Machine - Ransom"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&title=HackTheBox - Machine - Ransom"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&title=HackTheBox - Machine - Ransom"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&name=HackTheBox - Machine - Ransom&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&t=HackTheBox - Machine - Ransom"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Ransom
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-12-27T22:12:00.000Z" class="dt-published" itemprop="datePublished">2024-12-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Ransom"><a href="#Ransom" class="headerlink" title="Ransom"></a>Ransom</h1><p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226055823-85ghn60.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/457">https://www.hackthebox.com/achievement/machine/463126/457</a></p>
+<p>首先使用 Nmap 工具對目標進行掃描，通過瀏覽器訪問該 IP 地址後，發現需輸入密碼進入，但嘗試多個常用密碼均失敗。隨後，使用 quickhits.txt 文件進行快速信息收集，但結果仍然沒有收穫。為了探究更多可能性，隨便輸入一個測試密碼 “testing”，並利用 Burp Suite 截取請求，當刪除這一行時，發現請求回應有改變。接著，將 GET 請求改為 OPTIONS，檢查支持的請求類型，結果顯示僅支持 GET 請求。接著嘗試以 JSON 格式提交請求，意外地發現請求成功，這使得可以利用 PHP 的弱比較漏洞繞過密碼檢查。通過進一步的操作，截取修改後的請求，成功登陸並訪問到包含兩個文件的頁面，並下載這些文件。在用戶目錄中，通常會存在 .ssh 文件夾及其密鑰，但下載的 zip 文件是加密的，需要破解該 zip 密碼。使用 zip2john 生成 hash，再利用 hashcat 嘗試破解，但初次嘗試失敗。經過分析，發現該 zip 文件使用的 ZipCrypto Deflate 加密算法已被認為不安全，因此決定使用 Plain Text Attack 破解。首先確認了 zip 包內部某文件的內容，利用 bkcrack 工具進行破解，經過一段時間，成功恢復出加密密碼，隨後進行了去除密碼的操作，最終成功解壓縮文件。獲得 ssh 密鑰後，為了找出用戶名，檢查了 id_rsa.pub 和 authorized_keys 文件，發現用戶名為 htb，隨即嘗試登錄，結果成功進入。隨後運行 Linpeas 工具進行安全檢查，雖然沒有密碼，但發現 sudo 組無法使用。通過檢查 apache 的配置文件，找到目錄來自 &#x2F;srv&#x2F;prod&#x2F;public，並在隨機輸入密碼後得到 “Invalid Password” 的信息，進一步搜索後，在 .&#x2F;app&#x2F;Http&#x2F;Controllers&#x2F;AuthController.php 文件中發現了一個密碼 “UHC-March-Global-PW!”，這被確認為 root 的密碼，最終成功登錄到 root 權限。</p>
+<h1 id="Recon"><a href="#Recon" class="headerlink" title="Recon"></a>Recon</h1><p>首先使用 Nmap 進行掃描：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE REASON         VERSION</span><br><span class="line"><span class="number">22</span>/tcp <span class="built_in">open</span>  ssh     syn-ack ttl <span class="number">63</span> OpenSSH <span class="number">8.2</span>p1 Ubuntu 4ubuntu0<span class="number">.4</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   <span class="number">3072</span> ea:<span class="number">84</span>:<span class="number">21</span>:a3:<span class="number">22</span>:4a:7d:f9:b5:<span class="number">25</span>:<span class="number">51</span>:<span class="number">79</span>:<span class="number">83</span>:a4:f5:f2 (RSA)</span><br><span class="line">| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDZBURYGCLr4lZI1F55bUh/6vKCfmeGumtAhhNrg9lH4UNDB/wCjPbD+xovPp3UdbrOgNdqTCdZcOk5rQDyRK2YH6tq8NlP59myIQV/zXC9WQnhxn131jf/KlW78vzWaLfMU+m52e1k+YpomT5PuSMG8EhGwE5bL4o0Jb8Unafn13CJKZ1oj3awp31fRJDzYGhTjl910PROJAzlOQinxRYdUkc4ZT0qZRohNlecGVsKPpP+2Ql+gVuusUEQt7gPFPBNKw3aLtbLVTlgEW09RB9KZe6Fuh8JszZhlRpIXDf9b2O0rINAyek8etQyFFfxkDBVueZA50wjBjtgOtxLRkvfqlxWS8R75Urz8AR2Nr23AcAGheIfYPgG8HzBsUuSN5fI8jsBCekYf/ZjPA/YDM4aiyHbUWfCyjTqtAVTf3P4iqbEkw9DONGeohBlyTtEIN7pY3YM5X3UuEFIgCjlqyjLw6QTL4cGC5zBbrZml7eZQTcmgzfU6pu220wRo5GtQ3U=</span><br><span class="line">|   <span class="number">256</span> b8:<span class="number">39</span>:9e:f4:<span class="number">88</span>:be:aa:01:<span class="number">73</span>:2d:<span class="number">10</span>:fb:<span class="number">44</span>:7f:<span class="number">84</span>:<span class="number">61</span> (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJZPKXFj3JfSmJZFAHDyqUDFHLHBRBRvlesLRVAqq0WwRFbeYdKwVIVv0DBufhYXHHcUSsBRw3/on9QM24kymD0=</span><br><span class="line">|   <span class="number">256</span> <span class="number">22</span>:<span class="number">21</span>:e9:f4:<span class="number">85</span>:<span class="number">90</span>:<span class="number">87</span>:<span class="number">45</span>:<span class="number">16</span>:1f:<span class="number">73</span>:<span class="number">36</span>:<span class="number">41</span>:ee:3b:<span class="number">32</span> (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEDIBMvrXLaYc6DXKPZaypaAv4yZ3DNLe1YaBpbpB8aY</span><br><span class="line"><span class="number">80</span>/tcp <span class="built_in">open</span>  http    syn-ack ttl <span class="number">63</span> Apache httpd <span class="number">2.4</span><span class="number">.41</span> ((Ubuntu))</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD OPTIONS</span><br><span class="line">|_http-favicon: Unknown favicon MD5: D41D8CD98F00B204E9800998ECF8427E</span><br><span class="line">| http-title:  Admin - HTML5 Admin Template</span><br><span class="line">|_Requested resource was http://<span class="number">10.129</span><span class="number">.227</span><span class="number">.93</span>/login</span><br><span class="line">|_http-server-header: Apache/<span class="number">2.4</span><span class="number">.41</span> (Ubuntu)</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<p>瀏覽器打開該 IP 后得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226032806-lqridt9.png" alt="image">​</p>
+<h2 id="Directory-scan"><a href="#Directory-scan" class="headerlink" title="Directory scan"></a>Directory scan</h2><p>由於目前什麽也沒有，一上來就給一個密碼，隨便輸入幾個常用的密碼卻顯示失敗了，所以使用 <code>quickhits.txt</code>​ 快速掃描一下有沒有其他的信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ feroxbuster -u <span class="string">&quot;http://10.129.227.93/&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/Web-Content/quickhits.txt -C <span class="number">301</span> -d <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226033003-gnarlu5.png" alt="image">​</p>
+<p>結果什麽也沒有。</p>
+<h1 id="Play-with-login-API"><a href="#Play-with-login-API" class="headerlink" title="Play with login API"></a>Play with login API</h1><p>隨便輸入一些密碼密碼：這裏是 <code>testing</code>​，使用 Burp 截取看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226041737-wn9t1pn.png" alt="image">​</p>
+<p>當我把 <code>testing</code>​ 整行刪除的時候會得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226041748-ahrlsx4.png" alt="image">​</p>
+<p>嘗試把 <code>GET</code>​ 換成 <code>OPTIONS</code>​ 看一下他支持什麽類型的請求：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226041809-9oc2ab1.png" alt="image">​</p>
+<p>可以看到他只允許 <code>GET</code>​，嘗試換成 json 格式提交看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226041846-t2qb1jh.png" alt="image">​</p>
+<p>好像請求成功了。</p>
+<h2 id="Exploit-PHP-loose-comparisons"><a href="#Exploit-PHP-loose-comparisons" class="headerlink" title="Exploit PHP loose comparisons"></a>Exploit PHP loose comparisons</h2><p><strong>這裏會有個問題</strong>：爲什麽要這樣做？</p>
+<p>在PHP中常見的漏洞是<a target="_blank" rel="noopener" href="https://www.php.net/manual/en/language.operators.comparison.php">弱比较</a>（也就是 <code>if</code>​ 中使用 <code>==</code>​），如果判斷的密碼大概是長這樣的：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="variable">$password</span> == <span class="string">&quot;somepassword&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>所以會出現兩種情況：</p>
+<ul>
+<li>儅 <code>$userinput</code>​ 是 <code>&quot;somepassword&quot;</code>​ 則是 <code>true</code>​</li>
+<li>儅 <code>$userinput</code>​ 是 <code>true</code>​ 則是 <code>true</code>​</li>
+</ul>
+<p>一個示例大概是這樣的：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">php &gt; <span class="keyword">if</span>( <span class="string">&quot;mane&quot;</span> == <span class="string">&quot;mane&quot;</span>) &#123;<span class="built_in">echo</span> <span class="string">&quot;OK&quot;</span>;&#125; <span class="keyword">else</span> &#123;<span class="built_in">echo</span> <span class="string">&quot;NO OK&quot;</span>;&#125;</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line"><span class="comment"># 你可以看到 任何字符串 == true 都會返回 true</span></span><br><span class="line">php &gt; <span class="keyword">if</span>( true == <span class="string">&quot;mane&quot;</span>) &#123;<span class="built_in">echo</span> <span class="string">&quot;OK&quot;</span>;&#125; <span class="keyword">else</span> &#123;<span class="built_in">echo</span> <span class="string">&quot;NO OK&quot;</span>;&#125;</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line"><span class="comment"># 但是 任何字符串 == 1 都會返回 false</span></span><br><span class="line">php &gt; <span class="keyword">if</span>( <span class="number">1</span> == <span class="string">&quot;mane&quot;</span>) &#123;<span class="built_in">echo</span> <span class="string">&quot;OK&quot;</span>;&#125; <span class="keyword">else</span> &#123;<span class="built_in">echo</span> <span class="string">&quot;NO OK&quot;</span>;&#125;</span><br><span class="line">NO OK</span><br><span class="line"></span><br><span class="line">php &gt; <span class="keyword">if</span>( <span class="string">&quot;true&quot;</span> == <span class="string">&quot;mane&quot;</span>) &#123;<span class="built_in">echo</span> <span class="string">&quot;OK&quot;</span>;&#125; <span class="keyword">else</span> &#123;<span class="built_in">echo</span> <span class="string">&quot;NO OK&quot;</span>;&#125;</span><br><span class="line">NO OK</span><br></pre></td></tr></table></figure>
+
+<p>各種類型的比較<a target="_blank" rel="noopener" href="https://www.php.net/manual/en/types.comparisons.php">如下表</a>：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241228005302-jqvin1c.png" alt="image">​</p>
+<p>但如果是強比較（也就是 <code>if</code>​ 中使用 <code>===</code>​）的話，那就沒有漏洞：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">php &gt; <span class="keyword">if</span>( true === <span class="string">&quot;mane&quot;</span>) &#123;<span class="built_in">echo</span> <span class="string">&quot;OK&quot;</span>;&#125; <span class="keyword">else</span> &#123;<span class="built_in">echo</span> <span class="string">&quot;NO OK&quot;</span>;&#125;</span><br><span class="line">NO OK</span><br></pre></td></tr></table></figure>
+
+<p>所以在上面的例子中 <code>$password</code>​ 是 <code>true</code>​ （boolean 類型） 而不是 <code>&quot;true&quot;</code>​ （string 類型），如果要指定類型，就需要使用 json 傳遞，也就是儅 <code>$password</code>​ 是 <code>true</code>​ （boolean 類型） 的時候就可以繞過檢查登錄：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226041941-76u265r.png" alt="image">​</p>
+<p>這裏可以參考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.php.net/manual/en/types.comparisons.php">https://www.php.net/manual/en/types.comparisons.php</a></li>
+<li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/php-tricks-esp#loose-comparisons-type-juggling">https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/php-tricks-esp#loose-comparisons-type-juggling</a></li>
+</ul>
+<p>‍</p>
+<p>既然驗證成功了，那就使用嘗試使用 burp 截取一下，修改完后，點擊  <code>Forward</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226042051-5hwd524.png" alt="image">​</p>
+<p>然後就到達了這個頁面：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226042103-ztwv37b.png" alt="image">​</p>
+<p>裏面有兩個文件，把他下載下來，在用戶的目錄下一般都會有 <code>.ssh</code>​ 的密匙：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226042130-d9tgvis.png" alt="image">​</p>
+<p>但是這個 zip 文件是加密的，這意味著需要嘗試破解 zip 的密碼。</p>
+<h2 id="Trying-to-crack-zip-password-but-failed"><a href="#Trying-to-crack-zip-password-but-failed" class="headerlink" title="Trying to crack zip password but failed"></a>Trying to crack zip password but failed</h2><p>所以嘗試使用 zip2john 生成hash，然後放到 hashcat 去爆破看看：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> zip2john uploaded<span class="operator">-file</span><span class="literal">-3422</span>.zip</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241228003819-45d6a2f.png" alt="image">​</p>
+<p>把上面的hash保存到文件中，運行了之後他會自動檢測到三個類別：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226042347-8auonfr.png" alt="image">​</p>
+<p>但是這三個都跑失敗了。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226043307-r5cyc95.png" alt="image">​</p>
+<h2 id="Crack-zipCrypto-with-Plain-Text-Attack"><a href="#Crack-zipCrypto-with-Plain-Text-Attack" class="headerlink" title="Crack zipCrypto with Plain Text Attack"></a>Crack zipCrypto with Plain Text Attack</h2><p>使用 <code>7z l -slt filename.zip</code>​ 就可以看到他是使用什麽類型的加密算法：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226050508-evzx7py.png" alt="image">​</p>
+<p>可以看到這個 zip 包是使用 <code>ZipCrypto Deflate</code>​ 的加密算法，所以稍微搜索一下關於該算法的漏洞：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226050533-zhcyedg.png" alt="image">​</p>
+<p>從網上的結果中得到， <code>ZipCrypto</code>​ 的算法被認爲是過時的，而且證明了已經不安全，破解該算法的方法是使用 <code>Plain Text Attack</code>​。</p>
+<p>原理是我只需要知道壓縮包裏一個文件的内容，我就知道整個壓縮包的key，然後去除壓縮包的密碼。</p>
+<h3 id="Recover-internal-keys"><a href="#Recover-internal-keys" class="headerlink" title="Recover internal keys"></a>Recover internal keys</h3><p>以上操作都需要用到 <a target="_blank" rel="noopener" href="https://github.com/kimci86/bkcrack">bkcrack </a>這個工具，所以參考一下它的<a target="_blank" rel="noopener" href="https://wiki.anter.dev/misc/plaintext-attack-zipcrypto/#introduction">文檔</a>：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052239-kovedlk.png" alt="image">.</p>
+<p>首先使用下面的命令參考一下有多少加密内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./bkcrack-<span class="number">1.7</span><span class="number">.1</span>-Linux/bkcrack -L ~/Downloads/uploaded-file-<span class="number">3422.</span><span class="built_in">zip</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226051830-u0pl2hd.png" alt="image">​</p>
+<p>由於上面的<code>Plain Text Attack</code>​ 需要知道壓縮包裏面的其中一個文件，安裝好系統自帶的<code>.bash_logout</code>​ 基本都不會變，可以看到默認是 220 個字節：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241228010117-85imkwk.png" alt="image">​</p>
+<p>而壓縮文件裏的<code>.bash_logout</code>​ 也是 220 個字節，然後再參考文檔：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052225-ggewy53.png" alt="image">​</p>
+<p>根據上面的圖片中得知 <code>bkcrack</code>​ 還會從另一個壓縮包提取沒有密碼的文件作爲參考，所以可以複製一份加密的壓縮包，然後壓縮一次，這樣就可以增加壓縮包裏面的文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cp ~/Downloads/uploaded-file-<span class="number">3422.</span><span class="built_in">zip</span> plain.<span class="built_in">zip</span></span><br><span class="line">$ <span class="built_in">zip</span> plain.<span class="built_in">zip</span> ~/.bash_logout</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052333-r4nzebj.png" alt="image">​</p>
+<p>使用 <code>bkcrack -L filename.zip</code>​ 可以看到新增的一個條目：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./bkcrack-<span class="number">1.7</span><span class="number">.1</span>-Linux/bkcrack -L plain.<span class="built_in">zip</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052139-69ikcqu.png" alt="image">​</p>
+<p>之後就可以進行破解了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./bkcrack-<span class="number">1.7</span><span class="number">.1</span>-Linux/bkcrack -C ~/Downloads/uploaded-file-<span class="number">3422.</span><span class="built_in">zip</span> -c <span class="string">&#x27;.bash_logout&#x27;</span> -P plain.<span class="built_in">zip</span> -p <span class="string">&#x27;home/mane/.bash_logout&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052149-75ngac4.png" alt="image">​</p>
+<p>等了一會成功的還原出了key： <code>7b549874 ebc25ec5 7e465e18</code>​</p>
+<h3 id="Remove-password"><a href="#Remove-password" class="headerlink" title="Remove password"></a>Remove password</h3><p>成功還原出key了之後就可以嘗試刪除密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052448-30ar4ne.png" alt="image">​</p>
+<p>根據文檔，命令如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./bkcrack-<span class="number">1.7</span><span class="number">.1</span>-Linux/bkcrack -C ~/Downloads/uploaded-file-<span class="number">3422.</span><span class="built_in">zip</span> -k 7b549874 ebc25ec5 7e465e18 -D decrypted.<span class="built_in">zip</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052536-xddp8wj.png" alt="image">​</p>
+<p>成功的去除了密碼，之後就可以解壓了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052553-e2obe9j.png" alt="image">​</p>
+<p>但問題是，有了 ssh key 不知道用戶的名字怎麽辦？</p>
+<p>可以看一下 <code>id_rsa.pub</code>​ 和 <code>authorized_keys</code>​ 的用戶，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052651-jvmrb25.png" alt="image">​</p>
+<p>看起來用戶名是 <code>htb</code>​，所以嘗試登錄看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226052657-bcjlq1h.png" alt="image">​</p>
+<p>結果成功了。</p>
+<h1 id="Shell-as-user-to-root"><a href="#Shell-as-user-to-root" class="headerlink" title="Shell as user to root"></a>Shell as user to root</h1><p>跑了一下 Linpeas 看到： </p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226054627-vqbgy3m.png" alt="image">​</p>
+<p>由於沒有密碼，即使在 sudo group 中也沒有任何作用，在一開始的頁面上由於需要登陸，所以嘗試找到登錄的密碼，看了一下 apache 的默認配置文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">htb@ransom:~$ cat /etc/apache2/sites-enabled/<span class="number">000</span>-default.conf</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226055621-u05yehk.png" alt="image">​</p>
+<p>看到目錄是來自 <code>/srv/prod/public</code>​，由於這個目錄裏面存在大量的文件，儅隨便輸入了一個密碼之後，會得到 <code>Invalid Passowrd</code>​這兩個單詞：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226055644-py3tvdj.png" alt="image">​</p>
+<p>所以嘗試找一下該關鍵字：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226055708-dr8nzdt.png" alt="image">​</p>
+<p>發現 <code>./app/Http/Controllers/AuthController.php</code>​ 中存在這個單詞，嘗試打開：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226055439-yxhm1gg.png" alt="image">​</p>
+<p>打開後看到一個密碼：​<code>UHC-March-Global-PW!</code>​</p>
+<p>試了一下，這個就是 root 的密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-SVhxiwlvpYLE811n-Ransom/image-20241226055756-x1eovp1.png" alt="image">​</p>
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Respect</strong>: If my writeup really helps you, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">Give me a respect</a> to let me know， Thankssssss!</p>
+<p><strong>感謝</strong>: 製作不易，如果我的writeup真的幫到你了, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">給我一個respect</a>，這樣我就會知道，感謝你！</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Found Mistakes</strong>: If you find something wrong in the page, please feel free email to <a href="mailto:&#109;&#x61;&#x6e;&#x65;&#64;&#109;&#97;&#110;&#x65;&#x73;&#101;&#99;&#46;&#99;&#x6f;&#109;">&#109;&#x61;&#x6e;&#x65;&#64;&#109;&#97;&#110;&#x65;&#x73;&#101;&#99;&#46;&#99;&#x6f;&#109;</a> thanksss !!!</p>
+<p><strong>發現一些錯誤</strong>: 如果你在文章中發現一些錯誤，請發郵件到 <a href="mailto:&#109;&#x61;&#x6e;&#101;&#x40;&#x6d;&#x61;&#110;&#x65;&#x73;&#101;&#x63;&#46;&#x63;&#111;&#x6d;">&#109;&#x61;&#x6e;&#101;&#x40;&#x6d;&#x61;&#110;&#x65;&#x73;&#101;&#x63;&#46;&#x63;&#111;&#x6d;</a> ，麻煩了！！</p>
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 完成 <code>INTRODUCTION TO ACADEMY</code> 這個模塊后可以解鎖更多的功能！</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&text=HackTheBox - Machine - Ransom"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&title=HackTheBox - Machine - Ransom"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&is_video=false&description=HackTheBox - Machine - Ransom"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Ransom&body=Check out this article: https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&title=HackTheBox - Machine - Ransom"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&title=HackTheBox - Machine - Ransom"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&title=HackTheBox - Machine - Ransom"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&title=HackTheBox - Machine - Ransom"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&name=HackTheBox - Machine - Ransom&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/28/2024-htb-machine/55-Ransom/&t=HackTheBox - Machine - Ransom"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

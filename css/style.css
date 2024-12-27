@@ -1129,8 +1129,16 @@ article header .author {
 article header .postdate {
   display: inline;
 }
+article .content figure {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
 article .content #hexo-blog-encrypt {
   margin: 0 !important;
+}
+article .content #hexo-blog-encrypt figure {
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 article .content h1 {
   border-bottom: 2px solid rgba(0,135,255,0.28);

