@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​ 還有幾天就2025年了，大家新年快樂啊！！！ 7月份終於迎來碩士畢業（微電子專業），11月份參加完畢業典禮后，結束了大學的生涯，於是開始我的網安之路。 其實個人對網絡安全一直都很感興趣，有打算未來全職做網絡安全。 在這一年從一開始的 HTB 全球排名的 前200名，到前100名，到前 50名，到第一次體驗第一滴血，其實已經很滿足了。 整年得到 の HTB 前 100 機器   排名 名字 難">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2024 の 年末小總結">
+<meta property="og:url" content="https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​ 還有幾天就2025年了，大家新年快樂啊！！！ 7月份終於迎來碩士畢業（微電子專業），11月份參加完畢業典禮后，結束了大學的生涯，於是開始我的網安之路。 其實個人對網絡安全一直都很感興趣，有打算未來全職做網絡安全。 在這一年從一開始的 HTB 全球排名的 前200名，到前100名，到前 50名，到第一次體驗第一滴血，其實已經很滿足了。 整年得到 の HTB 前 100 機器   排名 名字 難">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2024/12-2024-end-of-year/Designer%202-20241129045929-utvyv7y.jpeg">
+<meta property="article:published_time" content="2024-12-28T13:43:00.000Z">
+<meta property="article:modified_time" content="2024-12-28T13:45:12.548Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2024/12-2024-end-of-year/Designer%202-20241129045929-utvyv7y.jpeg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>2024 の 年末小總結</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/12/28/2024/1228-vulnlab-baby/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&text=2024 の 年末小總結"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&title=2024 の 年末小總結"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&is_video=false&description=2024 の 年末小總結"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=2024 の 年末小總結&body=Check out this article: https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&title=2024 の 年末小總結"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&title=2024 の 年末小總結"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&title=2024 の 年末小總結"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&title=2024 の 年末小總結"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&name=2024 の 年末小總結&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&t=2024 の 年末小總結"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        2024 の 年末小總結
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-12-28T13:43:00.000Z" class="dt-published" itemprop="datePublished">2024-12-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​<img src="https://relay-img.manesec.com/maneblog/2024/12-2024-end-of-year/Designer%202-20241129045929-utvyv7y.jpeg" alt="Designer 2">​</p>
+<p>還有幾天就2025年了，大家新年快樂啊！！！</p>
+<p>7月份終於迎來碩士畢業（微電子專業），11月份參加完畢業典禮后，結束了大學的生涯，於是開始我的網安之路。</p>
+<p>其實個人對網絡安全一直都很感興趣，有打算未來全職做網絡安全。</p>
+<p>在這一年從一開始的 HTB 全球排名的 前200名，到前100名，到前 50名，到第一次體驗第一滴血，其實已經很滿足了。</p>
+<h1 id="整年得到-の-HTB-前-100-機器"><a href="#整年得到-の-HTB-前-100-機器" class="headerlink" title="整年得到 の HTB 前 100 機器"></a>整年得到 の HTB 前 100 機器</h1><table>
+<thead>
+<tr>
+<th align="center">排名</th>
+<th align="center">名字</th>
+<th align="center">難度</th>
+<th align="center">日期</th>
+<th align="center">成就</th>
+<th align="center">文章</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">#58</td>
+<td align="center">Crafty</td>
+<td align="center">Easy</td>
+<td align="center">10 Feb 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/587">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/02/11/2024-htb-machine/06-crafty/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#55</td>
+<td align="center">Office</td>
+<td align="center">Hard</td>
+<td align="center">18 Feb 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/588">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/02/19/2024-htb-machine/07-office/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#97</td>
+<td align="center">FormulaX</td>
+<td align="center">Hard</td>
+<td align="center">10 Mar 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/592">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/03/11/2024-htb-machine/10-FormulaX/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#50</td>
+<td align="center">IClean</td>
+<td align="center">Medium</td>
+<td align="center">07 Apr 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/596">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/04/07/2024-htb-machine/13-IClean/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#78</td>
+<td align="center">Runner</td>
+<td align="center">Medium</td>
+<td align="center">21 Apr 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/598">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/04/21/2024-htb-machine/15-Runner/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#67</td>
+<td align="center">Intuition</td>
+<td align="center">Hard</td>
+<td align="center">28 Apr 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/599">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/04/29/2024-htb-machine/17-Intuition/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#73</td>
+<td align="center">Mailing</td>
+<td align="center">Easy</td>
+<td align="center">05 May 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/600">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/05/05/2024-htb-machine/18-Mailing/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#80</td>
+<td align="center">SolarLab</td>
+<td align="center">Medium</td>
+<td align="center">12 May 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/601">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/05/12/2024-htb-machine/19-SolarLab/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#90</td>
+<td align="center">MagicGardens</td>
+<td align="center">Insane</td>
+<td align="center">19 May 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/602">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/05/25/2024-htb-machine/20-MagicGardens/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#5</td>
+<td align="center">BoardLight</td>
+<td align="center">Easy</td>
+<td align="center">25 May 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/603">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/05/26/2024-htb-machine/21-BoardLight/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#71</td>
+<td align="center">Freelancer</td>
+<td align="center">Hard</td>
+<td align="center">02 Jun 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/604">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/06/03/2024-htb-machine/22-Freelancer/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#37</td>
+<td align="center">Blurry</td>
+<td align="center">Medium</td>
+<td align="center">08 Jun 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/605">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/06/10/2024-htb-machine/23-Blurry/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#23</td>
+<td align="center">Editorial</td>
+<td align="center">Easy</td>
+<td align="center">15 Jun 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/608">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/06/16/2024-htb-machine/24-Editorial/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#45</td>
+<td align="center">Axlle</td>
+<td align="center">Hard</td>
+<td align="center">23 Jun 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/611">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/06/24/2024-htb-machine/25-Axlle/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#19</td>
+<td align="center">Blazorized</td>
+<td align="center">Medium</td>
+<td align="center">30 Jun 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/614">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/06/30/2024-htb-machine/26-Blazorized/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#37</td>
+<td align="center">PermX</td>
+<td align="center">Easy</td>
+<td align="center">06 Jul 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/613">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/07/07/2024-htb-machine/27-PermX/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#13</td>
+<td align="center">Ghost</td>
+<td align="center">Insane</td>
+<td align="center">14 Jul 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/616">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/07/16/2024-htb-machine/28-Ghost/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#3</td>
+<td align="center">GreenHorn</td>
+<td align="center">Easy</td>
+<td align="center">20 Jul 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/617">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/07/27/2024-htb-machine/29-GreenHorn/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#27</td>
+<td align="center">Compiled</td>
+<td align="center">Medium</td>
+<td align="center">28 Jul 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/618">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/08/03/2024-htb-machine/30-Compiled/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#12</td>
+<td align="center">Resource</td>
+<td align="center">Medium</td>
+<td align="center">04 Aug 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/619">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/08/10/2024-htb-machine/31-Resource/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#36</td>
+<td align="center">Sea</td>
+<td align="center">Easy</td>
+<td align="center">10 Aug 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/620">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/08/18/2024-htb-machine/32-Sea/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#31</td>
+<td align="center">Lantern</td>
+<td align="center">Hard</td>
+<td align="center">18 Aug 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/621">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/08/23/2024-htb-machine/33-Lantern/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#13</td>
+<td align="center">MonitorsThree</td>
+<td align="center">Medium</td>
+<td align="center">24 Aug 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/622">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/08/30/2024-htb-machine/34-MonitorsThree/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#26</td>
+<td align="center">Infiltrator</td>
+<td align="center">Insane</td>
+<td align="center">01 Sep 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/623">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/09/03/2024-htb-machine/35-Infiltrator/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#27</td>
+<td align="center">Sightless</td>
+<td align="center">Easy</td>
+<td align="center">07 Sep 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/624">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/09/14/2024-htb-machine/36-Sightless/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#51</td>
+<td align="center">Caption</td>
+<td align="center">Hard</td>
+<td align="center">14 Sep 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/625">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/09/20/2024-htb-machine/37-Caption/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#12</td>
+<td align="center">Trickster</td>
+<td align="center">Medium</td>
+<td align="center">21 Sep 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/626">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/09/28/2024-htb-machine/38-Trickster/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#51</td>
+<td align="center">Cicada</td>
+<td align="center">Easy</td>
+<td align="center">28 Sep 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/627">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/10/04/2024-htb-machine/40-Cicada/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#41</td>
+<td align="center">Yummy</td>
+<td align="center">Hard</td>
+<td align="center">06 Oct 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/628">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/10/12/2024-htb-machine/41-Yummy/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#26</td>
+<td align="center">Instant</td>
+<td align="center">Medium</td>
+<td align="center">12 Oct 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/630">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/10/23/2024-htb-machine/42-Instant/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#36</td>
+<td align="center">Chemistry</td>
+<td align="center">Easy</td>
+<td align="center">19 Oct 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/631">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/10/23/2024-htb-machine/43-Chemistry/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#19</td>
+<td align="center">Certified</td>
+<td align="center">Medium</td>
+<td align="center">02 Nov 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/633">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/11/09/2024-htb-machine/45-Certified/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#11</td>
+<td align="center">Administrator</td>
+<td align="center">Medium</td>
+<td align="center">09 Nov 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/634">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/11/14/2024-htb-machine/46-Administrator/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#24</td>
+<td align="center">BlockBlock</td>
+<td align="center">Hard</td>
+<td align="center">17 Nov 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/635">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/11/23/2024-htb-machine/47-BlockBlock/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#5</td>
+<td align="center">Alert</td>
+<td align="center">Easy</td>
+<td align="center">23 Nov 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/636">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/11/29/2024-htb-machine/48-Alert/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#28</td>
+<td align="center">Vintage</td>
+<td align="center">Hard</td>
+<td align="center">01 Dec 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/637">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/12/12/2024-htb-machine/50-Vintage/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#11</td>
+<td align="center">LinkVortex</td>
+<td align="center">Easy</td>
+<td align="center">07 Dec 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/638">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/12/14/2024-htb-machine/51-LinkVortex/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#4</td>
+<td align="center">Heal</td>
+<td align="center">Medium</td>
+<td align="center">14 Dec 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/640">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/12/21/2024-htb-machine/52-Heal/">鏈接</a></td>
+</tr>
+<tr>
+<td align="center">#21</td>
+<td align="center">UnderPass</td>
+<td align="center">Easy</td>
+<td align="center">21 Dec 2024</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/641">鏈接</a></td>
+<td align="center"><a href="https://manesec.github.io/2024/12/28/2024-htb-machine/59-UnderPass/">鏈接</a></td>
+</tr>
+</tbody></table>
+<p>總共39臺機器：Easy 13 台，Medium 13 台，Hard 10 台，Insane 3 台，1滴血。</p>
+<h1 id="整年得到-の-一些證書"><a href="#整年得到-の-一些證書" class="headerlink" title="整年得到 の 一些證書"></a>整年得到 の 一些證書</h1><p>Exam類：</p>
+<ul>
+<li><a href="https://manesec.github.io/2024/10/31/2024/1031-hackthebox-academy-cpts-review/">CPTS</a></li>
+<li><a href="https://manesec.github.io/2024/09/28/2024/0928-offsec-oscp-review/">OSCP</a></li>
+</ul>
+<p>Lab類：</p>
+<ul>
+<li><a href="https://manesec.github.io/2024/07/03/2024/0703-htb-Cybernetics/">Hackthebox - Prolab - Cybernetics</a></li>
+<li><a href="https://manesec.github.io/2024/06/13/2024/0613-htb-dante/">Hackthebox - Prolab - Dante</a></li>
+<li><a href="https://manesec.github.io/2024/06/21/2024/0621-htb-offshore/">Hackthebox - Prolab - Offshore</a></li>
+<li><a href="https://manesec.github.io/2024/06/17/2024/0617-htb-Rastalabs/">Hackthebox - Prolab - RastaLabs</a></li>
+<li><a href="https://manesec.github.io/2024/06/10/2024/0610-htb-zephyr/">Hackthebox - Prolab - Zephyr</a></li>
+<li><a href="https://manesec.github.io/2024/10/31/2024/1031-htb-solar/">Hackthebox - Prolab - Solar</a></li>
+<li><a href="https://manesec.github.io/2024/11/14/2024/1114-htb-alchemy/">Hackthebox - Prolab - Alchemy</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/manesec/manesec/blob/main/Cert/HTB/Prolab/POO.png">Hackthebox - Prolab - POO</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/manesec/manesec/blob/main/Cert/HTB/Prolab/Hades.png">Hackthebox - Prolab - Hades</a></li>
+<li><a href="https://manesec.github.io/2024/12/06/2024/1205-htb-aptlabs/">Hackthebox - Prolab - APTLabs</a></li>
+</ul>
+<h1 id="整年-の-費用支出方面"><a href="#整年-の-費用支出方面" class="headerlink" title="整年 の 費用支出方面"></a>整年 の 費用支出方面</h1><p>下面就列舉一下學習的開支方面，全部個人承擔，一切只是爲了興趣（<del>其實是玩上癮了而已</del>）。</p>
+<p>（下面的參考單位：人民幣，會以美元的匯率波動）</p>
+<table>
+<thead>
+<tr>
+<th>支出内容</th>
+<th>幣種</th>
+<th>實際費用（以人民幣爲單位）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CPTS 考試卷</td>
+<td>210 美元</td>
+<td>1542.62</td>
+</tr>
+<tr>
+<td>HTB VIP+ 年費（已使用賽季100 刀獎勵）</td>
+<td>103 美元</td>
+<td>705.83</td>
+</tr>
+<tr>
+<td>HTB 學院學生月費</td>
+<td>8美元一個月</td>
+<td>579.91</td>
+</tr>
+<tr>
+<td>25年的 CRTE + CRTM 報名費用</td>
+<td>524 美元</td>
+<td>3948.08</td>
+</tr>
+<tr>
+<td>CBBH 考試卷</td>
+<td>210 美元</td>
+<td>1582.24</td>
+</tr>
+<tr>
+<td>Vulnlab 年費</td>
+<td>150 歐元</td>
+<td>1186.11</td>
+</tr>
+<tr>
+<td>HTB Academy Gold Annual （25% off）</td>
+<td>791.25 歐元</td>
+<td>6293.6</td>
+</tr>
+<tr>
+<td><strong>總計</strong></td>
+<td></td>
+<td>15838.39</td>
+</tr>
+</tbody></table>
+<p><strong>備注</strong>：</p>
+<ul>
+<li><p>大概是1200美元左右，OSCP是2023年買給自己的聖誕禮物，買的Learn one，所以不統計，另外關於OSCP+的話暫時不打算考。</p>
+</li>
+<li><p>Prolab 的話是使用賽季的優惠卷免費玩的。</p>
+</li>
+</ul>
+<h1 id="未來的2025の上半年短期計劃"><a href="#未來的2025の上半年短期計劃" class="headerlink" title="未來的2025の上半年短期計劃"></a>未來的2025の上半年短期計劃</h1><ul>
+<li>完成 CRTE 考試</li>
+<li>完成 CRTM 考試</li>
+<li>完成 CBBH 考試</li>
+<li>完成 CAPE 考試</li>
+<li>會逐步更新 Vulnlab 的内容</li>
+</ul>
+<h1 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h1><p>我是剛踏進網絡安全的24年跨專業應届畢業生，還是很菜，感謝隊友們一直支持著我。</p>
+<p>如果想問我一些問題可以 <a href="mailto:mane@manesec.com">mane@manesec.com</a> 。</p>
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&text=2024 の 年末小總結"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&title=2024 の 年末小總結"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&is_video=false&description=2024 の 年末小總結"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=2024 の 年末小總結&body=Check out this article: https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&title=2024 の 年末小總結"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&title=2024 の 年末小總結"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&title=2024 の 年末小總結"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&title=2024 の 年末小總結"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&name=2024 の 年末小總結&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2024/12/28/2024/1228-2024-endofyear/&t=2024 の 年末小總結"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>
