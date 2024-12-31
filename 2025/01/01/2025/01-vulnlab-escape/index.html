@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;20d162d8-9f40-4741-b61d-64e5c17817f8 首先，透過 RDP 連接時，由於缺乏賬號密碼，嘗試使用 NLA（Network Level Authentication）進行連接，最終得到了一個提示，建議使用 KisokUser 0 賬號登入，這表明該系統運行在 Kiosk 模式下。隨後">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VulnLab - Machine - Escape">
+<meta property="og:url" content="https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;20d162d8-9f40-4741-b61d-64e5c17817f8 首先，透過 RDP 連接時，由於缺乏賬號密碼，嘗試使用 NLA（Network Level Authentication）進行連接，最終得到了一個提示，建議使用 KisokUser 0 賬號登入，這表明該系統運行在 Kiosk 模式下。隨後">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231073955-7q8qgqi.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231064606-lsrwl03.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231083716-hun0w9e.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231083729-kaq66y7.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231083741-04sgfum.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231084653-z14m8uf.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231084741-o2dkqfk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20250101001333-w7gzgbz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20250101001358-o3bpega.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20250101001431-li2l7ig.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20250101001906-acjme1c.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20250101002017-ct5vwdj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231091250-xwt39kb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074202-umes99x.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074103-xfjjq25.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074113-2yw4nsx.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074238-xfgxrsp.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074328-yoc9lc7.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074416-40wf6o4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074448-0689lc9.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074511-eh01yu9.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074533-7sxkcu9.png">
+<meta property="article:published_time" content="2024-12-31T19:24:00.000Z">
+<meta property="article:modified_time" content="2024-12-31T19:26:52.759Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231073955-7q8qgqi.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>VulnLab - Machine - Escape</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/01/2025/04-vulnlab-down/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&text=VulnLab - Machine - Escape"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&title=VulnLab - Machine - Escape"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&is_video=false&description=VulnLab - Machine - Escape"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Escape&body=Check out this article: https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&title=VulnLab - Machine - Escape"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&title=VulnLab - Machine - Escape"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&title=VulnLab - Machine - Escape"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&title=VulnLab - Machine - Escape"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&name=VulnLab - Machine - Escape&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&t=VulnLab - Machine - Escape"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        VulnLab - Machine - Escape
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-12-31T19:24:00.000Z" class="dt-published" itemprop="datePublished">2025-01-01</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231073955-7q8qgqi.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://api.vulnlab.com/api/v1/share?id=20d162d8-9f40-4741-b61d-64e5c17817f8">https://api.vulnlab.com/api/v1/share?id=20d162d8-9f40-4741-b61d-64e5c17817f8</a></p>
+<p>首先，透過 RDP 連接時，由於缺乏賬號密碼，嘗試使用 NLA（Network Level Authentication）進行連接，最終得到了一個提示，建議使用 KisokUser 0 賬號登入，這表明該系統運行在 Kiosk 模式下。隨後，通過下載 RD Plus 並導入配置文件 profiles.xml，進一步探索如何獲取加密密碼。利用 Spy++ 工具，通過拖動方法快速獲取了該密碼，但這一過程需要迅速進行，因為密碼在窗口打開後不久便無法再抓取。為了提高效率，使用了 BulletsPassView 工具，自動刷新並顯示密碼，從而簡化了操作。接下來，利用 socat 轉發端口 3389 至目標服務器後，嘗試連接時出現密碼錯誤，進而使用 mimikatz 工具抓取密碼以進行後續操作。獲得管理員賬號的密碼後，進一步研究如何突破 Kiosk 模式的限制，查閱相關資料後，發現可以利用 PowerShell 進行命令執行。通過檢查用戶權限，發現 admin 用戶擁有特殊權限，使用該賬號進行管理操作，並嘗試以管理員身份啟動 PowerShell。遇到 UAC（用戶賬戶控制）提示時，通過 runas 命令切換用戶，最終成功獲得管理員權限並啟動了 PowerShell，完成了整個過程。</p>
+<h1 id="Nmap-scan"><a href="#Nmap-scan" class="headerlink" title="Nmap scan"></a>Nmap scan</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE       REASON          VERSION </span><br><span class="line">3389/tcp open  ms-wbt-server syn-ack ttl 127 Microsoft Terminal Services</span><br><span class="line">|_ssl-<span class="built_in">date</span>: 2024-12-30T22:40:25+00:00; -4s from scanner time.</span><br><span class="line">| ssl-cert: Subject: commonName=Escape</span><br><span class="line">| Issuer: commonName=Escape             </span><br><span class="line">| Public Key <span class="built_in">type</span>: rsa                                                                              </span><br><span class="line">| Public Key bits: 2048                                                                             </span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption                                                      </span><br><span class="line">| Not valid before: 2024-12-29T22:33:59</span><br><span class="line">| Not valid after:  2025-06-30T22:33:59</span><br><span class="line">| MD5:   cf4a:7243:90c1:729d:a0ac:fd59:212a:299f</span><br><span class="line">| SHA-1: b6f5:a8f2:67e8:18d5:3964:de36:4d9b:ec11:6385:6e90</span><br><span class="line">| -----BEGIN CERTIFICATE-----</span><br><span class="line">| MIIC0DCCAbigAwIBAgIQeUWAK9J8O5xEWYk1yxWj8jANBgkqhkiG9w0BAQsFADAR</span><br><span class="line">| MQ8wDQYDVQQDEwZFc2NhcGUwHhcNMjQxMjI5MjIzMzU5WhcNMjUwNjMwMjIzMzU5</span><br><span class="line">| WjARMQ8wDQYDVQQDEwZFc2NhcGUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK</span><br><span class="line">| AoIBAQDsQSJ6TWx6GhVmkeyJyqn2HakJ7bijg4/uO2fZUi17wkHDHGCWNruYmwc8</span><br><span class="line">| 1b3MD44YjDWC1G/V9jXPhrbAh2TiPFxKcdABprMGte/d+4PGjGby9wkLojApCEKI</span><br><span class="line">| 9mrwvkuIGc1IPQxK3g30KrnnAjXlGaUNisqQO66ahXq1mMQljPbM49MeLQdfaITs</span><br><span class="line">| 10IbplVn6VX+GN21rVGKhQ8AruhPoHluDC2sr/p+LE3EyFMl9IJSLZRFwlbIbxgF</span><br><span class="line">| GOUQnlUEvb/Q3Lnq9QIfLLkOqFHhmpmaSE694QWJ5azOCjLNvABgrr1ldv8ogN/T</span><br><span class="line">| UJdK/3WNdnUw8fZH7sxyLx3AtYGVAgMBAAGjJDAiMBMGA1UdJQQMMAoGCCsGAQUF</span><br><span class="line">| BwMBMAsGA1UdDwQEAwIEMDANBgkqhkiG9w0BAQsFAAOCAQEAujgcHpztfDiNDrCW</span><br><span class="line">| tqLUH132KfgJsdP9pm4VkbxFYP/H2QMtIE6HBNhe5i8bJcKf7KhZ9AagyNhJCzhA</span><br><span class="line">| EWR+yzxg3WxuUfly41MZLZ9oYl6sl6vySW1SxlX47QDK5oh4D/bNvmWnE9dNTW+5</span><br><span class="line">| M7HuTDPTau5x9CT6ooGSJTyUQjNrNMcVC1maskYizFIn/nHqditT6iI1QTsUXWwU</span><br><span class="line">| h5tuuhZtGVu5ekVw8INccZNhXPscluy3hkUcMDrYnglLpfCYZPnJjFXxjn923X24</span><br><span class="line">| cq/ajKCO51GacI0+Pux518faXJ1Fs4jkXZH8r0ASKV3umXHH085PyYlczXad8Zdb</span><br><span class="line">| PB9f8A==</span><br><span class="line">|_-----END CERTIFICATE-----</span><br><span class="line">| rdp-ntlm-info: </span><br><span class="line">|   Target_Name: ESCAPE</span><br><span class="line">|   NetBIOS_Domain_Name: ESCAPE</span><br><span class="line">|   NetBIOS_Computer_Name: ESCAPE</span><br><span class="line">|   DNS_Domain_Name: Escape</span><br><span class="line">|   DNS_Computer_Name: Escape</span><br><span class="line">|   Product_Version: 10.0.19041</span><br><span class="line">|_  System_Time: 2024-12-30T22:40:21+00:00</span><br><span class="line">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</span><br></pre></td></tr></table></figure>
+
+<p>只有 RDP 開著，但是什麽也沒有。</p>
+<h1 id="Connect-RDP-with-nla"><a href="#Connect-RDP-with-nla" class="headerlink" title="Connect RDP with nla"></a>Connect RDP with nla</h1><p>由於沒有賬號密碼，所以嘗試使用nla去鏈接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ xfreerdp /v:10.10.94.81 -sec-nla</span><br></pre></td></tr></table></figure>
+
+<p>等待了一段時間後，得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231064606-lsrwl03.png" alt="image">​</p>
+<p>上面寫著請使用<code>KisokUser0</code>​ 去登錄，在名字中已經提示了，使用這個賬號登陸是關於<code>kiosk</code>​的模式。</p>
+<p>關於如何配置<code>kiosk</code>​的模式可以查看：</p>
+<iframe src="https://www.youtube.com/embed/4ESI2HCGzHI" width="100%" height="500" frameborder="0" loading="lazy" allowfullscreen></iframe>
+
+<p>摸索了一段時間之後發現：</p>
+<iframe src="/maneplugin/viewerjs/slideshow.html#https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/part1.pdf" width="100%" height="754px" frameborder="0" loading="lazy" allowfullscreen></iframe> 
+
+<h2 id="Find-a-way-to-decrypt-RD-Plus-password"><a href="#Find-a-way-to-decrypt-RD-Plus-password" class="headerlink" title="Find a way to decrypt RD Plus password"></a>Find a way to decrypt RD Plus password</h2><p>先去<a target="_blank" rel="noopener" href="https://www.donkz.nl/#download">官網</a>下載 RD Plus，打開後把上面的 <code>profiles.xml</code>​ 導入進去：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231083716-hun0w9e.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231083729-kaq66y7.png" alt="image">​</p>
+<p>雙擊后會出現一個加密的密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231083741-04sgfum.png" alt="image">​</p>
+<p>查看這個加密密碼的方法有很多種。</p>
+<h2 id="Method-1-spy-to-found-handle"><a href="#Method-1-spy-to-found-handle" class="headerlink" title="Method 1: spy++ to found handle"></a>Method 1: spy++ to found handle</h2><p>使用 <a target="_blank" rel="noopener" href="https://github.com/westoncampbell/SpyPlusPlus/tree/master">Spy++</a> 然後點擊 <code>Find Window</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231084653-z14m8uf.png" alt="image">​</p>
+<p>之後按住 <code>Finder Tools</code>​ 拖入到密碼，就會顯示密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231084741-o2dkqfk.png" alt="image">​</p>
+<p>這個過程要快，因爲發現 <code>Edit profider</code>​ 這個窗口2秒後就抓取不到密碼了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Twisting3021</span><br></pre></td></tr></table></figure>
+
+<h2 id="Method-2-using-BulletsPassView-to-find-password"><a href="#Method-2-using-BulletsPassView-to-find-password" class="headerlink" title="Method 2: using BulletsPassView to find password"></a>Method 2: using BulletsPassView to find password</h2><p>既然上面的方法要拖入，有沒有一種工具是可以自動查找 <code>*</code>​ 號的密碼并且自動顯示呢？</p>
+<p>所以 <a target="_blank" rel="noopener" href="https://www.nirsoft.net/utils/bullets_password_view.html">BulletsPassView </a>工具就可以做這件事情，下載完成后打開會長這樣：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20250101001333-w7gzgbz.png" alt="image">​</p>
+<p>點擊 <code>Options --&gt; Auto Refresh</code>​ 他就會定時查找<code>*</code>​ 號的密碼</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20250101001358-o3bpega.png" alt="image">​</p>
+<p>所以儅雙擊，出現 <code>Edit profider</code>​ 的時候就顯示密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20250101001431-li2l7ig.png" alt="image">​</p>
+<h2 id="Method-3-mimikatz"><a href="#Method-3-mimikatz" class="headerlink" title="Method 3: mimikatz"></a>Method 3: mimikatz</h2><p>首先先使用 socat 轉發一下 3389 去對面的服務器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ socat TCP-LISTEN:3389,fork TCP:10.10.88.47:3389</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20250101001906-acjme1c.png" alt="image">​</p>
+<p>然後嘗試連接，出現密碼錯誤后就可以使用 mimikatz來抓取密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20250101002017-ct5vwdj.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mimikatz <span class="comment"># privilege::debug</span></span><br><span class="line">mimikatz <span class="comment"># ts::mstsc</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Escape-kiosks-to-open-cmd-exe"><a href="#Escape-kiosks-to-open-cmd-exe" class="headerlink" title="Escape kiosks to open cmd.exe"></a>Escape kiosks to open cmd.exe</h1><p>既然有了密碼，那麽要怎麽可以運行命令執行呢？</p>
+<p>谷歌搜索關於如何逃逸 kiosks 模式，發現了這兩篇：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://blog.nviso.eu/2022/05/24/breaking-out-of-windows-kiosks-using-only-microsoft-edge/">https://blog.nviso.eu/2022/05/24/breaking-out-of-windows-kiosks-using-only-microsoft-edge/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://youtu.be/aBMvFmoMFMI?t=1116">https://youtu.be/aBMvFmoMFMI?t=1116</a></p>
+</li>
+</ul>
+<p>所以：</p>
+<iframe src="/maneplugin/viewerjs/slideshow.html#https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/part2.pdf" width="100%" height="754px" frameborder="0" loading="lazy" allowfullscreen></iframe> 
+
+<p>首先看一下有哪些用戶有特殊權限：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231091250-xwt39kb.png" alt="image">​</p>
+<p>看到  <code>admin</code>​ 的用戶有特殊權限，剛好上面也得到了密碼，由於無法列出目錄，所以嘗試使用 powershell：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074202-umes99x.png" alt="image">​</p>
+<h2 id="Runas-admin-via-powershell"><a href="#Runas-admin-via-powershell" class="headerlink" title="Runas admin via powershell"></a>Runas admin via powershell</h2><p>既然有了管理員的賬號密碼，那麽就要想辦法以管理員的方式去啓動，所以需要顯示UAC那個框，所以查了一下如何以管理員的方式啓動：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074103-xfjjq25.png" alt="image">​</p>
+<p>看到了這個：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074113-2yw4nsx.png" alt="image">​</p>
+<p>儅輸入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start-process powershell -verb runas</span><br></pre></td></tr></table></figure>
+
+<p>就會彈出 UAC，但是出現了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074238-xfgxrsp.png" alt="image">​</p>
+<p>看起來是applocker 的問題，使用 <code>runas</code>​ 切換到 <code>admin</code>​另一個用戶看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074328-yoc9lc7.png" alt="image">​</p>
+<p>切換成功了，但是沒有權限，看起來是UAC的問題：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074416-40wf6o4.png" alt="image">​</p>
+<p>因爲切換了另一個用戶所以不會受到applocker的限制，嘗試以管理員啓動：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start-process powershell -verb runas</span><br></pre></td></tr></table></figure>
+
+<p>果然彈出了窗口：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074448-0689lc9.png" alt="image">​</p>
+<p>點擊確定後：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074511-eh01yu9.png" alt="image">​</p>
+<p>就得到了管理員的 powershell ：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/01-vulnlab-Escape/image-20241231074533-7sxkcu9.png" alt="image">​</p>
+<p>這樣就完成了。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&text=VulnLab - Machine - Escape"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&title=VulnLab - Machine - Escape"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&is_video=false&description=VulnLab - Machine - Escape"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Escape&body=Check out this article: https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&title=VulnLab - Machine - Escape"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&title=VulnLab - Machine - Escape"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&title=VulnLab - Machine - Escape"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&title=VulnLab - Machine - Escape"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&name=VulnLab - Machine - Escape&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/01/2025/01-vulnlab-escape/&t=VulnLab - Machine - Escape"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>
