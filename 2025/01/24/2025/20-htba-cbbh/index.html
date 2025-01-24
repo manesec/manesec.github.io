@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="總算在新年前得到了CBBH的證書啦，可以過個好年了。 考官反饋​​  恭喜您！您已獲得 HTB CBBH 認證。 您記錄弱點識別和利用活動的方式值得讚賞，也很容易遵循。您的報告結構也很好。做得好！.  考試歷程​​ 考試總共7天，80分合格，如果不算上1月7日的話，實際上是用了3天：  1月7日（晚上9點開始）：拿到 40 分。  1月8日：拿到 60 分。  1月9日：拿到 100 分，也就是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTB Academy - CBBH - Review">
+<meta property="og:url" content="https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="總算在新年前得到了CBBH的證書啦，可以過個好年了。 考官反饋​​  恭喜您！您已獲得 HTB CBBH 認證。 您記錄弱點識別和利用活動的方式值得讚賞，也很容易遵循。您的報告結構也很好。做得好！.  考試歷程​​ 考試總共7天，80分合格，如果不算上1月7日的話，實際上是用了3天：  1月7日（晚上9點開始）：拿到 40 分。  1月8日：拿到 60 分。  1月9日：拿到 100 分，也就是">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/manesec/manesec/refs/heads/main/Cert/HTB/Academy/CBBH.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/20-htba-cbbh/image-20250124202830-ywp1paz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/20-htba-cbbh/image-20250109080822-dl55hig.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/20-htba-cbbh/image-20250110124536-8jk24a6.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/20-htba-cbbh/image-20250111060435-n8n8hpz.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/20-htba-cbbh/image-20250111061045-ydb3ens.png">
+<meta property="article:published_time" content="2025-01-24T12:24:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T12:43:22.965Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/manesec/manesec/refs/heads/main/Cert/HTB/Academy/CBBH.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HTB Academy - CBBH - Review</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/24/2025/19-hackthebox-Strutted/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&text=HTB Academy - CBBH - Review"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&title=HTB Academy - CBBH - Review"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&is_video=false&description=HTB Academy - CBBH - Review"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HTB Academy - CBBH - Review&body=Check out this article: https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&title=HTB Academy - CBBH - Review"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&title=HTB Academy - CBBH - Review"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&title=HTB Academy - CBBH - Review"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&title=HTB Academy - CBBH - Review"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&name=HTB Academy - CBBH - Review&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&t=HTB Academy - CBBH - Review"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HTB Academy - CBBH - Review
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-24T12:24:00.000Z" class="dt-published" itemprop="datePublished">2025-01-24</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><img src="https://raw.githubusercontent.com/manesec/manesec/refs/heads/main/Cert/HTB/Academy/CBBH.png" alt="CERT"></p>
+<p>總算在新年前得到了CBBH的證書啦，可以過個好年了。</p>
+<h1 id="考官反饋"><a href="#考官反饋" class="headerlink" title="考官反饋"></a>考官反饋</h1><p>​<img src="https://relay-img.manesec.com/maneblog/2025/20-htba-cbbh/image-20250124202830-ywp1paz.png" alt="image">​</p>
+<blockquote>
+<p>恭喜您！您已獲得 HTB CBBH 認證。</p>
+<p>您記錄弱點識別和利用活動的方式值得讚賞，也很容易遵循。您的報告結構也很好。做得好！.</p>
+</blockquote>
+<h1 id="考試歷程"><a href="#考試歷程" class="headerlink" title="考試歷程"></a>考試歷程</h1><p>​<img src="https://relay-img.manesec.com/maneblog/2025/20-htba-cbbh/image-20250109080822-dl55hig.png" alt="image">​</p>
+<p>考試總共7天，80分合格，如果不算上1月7日的話，實際上是用了3天：</p>
+<ul>
+<li><p>1月7日（晚上9點開始）：拿到 40 分。</p>
+</li>
+<li><p>1月8日：拿到 60 分。</p>
+</li>
+<li><p>1月9日：拿到 100 分，也就是滿分，写报告进度30%。</p>
+</li>
+<li><p>1月10日：提交报告。</p>
+</li>
+</ul>
+<p>寫完後我還剩下4天的時間，懶得拖了，直接交吧。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/20-htba-cbbh/image-20250110124536-8jk24a6.png" alt="image">​</p>
+<h2 id="一些提示"><a href="#一些提示" class="headerlink" title="一些提示"></a>一些提示</h2><p>在考試的過程中肯定會卡住沒有思路，所以你可以打開 <a target="_blank" rel="noopener" href="https://academy.hackthebox.com/preview/certifications/htb-certified-bug-bounty-hunter/prerequisites">官方網頁</a> 點擊 <code>Related job-role-path</code>​ 。每個模組看一次，看一下哪個模組對你現在的情況有幫助。</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/20-htba-cbbh/image-20250111060435-n8n8hpz.png" alt="image">​</p>
+<p>然後就是要擅長利用搜索功能，不然除了發呆，也只能發呆了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/20-htba-cbbh/image-20250111061045-ydb3ens.png" alt="image">​</p>
+<p>也比如說我看到一個登錄框，不知道要做什麽，可以去搜一下關於登錄的相關的内容。</p>
+<h2 id="CBBH-vs-CPTS"><a href="#CBBH-vs-CPTS" class="headerlink" title="CBBH vs CPTS"></a>CBBH vs CPTS</h2><p>CPTS 有10天考試，但是CBBH只有7天。看了一下我之前的CPTS報告大約在120頁左右，而CBBH的報告大約在60頁。</p>
+<p>相對於 CPTS 來説 CBBH 的内容少了一半，但是 CBBH 偏向於 Web，與其説是 web 但我感覺更像是 web 的CTF。</p>
+<p>由於CBBH沒有后滲透，所以覺得 CPTS 的性價比更高。</p>
+<h2 id="學習計劃？"><a href="#學習計劃？" class="headerlink" title="學習計劃？"></a>學習計劃？</h2><p>抱歉我沒有參與任何學習計劃。感覺學習計劃更像是一種被動性的，但我是非常不喜歡被動學習，所以沒有制定這些東西。</p>
+<p>如果你沒有良好的自我管理能力，你可以嘗試制定一些學習計劃，建議量力而爲之。</p>
+<p>有些人給我介紹關於碎片化時間 (<a target="_blank" rel="noopener" href="https://todoist.com/productivity-methods/time-blocking">time blocking</a>)，我個人覺得如果你真的想獲得這個證書，你會有責任背在身上。</p>
+<p>對於我來説很難使用零零散散的時間去學習，我比較喜歡專注做一件事情，這樣的效率會比使用碎片化的時間要高得多。</p>
+<h2 id="其他人的測評"><a href="#其他人的測評" class="headerlink" title="其他人的測評"></a>其他人的測評</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=6ISUuMBzCyo&ab_channel=bmdyy">https://www.youtube.com/watch?v=6ISUuMBzCyo&amp;ab_channel=bmdyy</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@zmalinich/certified-bug-bounty-hunter-review-64ee23ab39f6">https://medium.com/@zmalinich/certified-bug-bounty-hunter-review-64ee23ab39f6</a></li>
+<li><a target="_blank" rel="noopener" href="https://gerbsec.com/cbbh-review-and-guide">https://gerbsec.com/cbbh-review-and-guide</a></li>
+</ul>
+<h1 id="未來的打算"><a href="#未來的打算" class="headerlink" title="未來的打算"></a>未來的打算</h1><p>CAPE 會是我下一張 HTB學院 證書，在此之前要先休息一段時間。</p>
+<h1 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h1><p>説實話CBBH真的能學到很多東西，雖然有點偏向於 CTF，但對我來説至少還是很有幫助的。</p>
+<p>如果你對 CBBH 有什麽想法，或者是迷茫的地方，可以直接發 email 給我，<strong>但請不要 email 我關於CBBH的考試問題，因爲我會直接永久黑名單</strong>。</p>
+<p>‍</p>
+<p>Good luck!</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&text=HTB Academy - CBBH - Review"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&title=HTB Academy - CBBH - Review"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&is_video=false&description=HTB Academy - CBBH - Review"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HTB Academy - CBBH - Review&body=Check out this article: https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&title=HTB Academy - CBBH - Review"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&title=HTB Academy - CBBH - Review"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&title=HTB Academy - CBBH - Review"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&title=HTB Academy - CBBH - Review"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&name=HTB Academy - CBBH - Review&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/24/2025/20-htba-cbbh/&t=HTB Academy - CBBH - Review"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>
